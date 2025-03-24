@@ -32,6 +32,8 @@ class UIComponent {
  protected:
   JO_API virtual void Render(struct IRenderTexture* renderTexture) = 0;
 
+  JO_API virtual void PostRender();
+
  private:
   void OnRender(struct IRenderTexture* renderTexture);
 

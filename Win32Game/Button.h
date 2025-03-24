@@ -12,6 +12,8 @@ class Button final
 
   void Render(struct IRenderTexture* renderTexture) override;
 
+  void PostRender() override;
+
   void Tick(unsigned long long curTick) override;
 
   void ClickDownEvent() override;
@@ -21,6 +23,8 @@ class Button final
   void SetDir(const Vector& dir);
 
  private:
+  bool capture_;
+
   IImage* image_;
 
   Player* player_;

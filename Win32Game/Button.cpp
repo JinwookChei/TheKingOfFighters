@@ -3,7 +3,8 @@
 #include "Player.h"
 
 Button::Button()
-    : image_(nullptr),
+    : capture_(false),
+      image_(nullptr),
       player_(nullptr),
       dir_({0.0f, 0.0f}) {
 }
@@ -20,6 +21,20 @@ void Button::BeginPlay() {
 
   SetScale(scale);
   SetPosition({scale.HalfX(), scale.HalfY()});
+}
+
+void Button::PostRender() {
+  if (false == capture_) {
+    return;
+  }
+  capture_ = false;
+
+  UI* owner = GetOwner();
+  if (nullptr == owner) {
+    return;
+  }
+  Path cur("..\\ContentsResource\\Test.bmp");
+  owner->Save(cur.GetPathString());
 }
 
 void Button::Render(IRenderTexture* renderTexture) {
@@ -56,6 +71,8 @@ void Button::Tick(unsigned long long curTick) {
 
 void Button::ClickDownEvent() {
   mousePosition_ = GEngineCore->GetMousePosition();
+
+  capture_ = true;
 }
 
 void Button::SetPlayer(Player* player) {

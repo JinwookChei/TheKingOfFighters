@@ -49,6 +49,9 @@ const Transform& UIComponent::GetTransform() const {
   return transform_;
 }
 
+void UIComponent::PostRender() {
+}
+
 void UIComponent::OnRender(IRenderTexture* renderTexture) {
   if (nullptr == renderTexture) {
     return;

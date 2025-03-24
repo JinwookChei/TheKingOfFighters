@@ -132,6 +132,13 @@ const Color8Bit& UI::GetCurrentColor() const {
   return currentColor_;
 }
 
+bool UI::Save(std::string_view filePath) {
+  if (nullptr == renderTexture_) {
+    return false;
+  }
+  return renderTexture_->Save(filePath);
+}
+
 void UI::Render(IRenderTexture* renderTexture) const {
   if (nullptr == renderTexture_ || nullptr == renderTexture) {
     return;

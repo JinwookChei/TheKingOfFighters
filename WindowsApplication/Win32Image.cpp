@@ -107,6 +107,51 @@ bool Win32Image::GetPixel(const Vector& position, Color8Bit* outColor) {
   return true;
 }
 
+bool Win32Image::Save(std::string_view filePath, unsigned int index) {
+  ImageInfo* pFind = GetImageInfo(index);
+  if (nullptr == pFind) {
+    return false;
+  }
+
+  Path curr(filePath);
+  FILE* saveFile = nullptr;
+  fopen_s(&saveFile, curr.GetPathString().c_str(), "w+b");
+  if (nullptr == saveFile) {
+    return false;
+  }
+
+  BITMAPFILEHEADER fileHeader = {};
+  BITMAPINFOHEADER infoHeader = {};
+
+  fileHeader.bfType = 0x4D42;
+  fileHeader.bfOffBits = (DWORD)(sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER));
+
+  infoHeader.biSize = sizeof(BITMAPINFOHEADER);
+  infoHeader.biPlanes = 1;
+  infoHeader.biWidth = pFind->bitMapInfo_.bmWidth;
+  infoHeader.biHeight = pFind->bitMapInfo_.bmHeight;
+  infoHeader.biBitCount = 32;
+  infoHeader.biSizeImage = infoHeader.biWidth * abs(infoHeader.biHeight) * (infoHeader.biBitCount / 8);
+
+  fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
+
+  double physicalWidth = infoHeader.biWidth / 96.0;
+  double physicalHeight = infoHeader.biHeight / 96.0;
+
+  double dpiX = infoHeader.biWidth / physicalWidth;
+  double dpiY = infoHeader.biHeight / physicalHeight;
+
+  infoHeader.biXPelsPerMeter = 0;  //(int)(dpiX * 39.3701);
+  infoHeader.biYPelsPerMeter = 0;  //(int)(dpiY * 39.3701);
+
+  fwrite(&fileHeader, sizeof(BITMAPFILEHEADER), 1, saveFile);
+  fwrite(&infoHeader, sizeof(BITMAPINFOHEADER), 1, saveFile);
+  fwrite(pFind->bitMapInfo_.bmBits, infoHeader.biSizeImage, 1, saveFile);
+  fclose(saveFile);
+
+  return true;
+}
+
 void __stdcall Win32Image::CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;

@@ -36,6 +36,8 @@ class UI final
     return newComponent;
   }
 
+  JO_API bool Save(std::string_view filePath);
+
  protected:
   JO_API void Render(IRenderTexture* renderTexture) const override;
 

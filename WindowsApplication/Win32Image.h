@@ -68,6 +68,8 @@ class Win32Image final
 
   bool GetPixel(const Vector& position, Color8Bit* outColor) override;
 
+  bool Save(std::string_view filePath, unsigned int index = 0xffffffff) override;
+
   void __stdcall CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) override;
 
   void __stdcall CalculateTransformFromBoundingBoxDatas() override;
