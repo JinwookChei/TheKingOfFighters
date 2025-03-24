@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="CommonCode">
+      <UniqueIdentifier>{f844a638-6396-441e-b3b5-30c3a871f50d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{454ada97-a7bf-4f05-9b5d-d098b95c7551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\TestLevel">
+      <UniqueIdentifier>{10279dd6-c79a-432a-ba8d-2184ccb2b928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Tools">
+      <UniqueIdentifier>{6ba64e0c-85b2-4977-ac79-bb2ccc186f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\KOF">
+      <UniqueIdentifier>{f3119dff-cbd7-48b8-9adc-861d9678ef00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Tools\CollisionBox">
+      <UniqueIdentifier>{cdeff6d8-c54c-41bb-8e4c-fc8f7d08a4fb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Contents\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Contents\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleComponent.cpp">
+      <Filter>Contents\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Contents\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Contents\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolLevel.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossHair.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossHairControlButton.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteButton.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageMoveButton.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="NextImageButton.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="KOFLevel.cpp">
+      <Filter>Contents\KOF</Filter>
+    </ClCompile>
+    <ClCompile Include="Iori.cpp">
+      <Filter>Contents\KOF</Filter>
+    </ClCompile>
+    <ClCompile Include="Chang.cpp">
+      <Filter>Contents\KOF</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>Contents\KOF</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CommonCode\Code\IApplication.h">
+      <Filter>CommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Contents\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Contents\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleComponent.h">
+      <Filter>Contents\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Contents\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Contents\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolLevel.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossHair.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossHairControlButton.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteButton.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageMoveButton.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="NextImageButton.h">
+      <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="KOFLevel.h">
+      <Filter>Contents\KOF</Filter>
+    </ClInclude>
+    <ClInclude Include="Iori.h">
+      <Filter>Contents\KOF</Filter>
+    </ClInclude>
+    <ClInclude Include="Chang.h">
+      <Filter>Contents\KOF</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>Contents\KOF</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>
