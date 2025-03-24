@@ -29,9 +29,9 @@ ToolLevel::ToolLevel() {
 
   // OBJECT
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
-  //ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  //ioriImage->CalculateTransformFromBoundingBoxDatas();
-  ioriImage->CalculateTransform(100,50);
+  // ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  // ioriImage->CalculateTransformFromBoundingBoxDatas();
+  ioriImage->CalculateTransform(100, 50);
   Object* object = SpawnActor<Object>();
   object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
@@ -56,6 +56,8 @@ ToolLevel::ToolLevel() {
   CrossHairControlButton* crossHairButtonPlusRow = crossHairPlusRow->CreateUIComponent<CrossHairControlButton>();
   crossHairButtonPlusRow->SetControlType(CrossHairControlType_PlusRow);
   crossHairButtonPlusRow->SetCrossHair(crossHair);
+  crossHairButtonPlusRow->SetScale({200.0f, 50.0f});
+  crossHairButtonPlusRow->SetPosition({crossHairPlusRow->GetScale().HalfX(), crossHairPlusRow->GetScale().HalfY()});
   TextComponent* plusRowTextComponent = crossHairPlusRow->CreateUIComponent<TextComponent>();
   plusRowTextComponent->SetText(L"Row++", 20, Color8Bit::Red);
   plusRowTextComponent->SetFont(L"CONSOLELAS");
@@ -69,6 +71,8 @@ ToolLevel::ToolLevel() {
   CrossHairControlButton* crossHairButtonMinusRow = crossHairMinusRow->CreateUIComponent<CrossHairControlButton>();
   crossHairButtonMinusRow->SetControlType(CrossHairControlType_MinusRow);
   crossHairButtonMinusRow->SetCrossHair(crossHair);
+  crossHairButtonMinusRow->SetScale({200.0f, 50.0f});
+  crossHairButtonMinusRow->SetPosition({crossHairMinusRow->GetScale().HalfX(), crossHairMinusRow->GetScale().HalfY()});
   TextComponent* minusRowTextComponent = crossHairMinusRow->CreateUIComponent<TextComponent>();
   minusRowTextComponent->SetText(L"Row--", 20, Color8Bit::Red);
   minusRowTextComponent->SetFont(L"CONSOLELAS");
@@ -82,6 +86,8 @@ ToolLevel::ToolLevel() {
   CrossHairControlButton* crossHairButtonPlusCol = crossHairPlusCol->CreateUIComponent<CrossHairControlButton>();
   crossHairButtonPlusCol->SetControlType(CrossHairControlType_PlusCol);
   crossHairButtonPlusCol->SetCrossHair(crossHair);
+  crossHairButtonPlusCol->SetScale({200.0f, 50.0f});
+  crossHairButtonPlusCol->SetPosition({crossHairPlusCol->GetScale().HalfX(), crossHairPlusCol->GetScale().HalfY()});
   TextComponent* plusColTextComponent = crossHairPlusCol->CreateUIComponent<TextComponent>();
   plusColTextComponent->SetText(L"Col++", 20, Color8Bit::Red);
   plusColTextComponent->SetFont(L"CONSOLELAS");
@@ -95,6 +101,8 @@ ToolLevel::ToolLevel() {
   CrossHairControlButton* crossHairButtonMinusCol = crossHairMinusCol->CreateUIComponent<CrossHairControlButton>();
   crossHairButtonMinusCol->SetControlType(CrossHairControlType_MinusCol);
   crossHairButtonMinusCol->SetCrossHair(crossHair);
+  crossHairButtonMinusCol->SetScale({200.0f, 50.0f});
+  crossHairButtonMinusCol->SetPosition({crossHairMinusCol->GetScale().HalfX(), crossHairMinusCol->GetScale().HalfY()});
   TextComponent* minusColTextComponent = crossHairMinusCol->CreateUIComponent<TextComponent>();
   minusColTextComponent->SetText(L"Col--", 20, Color8Bit::Red);
   minusColTextComponent->SetFont(L"CONSOLELAS");
@@ -108,6 +116,8 @@ ToolLevel::ToolLevel() {
   CrossHairControlButton* crossHairButtonReset = crossHairReset->CreateUIComponent<CrossHairControlButton>();
   crossHairButtonReset->SetControlType(CrossHairControlType_Reset);
   crossHairButtonReset->SetCrossHair(crossHair);
+  crossHairButtonReset->SetScale({400.0f, 50.0f});
+  crossHairButtonReset->SetPosition({crossHairReset->GetScale().HalfX(), crossHairReset->GetScale().HalfY()});
   TextComponent* resetTextComponent = crossHairReset->CreateUIComponent<TextComponent>();
   resetTextComponent->SetText(L"RESET", 20, Color8Bit::Red);
   resetTextComponent->SetFont(L"CONSOLELAS");
@@ -123,6 +133,8 @@ ToolLevel::ToolLevel() {
   WriteButton* writeToCSVButton = writeToCSV->CreateUIComponent<WriteButton>();
   writeToCSVButton->BindObject(object);
   writeToCSVButton->SetFilePath("../ContentsResource/Iori.csv");
+  writeToCSVButton->SetScale({400.0f, 50.0f});
+  writeToCSVButton->SetPosition({writeToCSV->GetScale().HalfX(), writeToCSV->GetScale().HalfY()});
   TextComponent* writeTextComponent = writeToCSV->CreateUIComponent<TextComponent>();
   writeTextComponent->SetText(L"WriteToCSV", 20, Color8Bit::Red);
   writeTextComponent->SetFont(L"CONSOLELAS");
@@ -137,6 +149,8 @@ ToolLevel::ToolLevel() {
   ImageMoveButton* moveImagePlusRowButton = moveImagePlusRow->CreateUIComponent<ImageMoveButton>();
   moveImagePlusRowButton->BindObject(object);
   moveImagePlusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusRow);
+  moveImagePlusRowButton->SetScale({200.0f, 50.0f});
+  moveImagePlusRowButton->SetPosition({moveImagePlusRow->GetScale().HalfX(), moveImagePlusRow->GetScale().HalfY()});
   TextComponent* movePlusRowTextComponent = moveImagePlusRow->CreateUIComponent<TextComponent>();
   movePlusRowTextComponent->SetText(L"MoveRow++", 20, Color8Bit::Red);
   movePlusRowTextComponent->SetFont(L"CONSOLELAS");
@@ -150,6 +164,8 @@ ToolLevel::ToolLevel() {
   ImageMoveButton* moveImageMinusRowButton = moveImageMinusRow->CreateUIComponent<ImageMoveButton>();
   moveImageMinusRowButton->BindObject(object);
   moveImageMinusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusRow);
+  moveImageMinusRowButton->SetScale({200.0f, 50.0f});
+  moveImageMinusRowButton->SetPosition({moveImageMinusRow->GetScale().HalfX(), moveImageMinusRow->GetScale().HalfY()});
   TextComponent* moveMinusRowTextComponent = moveImageMinusRow->CreateUIComponent<TextComponent>();
   moveMinusRowTextComponent->SetText(L"MoveRow--", 20, Color8Bit::Red);
   moveMinusRowTextComponent->SetFont(L"CONSOLELAS");
@@ -163,6 +179,8 @@ ToolLevel::ToolLevel() {
   ImageMoveButton* moveImagePlusColButton = moveImagePlusCol->CreateUIComponent<ImageMoveButton>();
   moveImagePlusColButton->BindObject(object);
   moveImagePlusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusCol);
+  moveImagePlusColButton->SetScale({200.0f, 50.0f});
+  moveImagePlusColButton->SetPosition({moveImagePlusCol->GetScale().HalfX(), moveImagePlusCol->GetScale().HalfY()});
   TextComponent* movePlusColTextComponent = moveImagePlusCol->CreateUIComponent<TextComponent>();
   movePlusColTextComponent->SetText(L"MoveCol++", 20, Color8Bit::Red);
   movePlusColTextComponent->SetFont(L"CONSOLELAS");
@@ -176,6 +194,8 @@ ToolLevel::ToolLevel() {
   ImageMoveButton* moveImageMinusColButton = moveImageMinusCol->CreateUIComponent<ImageMoveButton>();
   moveImageMinusColButton->BindObject(object);
   moveImageMinusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusCol);
+  moveImageMinusColButton->SetScale({200.0f, 50.0f});
+  moveImageMinusColButton->SetPosition({moveImageMinusCol->GetScale().HalfX(), moveImageMinusCol->GetScale().HalfY()});
   TextComponent* moveMinusColTextComponent = moveImageMinusCol->CreateUIComponent<TextComponent>();
   moveMinusColTextComponent->SetText(L"MoveCol--", 20, Color8Bit::Red);
   moveMinusColTextComponent->SetFont(L"CONSOLELAS");
@@ -189,6 +209,8 @@ ToolLevel::ToolLevel() {
   ImageMoveButton* moveImageResetButton = moveImageReset->CreateUIComponent<ImageMoveButton>();
   moveImageResetButton->BindObject(object);
   moveImageResetButton->SetImageMoveDirType(ImageMoveDirType::IMD_Reset);
+  moveImageResetButton->SetScale({400.0f, 50.0f});
+  moveImageResetButton->SetPosition({moveImageReset->GetScale().HalfX(), moveImageReset->GetScale().HalfY()});
   TextComponent* moveResetTextComponent = moveImageReset->CreateUIComponent<TextComponent>();
   moveResetTextComponent->SetText(L"MoveReset", 20, Color8Bit::Red);
   moveResetTextComponent->SetFont(L"CONSOLELAS");
@@ -198,12 +220,14 @@ ToolLevel::ToolLevel() {
   // NEXT IMAGE
   UI* nextImage = SpawnActor<UI>();
   nextImage->SetOriginColor(Color8Bit::CyanAlpha);
-  nextImage->SetPosition(Vector(200.0f, 700.0f));
+  nextImage->SetPosition(Vector(400.0f, 700.0f));
   nextImage->SetScale({200.0f, 50.0f});
   nextImage->MakeCollision();
   NextImageButton* nextImageButton = nextImage->CreateUIComponent<NextImageButton>();
   nextImageButton->BindObject(object);
   nextImageButton->SetNextImageType(NextImageType::NextImage_Next);
+  nextImageButton->SetScale({200.0f, 50.0f});
+  nextImageButton->SetPosition({nextImage->GetScale().HalfX(), nextImage->GetScale().HalfY()});
   TextComponent* nextImageTextComponent = nextImage->CreateUIComponent<TextComponent>();
   nextImageTextComponent->SetText(L"NEXT", 20, Color8Bit::Red);
   nextImageTextComponent->SetFont(L"CONSOLELAS");
@@ -212,12 +236,14 @@ ToolLevel::ToolLevel() {
 
   UI* prevImage = SpawnActor<UI>();
   prevImage->SetOriginColor(Color8Bit::CyanAlpha);
-  prevImage->SetPosition(Vector(400.0f, 700.0f));
+  prevImage->SetPosition(Vector(200.0f, 700.0f));
   prevImage->SetScale({200.0f, 50.0f});
   prevImage->MakeCollision();
   NextImageButton* prevImageButton = prevImage->CreateUIComponent<NextImageButton>();
   prevImageButton->BindObject(object);
   prevImageButton->SetNextImageType(NextImageType::NextImage_Prev);
+  prevImageButton->SetScale({200.0f, 50.0f});
+  prevImageButton->SetPosition({prevImage->GetScale().HalfX(), prevImage->GetScale().HalfY()});
   TextComponent* prevImageTextComponent = prevImage->CreateUIComponent<TextComponent>();
   prevImageTextComponent->SetText(L"PREV", 20, Color8Bit::Red);
   prevImageTextComponent->SetFont(L"CONSOLELAS");

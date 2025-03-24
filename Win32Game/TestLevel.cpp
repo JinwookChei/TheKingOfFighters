@@ -11,40 +11,41 @@ TestLevel::~TestLevel() {
 }
 
 void TestLevel::BeginPlay() {
-  IFileImage* image = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 0);
-  //image->CalculateTransformByAuto({.emptyColor = Color8Bit(86, 177, 222, 0), .reCalculateHeight = true, .start = {0.0f, 260.0f}, .end = {910.0f, 511.0f}});
+  IFileImage* image = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\31ujithc.bmp", 0);
+  // image->CalculateTransformByAuto({.emptyColor = Color8Bit(86, 177, 222, 0), .reCalculateHeight = true, .start = {0.0f, 260.0f}, .end = {910.0f, 511.0f}});
   image = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", 1);
+  // image = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Iori.png", 2);
 
   /*image = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Iori.png", 2);
   image->CalculateTransformByAuto({.emptyColor = Color8Bit(240, 0, 240, 0), .reCalculateHeight = true});*/
 
   // ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\test.tga", 1);
-  IImage* pImage1 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\test.png", 2);
+  // IImage* pImage1 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\test.png", 2);
   // IImage* pImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TestPlayer_Left.png", 3);
-  //pImage->CalculateTransform(5, 8);
+  // pImage->CalculateTransform(5, 8);
 
-  scale_ = pImage1->GetScale();
+  // scale_ = pImage1->GetScale();
 
-  Player* player = SpawnActor<Player>();
+  // Player* player = SpawnActor<Player>();
 
-  //Enemy* enemy = SpawnActor<Enemy>();
-
-
-
-
+  // Enemy* enemy = SpawnActor<Enemy>();
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
 
   UI* button = SpawnActor<UI>();
-  button->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
+  // button->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
+  button->SetUseCameraposition(true);
   button->SetScale({300.0f, 500.0f});
   button->SetOriginColor(Color8Bit::Red);
   button->MakeCollision();
-  //button->SetUseMousePosition(true);
+  // button->SetUseMousePosition(true);
   button->CreateUIComponent<Button>();
+
+  // CameraManager::Instance()->SetTarget(button);
 
   button = SpawnActor<UI>();
   button->SetPosition({400.0f, 500.0f});
+  // button->SetUseCameraposition(true);
   button->SetScale({200.0f, 200.0f});
   button->SetOriginColor(Color8Bit::RedAlpha);
   button->MakeCollision();
@@ -55,6 +56,7 @@ void TestLevel::BeginPlay() {
 
   button = SpawnActor<UI>();
   button->SetPosition({300.0f, 500.0f});
+  // button->SetUseCameraposition(true);
   button->SetScale({200.0f, 200.0f});
   button->SetOriginColor(Color8Bit::RedAlpha);
   button->MakeCollision();
@@ -75,15 +77,11 @@ void TestLevel::BeginPlay() {
   mouse->SetRenderPosition(newPosition);
   mouse->ShowCursor(false);
 
-  //player->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
-  //enemy->SetPosition(player->GetPosition());
+  // player->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
+  // enemy->SetPosition(player->GetPosition());
   mouse->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
   // player->GetRender()->SetScale({10.0f, 10.0f});
-
-
-
-  // TOOLS
 }
 
 void TestLevel::Tick(unsigned long long deltaTick) {

@@ -56,6 +56,6 @@ void CrossHairControlButton::Render(IRenderTexture* renderTexture) {
   if (nullptr == owner) {
     return;
   }
-  const Transform transform = GetTransform();
-  renderTexture->DrawRectagle(transform.GetScale(), Color8Bit::RedAlpha, 10.0f);
+  //const Transform transform = GetTransform();
+  //renderTexture->DrawRectagle(transform.GetScale(), Color8Bit::RedAlpha, 10.0f);
 }

@@ -40,6 +40,7 @@ void UI::BeginPlay() {
 }
 
 void UI::Tick(unsigned long long curTick) {
+  // UI 좌클릭 후 드래그로 UI 좌표 이동. START
   if (isClick_ && InputManager::Instance()->IsUp(VK_LBUTTON)) {
     isClick_ = false;
   }
@@ -63,6 +64,8 @@ void UI::Tick(unsigned long long curTick) {
   SetPosition(GetPosition() + deltaPosition);
 
   prevMousePosition_ = curMousePosition;
+
+  // UI 좌클릭 후 드래그로 UI 좌표 이동. END
 }
 
 void UI::SetScale(const Vector& scale) {
