@@ -145,6 +145,15 @@ bool InputManager::Initialize() {
   newState = new InputState(VK_RETURN);
   hashTable_->Insert(newState, &newState->key_, 4);
 
+  newState = new InputState(VK_LEFT);
+  hashTable_->Insert(newState, &newState->key_, 4);
+  newState = new InputState(VK_RIGHT);
+  hashTable_->Insert(newState, &newState->key_, 4);
+  newState = new InputState(VK_UP);
+  hashTable_->Insert(newState, &newState->key_, 4);
+  newState = new InputState(VK_DOWN);
+  hashTable_->Insert(newState, &newState->key_, 4);
+
   for (int n = VK_F1; n < VK_F13; ++n) {
     newState = new InputState(n);
     hashTable_->Insert(newState, &newState->key_, 4);
@@ -153,9 +162,12 @@ bool InputManager::Initialize() {
     newState = new InputState(n);
     hashTable_->Insert(newState, &newState->key_, 4);
   }
+
+  constexpr int interval = 'a' - 'A';
   for (int n = 'a'; n <= 'z'; ++n) {
-    newState = new InputState(n);
-    hashTable_->Insert(newState, &newState->key_, 4);
+    int realKey = n - interval;
+    newState = new InputState(realKey);
+    hashTable_->Insert(newState, &n, 4);
   }
   for (int n = '0'; n <= '9'; ++n) {
     newState = new InputState(n);

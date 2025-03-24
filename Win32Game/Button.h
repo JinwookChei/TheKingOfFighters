@@ -31,5 +31,7 @@ class Button final
 
   Vector dir_;
 
+  Vector cameraMoveDir_;
+
   Vector mousePosition_;
 };

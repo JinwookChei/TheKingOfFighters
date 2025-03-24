@@ -32,6 +32,7 @@
 #include <Win32Engine/UI.h>
 #include <Win32Engine/UIComponent.h>
 #include <Win32Engine/TextComponent.h>
+#include <Win32Engine/CameraManager.h>
 
 #include "Types.h"
 

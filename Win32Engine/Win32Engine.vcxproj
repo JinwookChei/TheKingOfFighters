@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorComponent.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="..\CommonCode\Code\IApplication.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="CollisionComponent.h" />

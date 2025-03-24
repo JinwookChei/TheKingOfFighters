@@ -15,6 +15,7 @@ Actor::Actor()
       componentHead_(nullptr),
       componentTail_(nullptr),
       isUI_(false),
+      useCameraPosition_(false),
       isDestroy_(false),
       collisionTag_(0),
       actorGroup_(ActorGroupEngineType::ActorGroupEngineType_Invalid) {
@@ -61,6 +62,13 @@ void Actor::SetDebugParameter(const ActorSetDebugParameter& parameter) {
   debugParameter.color_.A = 255;
 }
 
+void Actor::SetUseCameraposition(bool use) {
+  useCameraPosition_ = use;
+}
+
+bool Actor::UseCameraposition() const {
+  return useCameraPosition_;
+}
 void Actor::SetDestroy() {
   isDestroy_ = true;
 }

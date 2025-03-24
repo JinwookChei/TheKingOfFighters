@@ -26,7 +26,13 @@ Transform SceneComponent::GetTransform() const {
 
   Actor* owner = GetOwner();
   if (nullptr != owner) {
-    newTransform.AddPostion(owner->GetPosition());
+    Vector actorPosition = owner->GetPosition();
+
+    if (owner->UseCameraposition()) {
+      actorPosition = GCamera->GetRenderPosition(actorPosition);
+    }
+
+    newTransform.AddPostion(actorPosition);
   }
 
   newTransform.SetScale(newTransform.GetScale() * localScale_);

@@ -25,9 +25,11 @@
 
 #include "ImgManager.h"
 #include "InputManager.h"
+#include "CameraManager.h"
 #include "EngineCore.h"
 extern ImgManager* GImgManager;
 extern InputManager* GInputManager;
 
 extern IGraphicDevice* GGraphicDevice;
 extern EngineCore* GEngine;
+extern CameraManager* GCamera;

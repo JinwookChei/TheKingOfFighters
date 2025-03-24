@@ -21,6 +21,8 @@ void Button::BeginPlay() {
 
   SetScale(scale);
   SetPosition({scale.HalfX(), scale.HalfY()});
+
+  CameraManager::Instance()->SetLookAt({0.0f, 0.0f});
 }
 
 void Button::PostRender() {
@@ -52,11 +54,18 @@ void Button::Render(IRenderTexture* renderTexture) {
   renderTexture->Transparent(image_, 0, transform.GetScale(), Color8Bit::White);
   renderTexture->SetAlpha(1.0f, transform, true, owner->GetCurrentColor());
 
-  //renderTexture->DrawLine(Color8Bit::BlackAlpha, {0.0f, -owner->GetScale().HalfY()}, {0.0f, owner->GetScale().HalfY()}, 2.0f);
-  //renderTexture->DrawLine(Color8Bit::BlackAlpha, {-owner->GetScale().HalfX(), 0.0f}, {owner->GetScale().HalfX(), 0.0f}, 2.0f);
+  // renderTexture->DrawLine(Color8Bit::BlackAlpha, {0.0f, -owner->GetScale().HalfY()}, {0.0f, owner->GetScale().HalfY()}, 2.0f);
+  // renderTexture->DrawLine(Color8Bit::BlackAlpha, {-owner->GetScale().HalfX(), 0.0f}, {owner->GetScale().HalfX(), 0.0f}, 2.0f);
 }
 
 void Button::Tick(unsigned long long curTick) {
+  /*if (InputManager::Instance()->IsDown('a')) {
+cameraMoveDir_ += Vector::Left;
+}
+if (InputManager::Instance()->IsDown('d')) {
+cameraMoveDir_ += Vector::Right;
+}*/
+
   if (false == IsMouseClick()) {
     return;
   }

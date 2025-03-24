@@ -776,27 +776,29 @@ bool Win32Image::LoadBMP(IRenderTexture* mainBuffer) {
   BITMAPINFOHEADER infoHeader = {};
   fread(&infoHeader, sizeof(BITMAPINFOHEADER), 1, file);
 
+  LONG imageHeight = abs(infoHeader.biHeight);
+
   int imageSize = infoHeader.biSizeImage;
   if (imageSize == 0) {
-    imageSize = infoHeader.biWidth * abs(infoHeader.biHeight) * (infoHeader.biBitCount / 8);
+    imageSize = infoHeader.biWidth * imageHeight * (infoHeader.biBitCount / 8);
   }
 
   BYTE* bitmapData = (BYTE*)malloc(imageSize);
-  BYTE* convertBItmapData = (BYTE*)malloc(infoHeader.biWidth * abs(infoHeader.biHeight) * 4);
+  BYTE* convertBItmapData = (BYTE*)malloc(infoHeader.biWidth * imageHeight * 4);
   fseek(file, fileHeader.bfOffBits, SEEK_SET);
   fread(bitmapData, imageSize, 1, file);
   fclose(file);
 
   WORD bytesPerPixel = infoHeader.biBitCount / 8;
-  bool isBottomUp = (infoHeader.biHeight > 0);
+  bool isBottomUp = (infoHeader.biHeight < 0);
   int rowSize = ((infoHeader.biWidth * bytesPerPixel + 3) & ~3);
 
-  for (int y = 0; y < abs(infoHeader.biHeight); ++y) {
-    int srcY = isBottomUp ? (infoHeader.biHeight - 1 - y) : y;
+  for (int y = 0; y < imageHeight; ++y) {
+    int srcY = isBottomUp ? (imageHeight - 1 - y) : y;
     unsigned char* pSrcRow = bitmapData + srcY * rowSize;
 
     for (int x = 0; x < infoHeader.biWidth; ++x) {
-      int srcIndex = x * 3;
+      int srcIndex = x * bytesPerPixel;
 
       BYTE B = pSrcRow[srcIndex + 0];
       BYTE G = pSrcRow[srcIndex + 1];
@@ -820,7 +822,7 @@ bool Win32Image::LoadBMP(IRenderTexture* mainBuffer) {
   memset(&bmi, 0x00, sizeof(BITMAPINFO));
   bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
   bmi.bmiHeader.biWidth = infoHeader.biWidth;
-  bmi.bmiHeader.biHeight = -infoHeader.biHeight;
+  bmi.bmiHeader.biHeight = imageHeight;
   bmi.bmiHeader.biPlanes = 1;
   bmi.bmiHeader.biBitCount = 32;
   bmi.bmiHeader.biCompression = BI_RGB;
@@ -832,7 +834,7 @@ bool Win32Image::LoadBMP(IRenderTexture* mainBuffer) {
 
   BITMAP bmp = {};
   GetObject(hBitMap, sizeof(BITMAP), &bmp);
-  memcpy(bmp.bmBits, convertBItmapData, infoHeader.biWidth * infoHeader.biHeight * 4);
+  memcpy(bmp.bmBits, convertBItmapData, infoHeader.biWidth * imageHeight * 4);
 
   free(convertBItmapData);
   free(bitmapData);
@@ -857,7 +859,6 @@ bool Win32Image::LoadBMP(IRenderTexture* mainBuffer) {
   LinkToLinkedListFIFO(&imageHead_, &imageTail_, &newImageInfo->link_);
 
   newImageInfo->isOwner_ = true;
-
   return true;
 }
 

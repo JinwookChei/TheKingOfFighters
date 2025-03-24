@@ -37,13 +37,17 @@ class Actor {
 
   JO_API virtual void Tick(unsigned long long curTick);
 
-  //JO_API wchar_t GetRenderCharacter() const;
+  // JO_API wchar_t GetRenderCharacter() const;
 
   JO_API void SetPosition(const Vector& newPosition);
 
   JO_API const Vector& GetPosition() const;
 
   JO_API void SetDebugParameter(const ActorSetDebugParameter& parameter);
+
+  JO_API void SetUseCameraposition(bool use);
+
+  JO_API bool UseCameraposition() const;
 
   JO_API void SetDestroy();
 
@@ -112,6 +116,8 @@ class Actor {
   LINK_ITEM link_;
 
   bool isDestroy_;
+
+  bool useCameraPosition_;
 
   bool isUI_;
 

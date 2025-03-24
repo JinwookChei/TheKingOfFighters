@@ -84,6 +84,9 @@
     <ClCompile Include="TextComponent.cpp">
       <Filter>Actor\UIComponent</Filter>
     </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>Actor\UIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

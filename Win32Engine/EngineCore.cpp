@@ -5,6 +5,7 @@
 IGraphicDevice* GGraphicDevice = nullptr;
 InputManager* GInputManager = nullptr;
 EngineCore* GEngine = nullptr;
+CameraManager* GCamera = nullptr;
 
 EngineCore::EngineCore()
     : application_(nullptr),
@@ -55,6 +56,14 @@ bool EngineCore::Initialize(IApplication* application) {
     return false;
   }
 
+  GCamera = new CameraManager;
+  if (nullptr == GCamera) {
+#ifdef _DEBUG
+    __debugbreak();
+#endif  // _DEBUG
+    return false;
+  }
+
   return true;
 }
 
@@ -76,6 +85,8 @@ void EngineCore::EngineLoop() {
     application_->UpdateMousePosition();
 
     GameLoop(curTick);
+
+    GCamera->CalculateTargetDiff();
 
     Render();
 
@@ -169,6 +180,11 @@ void EngineCore::Cleanup() {
   if (nullptr != GInputManager) {
     delete GInputManager;
     GInputManager = nullptr;
+  }
+
+  if (nullptr != GCamera) {
+    delete GCamera;
+    GCamera = nullptr;
   }
 
   if (nullptr != GGraphicDevice) {
