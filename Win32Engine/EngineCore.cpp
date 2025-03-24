@@ -72,6 +72,8 @@ void EngineCore::EngineLoop() {
     return;
   }
 
+  GCamera->BeginPlay();
+
   while (false == application_->ApplicationQuit()) {
     ++frameCount_;
 

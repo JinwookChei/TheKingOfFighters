@@ -21,6 +21,10 @@ const Vector& CameraManager::GetLookAt() const {
   return lookAt_;
 }
 
+const Vector& CameraManager::GetCenter() const {
+  return center_;
+}
+
 void CameraManager::SetTarget(Actor* target) {
   target_ = target;
 }
@@ -33,15 +37,17 @@ Vector CameraManager::GetWorldPosition(const Vector& renderPosition) const {
   return renderPosition + diff_;
 }
 
+void CameraManager::BeginPlay() {
+  resolution_ = GEngine->GetBackbufferScale();
+
+  center_ = {resolution_.HalfX(), resolution_.HalfY()};
+}
+
 void CameraManager::CalculateTargetDiff() {
-  Vector bufferScale = GEngine->GetBackbufferScale();
-
-  Vector center = {bufferScale.HalfX(), bufferScale.HalfY()};
-
   Vector v = lookAt_;
   if (nullptr != target_) {
     v += target_->GetPosition();
   }
 
-  diff_ = v - center;
+  diff_ = v - center_;
 }

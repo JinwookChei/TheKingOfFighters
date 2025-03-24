@@ -15,6 +15,8 @@ class CameraManager final {
 
   const Vector& GetLookAt() const;
 
+  JO_API const Vector& GetCenter() const;
+
   JO_API void SetTarget(Actor* target);
 
   Vector GetRenderPosition(const Vector& position) const;
@@ -22,7 +24,13 @@ class CameraManager final {
   Vector GetWorldPosition(const Vector& renderPosition) const;
 
  private:
+  void BeginPlay();
+
   void CalculateTargetDiff();
+
+  Vector resolution_;
+
+  Vector center_;
 
   Vector lookAt_;
 
