@@ -31,7 +31,7 @@ UI::~UI() {
 }
 
 void UI::BeginPlay() {
-  SetDebugParameter({.on_ = true});
+  SetDebugParameter({.on_ = true, .linethickness_ = 5.0f});
   SetActorGroup(ActorGroupEngineType::ActorGroupEngineType_UI);
   imageRenderer_ = CreateImageRender();
   imageRenderer_->SetAlpha(1.0f);
@@ -138,7 +138,7 @@ void UI::Render(IRenderTexture* renderTexture) const {
   }
 
   ClearColor(currentColor_);
-  
+
   LINK_ITEM* pCur = componentHead_;
   while (pCur) {
     UIComponent* pUIComponent = (UIComponent*)pCur->item_;
@@ -162,16 +162,30 @@ void UI::CreateUIComponentInternal(UIComponent* newComponent) {
 
 void UI::OnClickUpEvent() {
   ClearColor(Color8Bit::GreenAlpha);
+  LINK_ITEM* pCur = componentHead_;
+  while (pCur) {
+    UIComponent* pUIComponent = (UIComponent*)pCur->item_;
+    pCur = pCur->next_;
+
+    if (false == pUIComponent->IsMouseClick()) {
+      continue;
+    }
+
+    pUIComponent->OnClickExit();
+  }
 }
 
 void UI::OnClickDownEvent() {
   if (isClick_) {
     return;
   }
-
   isClick_ = true;
 
   prevMousePosition_ = GEngine->GetMousePosition();
+  CollisionInfo mousePoint{.position_ = prevMousePosition_, .scale_ = {1.0f, 1.0f}};
+
+  const Vector& ownerPosition = GetPosition();
+  const Vector& ownerScale = GetScale();
 
   ClearColor(Color8Bit::BlueAlpha);
 
@@ -180,7 +194,28 @@ void UI::OnClickDownEvent() {
     UIComponent* pUIComponent = (UIComponent*)pCur->item_;
     pCur = pCur->next_;
 
-    pUIComponent->ClickDownEvent();
+    const Transform& uiComTrans = pUIComponent->GetTransform();
+
+    Vector centerPosition = uiComTrans.GetPosition() - (ownerScale * 0.5f);
+
+    // prevMousePosition_ // 점
+    CollisionInfo uiCollisionInfo{.position_ = ownerPosition + centerPosition, .scale_ = uiComTrans.GetScale()};
+    float l = uiCollisionInfo.Left();
+    float t = uiCollisionInfo.Top();
+    float r = uiCollisionInfo.Right();
+    float b = uiCollisionInfo.Bottom();
+    if (false == CollisionComponent::CollisionPointToRect(mousePoint, uiCollisionInfo)) {
+      if (pUIComponent->IsMouseClick()) {
+        pUIComponent->ClickExit();
+      }
+      continue;
+    }
+
+    // UI Component 의 위치 크기
+    // 마우스의 위치
+    // 충돌검사
+
+    pUIComponent->OnClickDownEvent();
   }
 }
 
@@ -190,4 +225,16 @@ void UI::OnHoverEvent() {
 
 void UI::OnMouseExit() {
   ClearColor(originColor_);
+
+  LINK_ITEM* pCur = componentHead_;
+  while (pCur) {
+    UIComponent* pUIComponent = (UIComponent*)pCur->item_;
+    pCur = pCur->next_;
+
+    if (false == pUIComponent->IsMouseClick()) {
+      continue;
+    }
+
+    pUIComponent->OnClickExit();
+  }
 }

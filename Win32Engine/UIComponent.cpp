@@ -5,6 +5,7 @@
 UIComponent::UIComponent()
     : owner_(nullptr),
       angle_(0.0f),
+      isMouseClick_(false),
       transform_({0.0f, 0.0f}, {1.0f, 1.0f}),
       linkUI_({nullptr, nullptr, this}) {
 }
@@ -25,8 +26,19 @@ void UIComponent::Tick(unsigned long long curTick) {
 void UIComponent::ClickDownEvent() {
 }
 
+void UIComponent::ClickExit() {
+}
+
+bool UIComponent::IsMouseClick() {
+  return isMouseClick_;
+}
+
 void UIComponent::SetPosition(const Vector& position) {
   transform_.SetPosition(position);
+}
+
+void UIComponent::AddPosition(const Vector& addMove) {
+  transform_.AddPostion(addMove);
 }
 
 void UIComponent::SetScale(const Vector& scale) {
@@ -47,6 +59,18 @@ void UIComponent::OnRender(IRenderTexture* renderTexture) {
   Render(renderTexture);
 
   GGraphicDevice->RenderImgEnd(renderTexture);
+}
+
+void UIComponent::OnClickDownEvent() {
+  isMouseClick_ = true;
+
+  ClickDownEvent();
+}
+
+void UIComponent::OnClickExit() {
+  isMouseClick_ = false;
+
+  ClickExit();
 }
 
 void UIComponent::SetOwner(UI* owner) {

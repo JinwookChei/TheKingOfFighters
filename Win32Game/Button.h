@@ -12,6 +12,8 @@ class Button final
 
   void Render(struct IRenderTexture* renderTexture) override;
 
+  void Tick(unsigned long long curTick) override;
+
   void ClickDownEvent() override;
 
   void SetPlayer(Player* player);
@@ -24,4 +26,6 @@ class Button final
   Player* player_;
 
   Vector dir_;
+
+  Vector mousePosition_;
 };

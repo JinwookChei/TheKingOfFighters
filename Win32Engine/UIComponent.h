@@ -17,7 +17,13 @@ class UIComponent {
 
   JO_API virtual void ClickDownEvent();
 
+  JO_API virtual void ClickExit();
+
+  JO_API bool IsMouseClick();
+
   JO_API void SetPosition(const Vector& position);
+
+  JO_API void AddPosition(const Vector& addMove);
 
   JO_API void SetScale(const Vector& scale);
 
@@ -29,6 +35,10 @@ class UIComponent {
  private:
   void OnRender(struct IRenderTexture* renderTexture);
 
+  void OnClickDownEvent();
+
+  void OnClickExit();
+
   void SetOwner(class UI* owner);
 
   LINK_ITEM* GetLinkUI();
@@ -36,6 +46,8 @@ class UIComponent {
   UI* owner_;
 
   float angle_;
+
+  bool isMouseClick_;
 
   Transform transform_;
 

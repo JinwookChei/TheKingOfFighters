@@ -167,7 +167,9 @@ bool CollisionComponent::Collision(const CollisionCheckParameter& parameter, Col
       continue;
     }
 
-    if (CollisionFunctionPtr[parameter.myCollisionType][parameter.targetCollisionType](myCollisionInfo, otherCollision->GetCollisionInfo())) {
+    CollisionInfo otherCollisionInfo = otherCollision->GetCollisionInfo();
+
+    if (CollisionFunctionPtr[parameter.myCollisionType][parameter.targetCollisionType](myCollisionInfo, otherCollisionInfo)) {
       if (nullptr != targetCollision) {
         *targetCollision = otherCollision;
       }
@@ -210,6 +212,10 @@ int CollisionComponent::GetCollisionGroup() const {
 CollisionInfo CollisionComponent::GetCollisionInfo() const {
   Transform transform = GetTransform();
   return CollisionInfo{.position_ = transform.GetPosition(), .scale_ = transform.GetScale()};
+}
+
+bool CollisionComponent::CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right) {
+  return ::CollisionPointToRect(left, right);
 }
 
 void CollisionComponent::DebugRender(IRenderTexture* renderTexture) {

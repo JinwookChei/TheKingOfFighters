@@ -140,28 +140,27 @@ bool Win32RenderTexture::Transparent(IImage* srcImg, unsigned int index, const V
   Vector srcScale = srcImg->GetScale(index);
   Transform imageTransform = srcImg->RenderTransform(index);
 
-  int RenderLeft = std::lround(0 - scale.HalfX());
-  int RenderTop = std::lround(0 - scale.HalfY());
-  int RenderRight = scale.IntergerX();
-  int RenderBottom = scale.IntergerY();
+  int RenderStartX = std::lround(0 - scale.HalfX());
+  int RenderStartY = std::lround(0 - scale.HalfY());
+  int RenderWidth = scale.IntergerX();
+  int RenderHeight = scale.IntergerY();
 
   int ImageLeft = imageTransform.GetPosition().IntergerX();
   int ImageTop = imageTransform.GetPosition().IntergerY();
   int ImageRight = imageTransform.GetScale().IntergerX();
   int ImageBottom = imageTransform.GetScale().IntergerY();
- 
 
   BOOL isSuccess = ::TransparentBlt(
       imageDC_,
-      RenderLeft,
-      RenderTop,
-      RenderRight,
-      RenderBottom,
+      RenderStartX,
+      RenderStartY,
+      RenderWidth,
+      RenderHeight,
       srcHDC,
       ImageLeft,
       ImageTop,
-      ImageRight ,
-      ImageBottom ,
+      ImageRight,
+      ImageBottom,
       colorTransparent.Color);
 
   return TRUE == isSuccess;
@@ -267,10 +266,17 @@ void __stdcall Win32RenderTexture::SetAlpha(float alpha, const Transform& transf
   int left = (int)transform.Left();
   int top = (int)transform.Top();
 
+  left = left < 0 ? 0 : left;
+  top = top < 0 ? 0 : top;
+
   int right = (int)transform.Right();
   int bottom = (int)transform.Bottom();
 
-  bool isBottomUp = bitMapInfo_.bmHeight > 0;
+  right = right < bitMapInfo_.bmWidth ? right : bitMapInfo_.bmWidth;
+  bottom = bottom < bitMapInfo_.bmHeight ? bottom : bitMapInfo_.bmHeight;
+
+  bool isBottomUp = bitMapInfo_.bmHeight < 0;
+
   int rowSize = ((bitMapInfo_.bmWidth * 4 + 3) & ~3);
 
   for (int y = top; y < bottom; ++y) {

@@ -41,6 +41,8 @@ class CollisionComponent final
 
   JO_API CollisionInfo GetCollisionInfo() const;
 
+  static bool CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right);
+
  protected:
   void DebugRender(struct IRenderTexture* renderTexture) override;
 
