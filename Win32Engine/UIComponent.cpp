@@ -33,6 +33,7 @@ bool UIComponent::IsMouseClick() {
   return isMouseClick_;
 }
 
+
 void UIComponent::SetPosition(const Vector& position) {
   transform_.SetPosition(position);
 }
@@ -45,12 +46,17 @@ void UIComponent::SetScale(const Vector& scale) {
   transform_.SetScale(scale);
 }
 
+Vector UIComponent::GetScale() const {
+  return transform_.GetScale();
+}
+
 const Transform& UIComponent::GetTransform() const {
   return transform_;
 }
 
 void UIComponent::PostRender() {
 }
+
 
 void UIComponent::OnRender(IRenderTexture* renderTexture) {
   if (nullptr == renderTexture) {

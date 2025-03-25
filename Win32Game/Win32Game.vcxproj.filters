@@ -57,7 +57,7 @@
     <ClCompile Include="ToolLevel.cpp">
       <Filter>Contents\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
+    <ClCompile Include="ImageObject.cpp">
       <Filter>Contents\Tools</Filter>
     </ClCompile>
     <ClCompile Include="CrossHair.cpp">
@@ -116,7 +116,7 @@
     <ClInclude Include="ToolLevel.h">
       <Filter>Contents\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="ImageObject.h">
       <Filter>Contents\Tools</Filter>
     </ClInclude>
     <ClInclude Include="CrossHair.h">

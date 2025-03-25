@@ -23,9 +23,9 @@ class ImageMoveButton final
 
   void ClickDownEvent() override;
 
-  Object* GetBindObject() const;
+  ImageObject* GetBindObject() const;
 
-  void BindObject(Object* object);
+  void BindObject(ImageObject* object);
 
   ImageMoveDirType GetImageMoveDirType() const;
 
@@ -35,7 +35,7 @@ class ImageMoveButton final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  Object* bindObject_;
+  ImageObject* bindObject_;
 
   ImageMoveDirType imageMoveDirType_;
 };

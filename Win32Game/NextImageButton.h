@@ -17,9 +17,9 @@ class NextImageButton final
 
   void ClickDownEvent() override;
 
-  Object* GetBindObject() const;
+  ImageObject* GetBindObject() const;
 
-  void BindObject(Object* object);
+  void BindObject(ImageObject* object);
 
   void SetNextImageType(NextImageType nextImageType);
 
@@ -27,7 +27,7 @@ class NextImageButton final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  Object* bindObject_;
+  ImageObject* bindObject_;
 
   NextImageType nextImageType_;
 };

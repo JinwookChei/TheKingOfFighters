@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Object.h"
+#include "ImageObject.h"
 #include "ImageMoveButton.h"
 
 ImageMoveButton::ImageMoveButton()
@@ -21,7 +21,7 @@ void ImageMoveButton::ClickDownEvent() {
     return;
   }
 
-  ImageRenderer* pRenderer = bindObject_->GetImageRenderer();
+  ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
   if (nullptr == pRenderer) {
     return;
   }
@@ -60,11 +60,11 @@ void ImageMoveButton::ClickDownEvent() {
   }
 }
 
-Object* ImageMoveButton::GetBindObject() const {
+ImageObject* ImageMoveButton::GetBindObject() const {
   return bindObject_;
 }
 
-void ImageMoveButton::BindObject(Object* object) {
+void ImageMoveButton::BindObject(ImageObject* object) {
   if (nullptr == object) {
     return;
   }

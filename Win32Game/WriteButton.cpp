@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Object.h"
+#include "ImageObject.h"
 #include "WriteButton.h"
 
 WriteButton::WriteButton()
@@ -20,7 +20,7 @@ void WriteButton::ClickDownEvent() {
   WriteData();
 }
 
-void WriteButton::BindObject(Object* object) {
+void WriteButton::BindObject(ImageObject* object) {
   bindObject_ = object;
 }
 
@@ -29,7 +29,7 @@ void WriteButton::SetFilePath(const std::string& filePath) {
 }
 
 void WriteButton::WriteData() {
-  ImageRenderer* pRenderer = bindObject_->GetImageRenderer();
+  ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
   if (nullptr == pRenderer)
   {
     return;

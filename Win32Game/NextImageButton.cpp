@@ -1,7 +1,6 @@
 #include "stdafx.h"
-#include "Object.h"
+#include "ImageObject.h"
 #include "NextImageButton.h"
-
 
 NextImageButton::NextImageButton()
     : bindObject_(nullptr),
@@ -22,7 +21,7 @@ void NextImageButton::ClickDownEvent() {
     return;
   }
 
-  ImageRenderer* pTargetRenderer = bindObject_->GetImageRenderer();
+  ImageRenderer* pTargetRenderer = bindObject_->GetOwnerImageRenderer();
   if (nullptr == pTargetRenderer) {
     return;
   }
@@ -47,11 +46,11 @@ void NextImageButton::ClickDownEvent() {
   pTargetRenderer->SetImage(pImage, tempIndex);
 }
 
-Object* NextImageButton::GetBindObject() const {
+ImageObject* NextImageButton::GetBindObject() const {
   return bindObject_;
 }
 
-void NextImageButton::BindObject(Object* object) {
+void NextImageButton::BindObject(ImageObject* object) {
   if (nullptr == object) {
     return;
   }

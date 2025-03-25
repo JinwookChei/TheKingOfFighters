@@ -135,11 +135,19 @@ const Color8Bit& UI::GetCurrentColor() const {
   return currentColor_;
 }
 
+ImageRenderer* UI::GetImageRenderer() const {
+  return imageRenderer_;
+}
+
 bool UI::Save(std::string_view filePath) {
   if (nullptr == renderTexture_) {
     return false;
   }
   return renderTexture_->Save(filePath);
+}
+
+bool UI::IsClick() const {
+  return isClick_;
 }
 
 void UI::Render(IRenderTexture* renderTexture) const {
@@ -206,10 +214,12 @@ void UI::OnClickDownEvent() {
 
     const Transform& uiComTrans = pUIComponent->GetTransform();
 
-    Vector centerPosition = uiComTrans.GetPosition() - (ownerScale * 0.5f);
+    Vector ownerPositionLeftTop = ownerPosition - (ownerScale * 0.5f);
+    Vector centerPosition = uiComTrans.GetPosition();
 
     // prevMousePosition_ // Á¡
-    CollisionInfo uiCollisionInfo{.position_ = ownerPosition + centerPosition, .scale_ = uiComTrans.GetScale()};
+    CollisionInfo uiCollisionInfo{.position_ = ownerPositionLeftTop + centerPosition, .scale_ = uiComTrans.GetScale()};
+
     float l = uiCollisionInfo.Left();
     float t = uiCollisionInfo.Top();
     float r = uiCollisionInfo.Right();

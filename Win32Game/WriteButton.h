@@ -12,7 +12,7 @@ class WriteButton final
 
   void ClickDownEvent() override;
 
-  void BindObject(Object* object);
+  void BindObject(ImageObject* object);
   
   void SetFilePath(const std::string& filePath);
 
@@ -25,5 +25,5 @@ protected:
 
   std::string filePath_;
 
-  Object* bindObject_;
+  ImageObject* bindObject_;
 };

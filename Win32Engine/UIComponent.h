@@ -18,7 +18,7 @@ class UIComponent {
   JO_API virtual void ClickDownEvent();
 
   JO_API virtual void ClickExit();
-
+  
   JO_API bool IsMouseClick();
 
   JO_API void SetPosition(const Vector& position);
@@ -26,6 +26,8 @@ class UIComponent {
   JO_API void AddPosition(const Vector& addMove);
 
   JO_API void SetScale(const Vector& scale);
+
+  JO_API Vector GetScale() const;
 
   JO_API const Transform& GetTransform() const;
 
@@ -54,4 +56,6 @@ class UIComponent {
   Transform transform_;
 
   LINK_ITEM linkUI_;
+
+  
 };

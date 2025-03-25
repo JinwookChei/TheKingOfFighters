@@ -29,6 +29,8 @@ class UI final
 
   JO_API const Color8Bit& GetCurrentColor() const;
 
+  JO_API ImageRenderer* GetImageRenderer() const;
+
   template <typename ComponentType>
   ComponentType* CreateUIComponent() {
     ComponentType* newComponent = new ComponentType;
@@ -37,6 +39,8 @@ class UI final
   }
 
   JO_API bool Save(std::string_view filePath);
+
+  JO_API bool IsClick() const;
 
  protected:
   JO_API void Render(IRenderTexture* renderTexture) const override;
