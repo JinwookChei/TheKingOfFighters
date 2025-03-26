@@ -175,12 +175,10 @@ void ImageRenderer::Render(IRenderTexture* renderTexture) {
   }
 
   // ImagePosition OffSet 적용.
-  // renderTransform.AddPostion(image_->GetImagePositionOffSet(imageIndex_));
-  //  ?? IImage에서 ImageInfo에 접근하지 못하기때문에 Casting 썻는데, 최선인가?
-  IFileImage* fileImage = dynamic_cast<IFileImage*>(image_);
-  if (nullptr != fileImage) {
-    const Vector& a = fileImage->GetImagePositionOffSet(imageIndex_);
-    renderTransform.AddPostion(a);
+  if (false == image_->IsRenderTexture()) {
+    IFileImage* fileImage = (IFileImage*)image_;
+    const Vector& imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+    renderTransform.AddPostion(imageOffSet);
   }
 
   GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
@@ -192,6 +190,8 @@ void ImageRenderer::Render(IRenderTexture* renderTexture) {
   }
 
   // 나중에 디버깅 모드로 무언가 그리기 모드를 켰을경우 이곳에서 그리기 작업
+  //GGraphicDevice->DrawRectagle({100.0f, 100.0f}, Color8Bit::RedAlpha, 10.0f);
+
 
   GGraphicDevice->RenderImgEnd(renderTexture);
 }

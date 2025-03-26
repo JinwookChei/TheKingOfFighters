@@ -87,6 +87,9 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>Contents\KOF</Filter>
     </ClCompile>
+    <ClCompile Include="HitBoxButton.cpp">
+      <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>Contents\KOF</Filter>
+    </ClInclude>
+    <ClInclude Include="HitBoxButton.h">
+      <Filter>Contents\Tools\CollisionBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

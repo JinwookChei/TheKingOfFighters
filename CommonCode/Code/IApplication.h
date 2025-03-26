@@ -28,6 +28,8 @@ struct IImage : public IUnknown {
   virtual bool GetPixel(const Vector& position, Color8Bit* outColor) = 0;
 
   virtual bool Save(std::string_view filePath, unsigned int index = 0xffffffff) = 0;
+
+  virtual bool IsRenderTexture() = 0; // IFileImage인지, IRenderImage인지 flag
 };
 
 struct IFileImage : public IImage {

@@ -2,6 +2,7 @@
 #include "UIComponent.h"
 #include "UI.h"
 
+
 UIComponent::UIComponent()
     : owner_(nullptr),
       angle_(0.0f),

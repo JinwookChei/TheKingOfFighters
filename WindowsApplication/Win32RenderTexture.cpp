@@ -114,6 +114,10 @@ bool Win32RenderTexture::Save(std::string_view filePath, unsigned int index) {
   return true;
 }
 
+bool Win32RenderTexture::IsRenderTexture() {
+  return true;
+}
+
 bool Win32RenderTexture::BitBlt(IImage* srcImg, const Transform& transform) {
   if (nullptr == srcImg) {
     return false;

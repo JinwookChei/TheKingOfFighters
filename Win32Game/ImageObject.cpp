@@ -17,6 +17,7 @@ void ImageObject::BeginPlay() {
   }
 
   ownerImageRender_ = owner->GetImageRenderer();
+
   IImage* pFind = ImgManager::GetIntance()->GetImg(1);
   ownerImageRender_->SetImage(pFind, 0);
   ownerImageRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
@@ -44,7 +45,9 @@ void ImageObject::Tick(unsigned long long curTick) {
     }
     pImage->AddImagePositionOffSet(imageIndex, deltaPosition);
   }
+
   prevMousePosition_ = curMousePosition;
+
 }
 
 ImageRenderer* ImageObject::GetOwnerImageRenderer() const {

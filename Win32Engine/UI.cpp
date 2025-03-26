@@ -36,6 +36,8 @@ void UI::BeginPlay() {
   imageRenderer_ = CreateImageRender();
   imageRenderer_->SetAlpha(1.0f);
 
+
+
   // collision_ = CreateCollision();
 }
 
@@ -234,7 +236,7 @@ void UI::OnClickDownEvent() {
     // UI Component 의 위치 크기
     // 마우스의 위치
     // 충돌검사
-
+    
     pUIComponent->OnClickDownEvent();
   }
 }

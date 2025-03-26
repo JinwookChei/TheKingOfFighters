@@ -27,6 +27,8 @@ class Win32RenderTexture final
 
   bool Save(std::string_view filePath, unsigned int index = 0xffffffff) override;
 
+  bool IsRenderTexture() override;
+
   bool __stdcall BitBlt(IImage* srcImg, const Transform& transform) override;
 
   bool __stdcall AlphaBlend(IImage* srcImg, unsigned int index, const Vector& scale, float alpha) override;

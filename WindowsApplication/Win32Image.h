@@ -12,6 +12,8 @@ struct ImageInfo {
   ImageType imageType_;
   Transform transform_;
   Vector positionOffSet_;
+  Vector HitBoxLeftTop_;
+  Vector HitBoxRightBottom_;
 
   HBITMAP hBitMap_;
   HDC imageDC_;
@@ -22,6 +24,8 @@ struct ImageInfo {
         link_({nullptr, nullptr, this}),
         index_(-1),
         imageType_(ImageType::ImageType_None),
+        HitBoxLeftTop_({0.0f, 0.0f}),
+        HitBoxRightBottom_({50.0f, 50.0f}),
         hBitMap_(nullptr),
         imageDC_(nullptr),
         bitMapInfo_({}) {
@@ -69,6 +73,8 @@ class Win32Image final
   bool GetPixel(const Vector& position, Color8Bit* outColor) override;
 
   bool Save(std::string_view filePath, unsigned int index = 0xffffffff) override;
+
+  bool IsRenderTexture() override;
 
   void __stdcall CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) override;
 

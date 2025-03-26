@@ -35,7 +35,7 @@ Win32Image::Win32Image()
 Win32Image::~Win32Image() {
   Cleanup();
 }
-
+  
 HRESULT __stdcall Win32Image::QueryInterface(REFIID riid, void** ppvObject) {
   return E_NOTIMPL;
 }
@@ -150,6 +150,10 @@ bool Win32Image::Save(std::string_view filePath, unsigned int index) {
   fclose(saveFile);
 
   return true;
+}
+
+bool Win32Image::IsRenderTexture() {
+  return false;
 }
 
 void __stdcall Win32Image::CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) {

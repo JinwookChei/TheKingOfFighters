@@ -164,6 +164,7 @@
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="CrossHairControlButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="HitBoxButton.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="CrossHairControlButton.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="HitBoxButton.h" />
     <ClInclude Include="Iori.h" />
     <ClInclude Include="KOFLevel.h" />
     <ClInclude Include="NextImageButton.h" />
