@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "ImageObject.h"
+#include "ViewPortObject.h"
 #include "WriteButton.h"
 
 WriteButton::WriteButton()
     : filePath_("../ContentsResource/test.csv"),
-    bindObject_(nullptr) {
+      bindObject_(nullptr) {
 }
 
 WriteButton::~WriteButton() {
@@ -20,7 +20,7 @@ void WriteButton::ClickDownEvent() {
   WriteData();
 }
 
-void WriteButton::BindObject(ImageObject* object) {
+void WriteButton::BindObject(ViewPortObject* object) {
   bindObject_ = object;
 }
 
@@ -29,7 +29,7 @@ void WriteButton::SetFilePath(const std::string& filePath) {
 }
 
 void WriteButton::WriteData() {
-  ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
+  /*ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
   if (nullptr == pRenderer)
   {
     return;
@@ -41,7 +41,7 @@ void WriteButton::WriteData() {
     return;
   }
 
-  fileImage->ExportImageInfoToCSV(filePath_);
+  fileImage->ExportImageInfoToCSV(filePath_);*/
 }
 
 void WriteButton::Render(IRenderTexture* renderTexture) {

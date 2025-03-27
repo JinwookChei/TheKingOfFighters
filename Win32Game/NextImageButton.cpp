@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "ImageObject.h"
+#include "ViewPortObject.h"
 #include "NextImageButton.h"
+
 
 NextImageButton::NextImageButton()
     : bindObject_(nullptr),
@@ -21,36 +22,32 @@ void NextImageButton::ClickDownEvent() {
     return;
   }
 
-  ImageRenderer* pTargetRenderer = bindObject_->GetOwnerImageRenderer();
-  if (nullptr == pTargetRenderer) {
+  IImage* pImage = bindObject_->GetImage();
+  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
+  IFileImage* pFileImage = (IFileImage*)pImage;
+  unsigned int imageIndex = bindObject_->GetImageIndex();
 
-  unsigned int tempIndex = pTargetRenderer->GetImageIndex();
-
-  IImage* pImage = pTargetRenderer->GetImage();
-
-  if (nullptr == pImage) {
-    return;
-  }
 
   if (nextImageType_ == NextImage_Next) {
-    ++tempIndex;
+    ++imageIndex;
   } else if (nextImageType_ == NextImage_Prev) {
-    --tempIndex;
+    --imageIndex;
   }
 
-  if (tempIndex > pImage->GetImageCount() - 1 || tempIndex < 0) {
-    tempIndex = 0;
+  if (imageIndex > pImage->GetImageCount() - 1) {
+    imageIndex = 0;
   }
-  pTargetRenderer->SetImage(pImage, tempIndex);
+
+  bindObject_->SetImageIndex(imageIndex);
 }
 
-ImageObject* NextImageButton::GetBindObject() const {
+ViewPortObject* NextImageButton::GetBindObject() const {
   return bindObject_;
 }
 
-void NextImageButton::BindObject(ImageObject* object) {
+void NextImageButton::BindObject(ViewPortObject* object) {
   if (nullptr == object) {
     return;
   }

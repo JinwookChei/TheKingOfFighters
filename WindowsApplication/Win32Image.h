@@ -24,8 +24,8 @@ struct ImageInfo {
         link_({nullptr, nullptr, this}),
         index_(-1),
         imageType_(ImageType::ImageType_None),
-        HitBoxLeftTop_({20.0f, 20.0f}),
-        HitBoxRightBottom_({70.0f, 70.0f}),
+        HitBoxLeftTop_({50.0f, 50.0f}),
+        HitBoxRightBottom_({100.0f, 120.0f}),
         hBitMap_(nullptr),
         imageDC_(nullptr),
         bitMapInfo_({}) {

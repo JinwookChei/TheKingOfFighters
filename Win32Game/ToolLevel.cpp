@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "ToolLevel.h"
 #include "Button.h"
-#include "ImageObject.h"
+#include "ViewPortObject.h"
 #include "CrossHair.h"
 #include "CrossHairControlButton.h"
 #include "WriteButton.h"
 #include "ImageMoveButton.h"
 #include "NextImageButton.h"
 #include "HitBoxButton.h"
+#include "ToolIori.h"
+
 
 ToolLevel::ToolLevel() {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
@@ -27,16 +29,18 @@ ToolLevel::ToolLevel() {
 
   // IMAGEOBJECT
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
-  // ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  // ioriImage->CalculateTransformFromBoundingBoxDatas();
+  //ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  //ioriImage->CalculateTransformFromBoundingBoxDatas();
   ioriImage->CalculateTransform(10, 100);
-  UI* ImageObjectUI = SpawnActor<UI>();
-  ImageObjectUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
-  ImageObjectUI->SetScale({600.0f, 600.0f});
-  ImageObjectUI->MakeCollision();
-  // ImageObjectUI->SetUseMousePosition(true);
-  ImageObject* imageObject = ImageObjectUI->CreateUIComponent<ImageObject>();
-  imageObject->SetPosition({ImageObjectUI->GetScale().HalfX(), ImageObjectUI->GetScale().HalfY()});
+
+  UI* ViewPortUI = SpawnActor<UI>();
+  ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
+  ViewPortUI->SetScale({600.0f, 600.0f});
+  ViewPortUI->MakeCollision();
+  //ViewPortUI->SetUseMousePosition(true);
+  ViewPortUI->ClearColor(Color8Bit::Magenta);
+  ViewPortUI->SetOriginColor(Color8Bit::Magenta);
+  ViewPortObject* viewPortObject = ViewPortUI->CreateUIComponent<ViewPortObject>();
   
   /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
   ChangImage->DetectBoundBoxes(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
@@ -44,221 +48,222 @@ ToolLevel::ToolLevel() {
   Object* object = SpawnActor<Object>();
   object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));*/
 
+
   // COLLISION POINT
-  UI* CollisionCreateUI = SpawnActor<UI>();
-  CollisionCreateUI->SetOriginColor(Color8Bit::CyanAlpha);
-  CollisionCreateUI->SetPosition({1500.0f, 100.0f});
-  CollisionCreateUI->SetScale({200.0f, 50.0f});
-  CollisionCreateUI->MakeCollision();
-  HitBoxButton* temp = CollisionCreateUI->CreateUIComponent<HitBoxButton>();
-  temp->BindUI(ImageObjectUI);
-  temp->SetScale({200.0f, 50.0f});
-  temp->SetPosition({CollisionCreateUI->GetScale().HalfX(), CollisionCreateUI->GetScale().HalfY()});
+  //UI* CollisionCreateUI = SpawnActor<UI>();
+  //CollisionCreateUI->SetOriginColor(Color8Bit::CyanAlpha);
+  //CollisionCreateUI->SetPosition({1500.0f, 100.0f});
+  //CollisionCreateUI->SetScale({200.0f, 50.0f});
+  //CollisionCreateUI->MakeCollision();
+  //HitBoxButton* temp = CollisionCreateUI->CreateUIComponent<HitBoxButton>();
+  //temp->BindUI(ImageObjectUI);
+  //temp->SetScale({200.0f, 50.0f});
+  //temp->SetPosition({CollisionCreateUI->GetScale().HalfX(), CollisionCreateUI->GetScale().HalfY()});
 
-  //// CROSSHAIRs
-  //UI* crossHairUI = SpawnActor<UI>();
-  //crossHairUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
-  //crossHairUI->SetScale({600.0f, 600.0f});
-  //CrossHair* crossHair = crossHairUI->CreateUIComponent<CrossHair>();
+  // CROSSHAIRs
+  UI* crossHairUI = SpawnActor<UI>();
+  crossHairUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
+  crossHairUI->SetScale({600.0f, 600.0f});
+  CrossHair* crossHair = crossHairUI->CreateUIComponent<CrossHair>();
 
-  //// CROSSHAIR CONTROL
-  //UI* crossHairPlusRow = SpawnActor<UI>();
-  //crossHairPlusRow->SetOriginColor(Color8Bit::CyanAlpha);
-  //crossHairPlusRow->SetPosition(Vector(400.0f, 100.0f));
-  //crossHairPlusRow->SetScale({200.0f, 50.0f});
-  //crossHairPlusRow->MakeCollision();
-  //CrossHairControlButton* crossHairButtonPlusRow = crossHairPlusRow->CreateUIComponent<CrossHairControlButton>();
-  //crossHairButtonPlusRow->SetControlType(CrossHairControlType_PlusRow);
-  //crossHairButtonPlusRow->SetCrossHair(crossHair);
-  //crossHairButtonPlusRow->SetScale({200.0f, 50.0f});
-  //crossHairButtonPlusRow->SetPosition({crossHairPlusRow->GetScale().HalfX(), crossHairPlusRow->GetScale().HalfY()});
-  //TextComponent* plusRowTextComponent = crossHairPlusRow->CreateUIComponent<TextComponent>();
-  //plusRowTextComponent->SetText(L"Row++", 20, Color8Bit::Red);
-  //plusRowTextComponent->SetFont(L"CONSOLELAS");
-  //plusRowTextComponent->SetPosition({50.0f, 20.0f});
+  // CROSSHAIR CONTROL
+  UI* crossHairPlusRow = SpawnActor<UI>();
+  crossHairPlusRow->SetOriginColor(Color8Bit::CyanAlpha);
+  crossHairPlusRow->SetPosition(Vector(400.0f, 100.0f));
+  crossHairPlusRow->SetScale({200.0f, 50.0f});
+  crossHairPlusRow->MakeCollision();
+  CrossHairControlButton* crossHairButtonPlusRow = crossHairPlusRow->CreateUIComponent<CrossHairControlButton>();
+  crossHairButtonPlusRow->SetControlType(CrossHairControlType_PlusRow);
+  crossHairButtonPlusRow->SetCrossHair(crossHair);
+  crossHairButtonPlusRow->SetScale({200.0f, 50.0f});
+  crossHairButtonPlusRow->SetPosition({crossHairPlusRow->GetScale().HalfX(), crossHairPlusRow->GetScale().HalfY()});
+  TextComponent* plusRowTextComponent = crossHairPlusRow->CreateUIComponent<TextComponent>();
+  plusRowTextComponent->SetText(L"Row++", 20, Color8Bit::Red);
+  plusRowTextComponent->SetFont(L"CONSOLELAS");
+  plusRowTextComponent->SetPosition({50.0f, 20.0f});
 
-  //UI* crossHairMinusRow = SpawnActor<UI>();
-  //crossHairMinusRow->SetOriginColor(Color8Bit::CyanAlpha);
-  //crossHairMinusRow->SetPosition(Vector(200.0f, 100.0f));
-  //crossHairMinusRow->SetScale({200.0f, 50.0f});
-  //crossHairMinusRow->MakeCollision();
-  //CrossHairControlButton* crossHairButtonMinusRow = crossHairMinusRow->CreateUIComponent<CrossHairControlButton>();
-  //crossHairButtonMinusRow->SetControlType(CrossHairControlType_MinusRow);
-  //crossHairButtonMinusRow->SetCrossHair(crossHair);
-  //crossHairButtonMinusRow->SetScale({200.0f, 50.0f});
-  //crossHairButtonMinusRow->SetPosition({crossHairMinusRow->GetScale().HalfX(), crossHairMinusRow->GetScale().HalfY()});
-  //TextComponent* minusRowTextComponent = crossHairMinusRow->CreateUIComponent<TextComponent>();
-  //minusRowTextComponent->SetText(L"Row--", 20, Color8Bit::Red);
-  //minusRowTextComponent->SetFont(L"CONSOLELAS");
-  //minusRowTextComponent->SetPosition({50.0f, 20.0f});
+  UI* crossHairMinusRow = SpawnActor<UI>();
+  crossHairMinusRow->SetOriginColor(Color8Bit::CyanAlpha);
+  crossHairMinusRow->SetPosition(Vector(200.0f, 100.0f));
+  crossHairMinusRow->SetScale({200.0f, 50.0f});
+  crossHairMinusRow->MakeCollision();
+  CrossHairControlButton* crossHairButtonMinusRow = crossHairMinusRow->CreateUIComponent<CrossHairControlButton>();
+  crossHairButtonMinusRow->SetControlType(CrossHairControlType_MinusRow);
+  crossHairButtonMinusRow->SetCrossHair(crossHair);
+  crossHairButtonMinusRow->SetScale({200.0f, 50.0f});
+  crossHairButtonMinusRow->SetPosition({crossHairMinusRow->GetScale().HalfX(), crossHairMinusRow->GetScale().HalfY()});
+  TextComponent* minusRowTextComponent = crossHairMinusRow->CreateUIComponent<TextComponent>();
+  minusRowTextComponent->SetText(L"Row--", 20, Color8Bit::Red);
+  minusRowTextComponent->SetFont(L"CONSOLELAS");
+  minusRowTextComponent->SetPosition({50.0f, 20.0f});
 
-  //UI* crossHairPlusCol = SpawnActor<UI>();
-  //crossHairPlusCol->SetOriginColor(Color8Bit::CyanAlpha);
-  //crossHairPlusCol->SetPosition(Vector(400.0f, 200.0f));
-  //crossHairPlusCol->SetScale({200.0f, 50.0f});
-  //crossHairPlusCol->MakeCollision();
-  //CrossHairControlButton* crossHairButtonPlusCol = crossHairPlusCol->CreateUIComponent<CrossHairControlButton>();
-  //crossHairButtonPlusCol->SetControlType(CrossHairControlType_PlusCol);
-  //crossHairButtonPlusCol->SetCrossHair(crossHair);
-  //crossHairButtonPlusCol->SetScale({200.0f, 50.0f});
-  //crossHairButtonPlusCol->SetPosition({crossHairPlusCol->GetScale().HalfX(), crossHairPlusCol->GetScale().HalfY()});
-  //TextComponent* plusColTextComponent = crossHairPlusCol->CreateUIComponent<TextComponent>();
-  //plusColTextComponent->SetText(L"Col++", 20, Color8Bit::Red);
-  //plusColTextComponent->SetFont(L"CONSOLELAS");
-  //plusColTextComponent->SetPosition({50.0f, 20.0f});
+  UI* crossHairPlusCol = SpawnActor<UI>();
+  crossHairPlusCol->SetOriginColor(Color8Bit::CyanAlpha);
+  crossHairPlusCol->SetPosition(Vector(400.0f, 200.0f));
+  crossHairPlusCol->SetScale({200.0f, 50.0f});
+  crossHairPlusCol->MakeCollision();
+  CrossHairControlButton* crossHairButtonPlusCol = crossHairPlusCol->CreateUIComponent<CrossHairControlButton>();
+  crossHairButtonPlusCol->SetControlType(CrossHairControlType_PlusCol);
+  crossHairButtonPlusCol->SetCrossHair(crossHair);
+  crossHairButtonPlusCol->SetScale({200.0f, 50.0f});
+  crossHairButtonPlusCol->SetPosition({crossHairPlusCol->GetScale().HalfX(), crossHairPlusCol->GetScale().HalfY()});
+  TextComponent* plusColTextComponent = crossHairPlusCol->CreateUIComponent<TextComponent>();
+  plusColTextComponent->SetText(L"Col++", 20, Color8Bit::Red);
+  plusColTextComponent->SetFont(L"CONSOLELAS");
+  plusColTextComponent->SetPosition({50.0f, 20.0f});
 
-  //UI* crossHairMinusCol = SpawnActor<UI>();
-  //crossHairMinusCol->SetOriginColor(Color8Bit::CyanAlpha);
-  //crossHairMinusCol->SetPosition(Vector(200.0f, 200.0f));
-  //crossHairMinusCol->SetScale({200.0f, 50.0f});
-  //crossHairMinusCol->MakeCollision();
-  //CrossHairControlButton* crossHairButtonMinusCol = crossHairMinusCol->CreateUIComponent<CrossHairControlButton>();
-  //crossHairButtonMinusCol->SetControlType(CrossHairControlType_MinusCol);
-  //crossHairButtonMinusCol->SetCrossHair(crossHair);
-  //crossHairButtonMinusCol->SetScale({200.0f, 50.0f});
-  //crossHairButtonMinusCol->SetPosition({crossHairMinusCol->GetScale().HalfX(), crossHairMinusCol->GetScale().HalfY()});
-  //TextComponent* minusColTextComponent = crossHairMinusCol->CreateUIComponent<TextComponent>();
-  //minusColTextComponent->SetText(L"Col--", 20, Color8Bit::Red);
-  //minusColTextComponent->SetFont(L"CONSOLELAS");
-  //minusColTextComponent->SetPosition({50.0f, 20.0f});
+  UI* crossHairMinusCol = SpawnActor<UI>();
+  crossHairMinusCol->SetOriginColor(Color8Bit::CyanAlpha);
+  crossHairMinusCol->SetPosition(Vector(200.0f, 200.0f));
+  crossHairMinusCol->SetScale({200.0f, 50.0f});
+  crossHairMinusCol->MakeCollision();
+  CrossHairControlButton* crossHairButtonMinusCol = crossHairMinusCol->CreateUIComponent<CrossHairControlButton>();
+  crossHairButtonMinusCol->SetControlType(CrossHairControlType_MinusCol);
+  crossHairButtonMinusCol->SetCrossHair(crossHair);
+  crossHairButtonMinusCol->SetScale({200.0f, 50.0f});
+  crossHairButtonMinusCol->SetPosition({crossHairMinusCol->GetScale().HalfX(), crossHairMinusCol->GetScale().HalfY()});
+  TextComponent* minusColTextComponent = crossHairMinusCol->CreateUIComponent<TextComponent>();
+  minusColTextComponent->SetText(L"Col--", 20, Color8Bit::Red);
+  minusColTextComponent->SetFont(L"CONSOLELAS");
+  minusColTextComponent->SetPosition({50.0f, 20.0f});
 
-  //UI* crossHairReset = SpawnActor<UI>();
-  //crossHairReset->SetOriginColor(Color8Bit::CyanAlpha);
-  //crossHairReset->SetPosition(Vector(300.0f, 300.0f));
-  //crossHairReset->SetScale({400.0f, 50.0f});
-  //crossHairReset->MakeCollision();
-  //CrossHairControlButton* crossHairButtonReset = crossHairReset->CreateUIComponent<CrossHairControlButton>();
-  //crossHairButtonReset->SetControlType(CrossHairControlType_Reset);
-  //crossHairButtonReset->SetCrossHair(crossHair);
-  //crossHairButtonReset->SetScale({400.0f, 50.0f});
-  //crossHairButtonReset->SetPosition({crossHairReset->GetScale().HalfX(), crossHairReset->GetScale().HalfY()});
-  //TextComponent* resetTextComponent = crossHairReset->CreateUIComponent<TextComponent>();
-  //resetTextComponent->SetText(L"RESET", 20, Color8Bit::Red);
-  //resetTextComponent->SetFont(L"CONSOLELAS");
-  //resetTextComponent->SetPosition({200.0f, 20.0f});
+  UI* crossHairReset = SpawnActor<UI>();
+  crossHairReset->SetOriginColor(Color8Bit::CyanAlpha);
+  crossHairReset->SetPosition(Vector(300.0f, 300.0f));
+  crossHairReset->SetScale({400.0f, 50.0f});
+  crossHairReset->MakeCollision();
+  CrossHairControlButton* crossHairButtonReset = crossHairReset->CreateUIComponent<CrossHairControlButton>();
+  crossHairButtonReset->SetControlType(CrossHairControlType_Reset);
+  crossHairButtonReset->SetCrossHair(crossHair);
+  crossHairButtonReset->SetScale({400.0f, 50.0f});
+  crossHairButtonReset->SetPosition({crossHairReset->GetScale().HalfX(), crossHairReset->GetScale().HalfY()});
+  TextComponent* resetTextComponent = crossHairReset->CreateUIComponent<TextComponent>();
+  resetTextComponent->SetText(L"RESET", 20, Color8Bit::Red);
+  resetTextComponent->SetFont(L"CONSOLELAS");
+  resetTextComponent->SetPosition({200.0f, 20.0f});
 
-  //// WRITE
-  //UI* writeToCSV = SpawnActor<UI>();
-  //writeToCSV->SetOriginColor(Color8Bit::CyanAlpha);
-  //writeToCSV->SetPosition(Vector(300.0f, 900.0f));
-  //writeToCSV->SetScale({400.0f, 50.0f});
-  //writeToCSV->MakeCollision();
-  //WriteButton* writeToCSVButton = writeToCSV->CreateUIComponent<WriteButton>();
-  //writeToCSVButton->BindObject(imageObject);
-  //writeToCSVButton->SetFilePath("../ContentsResource/Iori.csv");
-  //writeToCSVButton->SetScale({400.0f, 50.0f});
-  //writeToCSVButton->SetPosition({writeToCSV->GetScale().HalfX(), writeToCSV->GetScale().HalfY()});
-  //TextComponent* writeTextComponent = writeToCSV->CreateUIComponent<TextComponent>();
-  //writeTextComponent->SetText(L"WriteToCSV", 20, Color8Bit::Red);
-  //writeTextComponent->SetFont(L"CONSOLELAS");
-  //writeTextComponent->SetPosition({200.0f, 20.0f});
+  // WRITE
+  UI* writeToCSV = SpawnActor<UI>();
+  writeToCSV->SetOriginColor(Color8Bit::CyanAlpha);
+  writeToCSV->SetPosition(Vector(300.0f, 900.0f));
+  writeToCSV->SetScale({400.0f, 50.0f});
+  writeToCSV->MakeCollision();
+  WriteButton* writeToCSVButton = writeToCSV->CreateUIComponent<WriteButton>();
+  writeToCSVButton->BindObject(viewPortObject);
+  writeToCSVButton->SetFilePath("../ContentsResource/Iori.csv");
+  writeToCSVButton->SetScale({400.0f, 50.0f});
+  writeToCSVButton->SetPosition({writeToCSV->GetScale().HalfX(), writeToCSV->GetScale().HalfY()});
+  TextComponent* writeTextComponent = writeToCSV->CreateUIComponent<TextComponent>();
+  writeTextComponent->SetText(L"WriteToCSV", 20, Color8Bit::Red);
+  writeTextComponent->SetFont(L"CONSOLELAS");
+  writeTextComponent->SetPosition({200.0f, 20.0f});
 
-  //// MOVEOBEJCT
-  //UI* moveImagePlusRow = SpawnActor<UI>();
-  //moveImagePlusRow->SetOriginColor(Color8Bit::CyanAlpha);
-  //moveImagePlusRow->SetPosition(Vector(400.0f, 400.0f));
-  //moveImagePlusRow->SetScale({200.0f, 50.0f});
-  //moveImagePlusRow->MakeCollision();
-  //ImageMoveButton* moveImagePlusRowButton = moveImagePlusRow->CreateUIComponent<ImageMoveButton>();
-  //moveImagePlusRowButton->BindObject(imageObject);
-  //moveImagePlusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusRow);
-  //moveImagePlusRowButton->SetScale({200.0f, 50.0f});
-  //moveImagePlusRowButton->SetPosition({moveImagePlusRow->GetScale().HalfX(), moveImagePlusRow->GetScale().HalfY()});
-  //TextComponent* movePlusRowTextComponent = moveImagePlusRow->CreateUIComponent<TextComponent>();
-  //movePlusRowTextComponent->SetText(L"MoveRow++", 20, Color8Bit::Red);
-  //movePlusRowTextComponent->SetFont(L"CONSOLELAS");
-  //movePlusRowTextComponent->SetPosition({100.0f, 20.0f});
+  // MOVEOBEJCT
+  UI* moveImagePlusRow = SpawnActor<UI>();
+  moveImagePlusRow->SetOriginColor(Color8Bit::CyanAlpha);
+  moveImagePlusRow->SetPosition(Vector(400.0f, 400.0f));
+  moveImagePlusRow->SetScale({200.0f, 50.0f});
+  moveImagePlusRow->MakeCollision();
+  ImageMoveButton* moveImagePlusRowButton = moveImagePlusRow->CreateUIComponent<ImageMoveButton>();
+  moveImagePlusRowButton->BindObject(viewPortObject);
+  moveImagePlusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusRow);
+  moveImagePlusRowButton->SetScale({200.0f, 50.0f});
+  moveImagePlusRowButton->SetPosition({moveImagePlusRow->GetScale().HalfX(), moveImagePlusRow->GetScale().HalfY()});
+  TextComponent* movePlusRowTextComponent = moveImagePlusRow->CreateUIComponent<TextComponent>();
+  movePlusRowTextComponent->SetText(L"MoveRow++", 20, Color8Bit::Red);
+  movePlusRowTextComponent->SetFont(L"CONSOLELAS");
+  movePlusRowTextComponent->SetPosition({100.0f, 20.0f});
 
-  //UI* moveImageMinusRow = SpawnActor<UI>();
-  //moveImageMinusRow->SetOriginColor(Color8Bit::CyanAlpha);
-  //moveImageMinusRow->SetPosition(Vector(200.0f, 400.0f));
-  //moveImageMinusRow->SetScale({200.0f, 50.0f});
-  //moveImageMinusRow->MakeCollision();
-  //ImageMoveButton* moveImageMinusRowButton = moveImageMinusRow->CreateUIComponent<ImageMoveButton>();
-  //moveImageMinusRowButton->BindObject(imageObject);
-  //moveImageMinusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusRow);
-  //moveImageMinusRowButton->SetScale({200.0f, 50.0f});
-  //moveImageMinusRowButton->SetPosition({moveImageMinusRow->GetScale().HalfX(), moveImageMinusRow->GetScale().HalfY()});
-  //TextComponent* moveMinusRowTextComponent = moveImageMinusRow->CreateUIComponent<TextComponent>();
-  //moveMinusRowTextComponent->SetText(L"MoveRow--", 20, Color8Bit::Red);
-  //moveMinusRowTextComponent->SetFont(L"CONSOLELAS");
-  //moveMinusRowTextComponent->SetPosition({100.0f, 20.0f});
+  UI* moveImageMinusRow = SpawnActor<UI>();
+  moveImageMinusRow->SetOriginColor(Color8Bit::CyanAlpha);
+  moveImageMinusRow->SetPosition(Vector(200.0f, 400.0f));
+  moveImageMinusRow->SetScale({200.0f, 50.0f});
+  moveImageMinusRow->MakeCollision();
+  ImageMoveButton* moveImageMinusRowButton = moveImageMinusRow->CreateUIComponent<ImageMoveButton>();
+  moveImageMinusRowButton->BindObject(viewPortObject);
+  moveImageMinusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusRow);
+  moveImageMinusRowButton->SetScale({200.0f, 50.0f});
+  moveImageMinusRowButton->SetPosition({moveImageMinusRow->GetScale().HalfX(), moveImageMinusRow->GetScale().HalfY()});
+  TextComponent* moveMinusRowTextComponent = moveImageMinusRow->CreateUIComponent<TextComponent>();
+  moveMinusRowTextComponent->SetText(L"MoveRow--", 20, Color8Bit::Red);
+  moveMinusRowTextComponent->SetFont(L"CONSOLELAS");
+  moveMinusRowTextComponent->SetPosition({100.0f, 20.0f});
 
-  //UI* moveImagePlusCol = SpawnActor<UI>();
-  //moveImagePlusCol->SetOriginColor(Color8Bit::CyanAlpha);
-  //moveImagePlusCol->SetPosition(Vector(400.0f, 500.0f));
-  //moveImagePlusCol->SetScale({200.0f, 50.0f});
-  //moveImagePlusCol->MakeCollision();
-  //ImageMoveButton* moveImagePlusColButton = moveImagePlusCol->CreateUIComponent<ImageMoveButton>();
-  //moveImagePlusColButton->BindObject(imageObject);
-  //moveImagePlusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusCol);
-  //moveImagePlusColButton->SetScale({200.0f, 50.0f});
-  //moveImagePlusColButton->SetPosition({moveImagePlusCol->GetScale().HalfX(), moveImagePlusCol->GetScale().HalfY()});
-  //TextComponent* movePlusColTextComponent = moveImagePlusCol->CreateUIComponent<TextComponent>();
-  //movePlusColTextComponent->SetText(L"MoveCol++", 20, Color8Bit::Red);
-  //movePlusColTextComponent->SetFont(L"CONSOLELAS");
-  //movePlusColTextComponent->SetPosition({100.0f, 20.0f});
+  UI* moveImagePlusCol = SpawnActor<UI>();
+  moveImagePlusCol->SetOriginColor(Color8Bit::CyanAlpha);
+  moveImagePlusCol->SetPosition(Vector(400.0f, 500.0f));
+  moveImagePlusCol->SetScale({200.0f, 50.0f});
+  moveImagePlusCol->MakeCollision();
+  ImageMoveButton* moveImagePlusColButton = moveImagePlusCol->CreateUIComponent<ImageMoveButton>();
+  moveImagePlusColButton->BindObject(viewPortObject);
+  moveImagePlusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusCol);
+  moveImagePlusColButton->SetScale({200.0f, 50.0f});
+  moveImagePlusColButton->SetPosition({moveImagePlusCol->GetScale().HalfX(), moveImagePlusCol->GetScale().HalfY()});
+  TextComponent* movePlusColTextComponent = moveImagePlusCol->CreateUIComponent<TextComponent>();
+  movePlusColTextComponent->SetText(L"MoveCol++", 20, Color8Bit::Red);
+  movePlusColTextComponent->SetFont(L"CONSOLELAS");
+  movePlusColTextComponent->SetPosition({100.0f, 20.0f});
 
-  //UI* moveImageMinusCol = SpawnActor<UI>();
-  //moveImageMinusCol->SetOriginColor(Color8Bit::CyanAlpha);
-  //moveImageMinusCol->SetPosition(Vector(200.0f, 500.0f));
-  //moveImageMinusCol->SetScale({200.0f, 50.0f});
-  //moveImageMinusCol->MakeCollision();
-  //ImageMoveButton* moveImageMinusColButton = moveImageMinusCol->CreateUIComponent<ImageMoveButton>();
-  //moveImageMinusColButton->BindObject(imageObject);
-  //moveImageMinusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusCol);
-  //moveImageMinusColButton->SetScale({200.0f, 50.0f});
-  //moveImageMinusColButton->SetPosition({moveImageMinusCol->GetScale().HalfX(), moveImageMinusCol->GetScale().HalfY()});
-  //TextComponent* moveMinusColTextComponent = moveImageMinusCol->CreateUIComponent<TextComponent>();
-  //moveMinusColTextComponent->SetText(L"MoveCol--", 20, Color8Bit::Red);
-  //moveMinusColTextComponent->SetFont(L"CONSOLELAS");
-  //moveMinusColTextComponent->SetPosition({100.0f, 20.0f});
+  UI* moveImageMinusCol = SpawnActor<UI>();
+  moveImageMinusCol->SetOriginColor(Color8Bit::CyanAlpha);
+  moveImageMinusCol->SetPosition(Vector(200.0f, 500.0f));
+  moveImageMinusCol->SetScale({200.0f, 50.0f});
+  moveImageMinusCol->MakeCollision();
+  ImageMoveButton* moveImageMinusColButton = moveImageMinusCol->CreateUIComponent<ImageMoveButton>();
+  moveImageMinusColButton->BindObject(viewPortObject);
+  moveImageMinusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusCol);
+  moveImageMinusColButton->SetScale({200.0f, 50.0f});
+  moveImageMinusColButton->SetPosition({moveImageMinusCol->GetScale().HalfX(), moveImageMinusCol->GetScale().HalfY()});
+  TextComponent* moveMinusColTextComponent = moveImageMinusCol->CreateUIComponent<TextComponent>();
+  moveMinusColTextComponent->SetText(L"MoveCol--", 20, Color8Bit::Red);
+  moveMinusColTextComponent->SetFont(L"CONSOLELAS");
+  moveMinusColTextComponent->SetPosition({100.0f, 20.0f});
 
-  //UI* moveImageReset = SpawnActor<UI>();
-  //moveImageReset->SetOriginColor(Color8Bit::CyanAlpha);
-  //moveImageReset->SetPosition(Vector(300.0f, 600.0f));
-  //moveImageReset->SetScale({400.0f, 50.0f});
-  //moveImageReset->MakeCollision();
-  //ImageMoveButton* moveImageResetButton = moveImageReset->CreateUIComponent<ImageMoveButton>();
-  //moveImageResetButton->BindObject(imageObject);
-  //moveImageResetButton->SetImageMoveDirType(ImageMoveDirType::IMD_Reset);
-  //moveImageResetButton->SetScale({400.0f, 50.0f});
-  //moveImageResetButton->SetPosition({moveImageReset->GetScale().HalfX(), moveImageReset->GetScale().HalfY()});
-  //TextComponent* moveResetTextComponent = moveImageReset->CreateUIComponent<TextComponent>();
-  //moveResetTextComponent->SetText(L"MoveReset", 20, Color8Bit::Red);
-  //moveResetTextComponent->SetFont(L"CONSOLELAS");
-  //moveResetTextComponent->SetPosition({200, 20.0f});
+  UI* moveImageReset = SpawnActor<UI>();
+  moveImageReset->SetOriginColor(Color8Bit::CyanAlpha);
+  moveImageReset->SetPosition(Vector(300.0f, 600.0f));
+  moveImageReset->SetScale({400.0f, 50.0f});
+  moveImageReset->MakeCollision();
+  ImageMoveButton* moveImageResetButton = moveImageReset->CreateUIComponent<ImageMoveButton>();
+  moveImageResetButton->BindObject(viewPortObject);
+  moveImageResetButton->SetImageMoveDirType(ImageMoveDirType::IMD_Reset);
+  moveImageResetButton->SetScale({400.0f, 50.0f});
+  moveImageResetButton->SetPosition({moveImageReset->GetScale().HalfX(), moveImageReset->GetScale().HalfY()});
+  TextComponent* moveResetTextComponent = moveImageReset->CreateUIComponent<TextComponent>();
+  moveResetTextComponent->SetText(L"MoveReset", 20, Color8Bit::Red);
+  moveResetTextComponent->SetFont(L"CONSOLELAS");
+  moveResetTextComponent->SetPosition({200, 20.0f});
 
-  //// NEXT IMAGE
-  //UI* nextImage = SpawnActor<UI>();
-  //nextImage->SetOriginColor(Color8Bit::CyanAlpha);
-  //nextImage->SetPosition(Vector(400.0f, 700.0f));
-  //nextImage->SetScale({200.0f, 50.0f});
-  //nextImage->MakeCollision();
-  //NextImageButton* nextImageButton = nextImage->CreateUIComponent<NextImageButton>();
-  //nextImageButton->BindObject(imageObject);
-  //nextImageButton->SetNextImageType(NextImageType::NextImage_Next);
-  //nextImageButton->SetScale({200.0f, 50.0f});
-  //nextImageButton->SetPosition({nextImage->GetScale().HalfX(), nextImage->GetScale().HalfY()});
-  //TextComponent* nextImageTextComponent = nextImage->CreateUIComponent<TextComponent>();
-  //nextImageTextComponent->SetText(L"NEXT", 20, Color8Bit::Red);
-  //nextImageTextComponent->SetFont(L"CONSOLELAS");
-  //nextImageTextComponent->SetPosition({100.0f, 20.0f});
+  // NEXT IMAGE
+  UI* nextImage = SpawnActor<UI>();
+  nextImage->SetOriginColor(Color8Bit::CyanAlpha);
+  nextImage->SetPosition(Vector(400.0f, 700.0f));
+  nextImage->SetScale({200.0f, 50.0f});
+  nextImage->MakeCollision();
+  NextImageButton* nextImageButton = nextImage->CreateUIComponent<NextImageButton>();
+  nextImageButton->BindObject(viewPortObject);
+  nextImageButton->SetNextImageType(NextImageType::NextImage_Next);
+  nextImageButton->SetScale({200.0f, 50.0f});
+  nextImageButton->SetPosition({nextImage->GetScale().HalfX(), nextImage->GetScale().HalfY()});
+  TextComponent* nextImageTextComponent = nextImage->CreateUIComponent<TextComponent>();
+  nextImageTextComponent->SetText(L"NEXT", 20, Color8Bit::Red);
+  nextImageTextComponent->SetFont(L"CONSOLELAS");
+  nextImageTextComponent->SetPosition({100.0f, 20.0f});
 
-  //UI* prevImage = SpawnActor<UI>();
-  //prevImage->SetOriginColor(Color8Bit::CyanAlpha);
-  //prevImage->SetPosition(Vector(200.0f, 700.0f));
-  //prevImage->SetScale({200.0f, 50.0f});
-  //prevImage->MakeCollision();
-  //NextImageButton* prevImageButton = prevImage->CreateUIComponent<NextImageButton>();
-  //prevImageButton->BindObject(imageObject);
-  //prevImageButton->SetNextImageType(NextImageType::NextImage_Prev);
-  //prevImageButton->SetScale({200.0f, 50.0f});
-  //prevImageButton->SetPosition({prevImage->GetScale().HalfX(), prevImage->GetScale().HalfY()});
-  //TextComponent* prevImageTextComponent = prevImage->CreateUIComponent<TextComponent>();
-  //prevImageTextComponent->SetText(L"PREV", 20, Color8Bit::Red);
-  //prevImageTextComponent->SetFont(L"CONSOLELAS");
-  //prevImageTextComponent->SetPosition({100.0f, 20.0f});
+  UI* prevImage = SpawnActor<UI>();
+  prevImage->SetOriginColor(Color8Bit::CyanAlpha);
+  prevImage->SetPosition(Vector(200.0f, 700.0f));
+  prevImage->SetScale({200.0f, 50.0f});
+  prevImage->MakeCollision();
+  NextImageButton* prevImageButton = prevImage->CreateUIComponent<NextImageButton>();
+  prevImageButton->BindObject(viewPortObject);
+  prevImageButton->SetNextImageType(NextImageType::NextImage_Prev);
+  prevImageButton->SetScale({200.0f, 50.0f});
+  prevImageButton->SetPosition({prevImage->GetScale().HalfX(), prevImage->GetScale().HalfY()});
+  TextComponent* prevImageTextComponent = prevImage->CreateUIComponent<TextComponent>();
+  prevImageTextComponent->SetText(L"PREV", 20, Color8Bit::Red);
+  prevImageTextComponent->SetFont(L"CONSOLELAS");
+  prevImageTextComponent->SetPosition({100.0f, 20.0f});
 
 
 

@@ -370,9 +370,10 @@ void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
   // TODO :  콜리전 위치 만큼 offset 해야함.
   if (false == image_->IsRenderTexture()) {
     IFileImage* fileImage = (IFileImage*)image_;
-
-    Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_);
-    Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_);
+    
+    Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+    Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_) + imageOffSet;
+    Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_) + imageOffSet;
     Vector hitBoxSize = hitBoxEnd - hitBoxStart;
 
     renderTransform.AddPostion(hitBoxStart);

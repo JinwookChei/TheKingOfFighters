@@ -31,6 +31,9 @@
     <Filter Include="Contents\Tools\CollisionBox">
       <UniqueIdentifier>{cdeff6d8-c54c-41bb-8e4c-fc8f7d08a4fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Tools\ToolActor">
+      <UniqueIdentifier>{a2ac394b-ee69-4aa6-8654-6c462a2cf873}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -89,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="HitBoxButton.cpp">
       <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolIori.cpp">
+      <Filter>Contents\Tools\ToolActor</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewPortObject.cpp">
+      <Filter>Contents\Tools\ToolActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +160,12 @@
     </ClInclude>
     <ClInclude Include="HitBoxButton.h">
       <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolIori.h">
+      <Filter>Contents\Tools\ToolActor</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewPortObject.h">
+      <Filter>Contents\Tools\ToolActor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

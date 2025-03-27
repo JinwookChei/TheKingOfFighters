@@ -16,7 +16,8 @@ class ResizeCornerComponent
   void ClickExit() override;
 
  protected:
-  void Render(struct IRenderTexture* renderTexture) override;
+  void Render(struct IRenderTexture* renderTexture) override;  
+
 };
 
 
@@ -41,4 +42,6 @@ class HitBoxButton final
 
  private:
   UI* bindUI_;
+
+  
 };

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ImageObject.h"
+#include "ViewPortObject.h"
 #include "ImageMoveButton.h"
 
 ImageMoveButton::ImageMoveButton()
@@ -21,37 +21,35 @@ void ImageMoveButton::ClickDownEvent() {
     return;
   }
 
-  ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
-  if (nullptr == pRenderer) {
+  IImage* pImage = bindObject_->GetImage();
+  if (nullptr == pImage || true == pImage->IsRenderTexture())
+  {
     return;
   }
-  unsigned int imageIndex = pRenderer->GetImageIndex();
 
-  IFileImage* pImage = (IFileImage*)pRenderer->GetImage();
-  if (nullptr == pImage) {
-    return;
-  }
+  IFileImage* pFileImage = (IFileImage*)pImage;
+  unsigned int imageIndex = bindObject_->GetImageIndex();
 
   switch (imageMoveDirType_) {
     case IMD_PlusRow: {
-      pImage->AddImagePositionOffSet(imageIndex, {1.0f, 0.0f});
+      bindObject_->AddPositionOffSet({1.0f, 0.0f});
       break;
     }
     case IMD_MinusRow: {
-      pImage->AddImagePositionOffSet(imageIndex, {-1.0f, 0.0f});
+      bindObject_->AddPositionOffSet({-1.0f, 0.0f});
       break;
     }
     case IMD_PlusCol: {
-      pImage->AddImagePositionOffSet(imageIndex, {0.0f, 1.0f});
+      bindObject_->AddPositionOffSet({0.0f, 1.0f});
       break;
     }
     case IMD_MinusCol: {
-      pImage->AddImagePositionOffSet(imageIndex, {0.0f, -1.0f});
+      bindObject_->AddPositionOffSet({0.0f, -1.0f});
       break;
     }
     case IMD_Reset: {
-      const Vector& curOffSet = pImage->GetImagePositionOffSet(imageIndex);
-      pImage->AddImagePositionOffSet(imageIndex, -curOffSet);
+
+      bindObject_->ResetPostionOffset();
 
       break;
     }
@@ -60,11 +58,11 @@ void ImageMoveButton::ClickDownEvent() {
   }
 }
 
-ImageObject* ImageMoveButton::GetBindObject() const {
+ViewPortObject* ImageMoveButton::GetBindObject() const {
   return bindObject_;
 }
 
-void ImageMoveButton::BindObject(ImageObject* object) {
+void ImageMoveButton::BindObject(ViewPortObject* object) {
   if (nullptr == object) {
     return;
   }

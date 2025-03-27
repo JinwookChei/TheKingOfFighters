@@ -177,7 +177,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
+    <ClCompile Include="ToolIori.cpp" />
     <ClCompile Include="ToolLevel.cpp" />
+    <ClCompile Include="ViewPortObject.cpp" />
     <ClCompile Include="WriteButton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -198,8 +200,10 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />
+    <ClInclude Include="ToolIori.h" />
     <ClInclude Include="ToolLevel.h" />
     <ClInclude Include="Types.h" />
+    <ClInclude Include="ViewPortObject.h" />
     <ClInclude Include="WriteButton.h" />
   </ItemGroup>
   <ItemGroup>

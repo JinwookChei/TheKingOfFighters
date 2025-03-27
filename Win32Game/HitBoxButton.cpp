@@ -10,9 +10,32 @@ ResizeCornerComponent::~ResizeCornerComponent() {
 
 void ResizeCornerComponent::BeginPlay() {
   UI* owner = GetOwner();
+  if (nullptr == owner) {
+    return;
+  }
 
-  SetScale(owner->GetScale());
-  SetPosition({owner->GetScale().HalfX(), owner->GetScale().HalfY()});
+  ImageRenderer* ownerRenderer = owner->GetImageRenderer();
+  if (nullptr == ownerRenderer) {
+    return;
+  }
+
+  IImage* ownerImage = ownerRenderer->GetImage();
+  if (nullptr == ownerImage || true == ownerImage->IsRenderTexture()) {
+    return;
+  }
+  unsigned int imageIndex = ownerRenderer->GetImageIndex();
+  IFileImage* ownerFileImage = (IFileImage*)ownerImage;
+
+  Vector ownerPosition = owner->GetPosition();
+  Vector imageOffSet = ownerFileImage->GetImagePositionOffSet(imageIndex);
+  Vector hitBoxStart = ownerFileImage->GetHitBoxStart(imageIndex);
+
+  // SetPosition(ownerPosition + imageOffSet + hitBoxStart);
+  SetPosition({1000.0f, 1000.0f});
+
+  SetScale({100.0f, 100.0f});
+
+  //SetPosition({owner->GetScale().HalfX(), owner->GetScale().HalfY()});
 }
 
 void ResizeCornerComponent::Tick(unsigned long long curTick) {
@@ -34,10 +57,26 @@ void ResizeCornerComponent::Render(IRenderTexture* renderTexture) {
     return;
   }
 
+  ImageRenderer* ownerRenderer = owner->GetImageRenderer();
+  if (nullptr == ownerRenderer)
+  {
+    return;
+  }
+
+  IImage* ownerImage = ownerRenderer->GetImage();
+  if (nullptr == ownerImage || true == ownerImage->IsRenderTexture())
+  {
+    return;
+  }
+
+  IFileImage* ownerFileImage = (IFileImage*)ownerImage;
+  ownerFileImage->GetHitBoxStart(ownerRenderer->GetImageIndex());
+
   const Transform& transform = GetTransform();
-  renderTexture->DrawRectagle(transform.GetScale(), Color8Bit::RedAlpha, 10.0f);
-  renderTexture->DrawLine(Color8Bit::BlackAlpha, {0, -owner->GetScale().HalfY()}, {0, owner->GetScale().HalfY()}, 1.0f);
-  renderTexture->DrawLine(Color8Bit::BlackAlpha, {-owner->GetScale().HalfX(), 0}, {owner->GetScale().HalfX(), 0}, 1.0f);
+  
+  renderTexture->DrawRectagle({1000.0f, 1000.0f}, Color8Bit::RedAlpha, 10.0f);
+  renderTexture->SetAlpha(1.0f, transform, true, owner->GetCurrentColor());
+  
 }
 
 
@@ -60,19 +99,8 @@ void HitBoxButton::ClickDownEvent() {
   if (nullptr == bindUI_) {
     return;
   }
-  ResizeCornerComponent* temp1 = bindUI_->CreateUIComponent<ResizeCornerComponent>();
-  //temp1->SetPosition({0.0f, 0.0f});
-  //temp1->SetScale({100.0f, 100.0f});
-  //temp1->
+  ResizeCornerComponent* corner = bindUI_->CreateUIComponent<ResizeCornerComponent>();
 
-  /*CollisionPoint* temp2 = bindUI_->CreateUIComponent<CollisionPoint>();
-  temp2->SetPosition({500.0f, 600.0f});
-  temp2->SetScale({10.0f, 10.0f});
-
-  temp1->SetPair(temp2);
-  temp2->SetPair(temp1);*/
-
-  // temp2->SetPosition()
 }
 
 void HitBoxButton::ClickExit() {
