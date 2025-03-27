@@ -181,7 +181,7 @@ bool Win32RenderTexture::AlphaBlend(IImage* srcImg, unsigned int index, const Ve
 
 bool Win32RenderTexture::Transparent(IImage* srcImg, unsigned int index, const Vector& scale, const Color8Bit& colorTransparent) {
   HDC srcHDC = (HDC)srcImg->GetHandle();
-  Vector srcScale = srcImg->GetScale(index);
+  //Vector srcScale = srcImg->GetScale(index);
   Transform imageTransform = srcImg->RenderTransform(index);
 
   int RenderStartX = std::lround(0 - scale.HalfX());

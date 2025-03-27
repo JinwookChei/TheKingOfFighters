@@ -29,7 +29,7 @@ void WriteButton::SetFilePath(const std::string& filePath) {
 }
 
 void WriteButton::WriteData() {
-  ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
+  /*ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
   if (nullptr == pRenderer)
   {
     return;
@@ -41,7 +41,7 @@ void WriteButton::WriteData() {
     return;
   }
 
-  fileImage->ExportImageInfoToCSV(filePath_);
+  fileImage->ExportImageInfoToCSV(filePath_);*/
 }
 
 void WriteButton::Render(IRenderTexture* renderTexture) {

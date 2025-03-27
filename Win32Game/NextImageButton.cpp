@@ -17,7 +17,7 @@ void NextImageButton::Tick(unsigned long long curTick) {
 }
 
 void NextImageButton::ClickDownEvent() {
-  if (nullptr == bindObject_) {
+  /*if (nullptr == bindObject_) {
     return;
   }
 
@@ -43,7 +43,7 @@ void NextImageButton::ClickDownEvent() {
   if (tempIndex > pImage->GetImageCount() - 1 || tempIndex < 0) {
     tempIndex = 0;
   }
-  pTargetRenderer->SetImage(pImage, tempIndex);
+  pTargetRenderer->SetImage(pImage, tempIndex);*/
 }
 
 ImageObject* NextImageButton::GetBindObject() const {

@@ -53,7 +53,8 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
 
-  virtual bool DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) = 0;
+  virtual bool __stdcall DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) = 0;
+
 };
 
 struct IRenderTexture : public IImage {

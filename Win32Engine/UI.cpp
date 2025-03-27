@@ -11,6 +11,7 @@ UI::UI()
       originColor_(Color8Bit::Black),
       currentColor_(Color8Bit::Black),
       isClick_(false),
+      useHoverColorChange_(true),
       useMousePosition_(false),
       componentHead_(nullptr),
       componentTail_(nullptr) {
@@ -35,8 +36,6 @@ void UI::BeginPlay() {
   SetActorGroup(ActorGroupEngineType::ActorGroupEngineType_UI);
   imageRenderer_ = CreateImageRender();
   imageRenderer_->SetAlpha(1.0f);
-
-
 
   // collision_ = CreateCollision();
 }
@@ -131,6 +130,10 @@ void UI::MakeCollision() {
 
 void UI::SetUseMousePosition(bool isOn) {
   useMousePosition_ = isOn;
+}
+
+void UI::UseHoverColorChange(bool isOn) {
+  useHoverColorChange_ = isOn;
 }
 
 const Color8Bit& UI::GetCurrentColor() const {
@@ -236,17 +239,21 @@ void UI::OnClickDownEvent() {
     // UI Component 의 위치 크기
     // 마우스의 위치
     // 충돌검사
-    
+
     pUIComponent->OnClickDownEvent();
   }
 }
 
 void UI::OnHoverEvent() {
-  ClearColor(Color8Bit::GreenAlpha);
+  if (true == useHoverColorChange_) {
+    ClearColor(Color8Bit::GreenAlpha);
+  }
 }
 
 void UI::OnMouseExit() {
-  ClearColor(originColor_);
+  if (true == useHoverColorChange_) {
+    ClearColor(originColor_);
+  }
 
   LINK_ITEM* pCur = componentHead_;
   while (pCur) {

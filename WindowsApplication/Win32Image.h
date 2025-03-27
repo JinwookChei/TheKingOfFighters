@@ -132,7 +132,7 @@ class Win32Image final
   LINK_ITEM* imageTail_;
 
   // Wook
-  bool DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) override;
+  bool __stdcall DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) override;
 
  private:
   std::vector<std::vector<float>> boundingBoxDatas_;

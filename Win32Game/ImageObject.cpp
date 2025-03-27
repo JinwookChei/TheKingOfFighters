@@ -2,7 +2,8 @@
 #include "ImageObject.h"
 
 ImageObject::ImageObject()
-    : ownerImageRender_(nullptr),
+    : image_(nullptr),
+      imageIndex_(0),
       prevMousePosition_({0.0f, 0.0f}) {
 }
 
@@ -10,50 +11,37 @@ ImageObject::~ImageObject() {
 }
 
 void ImageObject::BeginPlay() {
-  // NEW
+  image_ = ImgManager::GetIntance()->GetImg(1);
+  
+  //Transform renderTransform = image_->RenderTransform(imageIndex_);
+  Vector imageScale = image_->GetScale(imageIndex_);
+  Vector localeScale(4.0f, 4.0f);
+  SetScale(imageScale * localeScale);
+}
+
+void ImageObject::Tick(unsigned long long curTick) {
+
+}
+
+IImage* ImageObject::GetImage() const {
+  return image_;
+}
+
+unsigned int ImageObject::GetImageIndex() const {
+  return imageIndex_;
+}
+
+void ImageObject::Render(IRenderTexture* renderTexture) {
+  if (nullptr == renderTexture || nullptr == image_) {
+    return;
+  }
+
   UI* owner = GetOwner();
   if (nullptr == owner) {
     return;
   }
 
-  ownerImageRender_ = owner->GetImageRenderer();
-
-  IImage* pFind = ImgManager::GetIntance()->GetImg(1);
-  ownerImageRender_->SetImage(pFind, 0);
-  ownerImageRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
-  ownerImageRender_->SetImageRenderType(ImageRenderType::Center);
-  ownerImageRender_->SetLocalScale({4.0f, 4.0f});
-  ownerImageRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 1.0f, .color_ = Color8Bit::Green});
-
-  // SetDebugParameter({.on_ = true, .linethickness_ = 1.0f, .color_ = Color8Bit::Red});
-  // imageRender_ = CreateImageRender();
-  SetScale(ownerImageRender_->GetScale() * ownerImageRender_->GetLocalScale());
-}
-
-void ImageObject::Tick(unsigned long long curTick) {
-  //   UI* owner = GetOwner();
-
-  Vector curMousePosition = GEngineCore->GetMousePosition();
-  if (IsMouseClick()) {
-    Vector deltaPosition = curMousePosition - prevMousePosition_;
-
-    unsigned int imageIndex = ownerImageRender_->GetImageIndex();
-
-    IFileImage* pImage = (IFileImage*)ownerImageRender_->GetImage();
-    if (nullptr == pImage) {
-      return;
-    }
-    pImage->AddImagePositionOffSet(imageIndex, deltaPosition);
-  }
-
-  prevMousePosition_ = curMousePosition;
-
-}
-
-ImageRenderer* ImageObject::GetOwnerImageRenderer() const {
-  return ownerImageRender_;
-}
-
-
-void ImageObject::Render(IRenderTexture* renderTexture) {
+  const Transform& transform = GetTransform();
+  renderTexture->Transparent(image_, imageIndex_, transform.GetScale(), Color8Bit{169, 139, 150, 0});
+  renderTexture->SetAlpha(1.0f, transform, true, owner->GetCurrentColor());
 }

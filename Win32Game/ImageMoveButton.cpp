@@ -21,37 +21,35 @@ void ImageMoveButton::ClickDownEvent() {
     return;
   }
 
-  ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
-  if (nullptr == pRenderer) {
+  IImage* image = bindObject_->GetImage();
+  if (nullptr == image || true == image->IsRenderTexture()) {
     return;
   }
-  unsigned int imageIndex = pRenderer->GetImageIndex();
 
-  IFileImage* pImage = (IFileImage*)pRenderer->GetImage();
-  if (nullptr == pImage) {
-    return;
-  }
+  IFileImage* fileImage = (IFileImage*)image;
+
+  unsigned int imageIndex = bindObject_->GetImageIndex();
 
   switch (imageMoveDirType_) {
     case IMD_PlusRow: {
-      pImage->AddImagePositionOffSet(imageIndex, {1.0f, 0.0f});
+      fileImage->AddImagePositionOffSet(imageIndex, {1.0f, 0.0f});
       break;
     }
     case IMD_MinusRow: {
-      pImage->AddImagePositionOffSet(imageIndex, {-1.0f, 0.0f});
+      fileImage->AddImagePositionOffSet(imageIndex, {-1.0f, 0.0f});
       break;
     }
     case IMD_PlusCol: {
-      pImage->AddImagePositionOffSet(imageIndex, {0.0f, 1.0f});
+      fileImage->AddImagePositionOffSet(imageIndex, {0.0f, 1.0f});
       break;
     }
     case IMD_MinusCol: {
-      pImage->AddImagePositionOffSet(imageIndex, {0.0f, -1.0f});
+      fileImage->AddImagePositionOffSet(imageIndex, {0.0f, -1.0f});
       break;
     }
     case IMD_Reset: {
-      const Vector& curOffSet = pImage->GetImagePositionOffSet(imageIndex);
-      pImage->AddImagePositionOffSet(imageIndex, -curOffSet);
+      const Vector& curOffSet = fileImage->GetImagePositionOffSet(imageIndex);
+      fileImage->AddImagePositionOffSet(imageIndex, -curOffSet);
 
       break;
     }
