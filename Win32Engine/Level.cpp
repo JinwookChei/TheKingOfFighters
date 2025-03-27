@@ -6,6 +6,7 @@
 
 Level::Level()
     : isDebugRender_(false),
+      isCollisionRender_(false),
       useCameraPosition_(false),
       cameraPosition_({0.0f, 0.0f}),
       actorGroupHead_(nullptr),
@@ -96,6 +97,14 @@ void Level::SetDebugRender(bool isOn) {
 
 bool Level::GetDebugRender() const {
   return isDebugRender_;
+}
+
+void Level::SetCollisionRender(bool isOn) {
+  isCollisionRender_ = isOn;
+}
+
+bool Level::GetCollisionRender() const {
+  return isCollisionRender_;
 }
 
 Mouse* Level::SpawnMouse() {
@@ -244,25 +253,43 @@ void Level::OnRender() {
     }
   }
 
-  if (!isDebugRender_) {
-    return;
+  if (isDebugRender_) {
+    pContainerCur = actorGroupHead_;
+    while (pContainerCur) {
+      ActorContainer* pActorContainer = (ActorContainer*)pContainerCur->item_;
+      pContainerCur = pContainerCur->next_;
+
+      LINK_ITEM* pCur = pActorContainer->actorHead_;
+      while (pCur) {
+        Actor* pActor = (Actor*)pCur->item_;
+        pCur = pCur->next_;
+
+        if (pActor->IsDestroy()) {
+          continue;
+        }
+
+        pActor->DebugRender(GGraphicDevice->GetBackBuffer());
+      }
+    }
   }
 
-  pContainerCur = actorGroupHead_;
-  while (pContainerCur) {
-    ActorContainer* pActorContainer = (ActorContainer*)pContainerCur->item_;
-    pContainerCur = pContainerCur->next_;
+  if (isCollisionRender_) {
+    pContainerCur = actorGroupHead_;
+    while (pContainerCur) {
+      ActorContainer* pActorContainer = (ActorContainer*)pContainerCur->item_;
+      pContainerCur = pContainerCur->next_;
 
-    LINK_ITEM* pCur = pActorContainer->actorHead_;
-    while (pCur) {
-      Actor* pActor = (Actor*)pCur->item_;
-      pCur = pCur->next_;
+      LINK_ITEM* pCur = pActorContainer->actorHead_;
+      while (pCur) {
+        Actor* pActor = (Actor*)pCur->item_;
+        pCur = pCur->next_;
 
-      if (pActor->IsDestroy()) {
-        continue;
+        if (pActor->IsDestroy()) {
+          continue;
+        }
+
+        pActor->OnCollisionRender(GGraphicDevice->GetBackBuffer());
       }
-
-      pActor->DebugRender(GGraphicDevice->GetBackBuffer());
     }
   }
 }

@@ -74,6 +74,8 @@ class ImageRenderer
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 
+  void CollisionRender(IRenderTexture* renderTexture) override;
+
  private:
   IImage* image_;
 

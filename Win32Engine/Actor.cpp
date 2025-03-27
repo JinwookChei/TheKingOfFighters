@@ -198,6 +198,32 @@ void Actor::DebugRender(IRenderTexture* renderTexture) const {
   GGraphicDevice->RenderImgEnd(renderTexture);
 }
 
+void Actor::OnCollisionRender(IRenderTexture* renderTexture) const {
+  if (nullptr == renderTexture) {
+    return;
+  }
+
+  LINK_ITEM* pCur = componentHead_;
+  while (pCur) {
+    ActorComponent* pItem = (ActorComponent*)pCur->item_;
+    pCur = pCur->next_;    
+    pItem->CollisionRender(renderTexture);
+  }
+
+  //if (!debugParameter.on_) {
+  //  return;
+  //}
+
+  //Transform transform;
+  //transform.SetPosition(position_);
+
+  //GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
+
+  //renderTexture->DrawPoint(debugParameter.color_, debugParameter.linethickness_);
+
+  //GGraphicDevice->RenderImgEnd(renderTexture);
+}
+
 void Actor::SetLevel(Level* level) {
   currentLevel_ = level;
 }

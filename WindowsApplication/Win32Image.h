@@ -24,8 +24,8 @@ struct ImageInfo {
         link_({nullptr, nullptr, this}),
         index_(-1),
         imageType_(ImageType::ImageType_None),
-        HitBoxLeftTop_({0.0f, 0.0f}),
-        HitBoxRightBottom_({50.0f, 50.0f}),
+        HitBoxLeftTop_({20.0f, 20.0f}),
+        HitBoxRightBottom_({70.0f, 70.0f}),
         hBitMap_(nullptr),
         imageDC_(nullptr),
         bitMapInfo_({}) {
@@ -91,6 +91,11 @@ class Win32Image final
   ImageType __stdcall GetImageType() override;
 
   const Vector __stdcall GetImagePositionOffSet(unsigned int index) const override;
+
+  // TEST
+  const Vector __stdcall GetHitBoxStart(unsigned int index) const override;
+  // TEST
+  const Vector __stdcall GetHitBoxEnd(unsigned int index) const override;
 
   void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) override;
 

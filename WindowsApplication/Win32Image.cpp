@@ -561,6 +561,26 @@ const Vector Win32Image::GetImagePositionOffSet(unsigned int index) const {
   return pImg->positionOffSet_;
 }
 
+const Vector __stdcall Win32Image::GetHitBoxStart(unsigned int index) const {
+  const ImageInfo* pImg = GetImageInfo(index);
+
+  if (nullptr == pImg) {
+    return {0.0f, 0.0f};
+  }
+
+  return pImg->HitBoxLeftTop_;
+}
+
+const Vector __stdcall Win32Image::GetHitBoxEnd(unsigned int index) const {
+  const ImageInfo* pImg = GetImageInfo(index);
+
+  if (nullptr == pImg) {
+    return {0.0f, 0.0f};
+  }
+
+  return pImg->HitBoxRightBottom_;
+}
+
 void __stdcall Win32Image::AddImagePositionOffSet(unsigned int index, const Vector& offSet) {
   ImageInfo* pImg = GetImageInfo(index);
 
