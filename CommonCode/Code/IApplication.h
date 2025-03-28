@@ -29,7 +29,7 @@ struct IImage : public IUnknown {
 
   virtual bool Save(std::string_view filePath, unsigned int index = 0xffffffff) = 0;
 
-  virtual bool IsRenderTexture() = 0; // IFileImage인지, IRenderImage인지 flag
+  virtual bool IsRenderTexture() = 0;  // IFileImage인지, IRenderImage인지 flag
 };
 
 struct IFileImage : public IImage {
@@ -51,11 +51,25 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) = 0;
 
-  virtual const Vector __stdcall GetHitBoxStart(unsigned int index) const = 0;
+  virtual bool __stdcall GetHitBoxTopInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
 
-  virtual void __stdcall AddHitBoxStartPosition(unsigned int index, const Vector& offSet) = 0;
+  virtual void __stdcall SetHitBoxTopInfo(unsigned int index, const Vector& position, const Vector& scale) = 0;
 
-  virtual const Vector __stdcall GetHitBoxEnd(unsigned int index) const = 0;
+  virtual bool __stdcall GetHitBoxBottomInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
+
+  virtual void __stdcall SetHitBoxBottomInfo(unsigned int index, const Vector& position, const Vector& scale) = 0;
+
+  virtual bool __stdcall GetAttackBoxInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
+
+  virtual void __stdcall SetAttackBoxInfo(unsigned int index, const Vector& position, const Vector& scale) = 0;
+
+  virtual bool __stdcall GetPushBoxInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
+
+  virtual void __stdcall SetPushBoxInfo(unsigned int index, const Vector& position, const Vector& scale) = 0;
+
+  virtual bool __stdcall GetGrabBoxInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
+
+  virtual void __stdcall SetGrabBoxInfo(unsigned int index, const Vector& position, const Vector& scale) = 0;
 
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
 

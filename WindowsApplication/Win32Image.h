@@ -5,6 +5,19 @@ enum class ImageLoadType {
   Folder
 };
 
+enum CollisionBoxType {
+  CBT_None = -1,
+  CBT_HitBoxStart1,
+  CBT_HitBoxEnd1,
+  CBT_HitBoxStart2,
+  CBT_HitBoxEnd2,
+  CBT_AttackBoxStart,
+  CBT_AttackBoxEnd,
+  CBT_PushBoxStart,
+  CBT_PushBoxEnd,
+  CBT_MAX
+};
+
 struct ImageInfo {
   bool isOwner_;
   LINK_ITEM link_;
@@ -12,8 +25,11 @@ struct ImageInfo {
   ImageType imageType_;
   Transform transform_;
   Vector positionOffSet_;
-  Vector HitBoxLeftTop_;
-  Vector HitBoxRightBottom_;
+  CollisionInfo hitBoxTop_;
+  CollisionInfo hitBoxBottom_;
+  CollisionInfo attackBox_;
+  CollisionInfo pushBox_;
+  CollisionInfo grabBox_;
 
   HBITMAP hBitMap_;
   HDC imageDC_;
@@ -24,8 +40,6 @@ struct ImageInfo {
         link_({nullptr, nullptr, this}),
         index_(-1),
         imageType_(ImageType::ImageType_None),
-        HitBoxLeftTop_({50.0f, 50.0f}),
-        HitBoxRightBottom_({100.0f, 120.0f}),
         hBitMap_(nullptr),
         imageDC_(nullptr),
         bitMapInfo_({}) {
@@ -94,13 +108,25 @@ class Win32Image final
 
   void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) override;
 
-  // TEST
-  const Vector __stdcall GetHitBoxStart(unsigned int index) const override;
+  bool __stdcall GetHitBoxTopInfo(unsigned int index, CollisionInfo* outInfo) const override;
 
-  void __stdcall AddHitBoxStartPosition(unsigned int index, const Vector& offSet) override;
+  void __stdcall SetHitBoxTopInfo(unsigned int index, const Vector& position, const Vector& scale) override;
 
-  // TEST
-  const Vector __stdcall GetHitBoxEnd(unsigned int index) const override;
+  bool __stdcall GetHitBoxBottomInfo(unsigned int index, CollisionInfo* outInfo) const override;
+
+  void __stdcall SetHitBoxBottomInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+
+  bool __stdcall GetAttackBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
+
+  void __stdcall SetAttackBoxInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+
+  bool __stdcall GetPushBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
+
+  void __stdcall SetPushBoxInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+
+  bool __stdcall GetGrabBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
+
+  void __stdcall SetGrabBoxInfo(unsigned int index, const Vector& position, const Vector& scale) override;
 
   void __stdcall ExportImageInfoToCSV(const std::string& filepath) const override;
 
@@ -151,5 +177,5 @@ class Win32Image final
 
   void DetectBoundBox(Vector leftTopPoint, Vector rightBottomPoint, Color8Bit emptyColor, Color8Bit lineColor);
 
-  //void ExportCsvFromBoundingBoxData(const std::string& filepath);
+  // void ExportCsvFromBoundingBoxData(const std::string& filepath);
 };

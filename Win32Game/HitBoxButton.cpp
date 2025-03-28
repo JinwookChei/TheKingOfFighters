@@ -11,6 +11,7 @@ ResizeCornerComponent::~ResizeCornerComponent() {
 }
 
 void ResizeCornerComponent::BeginPlay() {
+  SetScale({10.0f, 10.0f});
 }
 
 void ResizeCornerComponent::Tick(unsigned long long curTick) {
@@ -51,26 +52,6 @@ void ResizeCornerComponent::ClickExit() {
 
 void ResizeCornerComponent::BindViewPortImage(ViewPortImage* viewPortImage) {
   bindViewPortImage_ = viewPortImage;
-
-  if (nullptr == bindViewPortImage_) {
-    return;
-  }
-
-  unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
-  IImage* pImage = bindViewPortImage_->GetImage();
-
-  if (true == pImage->IsRenderTexture()) {
-    return;
-  }
-
-  IFileImage* pFileImage = (IFileImage*)pImage;
-
-  Vector imageOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
-  Vector hitBoxStart = pFileImage->GetHitBoxStart(imageIndex);
-
-  SetPosition(imageOffSet + hitBoxStart);
-
-  SetScale({10.0f, 10.0f});
 }
 
 void ResizeCornerComponent::Render(IRenderTexture* renderTexture) {
