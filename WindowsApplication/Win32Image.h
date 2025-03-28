@@ -42,7 +42,10 @@ struct ImageInfo {
         imageType_(ImageType::ImageType_None),
         hBitMap_(nullptr),
         imageDC_(nullptr),
-        bitMapInfo_({}) {
+        bitMapInfo_({}) 
+  {
+    hitBoxTop_.position_ = {100.0f, 100.0f};
+    hitBoxTop_.scale_ = {100.0f, 100.0f};
   }
 
   ~ImageInfo() {
@@ -110,23 +113,23 @@ class Win32Image final
 
   bool __stdcall GetHitBoxTopInfo(unsigned int index, CollisionInfo* outInfo) const override;
 
-  void __stdcall SetHitBoxTopInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+  void __stdcall SetHitBoxTopInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
 
   bool __stdcall GetHitBoxBottomInfo(unsigned int index, CollisionInfo* outInfo) const override;
 
-  void __stdcall SetHitBoxBottomInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+  void __stdcall SetHitBoxBottomInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
 
   bool __stdcall GetAttackBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
 
-  void __stdcall SetAttackBoxInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+  void __stdcall SetAttackBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
 
   bool __stdcall GetPushBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
 
-  void __stdcall SetPushBoxInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+  void __stdcall SetPushBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
 
   bool __stdcall GetGrabBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
 
-  void __stdcall SetGrabBoxInfo(unsigned int index, const Vector& position, const Vector& scale) override;
+  void __stdcall SetGrabBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
 
   void __stdcall ExportImageInfoToCSV(const std::string& filepath) const override;
 

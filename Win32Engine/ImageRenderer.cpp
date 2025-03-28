@@ -332,6 +332,7 @@ void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
 }
 
 void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
+
   if (!parameter_.on_ || nullptr == renderTexture) {
     return;
   }
@@ -370,18 +371,38 @@ void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
   // TODO :  콜리전 위치 만큼 offset 해야함.
   if (false == image_->IsRenderTexture()) {
     IFileImage* fileImage = (IFileImage*)image_;
-    
-    Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
-    Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_) + imageOffSet;
-    Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_) + imageOffSet;
-    Vector hitBoxSize = hitBoxEnd - hitBoxStart;
 
-    renderTransform.AddPostion(hitBoxStart);
+    CollisionInfo collisionInfo;
+
+    Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+    if (false == fileImage->GetHitBoxTopInfo(imageIndex_, &collisionInfo)) {
+      return;
+    }
+
+    renderTransform.AddPostion(collisionInfo.position_);
 
     GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
 
-    renderTexture->DrawRectagle(hitBoxSize, parameter_.color_, parameter_.linethickness_);
+    renderTexture->DrawRectagle(collisionInfo.scale_, parameter_.color_, parameter_.linethickness_);
 
     GGraphicDevice->RenderImgEnd(renderTexture);
   }
+
+  //// TODO :  콜리전 위치 만큼 offset 해야함.
+  // if (false == image_->IsRenderTexture()) {
+  //   IFileImage* fileImage = (IFileImage*)image_;
+  //
+  //   Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+  //   Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_) + imageOffSet;
+  //   Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_) + imageOffSet;
+  //   Vector hitBoxSize = hitBoxEnd - hitBoxStart;
+
+  //  renderTransform.AddPostion(hitBoxStart);
+
+  //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
+
+  //  renderTexture->DrawRectagle(hitBoxSize, parameter_.color_, parameter_.linethickness_);
+
+  //  GGraphicDevice->RenderImgEnd(renderTexture);
+  //}
 }

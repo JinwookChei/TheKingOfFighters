@@ -161,10 +161,11 @@
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chang.cpp" />
+    <ClCompile Include="CollisionBound.cpp" />
+    <ClCompile Include="CollisionBoundCorner.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="CrossHairControlButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="HitBoxButton.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -177,7 +178,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
-    <ClCompile Include="ToolIori.cpp" />
     <ClCompile Include="ToolLevel.cpp" />
     <ClCompile Include="ViewPortImage.cpp" />
     <ClCompile Include="WriteButton.cpp" />
@@ -188,10 +188,11 @@
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chang.h" />
+    <ClInclude Include="CollisionBound.h" />
+    <ClInclude Include="CollisionBoundCorner.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="CrossHairControlButton.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="HitBoxButton.h" />
     <ClInclude Include="Iori.h" />
     <ClInclude Include="KOFLevel.h" />
     <ClInclude Include="NextImageButton.h" />
@@ -200,7 +201,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />
-    <ClInclude Include="ToolIori.h" />
     <ClInclude Include="ToolLevel.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="ViewPortImage.h" />
