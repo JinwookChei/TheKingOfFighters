@@ -37,10 +37,11 @@ ToolLevel::ToolLevel() {
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
   ViewPortUI->SetScale({600.0f, 600.0f});
   ViewPortUI->MakeCollision();
-  //ViewPortUI->SetUseMousePosition(true);
-  ViewPortUI->ClearColor(Color8Bit::Magenta);
   ViewPortUI->SetOriginColor(Color8Bit::Magenta);
+  ViewPortUI->ChangeClearColor_(false);
+  
   ViewPortObject* viewPortObject = ViewPortUI->CreateUIComponent<ViewPortObject>();
+  CrossHair* crossHair = ViewPortUI->CreateUIComponent<CrossHair>();
   
   /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
   ChangImage->DetectBoundBoxes(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
@@ -60,11 +61,7 @@ ToolLevel::ToolLevel() {
   //temp->SetScale({200.0f, 50.0f});
   //temp->SetPosition({CollisionCreateUI->GetScale().HalfX(), CollisionCreateUI->GetScale().HalfY()});
 
-  // CROSSHAIRs
-  UI* crossHairUI = SpawnActor<UI>();
-  crossHairUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
-  crossHairUI->SetScale({600.0f, 600.0f});
-  CrossHair* crossHair = crossHairUI->CreateUIComponent<CrossHair>();
+  
 
   // CROSSHAIR CONTROL
   UI* crossHairPlusRow = SpawnActor<UI>();

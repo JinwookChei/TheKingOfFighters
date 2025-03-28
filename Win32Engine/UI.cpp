@@ -12,6 +12,7 @@ UI::UI()
       currentColor_(Color8Bit::Black),
       isClick_(false),
       useMousePosition_(false),
+      changeClearColor_(true),
       componentHead_(nullptr),
       componentTail_(nullptr) {
   Actor::isUI_ = true;
@@ -35,8 +36,6 @@ void UI::BeginPlay() {
   SetActorGroup(ActorGroupEngineType::ActorGroupEngineType_UI);
   imageRenderer_ = CreateImageRender();
   imageRenderer_->SetAlpha(1.0f);
-
-
 
   // collision_ = CreateCollision();
 }
@@ -109,7 +108,9 @@ void UI::ClearColor(const Color8Bit& color) const {
     return;
   }
 
-  currentColor_ = color;
+  if (true == changeClearColor_) {
+    currentColor_ = color;
+  }
 
   renderTexture_->SetColor(currentColor_);
 }
@@ -131,6 +132,10 @@ void UI::MakeCollision() {
 
 void UI::SetUseMousePosition(bool isOn) {
   useMousePosition_ = isOn;
+}
+
+void UI::ChangeClearColor_(bool isOn) {
+  changeClearColor_ = isOn;
 }
 
 const Color8Bit& UI::GetCurrentColor() const {
@@ -236,7 +241,7 @@ void UI::OnClickDownEvent() {
     // UI Component 의 위치 크기
     // 마우스의 위치
     // 충돌검사
-    
+
     pUIComponent->OnClickDownEvent();
   }
 }

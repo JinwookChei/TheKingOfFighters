@@ -6,7 +6,8 @@ ViewPortObject::ViewPortObject()
       image_(nullptr),
       imageIndex_(0),
       localeScale_{1.0f, 1.0f},
-      TransColor_(Color8Bit::Magenta) {
+      TransColor_(Color8Bit::Magenta),
+      prevMousePosition_({0.0f, 0.0f}) {
 }
 
 ViewPortObject::~ViewPortObject() {
@@ -41,6 +42,14 @@ void ViewPortObject::BeginPlay() {
 }
 
 void ViewPortObject::Tick(unsigned long long curTick) {
+  Vector curMousePosition = GEngineCore->GetMousePosition();
+  if (IsMouseClick()) {
+    Vector deltaPosition = curMousePosition - prevMousePosition_;
+
+    AddPositionOffSet(deltaPosition);
+  }
+
+  prevMousePosition_ = curMousePosition;
 }
 
 void ViewPortObject::ClickDownEvent() {

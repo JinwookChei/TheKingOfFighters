@@ -39,4 +39,6 @@ class ViewPortObject final
   Vector localeScale_;
 
   Color8Bit TransColor_;
+
+  Vector prevMousePosition_;
 };
