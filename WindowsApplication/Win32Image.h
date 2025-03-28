@@ -92,12 +92,15 @@ class Win32Image final
 
   const Vector __stdcall GetImagePositionOffSet(unsigned int index) const override;
 
+  void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) override;
+
   // TEST
   const Vector __stdcall GetHitBoxStart(unsigned int index) const override;
+
+  void __stdcall AddHitBoxStartPosition(unsigned int index, const Vector& offSet) override;
+
   // TEST
   const Vector __stdcall GetHitBoxEnd(unsigned int index) const override;
-
-  void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) override;
 
   void __stdcall ExportImageInfoToCSV(const std::string& filepath) const override;
 

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ViewPortObject.h"
+#include "ViewPortImage.h"
 #include "WriteButton.h"
 
 WriteButton::WriteButton()
@@ -20,7 +20,7 @@ void WriteButton::ClickDownEvent() {
   WriteData();
 }
 
-void WriteButton::BindObject(ViewPortObject* object) {
+void WriteButton::BindObject(ViewPortImage* object) {
   bindObject_ = object;
 }
 

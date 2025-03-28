@@ -215,6 +215,8 @@ void UI::OnClickDownEvent() {
   ClearColor(Color8Bit::BlueAlpha);
 
   LINK_ITEM* pCur = componentHead_;
+
+  UIComponent* pTempComponent = nullptr;
   while (pCur) {
     UIComponent* pUIComponent = (UIComponent*)pCur->item_;
     pCur = pCur->next_;
@@ -238,11 +240,20 @@ void UI::OnClickDownEvent() {
       continue;
     }
 
+    if (false == pUIComponent->GetEnableCollision()) {
+      continue;
+    }
     // UI Component 의 위치 크기
     // 마우스의 위치
     // 충돌검사
 
-    pUIComponent->OnClickDownEvent();
+    pTempComponent = pUIComponent;
+  }
+
+  // UI Component List 중에 가장 마지막으로 Collition된 Component만 ClickEvent
+  // 중복 충돌 방지.
+  if (nullptr != pTempComponent) {
+    pTempComponent->OnClickDownEvent();
   }
 }
 

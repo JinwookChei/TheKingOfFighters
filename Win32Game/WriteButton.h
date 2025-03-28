@@ -12,7 +12,7 @@ class WriteButton final
 
   void ClickDownEvent() override;
 
-  void BindObject(ViewPortObject* object);
+  void BindObject(ViewPortImage* object);
   
   void SetFilePath(const std::string& filePath);
 
@@ -25,5 +25,5 @@ protected:
 
   std::string filePath_;
 
-  ViewPortObject* bindObject_;
+  ViewPortImage* bindObject_;
 };

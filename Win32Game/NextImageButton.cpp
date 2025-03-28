@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ViewPortObject.h"
+#include "ViewPortImage.h"
 #include "NextImageButton.h"
 
 
@@ -43,11 +43,11 @@ void NextImageButton::ClickDownEvent() {
   bindObject_->SetImageIndex(imageIndex);
 }
 
-ViewPortObject* NextImageButton::GetBindObject() const {
+ViewPortImage* NextImageButton::GetBindObject() const {
   return bindObject_;
 }
 
-void NextImageButton::BindObject(ViewPortObject* object) {
+void NextImageButton::BindObject(ViewPortImage* object) {
   if (nullptr == object) {
     return;
   }

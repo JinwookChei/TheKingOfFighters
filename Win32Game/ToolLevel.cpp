@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "ToolLevel.h"
 #include "Button.h"
+
 #include "ViewPortImage.h"
+#include "HitBoxButton.h"
 #include "CrossHair.h"
 #include "CrossHairControlButton.h"
 #include "WriteButton.h"
 #include "ImageMoveButton.h"
 #include "NextImageButton.h"
-#include "HitBoxButton.h"
-#include "ToolIori.h"
 
 ToolLevel::ToolLevel() {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
@@ -41,6 +41,7 @@ ToolLevel::ToolLevel() {
 
   ViewPortImage* viewPortImage = ViewPortUI->CreateUIComponent<ViewPortImage>();
   CrossHair* crossHair = ViewPortUI->CreateUIComponent<CrossHair>();
+  crossHair->EnableCollision(false);
 
   /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
   ChangImage->DetectBoundBoxes(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
@@ -58,6 +59,7 @@ ToolLevel::ToolLevel() {
    CollisionCreateUI->MakeCollision();
    HitBoxButton* temp = CollisionCreateUI->CreateUIComponent<HitBoxButton>();
    temp->BindUI(ViewPortUI);
+   temp->BindViewPortImage(viewPortImage);
    temp->SetScale({200.0f, 50.0f});
    temp->SetPosition({CollisionCreateUI->GetScale().HalfX(), CollisionCreateUI->GetScale().HalfY()});
 

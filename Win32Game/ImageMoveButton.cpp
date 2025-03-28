@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ViewPortObject.h"
+#include "ViewPortImage.h"
 #include "ImageMoveButton.h"
 
 ImageMoveButton::ImageMoveButton()
@@ -58,11 +58,11 @@ void ImageMoveButton::ClickDownEvent() {
   }
 }
 
-ViewPortObject* ImageMoveButton::GetBindObject() const {
+ViewPortImage* ImageMoveButton::GetBindObject() const {
   return bindObject_;
 }
 
-void ImageMoveButton::BindObject(ViewPortObject* object) {
+void ImageMoveButton::BindObject(ViewPortImage* object) {
   if (nullptr == object) {
     return;
   }

@@ -49,11 +49,13 @@ struct IFileImage : public IImage {
 
   virtual const Vector __stdcall GetImagePositionOffSet(unsigned int index) const = 0;
 
+  virtual void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) = 0;
+
   virtual const Vector __stdcall GetHitBoxStart(unsigned int index) const = 0;
 
-  virtual const Vector __stdcall GetHitBoxEnd(unsigned int index) const = 0;
+  virtual void __stdcall AddHitBoxStartPosition(unsigned int index, const Vector& offSet) = 0;
 
-  virtual void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) = 0;
+  virtual const Vector __stdcall GetHitBoxEnd(unsigned int index) const = 0;
 
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
 

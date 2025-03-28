@@ -8,6 +8,7 @@ UIComponent::UIComponent()
       angle_(0.0f),
       isMouseClick_(false),
       transform_({0.0f, 0.0f}, {1.0f, 1.0f}),
+      enableCollision_(true),
       linkUI_({nullptr, nullptr, this}) {
 }
 
@@ -53,6 +54,14 @@ Vector UIComponent::GetScale() const {
 
 const Transform& UIComponent::GetTransform() const {
   return transform_;
+}
+
+bool UIComponent::GetEnableCollision() {
+  return enableCollision_;
+}
+
+void UIComponent::EnableCollision(bool isOn) {
+  enableCollision_ = isOn;
 }
 
 void UIComponent::PostRender() {

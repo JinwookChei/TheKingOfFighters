@@ -53,6 +53,7 @@ void ViewPortImage::Tick(unsigned long long curTick) {
 }
 
 void ViewPortImage::ClickDownEvent() {
+
 }
 
 IImage* ViewPortImage::GetImage() const {

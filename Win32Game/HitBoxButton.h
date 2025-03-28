@@ -15,8 +15,17 @@ class ResizeCornerComponent
 
   void ClickExit() override;
 
+  void BindViewPortImage(ViewPortImage* viewPortImage);
+
  protected:
   void Render(struct IRenderTexture* renderTexture) override;  
+
+
+private:
+  ViewPortImage* bindViewPortImage_;
+
+  Vector prevMousePosition_;
+
 
 };
 
@@ -37,11 +46,15 @@ class HitBoxButton final
 
   void BindUI(UI* ui);
 
+  void BindViewPortImage(ViewPortImage* viewPortImage);
+
  protected:
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
   UI* bindUI_;
+
+  ViewPortImage* bindViewPortImage_;
 
   
 };
