@@ -42,15 +42,14 @@ ToolLevel::ToolLevel() {
   ViewPortImage* viewPortImage = ViewPortUI->CreateUIComponent<ViewPortImage>();
   CollisionBound* hitBoxTop = ViewPortUI->CreateUIComponent<CollisionBound>();
   hitBoxTop->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxTop);
-
-  //CollisionBound* hitBoxBottom = ViewPortUI->CreateUIComponent<CollisionBound>();
-  //hitBoxBottom->BindViewPortImage(viewPortImage);
-  //CollisionBound* attackBox = ViewPortUI->CreateUIComponent<CollisionBound>();
-  //attackBox->BindViewPortImage(viewPortImage);
-  //CollisionBound* pushBox = ViewPortUI->CreateUIComponent<CollisionBound>();
-  //pushBox->BindViewPortImage(viewPortImage);
-  //CollisionBound* grabBox = ViewPortUI->CreateUIComponent<CollisionBound>();
-  //grabBox->BindViewPortImage(viewPortImage);
+  CollisionBound* hitBoxBottom = ViewPortUI->CreateUIComponent<CollisionBound>();
+  hitBoxBottom->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxBottom);
+  CollisionBound* attackBox = ViewPortUI->CreateUIComponent<CollisionBound>();
+  attackBox->Initialize(viewPortImage, CollisionBoundType::CBT_AttackBox);
+  CollisionBound* pushBox = ViewPortUI->CreateUIComponent<CollisionBound>();
+  pushBox->Initialize(viewPortImage, CollisionBoundType::CBT_PushBox);
+  CollisionBound* grabBox = ViewPortUI->CreateUIComponent<CollisionBound>();
+  grabBox->Initialize(viewPortImage, CollisionBoundType::CBT_GrabBox);
 
   CrossHair* crossHair = ViewPortUI->CreateUIComponent<CrossHair>();
   crossHair->EnableCollision(false);

@@ -3,9 +3,9 @@
 enum CollisionBoundType {
   CBT_HitBoxTop,
   CBT_HitBoxBottom,
-  CBT_attackBox,
-  CBT_pushBox,
-  CBT_grabBox
+  CBT_AttackBox,
+  CBT_PushBox,
+  CBT_GrabBox
 };
 
 class CollisionBoundCorner;

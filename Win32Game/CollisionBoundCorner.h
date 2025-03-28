@@ -2,9 +2,9 @@
 
 class ViewPortImage;
 
-enum BoundCornerType {
-  BCT_Start,
-  BCT_End
+enum CollisionBoundCornerType {
+  CBCT_Start,
+  CBCT_End
 };
 
 class CollisionBoundCorner final
@@ -19,7 +19,7 @@ class CollisionBoundCorner final
 
   void ClickDownEvent() override;
 
-  void Initialize(ViewPortImage* viewPortImage, BoundCornerType cornerType, const Color8Bit& color);
+  void Initialize(ViewPortImage* viewPortImage, CollisionBoundType boundType,CollisionBoundCornerType cornerType, const Color8Bit& color);
 
  protected:
   void Render(struct IRenderTexture* renderTexture) override;
@@ -27,7 +27,9 @@ class CollisionBoundCorner final
 private:
   ViewPortImage* bindViewPortImage_;
 
-  BoundCornerType cornerType_;
+  CollisionBoundType boundType_;
+
+  CollisionBoundCornerType cornerType_;
 
   Color8Bit color_;
 

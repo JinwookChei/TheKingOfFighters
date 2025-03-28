@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "ViewPortImage.h"
-#include "CollisionBoundCorner.h"
 #include "CollisionBound.h"
+#include "CollisionBoundCorner.h"
+
 
 CollisionBound::CollisionBound()
     : bindViewPortImage_(nullptr),
@@ -58,13 +59,13 @@ void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType
     case CBT_HitBoxBottom:
       color_ = {173, 216, 230, 255};
       break;
-    case CBT_attackBox:
+    case CBT_AttackBox:
       color_ = {255, 0, 0, 255};
       break;
-    case CBT_pushBox:
+    case CBT_PushBox:
       color_ = {255, 255, 255, 255};
       break;
-    case CBT_grabBox:
+    case CBT_GrabBox:
       color_ = {255, 255, 0, 255};
       break;
     default:
@@ -73,10 +74,10 @@ void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType
   
 
   bindCornerStart_ = owner->CreateUIComponent<CollisionBoundCorner>();
-  bindCornerStart_->Initialize(bindViewPortImage_, BoundCornerType::BCT_Start, color_);
+  bindCornerStart_->Initialize(bindViewPortImage_, boundType_, CollisionBoundCornerType::CBCT_Start, color_);
 
   bindCornerEnd_ = owner->CreateUIComponent<CollisionBoundCorner>();
-  bindCornerEnd_->Initialize(bindViewPortImage_, BoundCornerType::BCT_End, color_);
+  bindCornerEnd_->Initialize(bindViewPortImage_, boundType_, CollisionBoundCornerType::CBCT_End, color_);
 }
 
 
@@ -92,6 +93,6 @@ void CollisionBound::Render(IRenderTexture* renderTexture) {
   }
 
   const Transform& transform = GetTransform();
-  renderTexture->DrawRectagle(transform.GetScale(), color_, 1.0f);
+  renderTexture->DrawRectagle(transform.GetScale(), color_, 2.0f);
   renderTexture->SetAlpha(1.0f, transform, true, owner->GetCurrentColor());
 }

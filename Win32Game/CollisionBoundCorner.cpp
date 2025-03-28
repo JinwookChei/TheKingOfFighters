@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "ViewPortImage.h"
+#include "CollisionBound.h"
 #include "CollisionBoundCorner.h"
 
 CollisionBoundCorner::CollisionBoundCorner()
     : bindViewPortImage_(nullptr),
-      cornerType_(BoundCornerType::BCT_Start),
+      boundType_(CollisionBoundType::CBT_HitBoxTop),
+      cornerType_(CollisionBoundCornerType::CBCT_Start),
       color_(Color8Bit::BlackAlpha),
       prevMousePosition_({0.0f, 0.0f}) {
 }
@@ -17,8 +19,7 @@ void CollisionBoundCorner::BeginPlay() {
 }
 
 void CollisionBoundCorner::Tick(unsigned long long curTick) {
-  // TODO : 코드 함축 해야함.
-  if (cornerType_ == BoundCornerType::BCT_Start) {
+  if (cornerType_ == CollisionBoundCornerType::CBCT_Start) {
     Vector curMousePosition = GEngineCore->GetMousePosition();
 
     if (nullptr == bindViewPortImage_) {
@@ -36,18 +37,18 @@ void CollisionBoundCorner::Tick(unsigned long long curTick) {
     if (IsMouseClick()) {
       Vector deltaPosition = curMousePosition - prevMousePosition_;
       CollisionInfo collisionInfo;
-      if (false == pFileImage->GetHitBoxTopInfo(imageIndex, &collisionInfo)) {
+      if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
         return;
       }
 
       collisionInfo.position_ += deltaPosition;
       collisionInfo.scale_ -= deltaPosition;
-      pFileImage->SetHitBoxTopInfo(imageIndex, collisionInfo);
+      pFileImage->SetCollisionBoxInfo(imageIndex, boundType_, collisionInfo);
     }
 
     Vector imageOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
     CollisionInfo collisionInfo;
-    if (false == pFileImage->GetHitBoxTopInfo(imageIndex, &collisionInfo)) {
+    if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
       return;
     }
 
@@ -72,17 +73,17 @@ void CollisionBoundCorner::Tick(unsigned long long curTick) {
     if (IsMouseClick()) {
       Vector deltaPosition = curMousePosition - prevMousePosition_;
       CollisionInfo collisionInfo;
-      if (false == pFileImage->GetHitBoxTopInfo(imageIndex, &collisionInfo)) {
+      if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
         return;
       }
 
       collisionInfo.scale_ += deltaPosition;
-      pFileImage->SetHitBoxTopInfo(imageIndex, collisionInfo);
+      pFileImage->SetCollisionBoxInfo(imageIndex, boundType_, collisionInfo);
     }
 
     Vector imageOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
     CollisionInfo collisionInfo;
-    if (false == pFileImage->GetHitBoxTopInfo(imageIndex, &collisionInfo)) {
+    if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
       return;
     }
 
@@ -95,8 +96,9 @@ void CollisionBoundCorner::Tick(unsigned long long curTick) {
 void CollisionBoundCorner::ClickDownEvent() {
 }
 
-void CollisionBoundCorner::Initialize(ViewPortImage* viewPortImage, BoundCornerType cornerType, const Color8Bit& color) {
+void CollisionBoundCorner::Initialize(ViewPortImage* viewPortImage, CollisionBoundType boundType, CollisionBoundCornerType cornerType, const Color8Bit& color) {
   bindViewPortImage_ = viewPortImage;
+  boundType_ = boundType;
   cornerType_ = cornerType;
   color_ = color;
 }

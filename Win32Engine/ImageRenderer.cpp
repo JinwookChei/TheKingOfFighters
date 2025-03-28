@@ -368,25 +368,25 @@ void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
       break;
   }
 
-  // TODO :  콜리전 위치 만큼 offset 해야함.
-  if (false == image_->IsRenderTexture()) {
-    IFileImage* fileImage = (IFileImage*)image_;
+  //// TODO :  콜리전 위치 만큼 offset 해야함.
+  //if (false == image_->IsRenderTexture()) {
+  //  IFileImage* fileImage = (IFileImage*)image_;
 
-    CollisionInfo collisionInfo;
+  //  CollisionInfo collisionInfo;
 
-    Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
-    if (false == fileImage->GetHitBoxTopInfo(imageIndex_, &collisionInfo)) {
-      return;
-    }
+  //  Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+  //  if (false == fileImage->GetHitBoxTopInfo(imageIndex_, &collisionInfo)) {
+  //    return;
+  //  }
 
-    renderTransform.AddPostion(collisionInfo.position_);
+  //  renderTransform.AddPostion(collisionInfo.position_);
 
-    GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
+  //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
 
-    renderTexture->DrawRectagle(collisionInfo.scale_, parameter_.color_, parameter_.linethickness_);
+  //  renderTexture->DrawRectagle(collisionInfo.scale_, parameter_.color_, parameter_.linethickness_);
 
-    GGraphicDevice->RenderImgEnd(renderTexture);
-  }
+  //  GGraphicDevice->RenderImgEnd(renderTexture);
+  //}
 
   //// TODO :  콜리전 위치 만큼 offset 해야함.
   // if (false == image_->IsRenderTexture()) {
