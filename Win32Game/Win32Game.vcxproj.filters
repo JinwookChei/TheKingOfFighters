@@ -96,7 +96,7 @@
     <ClCompile Include="ToolIori.cpp">
       <Filter>Contents\Tools\ToolActor</Filter>
     </ClCompile>
-    <ClCompile Include="ViewPortObject.cpp">
+    <ClCompile Include="ViewPortImage.cpp">
       <Filter>Contents\Tools\ToolActor</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,7 +164,7 @@
     <ClInclude Include="ToolIori.h">
       <Filter>Contents\Tools\ToolActor</Filter>
     </ClInclude>
-    <ClInclude Include="ViewPortObject.h">
+    <ClInclude Include="ViewPortImage.h">
       <Filter>Contents\Tools\ToolActor</Filter>
     </ClInclude>
   </ItemGroup>

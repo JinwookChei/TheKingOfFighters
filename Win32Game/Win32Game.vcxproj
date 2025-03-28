@@ -179,7 +179,7 @@
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="ToolIori.cpp" />
     <ClCompile Include="ToolLevel.cpp" />
-    <ClCompile Include="ViewPortObject.cpp" />
+    <ClCompile Include="ViewPortImage.cpp" />
     <ClCompile Include="WriteButton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -203,7 +203,7 @@
     <ClInclude Include="ToolIori.h" />
     <ClInclude Include="ToolLevel.h" />
     <ClInclude Include="Types.h" />
-    <ClInclude Include="ViewPortObject.h" />
+    <ClInclude Include="ViewPortImage.h" />
     <ClInclude Include="WriteButton.h" />
   </ItemGroup>
   <ItemGroup>

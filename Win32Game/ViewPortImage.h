@@ -1,10 +1,10 @@
 #pragma once
 
-class ViewPortObject final
+class ViewPortImage final
     : public UIComponent {
  public:
-  ViewPortObject();
-  ~ViewPortObject();
+  ViewPortImage();
+  ~ViewPortImage();
 
   void BeginPlay() override;
 

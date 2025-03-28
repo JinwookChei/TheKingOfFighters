@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "ViewPortObject.h"
+#include "ViewPortImage.h"
 
-ViewPortObject::ViewPortObject()
+ViewPortImage::ViewPortImage()
     : owner_(nullptr),
       image_(nullptr),
       imageIndex_(0),
@@ -10,10 +10,10 @@ ViewPortObject::ViewPortObject()
       prevMousePosition_({0.0f, 0.0f}) {
 }
 
-ViewPortObject::~ViewPortObject() {
+ViewPortImage::~ViewPortImage() {
 }
 
-void ViewPortObject::BeginPlay() {
+void ViewPortImage::BeginPlay() {
   owner_ = GetOwner();
   if (nullptr == owner_) {
     return;
@@ -41,7 +41,7 @@ void ViewPortObject::BeginPlay() {
   }
 }
 
-void ViewPortObject::Tick(unsigned long long curTick) {
+void ViewPortImage::Tick(unsigned long long curTick) {
   Vector curMousePosition = GEngineCore->GetMousePosition();
   if (IsMouseClick()) {
     Vector deltaPosition = curMousePosition - prevMousePosition_;
@@ -52,21 +52,21 @@ void ViewPortObject::Tick(unsigned long long curTick) {
   prevMousePosition_ = curMousePosition;
 }
 
-void ViewPortObject::ClickDownEvent() {
+void ViewPortImage::ClickDownEvent() {
 }
 
-IImage* ViewPortObject::GetImage() const {
+IImage* ViewPortImage::GetImage() const {
   return image_;
 }
 
-void ViewPortObject::ChangeImage() {
+void ViewPortImage::ChangeImage() {
 }
 
-unsigned int ViewPortObject::GetImageIndex() const {
+unsigned int ViewPortImage::GetImageIndex() const {
   return imageIndex_;
 }
 
-void ViewPortObject::SetImageIndex(unsigned int index) {
+void ViewPortImage::SetImageIndex(unsigned int index) {
   imageIndex_ = index;
 
   if (false == image_->IsRenderTexture()) {
@@ -78,7 +78,7 @@ void ViewPortObject::SetImageIndex(unsigned int index) {
   }
 }
 
-void ViewPortObject::AddPositionOffSet(const Vector& offSet) {
+void ViewPortImage::AddPositionOffSet(const Vector& offSet) {
   if (true == image_->IsRenderTexture()) {
     return;
   }
@@ -91,7 +91,7 @@ void ViewPortObject::AddPositionOffSet(const Vector& offSet) {
   SetPosition(ownerHalfScale + imageOffSet);
 }
 
-void ViewPortObject::ResetPostionOffset() {
+void ViewPortImage::ResetPostionOffset() {
   if (true == image_->IsRenderTexture()) {
     return;
   }
@@ -105,7 +105,7 @@ void ViewPortObject::ResetPostionOffset() {
   SetPosition(ownerHalfScale + imageOffSet);
 }
 
-Vector ViewPortObject::GetPositionOffSet() const {
+Vector ViewPortImage::GetPositionOffSet() const {
   if (true == image_->IsRenderTexture()) {
     return {0.0f, 0.0f};
   }
@@ -114,7 +114,7 @@ Vector ViewPortObject::GetPositionOffSet() const {
   return fileImage->GetImagePositionOffSet(imageIndex_);
 }
 
-void ViewPortObject::Render(IRenderTexture* renderTexture) {
+void ViewPortImage::Render(IRenderTexture* renderTexture) {
   if (nullptr == renderTexture || nullptr == image_) {
     return;
   }
