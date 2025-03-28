@@ -17,12 +17,18 @@ class CollisionBoundCorner final
 
   void Tick(unsigned long long curTick) override;
 
+  
+
   void ClickDownEvent() override;
 
   void Initialize(ViewPortImage* viewPortImage, CollisionBoundType boundType,CollisionBoundCornerType cornerType, const Color8Bit& color);
 
  protected:
   void Render(struct IRenderTexture* renderTexture) override;
+
+private:
+  void MoveWithDrag();
+
 
 private:
   ViewPortImage* bindViewPortImage_;

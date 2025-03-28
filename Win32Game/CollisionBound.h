@@ -9,6 +9,7 @@ enum CollisionBoundType {
 };
 
 class CollisionBoundCorner;
+class ViewPortImage;
 
 class CollisionBound
     : public UIComponent {

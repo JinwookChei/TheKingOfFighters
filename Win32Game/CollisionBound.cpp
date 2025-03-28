@@ -57,7 +57,7 @@ void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType
       color_ = {0, 0, 255, 255};
       break;
     case CBT_HitBoxBottom:
-      color_ = {173, 216, 230, 255};
+      color_ = {150, 100, 255, 255};
       break;
     case CBT_AttackBox:
       color_ = {255, 0, 0, 255};
@@ -86,6 +86,26 @@ void CollisionBound::Render(IRenderTexture* renderTexture) {
     return;
   }
 
+  // 이미지의 Collisioninfo.hasCollision이 False면 Render 안함.
+  if (nullptr == bindViewPortImage_) {
+    return;
+  }
+
+  unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
+  IImage* pImage = bindViewPortImage_->GetImage();
+
+  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
+    return;
+  }
+  IFileImage* pFileImage = (IFileImage*)pImage;
+  CollisionInfo* collisionInfo;
+
+  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo) || false == collisionInfo->hasCollision_) {
+    return;
+  }
+  //이미지의 Collisioninfo.hasCollision이 False면 Render 안함.
+
+
   UI* owner = GetOwner();
   if (nullptr == owner)
   {
@@ -93,6 +113,7 @@ void CollisionBound::Render(IRenderTexture* renderTexture) {
   }
 
   const Transform& transform = GetTransform();
+
   renderTexture->DrawRectagle(transform.GetScale(), color_, 2.0f);
   renderTexture->SetAlpha(1.0f, transform, true, owner->GetCurrentColor());
 }

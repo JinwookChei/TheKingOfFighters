@@ -51,7 +51,7 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) = 0;
 
-  virtual bool __stdcall GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo* outInfo) = 0;
+  virtual bool __stdcall GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo** outInfo) = 0;
 
   virtual void __stdcall SetCollisionBoxInfo(unsigned int index, unsigned int type, const CollisionInfo& collisionInfo) = 0;
 

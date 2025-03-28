@@ -47,16 +47,6 @@ struct ImageInfo {
         imageDC_(nullptr),
         bitMapInfo_({}) 
   {
-    collisionBoxInfo_[0].position_ = {100.0f, 100.0f};
-    collisionBoxInfo_[0].scale_ = {100.0f, 100.0f};
-    collisionBoxInfo_[1].position_ = {110.0f, 110.0f};
-    collisionBoxInfo_[1].scale_ = {100.0f, 100.0f};
-    collisionBoxInfo_[2].position_ = {120.0f, 120.0f};
-    collisionBoxInfo_[2].scale_ = {100.0f, 100.0f};
-    collisionBoxInfo_[3].position_ = {130.0f, 130.0f};
-    collisionBoxInfo_[3].scale_ = {100.0f, 100.0f};
-    collisionBoxInfo_[4].position_ = {140.0f, 140.0f};
-    collisionBoxInfo_[4].scale_ = {100.0f, 100.0f};
   }
 
   ~ImageInfo() {
@@ -122,7 +112,7 @@ class Win32Image final
 
   void __stdcall AddImagePositionOffSet(unsigned int index, const Vector& offSet) override;
 
-  bool __stdcall GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo* outInfo) override;
+  bool __stdcall GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo** outInfo) override;
 
   void __stdcall SetCollisionBoxInfo(unsigned int index, unsigned int type, const CollisionInfo& collisionInfo) override;
 
