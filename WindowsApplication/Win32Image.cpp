@@ -610,6 +610,46 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
   std::filesystem::create_directories(path.parent_path());
   std::ofstream outputFile(filepath);
 
+
+  outputFile << "Position_X" << ",";
+  outputFile << "Position_Y" << ",";
+  outputFile << "Scale_X" << ",";
+  outputFile << "Scale_Y" << ",";
+  outputFile << "Offset_X" << ",";
+  outputFile << "Offset_Y" << ",";
+
+  outputFile << "HasHitBoxTop" << ",";
+  outputFile << "HitBoxTopPosition_X" << ",";
+  outputFile << "HitBoxTopPosition_Y" << ",";
+  outputFile << "HitBoxTopScale_X" << ",";
+  outputFile << "HitBoxTopScale_Y" << ",";
+
+  outputFile << "HasHitBoxBottom" << ",";
+  outputFile << "HitBoxBottomPosition_X" << ",";
+  outputFile << "HitBoxBottomPosition_Y" << ",";
+  outputFile << "HitBoxBottomScale_X" << ",";
+  outputFile << "HitBoxBottomScale_Y" << ",";
+
+  outputFile << "HasAttackBox" << ",";
+  outputFile << "AttackBoxPosition_X" << ",";
+  outputFile << "AttackBoxPosition_Y" << ",";
+  outputFile << "AttackBoxScale_X" << ",";
+  outputFile << "AttackBoxScale_Y" << ",";
+
+  outputFile << "HasPushBox" << ",";
+  outputFile << "PushBoxPosition_X" << ",";
+  outputFile << "PushBoxPosition_Y" << ",";
+  outputFile << "PushBoxScale_X" << ",";
+  outputFile << "PushBoxScale_Y" << ",";
+
+  outputFile << "HasGrabBox" << ",";
+  outputFile << "GrabBoxPosition_X" << ",";
+  outputFile << "GrabBoxPosition_Y" << ",";
+  outputFile << "GrabBoxScale_X" << ",";
+  outputFile << "GrabBoxScale_Y" << ",";
+  outputFile << "\n";
+
+
   LINK_ITEM* pCur = imageHead_;
   while (pCur) {
     ImageInfo* pImg = (ImageInfo*)pCur->item_;
@@ -622,23 +662,41 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
       outputFile << pImg->transform_.GetScale().Y << ",";
       outputFile << pImg->positionOffSet_.X << ",";
       outputFile << pImg->positionOffSet_.Y << ",";
+
+      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].position_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].position_.Y : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].scale_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].scale_.Y : 0) << ",";
+
+      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].position_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].position_.Y : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].scale_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].scale_.Y : 0) << ",";
+
+      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].position_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].position_.Y : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].scale_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].scale_.Y : 0) << ",";
+
+      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].position_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].position_.Y : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].scale_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].scale_.Y : 0) << ",";
+
+      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].position_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].position_.Y : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].scale_.X : 0) << ",";
+      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].scale_.Y : 0) << ",";
+
       outputFile << "\n";
     }
   }
   outputFile.close();
-
-  // if (outputFile.is_open()) {
-  //   for (const auto& row : outData_) {
-  //     for (size_t i = 0; i < row.size(); ++i) {
-  //       if (i > 0) {
-  //         outputFile << ",";  // 쉼표로 값들을 구분
-  //       }
-  //       outputFile << row[i];  // 값 출력
-  //     }
-  //     outputFile << "\n";  // 새로운 줄로 이동
-  //   }
-  //   outputFile.close();
-  // }
 }
 
 bool __stdcall Win32Image::Load() {

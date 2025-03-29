@@ -29,19 +29,18 @@ void WriteButton::SetFilePath(const std::string& filePath) {
 }
 
 void WriteButton::WriteData() {
-  /*ImageRenderer* pRenderer = bindObject_->GetOwnerImageRenderer();
-  if (nullptr == pRenderer)
-  {
+  if (nullptr == bindObject_) {
     return;
   }
 
-  IFileImage* fileImage = dynamic_cast<IFileImage*>(pRenderer->GetImage());
-  if (nullptr == fileImage)
-  {
+  IImage* pImage = bindObject_->GetImage();
+
+  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
 
-  fileImage->ExportImageInfoToCSV(filePath_);*/
+  IFileImage* pFileImage = (IFileImage*)pImage;
+  pFileImage->ExportImageInfoToCSV(filePath_);
 }
 
 void WriteButton::Render(IRenderTexture* renderTexture) {
