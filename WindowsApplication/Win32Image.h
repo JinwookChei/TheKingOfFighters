@@ -116,25 +116,7 @@ class Win32Image final
 
   void __stdcall SetCollisionBoxInfo(unsigned int index, unsigned int type, const CollisionInfo& collisionInfo) override;
 
-  //bool __stdcall GetHitBoxTopInfo(unsigned int index, CollisionInfo* outInfo) const override;
-
-  //void __stdcall SetHitBoxTopInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
-
-  //bool __stdcall GetHitBoxBottomInfo(unsigned int index, CollisionInfo* outInfo) const override;
-
-  //void __stdcall SetHitBoxBottomInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
-
-  //bool __stdcall GetAttackBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
-
-  //void __stdcall SetAttackBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
-
-  //bool __stdcall GetPushBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
-
-  //void __stdcall SetPushBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
-
-  //bool __stdcall GetGrabBoxInfo(unsigned int index, CollisionInfo* outInfo) const override;
-
-  //void __stdcall SetGrabBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) override;
+  void __stdcall AddCollisionBoxPositionOffSet(unsigned int index, const Vector& offSet) override;
 
   void __stdcall ExportImageInfoToCSV(const std::string& filepath) const override;
 

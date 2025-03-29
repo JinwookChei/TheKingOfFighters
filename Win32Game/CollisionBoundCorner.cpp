@@ -33,6 +33,10 @@ void CollisionBoundCorner::Initialize(ViewPortImage* viewPortImage, CollisionBou
 }
 
 void CollisionBoundCorner::Render(IRenderTexture* renderTexture) {
+  if (nullptr == renderTexture) {
+    return;
+  }
+
   if (nullptr == bindViewPortImage_) {
     return;
   }
@@ -53,10 +57,6 @@ void CollisionBoundCorner::Render(IRenderTexture* renderTexture) {
   }
   // 이미지의 Collisioninfo.hasCollision이 False면 Render 안함.
 
-
-  if (nullptr == renderTexture) {
-    return;
-  }
 
   UI* owner = GetOwner();
   if (nullptr == owner) {
@@ -94,16 +94,14 @@ void CollisionBoundCorner::MoveWithDrag() {
 
       collisionInfo->position_ += deltaPosition;
       collisionInfo->scale_ -= deltaPosition;
-      pFileImage->SetCollisionBoxInfo(imageIndex, boundType_, *collisionInfo);
     }
 
-    Vector imageOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
     CollisionInfo* collisionInfo;
     if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
       return;
     }
 
-    SetPosition(imageOffSet + collisionInfo->position_);
+    SetPosition(collisionInfo->position_);
 
     prevMousePosition_ = curMousePosition;
   } else {
@@ -129,16 +127,14 @@ void CollisionBoundCorner::MoveWithDrag() {
       }
 
       collisionInfo->scale_ += deltaPosition;
-      pFileImage->SetCollisionBoxInfo(imageIndex, boundType_, *collisionInfo);
     }
 
-    Vector imageOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
     CollisionInfo* collisionInfo;
     if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo) || false == collisionInfo->hasCollision_) {
       return;
     }
 
-    SetPosition(imageOffSet + collisionInfo->position_ + collisionInfo->scale_);
+    SetPosition(collisionInfo->position_ + collisionInfo->scale_);
 
     prevMousePosition_ = curMousePosition;
   }

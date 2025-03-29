@@ -55,25 +55,7 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall SetCollisionBoxInfo(unsigned int index, unsigned int type, const CollisionInfo& collisionInfo) = 0;
 
-  //virtual bool __stdcall GetHitBoxTopInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
-
-  //virtual void __stdcall SetHitBoxTopInfo(unsigned int index, const CollisionInfo& collisionInfo) = 0;
-
-  //virtual bool __stdcall GetHitBoxBottomInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
-
-  //virtual void __stdcall SetHitBoxBottomInfo(unsigned int index, const CollisionInfo& collisionInfo) = 0;
-
-  //virtual bool __stdcall GetAttackBoxInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
-
-  //virtual void __stdcall SetAttackBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) = 0;
-
-  //virtual bool __stdcall GetPushBoxInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
-
-  //virtual void __stdcall SetPushBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) = 0;
-
-  //virtual bool __stdcall GetGrabBoxInfo(unsigned int index, CollisionInfo* outInfo) const = 0;
-
-  //virtual void __stdcall SetGrabBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) = 0;
+  virtual void __stdcall AddCollisionBoxPositionOffSet(unsigned int index, const Vector& offSet) = 0;
 
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
 

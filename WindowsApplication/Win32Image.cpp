@@ -585,168 +585,25 @@ bool __stdcall Win32Image::GetCollisionBoxInfo(unsigned int index, unsigned int 
 
 void __stdcall Win32Image::SetCollisionBoxInfo(unsigned int index, unsigned int type, const CollisionInfo& collisionInfo) {
   ImageInfo* pImageInfo = GetImageInfo(index);
-  
-     if (nullptr == pImageInfo) {
-       return;
-     }
-  
-     pImageInfo->collisionBoxInfo_[type] = collisionInfo;
+
+  if (nullptr == pImageInfo) {
+    return;
+  }
+
+  pImageInfo->collisionBoxInfo_[type] = collisionInfo;
 }
 
-// bool __stdcall Win32Image::GetHitBoxTopInfo(unsigned int index, CollisionInfo* outInfo) const {
-//   const ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     Vector position{0.0f, 0.0f};
-//     Vector scale{0.0f, 0.0f};
-//     outInfo->position_ = position;
-//     outInfo->scale_ = scale;
-//     return false;
-//   }
-//
-//   *outInfo = pImageInfo->hitBoxTop_;
-//   return true;
-// }
-//
-// void __stdcall Win32Image::SetHitBoxTopInfo(unsigned int index, const CollisionInfo& collisionInfo) {
-//   ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     return;
-//   }
-//
-//   pImageInfo->hitBoxTop_ = collisionInfo;
-// }
-//
-// bool __stdcall Win32Image::GetHitBoxBottomInfo(unsigned int index, CollisionInfo* outInfo) const {
-//   const ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     Vector position{0.0f, 0.0f};
-//     Vector scale{0.0f, 0.0f};
-//     outInfo->position_ = position;
-//     outInfo->scale_ = scale;
-//     return false;
-//   }
-//
-//   *outInfo = pImageInfo->hitBoxBottom_;
-//   return true;
-// }
-//
-// void __stdcall Win32Image::SetHitBoxBottomInfo(unsigned int index, const CollisionInfo& collisionInfo) {
-//   ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     return;
-//   }
-//
-//   pImageInfo->hitBoxBottom_ = collisionInfo;
-// }
-//
-// bool __stdcall Win32Image::GetAttackBoxInfo(unsigned int index, CollisionInfo* outInfo) const {
-//   const ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     Vector position{0.0f, 0.0f};
-//     Vector scale{0.0f, 0.0f};
-//     outInfo->position_ = position;
-//     outInfo->scale_ = scale;
-//     return false;
-//   }
-//
-//   *outInfo = pImageInfo->attackBox_;
-//   return true;
-// }
-//
-// void __stdcall Win32Image::SetAttackBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) {
-//   ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     return;
-//   }
-//
-//   pImageInfo->attackBox_ = collisionInfo;
-// }
-//
-// bool __stdcall Win32Image::GetPushBoxInfo(unsigned int index, CollisionInfo* outInfo) const {
-//   const ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     Vector position{0.0f, 0.0f};
-//     Vector scale{0.0f, 0.0f};
-//     outInfo->position_ = position;
-//     outInfo->scale_ = scale;
-//     return false;
-//   }
-//
-//   *outInfo = pImageInfo->pushBox_;
-//   return true;
-// }
-//
-// void __stdcall Win32Image::SetPushBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) {
-//   ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     return;
-//   }
-//
-//   pImageInfo->pushBox_ = collisionInfo;
-// }
-//
-// bool __stdcall Win32Image::GetGrabBoxInfo(unsigned int index, CollisionInfo* outInfo) const {
-//   const ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     Vector position{0.0f, 0.0f};
-//     Vector scale{0.0f, 0.0f};
-//     outInfo->position_ = position;
-//     outInfo->scale_ = scale;
-//     return false;
-//   }
-//
-//   *outInfo = pImageInfo->grabBox_;
-//   return true;
-// }
-//
-// void __stdcall Win32Image::SetGrabBoxInfo(unsigned int index, const CollisionInfo& collisionInfo) {
-//   ImageInfo* pImageInfo = GetImageInfo(index);
-//
-//   if (nullptr == pImageInfo) {
-//     return;
-//   }
-//
-//   pImageInfo->grabBox_ = collisionInfo;
-// }
+void __stdcall Win32Image::AddCollisionBoxPositionOffSet(unsigned int index, const Vector& offSet) {
+  ImageInfo* pImageInfo = GetImageInfo(index);
 
-// const Vector __stdcall Win32Image::GetHitBoxStart(unsigned int index) const {
-//   const ImageInfo* pImg = GetImageInfo(index);
-//
-//   if (nullptr == pImg) {
-//     return {0.0f, 0.0f};
-//   }
-//
-//   return pImg->HitBoxLeftTop_;
-// }
-//
-// void __stdcall Win32Image::AddHitBoxStartPosition(unsigned int index, const Vector& offSet) {
-//   ImageInfo* pImg = GetImageInfo(index);
-//
-//   if (nullptr == pImg) {
-//     return;
-//   }
-//
-//   pImg->HitBoxLeftTop_ += offSet;
-// }
-//
-// const Vector __stdcall Win32Image::GetHitBoxEnd(unsigned int index) const {
-//   const ImageInfo* pImg = GetImageInfo(index);
-//
-//   if (nullptr == pImg) {
-//     return {0.0f, 0.0f};
-//   }
-//
-//   return pImg->HitBoxRightBottom_;
-// }
+  if (nullptr == pImageInfo) {
+    return;
+  }
+
+  for (int i = 0; i < pImageInfo->collisionBoxInfo_.size(); ++i) {
+    pImageInfo->collisionBoxInfo_[i].position_ += offSet;
+  }
+}
 
 void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) const {
   std::filesystem::path path(filepath);

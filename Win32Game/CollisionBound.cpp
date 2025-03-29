@@ -71,7 +71,7 @@ void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType
     default:
       break;
   }
-  
+
 
   bindCornerStart_ = owner->CreateUIComponent<CollisionBoundCorner>();
   bindCornerStart_->Initialize(bindViewPortImage_, boundType_, CollisionBoundCornerType::CBCT_Start, color_);
