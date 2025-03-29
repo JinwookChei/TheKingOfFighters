@@ -49,9 +49,9 @@ void CollisionBoundCorner::Render(IRenderTexture* renderTexture) {
     return;
   }
   IFileImage* pFileImage = (IFileImage*)pImage;
-  CollisionInfo* collisionInfo;
+  CollisionInfo* pCollisionInfo;
 
-  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo) || false == collisionInfo->hasCollision_)
+  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_)
   {
     return;
   }
@@ -87,21 +87,21 @@ void CollisionBoundCorner::MoveWithDrag() {
 
     if (IsMouseClick()) {
       Vector deltaPosition = curMousePosition - prevMousePosition_;
-      CollisionInfo* collisionInfo;
-      if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo) || false == collisionInfo->hasCollision_) {
+      CollisionInfo* pCollisionInfo;
+      if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_) {
         return;
       }
 
-      collisionInfo->position_ += deltaPosition;
-      collisionInfo->scale_ -= deltaPosition;
+      pCollisionInfo->position_ += deltaPosition;
+      pCollisionInfo->scale_ -= deltaPosition;
     }
 
-    CollisionInfo* collisionInfo;
-    if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
+    CollisionInfo* pCollisionInfo;
+    if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo)) {
       return;
     }
 
-    SetPosition(collisionInfo->position_);
+    SetPosition(pCollisionInfo->position_);
 
     prevMousePosition_ = curMousePosition;
   } else {
@@ -121,20 +121,20 @@ void CollisionBoundCorner::MoveWithDrag() {
 
     if (IsMouseClick()) {
       Vector deltaPosition = curMousePosition - prevMousePosition_;
-      CollisionInfo* collisionInfo;
-      if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
+      CollisionInfo* pCollisionInfo;
+      if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo)) {
         return;
       }
 
-      collisionInfo->scale_ += deltaPosition;
+      pCollisionInfo->scale_ += deltaPosition;
     }
 
-    CollisionInfo* collisionInfo;
-    if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo) || false == collisionInfo->hasCollision_) {
+    CollisionInfo* pCollisionInfo;
+    if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_) {
       return;
     }
 
-    SetPosition(collisionInfo->position_ + collisionInfo->scale_);
+    SetPosition(pCollisionInfo->position_ + pCollisionInfo->scale_);
 
     prevMousePosition_ = curMousePosition;
   }

@@ -36,14 +36,14 @@ void DeleteCollisionButton::ClickDownEvent() {
   IFileImage* pFileImage = (IFileImage*)pImage;
   unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
 
-  CollisionInfo* collisionInfo;
-  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo)) {
+  CollisionInfo* pCollisionInfo;
+  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo)) {
     return;
   }
 
-  collisionInfo->position_ = {0.0f, 0.0f};
-  collisionInfo->scale_ = {0.0f, 0.0f};
-  collisionInfo->hasCollision_ = false;
+  pCollisionInfo->position_ = {0.0f, 0.0f};
+  pCollisionInfo->scale_ = {0.0f, 0.0f};
+  pCollisionInfo->hasCollision_ = false;
 }
 
 void DeleteCollisionButton::Render(IRenderTexture* renderTexture) {

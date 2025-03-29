@@ -37,15 +37,15 @@ void CreateCollisionButton::ClickDownEvent() {
  IFileImage* pFileImage = (IFileImage*)pImage;
  unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
 
- CollisionInfo* collisionInfo;
- if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo))
+ CollisionInfo* pCollisionInfo;
+ if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo))
  {
    return;
  }
 
- collisionInfo->position_ = {100.0f, 100.0f};
- collisionInfo->scale_ = {100.0f, 100.0f};
- collisionInfo->hasCollision_ = true;
+ pCollisionInfo->position_ = {100.0f, 100.0f};
+ pCollisionInfo->scale_ = {100.0f, 100.0f};
+ pCollisionInfo->hasCollision_ = true;
 }
 
 void CreateCollisionButton::Render(IRenderTexture* renderTexture) {

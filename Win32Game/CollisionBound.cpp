@@ -98,9 +98,9 @@ void CollisionBound::Render(IRenderTexture* renderTexture) {
     return;
   }
   IFileImage* pFileImage = (IFileImage*)pImage;
-  CollisionInfo* collisionInfo;
+  CollisionInfo* pCollisionInfo;
 
-  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &collisionInfo) || false == collisionInfo->hasCollision_) {
+  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_) {
     return;
   }
   //이미지의 Collisioninfo.hasCollision이 False면 Render 안함.
