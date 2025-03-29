@@ -161,15 +161,17 @@
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chang.cpp" />
+    <ClCompile Include="CollisionBound.cpp" />
+    <ClCompile Include="CollisionBoundCorner.cpp" />
+    <ClCompile Include="CreateCollisionButton.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="CrossHairControlButton.cpp" />
+    <ClCompile Include="DeleteCollisionButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="HitBoxButton.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NextImageButton.cpp" />
-    <ClCompile Include="ImageObject.cpp" />
     <ClCompile Include="ImageMoveButton.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -178,6 +180,7 @@
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="ToolLevel.cpp" />
+    <ClCompile Include="ViewPortImage.cpp" />
     <ClCompile Include="WriteButton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,20 +189,23 @@
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chang.h" />
+    <ClInclude Include="CollisionBound.h" />
+    <ClInclude Include="CollisionBoundCorner.h" />
+    <ClInclude Include="CreateCollisionButton.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="CrossHairControlButton.h" />
+    <ClInclude Include="DeleteCollisionButton.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="HitBoxButton.h" />
     <ClInclude Include="Iori.h" />
     <ClInclude Include="KOFLevel.h" />
     <ClInclude Include="NextImageButton.h" />
-    <ClInclude Include="ImageObject.h" />
     <ClInclude Include="ImageMoveButton.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="ToolLevel.h" />
     <ClInclude Include="Types.h" />
+    <ClInclude Include="ViewPortImage.h" />
     <ClInclude Include="WriteButton.h" />
   </ItemGroup>
   <ItemGroup>

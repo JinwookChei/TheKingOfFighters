@@ -31,6 +31,10 @@ class UIComponent {
 
   JO_API const Transform& GetTransform() const;
 
+  JO_API bool GetEnableCollision();
+
+  JO_API void EnableCollision(bool isOn);
+
  protected:
   JO_API virtual void Render(struct IRenderTexture* renderTexture) = 0;
 
@@ -56,6 +60,8 @@ class UIComponent {
   Transform transform_;
 
   LINK_ITEM linkUI_;
+
+  bool enableCollision_; 
 
   
 };

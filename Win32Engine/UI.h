@@ -27,7 +27,7 @@ class UI final
 
   JO_API void SetUseMousePosition(bool isOn);
 
-  JO_API void UseHoverColorChange(bool isOn);
+  JO_API void ChangeClearColor_(bool isOn);
 
   JO_API const Color8Bit& GetCurrentColor() const;
 
@@ -62,7 +62,7 @@ class UI final
 
   bool useMousePosition_;
 
-  bool useHoverColorChange_;
+  bool changeClearColor_;
 
   ImageRenderer* imageRenderer_;
 

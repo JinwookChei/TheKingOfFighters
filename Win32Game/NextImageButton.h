@@ -17,9 +17,9 @@ class NextImageButton final
 
   void ClickDownEvent() override;
 
-  ImageObject* GetBindObject() const;
+  ViewPortImage* GetBindObject() const;
 
-  void BindObject(ImageObject* object);
+  void BindObject(ViewPortImage* object);
 
   void SetNextImageType(NextImageType nextImageType);
 
@@ -27,7 +27,7 @@ class NextImageButton final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  ImageObject* bindObject_;
+  ViewPortImage* bindObject_;
 
   NextImageType nextImageType_;
 };

@@ -243,7 +243,7 @@ void Win32RenderTexture::DrawRectagle(const Vector& scale, const Color8Bit& colo
 
   Gdiplus::Graphics graphics(GetDC());
   Gdiplus::Pen pen(Gdiplus::Color(color.A, color.R, color.G, color.B), Linethickness);
-  graphics.DrawRectangle(&pen, startX, startY, width, height);
+  Gdiplus::Status a = graphics.DrawRectangle(&pen, startX, startY, width, height);
 }
 
 void Win32RenderTexture::DrawCircle(const Vector& scale, const Color8Bit& color, float Linethickness) {

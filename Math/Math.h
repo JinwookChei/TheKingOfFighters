@@ -127,8 +127,9 @@ class Color8Bit {
 };
 
 struct CollisionInfo {
-  Vector position_;
-  Vector scale_;
+  Vector position_ = {0.0f, 0.0f};
+  Vector scale_ = {0.0f, 0.0f};
+  bool hasCollision_ = false;
 
   float Left() const {
     return position_.X - scale_.HalfX();

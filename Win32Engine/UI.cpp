@@ -11,8 +11,8 @@ UI::UI()
       originColor_(Color8Bit::Black),
       currentColor_(Color8Bit::Black),
       isClick_(false),
-      useHoverColorChange_(true),
       useMousePosition_(false),
+      changeClearColor_(true),
       componentHead_(nullptr),
       componentTail_(nullptr) {
   Actor::isUI_ = true;
@@ -108,7 +108,9 @@ void UI::ClearColor(const Color8Bit& color) const {
     return;
   }
 
-  currentColor_ = color;
+  if (true == changeClearColor_) {
+    currentColor_ = color;
+  }
 
   renderTexture_->SetColor(currentColor_);
 }
@@ -132,8 +134,8 @@ void UI::SetUseMousePosition(bool isOn) {
   useMousePosition_ = isOn;
 }
 
-void UI::UseHoverColorChange(bool isOn) {
-  useHoverColorChange_ = isOn;
+void UI::ChangeClearColor_(bool isOn) {
+  changeClearColor_ = isOn;
 }
 
 const Color8Bit& UI::GetCurrentColor() const {
@@ -213,6 +215,8 @@ void UI::OnClickDownEvent() {
   ClearColor(Color8Bit::BlueAlpha);
 
   LINK_ITEM* pCur = componentHead_;
+
+  UIComponent* pTempComponent = nullptr;
   while (pCur) {
     UIComponent* pUIComponent = (UIComponent*)pCur->item_;
     pCur = pCur->next_;
@@ -236,24 +240,29 @@ void UI::OnClickDownEvent() {
       continue;
     }
 
+    if (false == pUIComponent->GetEnableCollision()) {
+      continue;
+    }
     // UI Component 의 위치 크기
     // 마우스의 위치
     // 충돌검사
 
-    pUIComponent->OnClickDownEvent();
+    pTempComponent = pUIComponent;
+  }
+
+  // UI Component List 중에 가장 마지막으로 Collition된 Component만 ClickEvent
+  // 중복 충돌 방지.
+  if (nullptr != pTempComponent) {
+    pTempComponent->OnClickDownEvent();
   }
 }
 
 void UI::OnHoverEvent() {
-  if (true == useHoverColorChange_) {
-    ClearColor(Color8Bit::GreenAlpha);
-  }
+  ClearColor(Color8Bit::GreenAlpha);
 }
 
 void UI::OnMouseExit() {
-  if (true == useHoverColorChange_) {
-    ClearColor(originColor_);
-  }
+  ClearColor(originColor_);
 
   LINK_ITEM* pCur = componentHead_;
   while (pCur) {

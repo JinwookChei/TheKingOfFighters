@@ -94,6 +94,8 @@ class Actor {
 
   void DebugRender(IRenderTexture* renderTexture) const;
 
+  void OnCollisionRender(IRenderTexture* renderTexture) const;
+
   void SetLevel(Level* level);
 
   LINK_ITEM* GetLink();

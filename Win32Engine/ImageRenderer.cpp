@@ -190,8 +190,7 @@ void ImageRenderer::Render(IRenderTexture* renderTexture) {
   }
 
   // 나중에 디버깅 모드로 무언가 그리기 모드를 켰을경우 이곳에서 그리기 작업
-  //GGraphicDevice->DrawRectagle({100.0f, 100.0f}, Color8Bit::RedAlpha, 10.0f);
-
+  // GGraphicDevice->DrawRectagle({100.0f, 100.0f}, Color8Bit::RedAlpha, 10.0f);
 
   GGraphicDevice->RenderImgEnd(renderTexture);
 }
@@ -330,4 +329,80 @@ void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
   }
 
   GGraphicDevice->RenderImgEnd(renderTexture);
+}
+
+void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
+
+  if (!parameter_.on_ || nullptr == renderTexture) {
+    return;
+  }
+
+  Transform renderTransform = GetTransform();
+  switch (imageRenderType_) {
+    case ImageRenderType::Left:
+      renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});
+      break;
+    case ImageRenderType::Right:
+      renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), 0.0f});
+      break;
+    case ImageRenderType::Top:
+      renderTransform.AddPostion({0.0f, renderTransform.GetScale().HalfY()});
+      break;
+    case ImageRenderType::Bottom:
+      renderTransform.AddPostion({0.0f, -renderTransform.GetScale().HalfY()});
+      break;
+    case ImageRenderType::LeftTop:
+      renderTransform.AddPostion({renderTransform.GetScale().HalfX(), renderTransform.GetScale().HalfY()});
+      break;
+    case ImageRenderType::LeftBottom:
+      renderTransform.AddPostion({renderTransform.GetScale().HalfX(), -renderTransform.GetScale().HalfY()});
+      break;
+    case ImageRenderType::RightTop:
+      renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), renderTransform.GetScale().HalfY()});
+      break;
+    case ImageRenderType::RightBottom:
+      renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), -renderTransform.GetScale().HalfY()});
+      break;
+    case ImageRenderType::Center:
+    default:
+      break;
+  }
+
+  //// TODO :  콜리전 위치 만큼 offset 해야함.
+  //if (false == image_->IsRenderTexture()) {
+  //  IFileImage* fileImage = (IFileImage*)image_;
+
+  //  CollisionInfo collisionInfo;
+
+  //  Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+  //  if (false == fileImage->GetHitBoxTopInfo(imageIndex_, &collisionInfo)) {
+  //    return;
+  //  }
+
+  //  renderTransform.AddPostion(collisionInfo.position_);
+
+  //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
+
+  //  renderTexture->DrawRectagle(collisionInfo.scale_, parameter_.color_, parameter_.linethickness_);
+
+  //  GGraphicDevice->RenderImgEnd(renderTexture);
+  //}
+
+  //// TODO :  콜리전 위치 만큼 offset 해야함.
+  // if (false == image_->IsRenderTexture()) {
+  //   IFileImage* fileImage = (IFileImage*)image_;
+  //
+  //   Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+  //   Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_) + imageOffSet;
+  //   Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_) + imageOffSet;
+  //   Vector hitBoxSize = hitBoxEnd - hitBoxStart;
+
+  //  renderTransform.AddPostion(hitBoxStart);
+
+  //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
+
+  //  renderTexture->DrawRectagle(hitBoxSize, parameter_.color_, parameter_.linethickness_);
+
+  //  GGraphicDevice->RenderImgEnd(renderTexture);
+  //}
 }

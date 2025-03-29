@@ -37,6 +37,8 @@ class ActorComponent {
 
   JO_API virtual void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture);
 
+  JO_API virtual void CollisionRender(IRenderTexture* renderTexture);
+
  private:
   JO_API void OnBeginPlay();
 

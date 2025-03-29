@@ -40,6 +40,9 @@ const ActorComponentSetDebugParameter& ActorComponent::GetDebugParameter() const
 void ActorComponent::DebugRender(IRenderTexture* renderTexture) {
 }
 
+void ActorComponent::CollisionRender(IRenderTexture* renderTexture) {
+}
+
 void ActorComponent::OnBeginPlay() {
   BeginPlay();
 }

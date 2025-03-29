@@ -23,9 +23,9 @@ class ImageMoveButton final
 
   void ClickDownEvent() override;
 
-  ImageObject* GetBindObject() const;
+  ViewPortImage* GetBindObject() const;
 
-  void BindObject(ImageObject* object);
+  void BindObject(ViewPortImage* object);
 
   ImageMoveDirType GetImageMoveDirType() const;
 
@@ -35,7 +35,7 @@ class ImageMoveButton final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  ImageObject* bindObject_;
+  ViewPortImage* bindObject_;
 
   ImageMoveDirType imageMoveDirType_;
 };

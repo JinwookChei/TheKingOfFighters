@@ -36,6 +36,10 @@ class Level {
 
   JO_API bool GetDebugRender() const;
 
+  JO_API void SetCollisionRender(bool isOn);
+
+  JO_API bool GetCollisionRender() const;
+
   JO_API Mouse* SpawnMouse();
 
   template <typename ActorType>
@@ -80,6 +84,8 @@ class Level {
   CollisionContainer* GetCollisionContainer(unsigned int group);
 
   bool isDebugRender_;
+
+  bool isCollisionRender_;
 
   bool useCameraPosition_;
 

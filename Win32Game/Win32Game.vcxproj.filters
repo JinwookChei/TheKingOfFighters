@@ -31,6 +31,12 @@
     <Filter Include="Contents\Tools\CollisionBox">
       <UniqueIdentifier>{cdeff6d8-c54c-41bb-8e4c-fc8f7d08a4fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Tools\ViewPort">
+      <UniqueIdentifier>{a2ac394b-ee69-4aa6-8654-6c462a2cf873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Tools\Button">
+      <UniqueIdentifier>{b85391ce-4dd4-4163-9f94-41c6bbb166cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,24 +63,6 @@
     <ClCompile Include="ToolLevel.cpp">
       <Filter>Contents\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="ImageObject.cpp">
-      <Filter>Contents\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="CrossHair.cpp">
-      <Filter>Contents\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="CrossHairControlButton.cpp">
-      <Filter>Contents\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="WriteButton.cpp">
-      <Filter>Contents\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageMoveButton.cpp">
-      <Filter>Contents\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="NextImageButton.cpp">
-      <Filter>Contents\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="KOFLevel.cpp">
       <Filter>Contents\KOF</Filter>
     </ClCompile>
@@ -87,8 +75,35 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>Contents\KOF</Filter>
     </ClCompile>
-    <ClCompile Include="HitBoxButton.cpp">
+    <ClCompile Include="ViewPortImage.cpp">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionBound.cpp">
       <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionBoundCorner.cpp">
+      <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossHair.cpp">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossHairControlButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageMoveButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="NextImageButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateCollisionButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteCollisionButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,24 +134,6 @@
     <ClInclude Include="ToolLevel.h">
       <Filter>Contents\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="ImageObject.h">
-      <Filter>Contents\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="CrossHair.h">
-      <Filter>Contents\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="CrossHairControlButton.h">
-      <Filter>Contents\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="WriteButton.h">
-      <Filter>Contents\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageMoveButton.h">
-      <Filter>Contents\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="NextImageButton.h">
-      <Filter>Contents\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="KOFLevel.h">
       <Filter>Contents\KOF</Filter>
     </ClInclude>
@@ -149,8 +146,35 @@
     <ClInclude Include="BackGround.h">
       <Filter>Contents\KOF</Filter>
     </ClInclude>
-    <ClInclude Include="HitBoxButton.h">
+    <ClInclude Include="ViewPortImage.h">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionBound.h">
       <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionBoundCorner.h">
+      <Filter>Contents\Tools\CollisionBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossHair.h">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossHairControlButton.h">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageMoveButton.h">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="NextImageButton.h">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteButton.h">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateCollisionButton.h">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteCollisionButton.h">
+      <Filter>Contents\Tools\Button</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

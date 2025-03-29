@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "ImageObject.h"
+#include "ViewPortImage.h"
 #include "WriteButton.h"
 
 WriteButton::WriteButton()
     : filePath_("../ContentsResource/test.csv"),
-    bindObject_(nullptr) {
+      bindObject_(nullptr) {
 }
 
 WriteButton::~WriteButton() {
@@ -20,7 +20,7 @@ void WriteButton::ClickDownEvent() {
   WriteData();
 }
 
-void WriteButton::BindObject(ImageObject* object) {
+void WriteButton::BindObject(ViewPortImage* object) {
   bindObject_ = object;
 }
 
