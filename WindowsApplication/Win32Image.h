@@ -96,7 +96,7 @@ class Win32Image final
 
   void __stdcall CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) override;
 
-  void __stdcall CalculateTransformFromBoundingBoxDatas() override;
+  void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) override;
 
   void __stdcall CalculateTransformFromCSV(const std::string& filePath) override;
 
@@ -155,17 +155,10 @@ class Win32Image final
   LINK_ITEM* imageHead_;
   LINK_ITEM* imageTail_;
 
-  // Wook
-  bool __stdcall DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) override;
-
  private:
-  std::vector<std::vector<float>> boundingBoxDatas_;
+  bool SearchPartitionLineRow(const Vector& startPoint, Vector* outLeftTopPoint, Color8Bit lineColor);
 
-  bool SearchPartitionLineRow(Vector startPoint, Vector* outLeftTopPoint, Color8Bit lineColor);
+  void SearchPartitionGrid(const Vector& leftTopPoint, Vector* outNextSearchStartPoint, std::vector<Vector>* pGridCorner, Color8Bit emptyColor, Color8Bit lineColor);
 
-  void SearchPartitionLineGrid(Vector leftTopPoint, Vector* outNextSearchStartPoint, Color8Bit emptyColor, Color8Bit lineColor);
-
-  void DetectBoundBox(Vector leftTopPoint, Vector rightBottomPoint, Color8Bit emptyColor, Color8Bit lineColor);
-
-  // void ExportCsvFromBoundingBoxData(const std::string& filepath);
+  void DetectBoundBox(const Vector& leftTopPoint, const Vector& rightBottomPoint, std::vector<std::vector<float>>* pBoundingBoxDatas, Color8Bit emptyColor, Color8Bit lineColor);
 };
