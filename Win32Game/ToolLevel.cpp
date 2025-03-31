@@ -30,8 +30,7 @@ ToolLevel::ToolLevel() {
 
   // VIEWPORT
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
-  ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  ioriImage->CalculateTransformFromBoundingBoxDatas();
+  ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
   // ioriImage->CalculateTransform(10, 100);
 
   UI* ViewPortUI = SpawnActor<UI>();
