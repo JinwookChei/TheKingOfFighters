@@ -143,4 +143,14 @@ struct CollisionInfo {
   float Bottom() const {
     return position_.Y + scale_.HalfY();
   }
+
+  CollisionInfo& operator=(const CollisionInfo& other)
+  {
+    if (this != &other) {
+      position_ = other.position_;
+      scale_ = other.scale_;
+      hasCollision_ = other.hasCollision_;
+    }
+    return *this;
+  }
 };

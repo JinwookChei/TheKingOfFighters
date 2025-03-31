@@ -17,6 +17,7 @@ void ReadButton::Tick(unsigned long long curTick) {
 }
 
 void ReadButton::ClickDownEvent() {
+
   ReadData();
 }
 
@@ -40,7 +41,15 @@ void ReadButton::ReadData() {
   }
 
   IFileImage* pFileImage = (IFileImage*)pImage;
+
+ 
   pFileImage->CalculateTransformFromCSV(filePath_);
+
+
+  unsigned int imageIndex = bindObject_->GetImageIndex();
+  bindObject_->SetImageIndex(imageIndex);
+
+  MessageBox(NULL, L"안녕하세요! 이것은 간단한 메시지 창입니다.", L"알림", MB_OK);
 }
 
 void ReadButton::Render(IRenderTexture* renderTexture) {

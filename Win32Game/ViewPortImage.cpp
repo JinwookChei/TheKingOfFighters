@@ -25,7 +25,7 @@ void ViewPortImage::BeginPlay() {
 
   Vector scale = image_->GetScale(imageIndex_);
 
-  localeScale_ = {3.0f, 3.0f};
+  localeScale_ = {4.0f, 4.0f};
 
   SetScale(scale * localeScale_);
 
@@ -76,6 +76,9 @@ void ViewPortImage::SetImageIndex(unsigned int index) {
     Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
     Vector ownerHalfScale = {owner_->GetScale().HalfX(), owner_->GetScale().HalfY()};
     SetPosition(ownerHalfScale + imageOffSet);
+    
+    Vector imageScale = image_->GetScale(imageIndex_);
+    SetScale(imageScale * localeScale_);
   }
 }
 

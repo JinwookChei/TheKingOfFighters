@@ -368,6 +368,7 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
     DetectBoundBox(gridCorner[i], gridCorner[i + 1], &boundingBoxDatas, emptyColor, lineColor);
   }
   
+
   ImageInfo* pInfo = GetImageInfo(0);
   pInfo->isOwner_ = false;
 
@@ -392,8 +393,11 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
   }
 
   delete pInfo;
+
   pInfo = GetImageInfo(0);
   pInfo->isOwner_ = true;
+
+
 }
 
 void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath) {
@@ -436,7 +440,6 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
   ImageInfo* pInfo = GetImageInfo(0);
   pInfo->isOwner_ = false;
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
-  --imageCount_;
 
   // LInkList모든 오소 삭제.
   Cleanup();
@@ -454,10 +457,12 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
     pNew->transform_.SetScale(calcScale);
     pNew->positionOffSet_ = {csvInfo[height][4], csvInfo[height][5]};
 
+
     CollisionInfo tempCollisionInfo;
 
     for (int i = 6; i < csvInfo[height].size(); i += 5) {
-      if (1.0f == csvInfo[height][i]) {
+      if (1 == csvInfo[height][i]) {
+
         tempCollisionInfo.hasCollision_ = true;
         tempCollisionInfo.position_ = {csvInfo[height][i + 1], csvInfo[height][i + 2]};
         tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
@@ -466,7 +471,12 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
         tempCollisionInfo.position_ = {0.0f, 0.0f};
         tempCollisionInfo.scale_ = {0.0f, 0.0f};
       }
+
+      pNew->collisionBoxInfo_[(i - 6) / 5] = tempCollisionInfo;
     }
+
+    
+
 
     LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
     pNew->index_ = (unsigned int)imageCount_++;

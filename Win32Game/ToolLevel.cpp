@@ -31,7 +31,13 @@ ToolLevel::ToolLevel() {
   // VIEWPORT
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
   ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  // ioriImage->CalculateTransform(10, 100);
+  // ioriImage->CalculateTransform(15, 8);
+
+  /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
+ChangImage->DetectBoundBoxes(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
+ChangImage->CalculateTransformFromBoundingBoxDatas();
+Object* object = SpawnActor<Object>();
+object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));*/
 
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
@@ -54,12 +60,6 @@ ToolLevel::ToolLevel() {
 
   CrossHair* crossHair = ViewPortUI->CreateUIComponent<CrossHair>();
   crossHair->EnableCollision(false);
-
-  /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
-  ChangImage->DetectBoundBoxes(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
-  ChangImage->CalculateTransformFromBoundingBoxDatas();
-  Object* object = SpawnActor<Object>();
-  object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));*/
 
   // CREATE COLLISION BUTTON
   UI* createHitBoxTopUI = SpawnActor<UI>();
@@ -270,7 +270,7 @@ ToolLevel::ToolLevel() {
   readFromCSVUI->SetPosition(Vector(300.0f, 800.0f));
   readFromCSVUI->SetScale({400.0f, 50.0f});
   readFromCSVUI->MakeCollision();
-  WriteButton* readFromCSVButton = readFromCSVUI->CreateUIComponent<WriteButton>();
+  ReadButton* readFromCSVButton = readFromCSVUI->CreateUIComponent<ReadButton>();
   readFromCSVButton->BindObject(viewPortImage);
   readFromCSVButton->SetFilePath("../ContentsResource/Iori.csv");
   readFromCSVButton->SetScale({400.0f, 50.0f});
