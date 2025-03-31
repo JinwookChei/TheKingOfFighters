@@ -101,6 +101,7 @@ void ViewPortImage::ResetPostionOffset() {
   IFileImage* fileImage = (IFileImage*)image_;
   Vector tempOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
   fileImage->AddImagePositionOffSet(imageIndex_, -tempOffSet);
+  fileImage->AddCollisionBoxPositionOffSet(imageIndex_, -tempOffSet);
 
   Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
   Vector ownerHalfScale = {owner_->GetScale().HalfX(), owner_->GetScale().HalfY()};

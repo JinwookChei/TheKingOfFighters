@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ToolLevel.h"
-#include "Button.h"
 
 #include "ViewPortImage.h"
 #include "CollisionBound.h"
@@ -9,6 +8,7 @@
 #include "CrossHair.h"
 #include "CrossHairControlButton.h"
 #include "WriteButton.h"
+#include "ReadButton.h"
 #include "ImageMoveButton.h"
 #include "NextImageButton.h"
 
@@ -30,9 +30,9 @@ ToolLevel::ToolLevel() {
 
   // VIEWPORT
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
-  //ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  //ioriImage->CalculateTransformFromBoundingBoxDatas();
-  ioriImage->CalculateTransform(10, 100);
+  ioriImage->DetectBoundBoxes(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  ioriImage->CalculateTransformFromBoundingBoxDatas();
+  // ioriImage->CalculateTransform(10, 100);
 
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
@@ -264,6 +264,22 @@ ToolLevel::ToolLevel() {
   writeTextComponent->SetText(L"WriteToCSV", 20, Color8Bit::Red);
   writeTextComponent->SetFont(L"CONSOLELAS");
   writeTextComponent->SetPosition({200.0f, 20.0f});
+
+  // READ
+  UI* readFromCSVUI = SpawnActor<UI>();
+  readFromCSVUI->SetOriginColor(Color8Bit::CyanAlpha);
+  readFromCSVUI->SetPosition(Vector(300.0f, 800.0f));
+  readFromCSVUI->SetScale({400.0f, 50.0f});
+  readFromCSVUI->MakeCollision();
+  WriteButton* readFromCSVButton = readFromCSVUI->CreateUIComponent<WriteButton>();
+  readFromCSVButton->BindObject(viewPortImage);
+  readFromCSVButton->SetFilePath("../ContentsResource/Iori.csv");
+  readFromCSVButton->SetScale({400.0f, 50.0f});
+  readFromCSVButton->SetPosition({readFromCSVUI->GetScale().HalfX(), readFromCSVUI->GetScale().HalfY()});
+  TextComponent* readTextComponent = readFromCSVUI->CreateUIComponent<TextComponent>();
+  readTextComponent->SetText(L"ReadFromCSV", 20, Color8Bit::Red);
+  readTextComponent->SetFont(L"CONSOLELAS");
+  readTextComponent->SetPosition({200.0f, 20.0f});
 
   // MOVEOBEJCT
   UI* moveImagePlusRowUI = SpawnActor<UI>();

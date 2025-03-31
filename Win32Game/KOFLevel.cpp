@@ -37,7 +37,7 @@ void KOFLevel::BeginPlay() {
 
   // GAME
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 3);
-  ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori1.csv");
+  ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
 
   Iori* iori = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   iori->SetPosition(Vector(backbufferScale.X * 0.5f - 200, backbufferScale.Y * 0.5f + 210.0f));

@@ -390,7 +390,7 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
     return;
   }
 
-  std::vector<std::vector<float>> boundBoxData;
+  std::vector<std::vector<float>> csvInfo;
 
   std::ifstream file(filePath);
   if (false == file.is_open()) {
@@ -402,6 +402,9 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
   // 3번째 인자 없으면 공백기준으로 나눔.
   // file을 공백단위로 읽어서 line에 저장,
   while (std::getline(file, line)) {
+    if ('P' == line[0]) {
+      continue;
+    }
     // 행
     std::vector<float> row;
     // 문자열스트림에 line을 대입.
@@ -411,10 +414,10 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
 
     // 문자열 스트림에서 cell에 , 단위로 행에 저장.
     while (std::getline(ss, cell, ',')) {
-      float intCell = std::stoi(cell);
+      float intCell = std::stof(cell);
       row.push_back(intCell);
     }
-    boundBoxData.push_back(row);
+    csvInfo.push_back(row);
   }
   file.close();
 
@@ -427,18 +430,32 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
   // LInkList모든 오소 삭제.
   Cleanup();
 
-  for (unsigned int height = 0; height < boundBoxData.size(); ++height) {
+  for (unsigned int height = 0; height < csvInfo.size(); ++height) {
     ImageInfo* pNew = new ImageInfo;
     pNew->imageType_ = pInfo->imageType_;
     pNew->hBitMap_ = pInfo->hBitMap_;
     pNew->imageDC_ = pInfo->imageDC_;
     pNew->bitMapInfo_ = pInfo->bitMapInfo_;
 
-    Vector calcPosition = {boundBoxData[height][0], boundBoxData[height][1]};
-    Vector calcScale = {boundBoxData[height][2], boundBoxData[height][3]};
+    Vector calcPosition = {csvInfo[height][0], csvInfo[height][1]};
+    Vector calcScale = {csvInfo[height][2], csvInfo[height][3]};
     pNew->transform_.SetPosition(calcPosition);
     pNew->transform_.SetScale(calcScale);
-    pNew->positionOffSet_ = {boundBoxData[height][4], boundBoxData[height][5]};
+    pNew->positionOffSet_ = {csvInfo[height][4], csvInfo[height][5]};
+
+    CollisionInfo tempCollisionInfo;
+
+    for (int i = 6; i < csvInfo[height].size(); i += 5) {
+      if (1.0f == csvInfo[height][i]) {
+        tempCollisionInfo.hasCollision_ = true;
+        tempCollisionInfo.position_ = {csvInfo[height][i + 1], csvInfo[height][i + 2]};
+        tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
+      } else {
+        tempCollisionInfo.hasCollision_ = false;
+        tempCollisionInfo.position_ = {0.0f, 0.0f};
+        tempCollisionInfo.scale_ = {0.0f, 0.0f};
+      }
+    }
 
     LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
     pNew->index_ = (unsigned int)imageCount_++;
@@ -610,7 +627,6 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
   std::filesystem::create_directories(path.parent_path());
   std::ofstream outputFile(filepath);
 
-
   outputFile << "Position_X" << ",";
   outputFile << "Position_Y" << ",";
   outputFile << "Scale_X" << ",";
@@ -649,7 +665,6 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
   outputFile << "GrabBoxScale_Y" << ",";
   outputFile << "\n";
 
-
   LINK_ITEM* pCur = imageHead_;
   while (pCur) {
     ImageInfo* pImg = (ImageInfo*)pCur->item_;
@@ -663,31 +678,31 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
       outputFile << pImg->positionOffSet_.X << ",";
       outputFile << pImg->positionOffSet_.Y << ",";
 
-      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? 1.0f : 0.0f) << ",";
       outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].position_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].position_.Y : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].scale_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[0].hasCollision_) ? pImg->collisionBoxInfo_[0].scale_.Y : 0) << ",";
 
-      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? 1.0f : 0.0f) << ",";
       outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].position_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].position_.Y : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].scale_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[1].hasCollision_) ? pImg->collisionBoxInfo_[1].scale_.Y : 0) << ",";
 
-      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? 1.0f : 0.0f) << ",";
       outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].position_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].position_.Y : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].scale_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[2].hasCollision_) ? pImg->collisionBoxInfo_[2].scale_.Y : 0) << ",";
 
-      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? 1.0f : 0.0f) << ",";
       outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].position_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].position_.Y : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].scale_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[3].hasCollision_) ? pImg->collisionBoxInfo_[3].scale_.Y : 0) << ",";
 
-      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? "TRUE" : "FALSE") << ",";
+      outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? 1.0f : 0.0f) << ",";
       outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].position_.X : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].position_.Y : 0) << ",";
       outputFile << ((pImg->collisionBoxInfo_[4].hasCollision_) ? pImg->collisionBoxInfo_[4].scale_.X : 0) << ",";

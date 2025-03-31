@@ -105,6 +105,9 @@
     <ClCompile Include="DeleteCollisionButton.cpp">
       <Filter>Contents\Tools\Button</Filter>
     </ClCompile>
+    <ClCompile Include="ReadButton.cpp">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -174,6 +177,9 @@
       <Filter>Contents\Tools\Button</Filter>
     </ClInclude>
     <ClInclude Include="DeleteCollisionButton.h">
+      <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadButton.h">
       <Filter>Contents\Tools\Button</Filter>
     </ClInclude>
   </ItemGroup>
