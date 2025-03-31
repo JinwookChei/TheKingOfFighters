@@ -35,7 +35,7 @@ struct IImage : public IUnknown {
 struct IFileImage : public IImage {
   virtual void __stdcall CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) = 0;
 
-  virtual void __stdcall CalculateTransformFromBoundingBoxDatas() = 0;
+  virtual void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) = 0;
 
   virtual void __stdcall CalculateTransformFromCSV(const std::string& filePath) = 0;
 
@@ -58,8 +58,6 @@ struct IFileImage : public IImage {
   virtual void __stdcall AddCollisionBoxPositionOffSet(unsigned int index, const Vector& offSet) = 0;
 
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
-
-  virtual bool __stdcall DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) = 0;
 
 };
 

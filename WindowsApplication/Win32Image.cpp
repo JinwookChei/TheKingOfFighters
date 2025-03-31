@@ -346,32 +346,44 @@ void __stdcall Win32Image::CalculateTransformByAuto(const CalculateTransformByAu
   pInfo->isOwner_ = true;
 }
 
-void __stdcall Win32Image::CalculateTransformFromBoundingBoxDatas() {
+void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
 
-  // imageList를 돌면서 인덱스가 0인 ImageInfo 가져옴.
+  Vector partitionLineRowStart = {0.0f, 0.0f};
+  Vector partitionLineGridStart;
+
+  std::vector<Vector> gridCorner;
+  std::vector<std::vector<float>> boundingBoxDatas;
+
+  while (1) {
+    if (false == SearchPartitionLineRow(partitionLineRowStart, &partitionLineGridStart, lineColor)) {
+      break;
+    }
+    SearchPartitionGrid(partitionLineGridStart, &partitionLineRowStart, &gridCorner, emptyColor, lineColor);
+  }
+
+  for (int i = 0; i < gridCorner.size(); i += 2) {
+    DetectBoundBox(gridCorner[i], gridCorner[i + 1], &boundingBoxDatas, emptyColor, lineColor);
+  }
+  
   ImageInfo* pInfo = GetImageInfo(0);
   pInfo->isOwner_ = false;
 
-  // 리스트에서 임시로 제거.
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
-  --imageCount_;
 
-  // LInkList모든 오소 삭제.
   Cleanup();
 
-  for (int i = 0; i < boundingBoxDatas_.size(); ++i) {
+   for (unsigned int height = 0; height < boundingBoxDatas.size(); ++height) {
     ImageInfo* pNew = new ImageInfo;
     pNew->imageType_ = pInfo->imageType_;
     pNew->hBitMap_ = pInfo->hBitMap_;
     pNew->imageDC_ = pInfo->imageDC_;
     pNew->bitMapInfo_ = pInfo->bitMapInfo_;
 
-    Vector calcPosition = {boundingBoxDatas_[i][0], boundingBoxDatas_[i][1]};
-    Vector calcScale = {boundingBoxDatas_[i][2] - boundingBoxDatas_[i][0], boundingBoxDatas_[i][3] - boundingBoxDatas_[i][1]};
-
+    Vector calcPosition = {boundingBoxDatas[height][0], boundingBoxDatas[height][1]};
+    Vector calcScale = {boundingBoxDatas[height][2] - boundingBoxDatas[height][0], boundingBoxDatas[height][3] - boundingBoxDatas[height][1]};
     pNew->transform_.SetPosition(calcPosition);
     pNew->transform_.SetScale(calcScale);
 
@@ -380,7 +392,6 @@ void __stdcall Win32Image::CalculateTransformFromBoundingBoxDatas() {
   }
 
   delete pInfo;
-
   pInfo = GetImageInfo(0);
   pInfo->isOwner_ = true;
 }
@@ -626,19 +637,6 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
     }
   }
   outputFile.close();
-
-  // if (outputFile.is_open()) {
-  //   for (const auto& row : outData_) {
-  //     for (size_t i = 0; i < row.size(); ++i) {
-  //       if (i > 0) {
-  //         outputFile << ",";  // 쉼표로 값들을 구분
-  //       }
-  //       outputFile << row[i];  // 값 출력
-  //     }
-  //     outputFile << "\n";  // 새로운 줄로 이동
-  //   }
-  //   outputFile.close();
-  // }
 }
 
 bool __stdcall Win32Image::Load() {
@@ -1038,30 +1036,22 @@ void Win32Image::ConvertToGrayscale(BYTE* pPixels, int width, int height, int by
   }
 }
 
-bool Win32Image::DetectBoundBoxes(Color8Bit emptyColor, Color8Bit lineColor) {
-  Vector partitionLineGridStart;
-  Vector partitionLineRowStart = {0.0f, 0.0f};
-
-  while (1) {
-    if (false == SearchPartitionLineRow(partitionLineRowStart, &partitionLineGridStart, lineColor)) {
-      break;
-    }
-    SearchPartitionLineGrid(partitionLineGridStart, &partitionLineRowStart, emptyColor, lineColor);
-  }
-  return true;
-}
-
-bool Win32Image::SearchPartitionLineRow(Vector startPoint, Vector* outLeftTopPoint, Color8Bit lineColor) {
+bool Win32Image::SearchPartitionLineRow(const Vector& startPoint, Vector* outLeftTopPoint, Color8Bit lineColor) {
   if (nullptr == outLeftTopPoint) {
     __debugbreak();
     return false;
   }
 
+  ImageInfo* pImage = GetImageInfo(0);
+  if (nullptr == pImage) {
+    __debugbreak();
+    return false;
+  }
+
+  Vector endPoint = pImage->transform_.GetScale();
+
   Color8Bit pixelColor;
   Vector curPosition = startPoint;
-
-  ImageInfo* pFind = GetImageInfo(0);
-  Vector endPoint = pFind->transform_.GetScale();
 
   bool doLineSearch = true;
 
@@ -1086,14 +1076,18 @@ bool Win32Image::SearchPartitionLineRow(Vector startPoint, Vector* outLeftTopPoi
   return false;
 }
 
-void Win32Image::SearchPartitionLineGrid(Vector leftTopPoint, Vector* outNextSearchStartPoint, Color8Bit emptyColor, Color8Bit lineColor) {
+void Win32Image::SearchPartitionGrid(const Vector& leftTopPoint, Vector* outNextSearchStartPoint, std::vector<Vector>* pGridCorner, Color8Bit emptyColor, Color8Bit lineColor) {
   if (nullptr == outNextSearchStartPoint) {
     __debugbreak();
+    return;
   }
 
-  std::vector<Vector> partitionLineFormation;
+  if (nullptr == pGridCorner) {
+    __debugbreak();
+    return;
+  }
 
-  partitionLineFormation.push_back(leftTopPoint);
+  pGridCorner->push_back(leftTopPoint);
 
   Vector xMovePoint = leftTopPoint;
   Vector yMovePoint;
@@ -1118,8 +1112,8 @@ void Win32Image::SearchPartitionLineGrid(Vector leftTopPoint, Vector* outNextSea
         }
 
         if (pixelColor2 != lineColor) {
-          partitionLineFormation.push_back({yMovePoint.X, yMovePoint.Y - 1});
-          partitionLineFormation.push_back(xMovePoint);
+          pGridCorner->push_back({yMovePoint.X, yMovePoint.Y - 1});
+          pGridCorner->push_back(xMovePoint);
           *outNextSearchStartPoint = {0.0f, yMovePoint.Y};
           break;
         }
@@ -1127,18 +1121,13 @@ void Win32Image::SearchPartitionLineGrid(Vector leftTopPoint, Vector* outNextSea
     }
 
     if (pixelColor1 != lineColor) {
-      partitionLineFormation.pop_back();
+      pGridCorner->pop_back();
       break;
     }
   }
-
-  for (int i = 0; i < partitionLineFormation.size();) {
-    DetectBoundBox(partitionLineFormation[i], partitionLineFormation[i + 1], emptyColor, lineColor);
-    i += 2;
-  }
 }
 
-void Win32Image::DetectBoundBox(Vector leftTopPoint, Vector rightBottomPoint, Color8Bit emptyColor, Color8Bit lineColor) {
+void Win32Image::DetectBoundBox(const Vector& leftTopPoint, const Vector& rightBottomPoint, std::vector<std::vector<float>>* pBoundingBoxDatas, Color8Bit emptyColor, Color8Bit lineColor) {
   std::vector<float> boundBox;
 
   Vector searchLeftPos = {leftTopPoint.X + 1.0f, leftTopPoint.Y + 1.0f};
@@ -1226,5 +1215,5 @@ void Win32Image::DetectBoundBox(Vector leftTopPoint, Vector rightBottomPoint, Co
     searchBottomPos.Y -= 1.0f;
   }
 
-  boundingBoxDatas_.push_back(boundBox);
+  pBoundingBoxDatas->push_back(boundBox);
 }
