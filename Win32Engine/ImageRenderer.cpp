@@ -98,7 +98,6 @@ void ImageRenderer::SetImage(IImage* image, unsigned int index /*= 0*/) {
   }
 
   image_ = image;
-
   imageIndex_ = index;
 
   if (nullptr != image_) {
@@ -332,7 +331,6 @@ void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
 }
 
 void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
-
   if (!parameter_.on_ || nullptr == renderTexture) {
     return;
   }
@@ -369,8 +367,8 @@ void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
   }
 
   //// TODO :  콜리전 위치 만큼 offset 해야함.
-  //if (false == image_->IsRenderTexture()) {
-  //  IFileImage* fileImage = (IFileImage*)image_;
+  // if (false == image_->IsRenderTexture()) {
+  //   IFileImage* fileImage = (IFileImage*)image_;
 
   //  CollisionInfo collisionInfo;
 

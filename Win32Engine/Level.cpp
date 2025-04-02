@@ -369,6 +369,7 @@ CollisionContainer* Level::GetCollisionContainer(unsigned int group) {
     }
   }
 
+  // 기존 Group에 콜리전 Group이 없으면 GroupContainer 새로 생성.
   CollisionContainer* newContainer = new CollisionContainer;
   newContainer->collisionGroup_ = group;
   newContainer->collisionCount_ = 0;

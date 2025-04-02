@@ -3,13 +3,12 @@
 class ViewPortImage;
 
 class CreateCollisionButton final
-    : public UIComponent
-{
+    : public UIComponent {
  public:
   CreateCollisionButton();
   ~CreateCollisionButton();
 
-  void Initialize(ViewPortImage* bindViewPortImage, CollisionBoundType boundType);
+  void Initialize(ViewPortImage* bindViewPortImage, CollisionBox* bindCollisionBox, CollisionBoxType collisionBoxType);
 
   void BeginPlay() override;
 
@@ -17,11 +16,13 @@ class CreateCollisionButton final
 
   void ClickDownEvent() override;
 
-protected:
+ protected:
   void Render(struct IRenderTexture* renderTexture) override;
 
-private:
+ private:
   ViewPortImage* bindViewPortImage_;
 
-  CollisionBoundType boundType_;
+  CollisionBox* bindCollisionBox_;
+
+  CollisionBoxType collisionBoxType_;
 };

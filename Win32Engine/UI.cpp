@@ -31,11 +31,12 @@ UI::~UI() {
   }
 }
 
-void UI::BeginPlay() {
+void UI::BeginPlay() { 
   SetDebugParameter({.on_ = true, .linethickness_ = 5.0f});
   SetActorGroup(ActorGroupEngineType::ActorGroupEngineType_UI);
   imageRenderer_ = CreateImageRender();
   imageRenderer_->SetAlpha(1.0f);
+  imageRenderer_->SetImageRenderType(ImageRenderType::Center);
 
   // collision_ = CreateCollision();
 }

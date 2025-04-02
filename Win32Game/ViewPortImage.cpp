@@ -20,8 +20,11 @@ void ViewPortImage::BeginPlay() {
   }
 
   image_ = ImgManager::GetIntance()->GetImg(1);
+  
+  Color8Bit color;
+  image_->GetPixel({0.0f, 0.0f}, &color);
 
-  TransColor_ = Color8Bit{169, 139, 150, 0};
+  TransColor_ = color;
 
   Vector scale = image_->GetScale(imageIndex_);
 

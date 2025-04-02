@@ -6,6 +6,11 @@ enum CollisionGroupEngineType {
   CollisionGroupEngineType_Invalid = -1,
   CollisionGroupEngineType_UI,
   CollisionGroupEngineType_MOUSE,
+  CollisionGroupEngineType_HitBoxTop,
+  CollisionGroupEngineType_HitBoxBottom,
+  CollisionGroupEngineType_AttackBox,
+  CollisionGroupEngineType_PushBox,
+  CollisionGroupEngineType_GrabBox,
   CollisionGroupEngineType_None,
   CollisionGroupEngineType_MAX
 };
@@ -39,6 +44,10 @@ class CollisionComponent final
 
   JO_API int GetCollisionGroup() const;
 
+  JO_API void OnActive(bool isOn);
+
+  JO_API bool Active() const;
+
   JO_API CollisionInfo GetCollisionInfo() const;
 
   static bool CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right);
@@ -56,6 +65,8 @@ class CollisionComponent final
 
  private:
   unsigned int collisionGroup_;
+
+  bool isActive_;
 
   void* searchHandle_;
 

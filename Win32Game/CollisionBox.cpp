@@ -1,26 +1,26 @@
 #include "stdafx.h"
 #include "ViewPortImage.h"
-#include "CollisionBound.h"
-#include "CollisionBoundCorner.h"
+#include "CollisionBox.h"
+#include "CollisionBoxCorner.h"
 
 
-CollisionBound::CollisionBound()
+CollisionBox::CollisionBox()
     : bindViewPortImage_(nullptr),
       bindCornerStart_(nullptr),
       bindCornerEnd_(nullptr),
-      boundType_(CollisionBoundType::CBT_HitBoxTop),
+      collisionBoxType_(CollisionBoxType::CBT_HitBoxTop),
       color_(Color8Bit::BlackAlpha),
       prevMousePosition_({0.0f, 0.0f}) {
 }
 
-CollisionBound::~CollisionBound() {
+CollisionBox::~CollisionBox() {
 }
 
-void CollisionBound::BeginPlay() {
+void CollisionBox::BeginPlay() {
   EnableCollision(false);
 }
 
-void CollisionBound::Tick(unsigned long long curTick) {
+void CollisionBox::Tick(unsigned long long curTick) {
   Transform startTransform = bindCornerStart_->GetTransform();
   Transform endTransform = bindCornerEnd_->GetTransform();
 
@@ -30,13 +30,13 @@ void CollisionBound::Tick(unsigned long long curTick) {
   SetPosition(position);
 }
 
-void CollisionBound::ClickDownEvent() {
+void CollisionBox::ClickDownEvent() {
 }
 
-void CollisionBound::ClickExit() {
+void CollisionBox::ClickExit() {
 }
 
-void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType boundType) {
+void CollisionBox::Initialize(ViewPortImage* viewPortImage, CollisionBoxType collisionBoxType) {
   
   UI* owner = GetOwner();
 
@@ -50,9 +50,9 @@ void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType
     return;
   }
 
-  boundType_ = boundType;
+  collisionBoxType_ = collisionBoxType;
 
-  switch (boundType_) {
+  switch (collisionBoxType_) {
     case CBT_HitBoxTop:
       color_ = {0, 0, 255, 255};
       break;
@@ -73,15 +73,23 @@ void CollisionBound::Initialize(ViewPortImage* viewPortImage, CollisionBoundType
   }
 
 
-  bindCornerStart_ = owner->CreateUIComponent<CollisionBoundCorner>();
-  bindCornerStart_->Initialize(bindViewPortImage_, boundType_, CollisionBoundCornerType::CBCT_Start, color_);
+  bindCornerStart_ = owner->CreateUIComponent<CollisionBoxCorner>();
+  bindCornerStart_->Initialize(bindViewPortImage_, collisionBoxType_, CollisionBoxCornerType::CBCT_Start, color_);
 
-  bindCornerEnd_ = owner->CreateUIComponent<CollisionBoundCorner>();
-  bindCornerEnd_->Initialize(bindViewPortImage_, boundType_, CollisionBoundCornerType::CBCT_End, color_);
+  bindCornerEnd_ = owner->CreateUIComponent<CollisionBoxCorner>();
+  bindCornerEnd_->Initialize(bindViewPortImage_, collisionBoxType_, CollisionBoxCornerType::CBCT_End, color_);
+}
+
+CollisionBoxCorner* CollisionBox::GetCornerStart() {
+  return bindCornerStart_;
+}
+
+CollisionBoxCorner* CollisionBox::GetCornerEnd() {
+  return bindCornerEnd_;
 }
 
 
-void CollisionBound::Render(IRenderTexture* renderTexture) {
+void CollisionBox::Render(IRenderTexture* renderTexture) {
   if (nullptr == renderTexture) {
     return;
   }
@@ -100,7 +108,7 @@ void CollisionBound::Render(IRenderTexture* renderTexture) {
   IFileImage* pFileImage = (IFileImage*)pImage;
   CollisionInfo* pCollisionInfo;
 
-  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, boundType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_) {
+  if (false == pFileImage->GetCollisionBoxInfo(imageIndex, collisionBoxType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_) {
     return;
   }
   //이미지의 Collisioninfo.hasCollision이 False면 Render 안함.

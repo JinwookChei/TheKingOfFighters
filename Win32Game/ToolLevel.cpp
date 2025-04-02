@@ -2,7 +2,7 @@
 #include "ToolLevel.h"
 
 #include "ViewPortImage.h"
-#include "CollisionBound.h"
+#include "CollisionBox.h"
 #include "CreateCollisionButton.h"
 #include "DeleteCollisionButton.h"
 #include "CrossHair.h"
@@ -33,30 +33,27 @@ ToolLevel::ToolLevel() {
   ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
   // ioriImage->CalculateTransform(15, 8);
 
-  /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
-ChangImage->DetectBoundBoxes(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
-ChangImage->CalculateTransformFromBoundingBoxDatas();
-Object* object = SpawnActor<Object>();
-object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));*/
+  //IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
+  //ChangImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
 
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
-  ViewPortUI->SetScale({600.0f, 600.0f});
+  ViewPortUI->SetScale({800.0f, 800.0f});
   ViewPortUI->MakeCollision();
   ViewPortUI->SetOriginColor(Color8Bit::Magenta);
   ViewPortUI->ChangeClearColor_(false);
 
   ViewPortImage* viewPortImage = ViewPortUI->CreateUIComponent<ViewPortImage>();
-  CollisionBound* hitBoxTop = ViewPortUI->CreateUIComponent<CollisionBound>();
-  hitBoxTop->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxTop);
-  CollisionBound* hitBoxBottom = ViewPortUI->CreateUIComponent<CollisionBound>();
-  hitBoxBottom->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxBottom);
-  CollisionBound* attackBox = ViewPortUI->CreateUIComponent<CollisionBound>();
-  attackBox->Initialize(viewPortImage, CollisionBoundType::CBT_AttackBox);
-  CollisionBound* pushBox = ViewPortUI->CreateUIComponent<CollisionBound>();
-  pushBox->Initialize(viewPortImage, CollisionBoundType::CBT_PushBox);
-  CollisionBound* grabBox = ViewPortUI->CreateUIComponent<CollisionBound>();
-  grabBox->Initialize(viewPortImage, CollisionBoundType::CBT_GrabBox);
+  CollisionBox* hitBoxTop = ViewPortUI->CreateUIComponent<CollisionBox>();
+  hitBoxTop->Initialize(viewPortImage, CollisionBoxType::CBT_HitBoxTop);
+  CollisionBox* hitBoxBottom = ViewPortUI->CreateUIComponent<CollisionBox>();
+  hitBoxBottom->Initialize(viewPortImage, CollisionBoxType::CBT_HitBoxBottom);
+  CollisionBox* attackBox = ViewPortUI->CreateUIComponent<CollisionBox>();
+  attackBox->Initialize(viewPortImage, CollisionBoxType::CBT_AttackBox);
+  CollisionBox* pushBox = ViewPortUI->CreateUIComponent<CollisionBox>();
+  pushBox->Initialize(viewPortImage, CollisionBoxType::CBT_PushBox);
+  CollisionBox* grabBox = ViewPortUI->CreateUIComponent<CollisionBox>();
+  grabBox->Initialize(viewPortImage, CollisionBoxType::CBT_GrabBox);
 
   CrossHair* crossHair = ViewPortUI->CreateUIComponent<CrossHair>();
   crossHair->EnableCollision(false);
@@ -69,7 +66,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   createHitBoxTopUI->MakeCollision();
   createHitBoxTopUI->SetOriginColor({0, 0, 255, 255});
   CreateCollisionButton* createHitBoxTopButton = createHitBoxTopUI->CreateUIComponent<CreateCollisionButton>();
-  createHitBoxTopButton->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxTop);
+  createHitBoxTopButton->Initialize(viewPortImage, hitBoxTop, CollisionBoxType::CBT_HitBoxTop);
   createHitBoxTopButton->SetScale({200.0f, 50.0f});
   createHitBoxTopButton->SetPosition({createHitBoxTopUI->GetScale().HalfX(), createHitBoxTopUI->GetScale().HalfY()});
 
@@ -80,7 +77,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   deleteHitBoxTopUI->MakeCollision();
   deleteHitBoxTopUI->SetOriginColor({0, 0, 255, 255});
   DeleteCollisionButton* deleteHitBoxTopButton = deleteHitBoxTopUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteHitBoxTopButton->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxTop);
+  deleteHitBoxTopButton->Initialize(viewPortImage, hitBoxTop, CollisionBoxType::CBT_HitBoxTop);
   deleteHitBoxTopButton->SetScale({200.0f, 50.0f});
   deleteHitBoxTopButton->SetPosition({deleteHitBoxTopUI->GetScale().HalfX(), deleteHitBoxTopUI->GetScale().HalfY()});
 
@@ -91,7 +88,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   createHitBoxBottomUI->MakeCollision();
   createHitBoxBottomUI->SetOriginColor({150, 100, 255, 255});
   CreateCollisionButton* createHitBoxBottomButton = createHitBoxBottomUI->CreateUIComponent<CreateCollisionButton>();
-  createHitBoxBottomButton->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxBottom);
+  createHitBoxBottomButton->Initialize(viewPortImage, hitBoxBottom, CollisionBoxType::CBT_HitBoxBottom);
   createHitBoxBottomButton->SetScale({200.0f, 50.0f});
   createHitBoxBottomButton->SetPosition({createHitBoxBottomUI->GetScale().HalfX(), createHitBoxBottomUI->GetScale().HalfY()});
 
@@ -102,7 +99,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   deleteHitBoxBottomUI->MakeCollision();
   deleteHitBoxBottomUI->SetOriginColor({150, 100, 255, 255});
   DeleteCollisionButton* deleteHitBoxBottomButton = deleteHitBoxBottomUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteHitBoxBottomButton->Initialize(viewPortImage, CollisionBoundType::CBT_HitBoxBottom);
+  deleteHitBoxBottomButton->Initialize(viewPortImage, hitBoxBottom, CollisionBoxType::CBT_HitBoxBottom);
   deleteHitBoxBottomButton->SetScale({200.0f, 50.0f});
   deleteHitBoxBottomButton->SetPosition({deleteHitBoxBottomUI->GetScale().HalfX(), deleteHitBoxBottomUI->GetScale().HalfY()});
 
@@ -113,7 +110,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   createAttackBoxUI->MakeCollision();
   createAttackBoxUI->SetOriginColor({255, 0, 0, 255});
   CreateCollisionButton* createAttackBoxButton = createAttackBoxUI->CreateUIComponent<CreateCollisionButton>();
-  createAttackBoxButton->Initialize(viewPortImage, CollisionBoundType::CBT_AttackBox);
+  createAttackBoxButton->Initialize(viewPortImage, attackBox, CollisionBoxType::CBT_AttackBox);
   createAttackBoxButton->SetScale({200.0f, 50.0f});
   createAttackBoxButton->SetPosition({createAttackBoxUI->GetScale().HalfX(), createAttackBoxUI->GetScale().HalfY()});
 
@@ -124,7 +121,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   deleteAttackBoxUI->MakeCollision();
   deleteAttackBoxUI->SetOriginColor({255, 0, 0, 255});
   DeleteCollisionButton* deleteAttackBoxButton = deleteAttackBoxUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteAttackBoxButton->Initialize(viewPortImage, CollisionBoundType::CBT_AttackBox);
+  deleteAttackBoxButton->Initialize(viewPortImage, attackBox, CollisionBoxType::CBT_AttackBox);
   deleteAttackBoxButton->SetScale({200.0f, 50.0f});
   deleteAttackBoxButton->SetPosition({deleteAttackBoxUI->GetScale().HalfX(), deleteAttackBoxUI->GetScale().HalfY()});
 
@@ -135,7 +132,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   createPushBoxUI->MakeCollision();
   createPushBoxUI->SetOriginColor({255, 255, 255, 255});
   CreateCollisionButton* createPushBoxButton = createPushBoxUI->CreateUIComponent<CreateCollisionButton>();
-  createPushBoxButton->Initialize(viewPortImage, CollisionBoundType::CBT_PushBox);
+  createPushBoxButton->Initialize(viewPortImage, pushBox, CollisionBoxType::CBT_PushBox);
   createPushBoxButton->SetScale({200.0f, 50.0f});
   createPushBoxButton->SetPosition({createPushBoxUI->GetScale().HalfX(), createPushBoxUI->GetScale().HalfY()});
 
@@ -146,7 +143,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   deletePushBoxUI->MakeCollision();
   deletePushBoxUI->SetOriginColor({255, 255, 255, 255});
   DeleteCollisionButton* deletePushBoxButton = deletePushBoxUI->CreateUIComponent<DeleteCollisionButton>();
-  deletePushBoxButton->Initialize(viewPortImage, CollisionBoundType::CBT_PushBox);
+  deletePushBoxButton->Initialize(viewPortImage, pushBox, CollisionBoxType::CBT_PushBox);
   deletePushBoxButton->SetScale({200.0f, 50.0f});
   deletePushBoxButton->SetPosition({deletePushBoxUI->GetScale().HalfX(), deletePushBoxUI->GetScale().HalfY()});
 
@@ -157,7 +154,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   createGrabBoxUI->MakeCollision();
   createGrabBoxUI->SetOriginColor({255, 255, 0, 255});
   CreateCollisionButton* createGrabBoxButton = createGrabBoxUI->CreateUIComponent<CreateCollisionButton>();
-  createGrabBoxButton->Initialize(viewPortImage, CollisionBoundType::CBT_GrabBox);
+  createGrabBoxButton->Initialize(viewPortImage, grabBox,CollisionBoxType::CBT_GrabBox);
   createGrabBoxButton->SetScale({200.0f, 50.0f});
   createGrabBoxButton->SetPosition({createGrabBoxUI->GetScale().HalfX(), createGrabBoxUI->GetScale().HalfY()});
 
@@ -168,7 +165,7 @@ object->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
   deleteGrabBoxUI->MakeCollision();
   deleteGrabBoxUI->SetOriginColor({255, 255, 0, 255});
   DeleteCollisionButton* deleteGrabBoxButton = deleteGrabBoxUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteGrabBoxButton->Initialize(viewPortImage, CollisionBoundType::CBT_GrabBox);
+  deleteGrabBoxButton->Initialize(viewPortImage, grabBox, CollisionBoxType::CBT_GrabBox);
   deleteGrabBoxButton->SetScale({200.0f, 50.0f});
   deleteGrabBoxButton->SetPosition({deleteGrabBoxUI->GetScale().HalfX(), deleteGrabBoxUI->GetScale().HalfY()});
 

@@ -1,21 +1,22 @@
 #pragma once
 
-enum CollisionBoundType {
+enum CollisionBoxType {
   CBT_HitBoxTop,
   CBT_HitBoxBottom,
   CBT_AttackBox,
   CBT_PushBox,
-  CBT_GrabBox
+  CBT_GrabBox,
+  CBT_Max
 };
 
-class CollisionBoundCorner;
+class CollisionBoxCorner;
 class ViewPortImage;
 
-class CollisionBound
+class CollisionBox
     : public UIComponent {
  public:
-  CollisionBound();
-  ~CollisionBound();
+  CollisionBox();
+  ~CollisionBox();
 
   void BeginPlay() override;
 
@@ -25,7 +26,11 @@ class CollisionBound
 
   void ClickExit() override;
 
-  void Initialize(ViewPortImage* viewPortImage, CollisionBoundType boundType);
+  void Initialize(ViewPortImage* viewPortImage, CollisionBoxType collisionBoxType);
+
+  CollisionBoxCorner* GetCornerStart();
+
+  CollisionBoxCorner* GetCornerEnd();
 
 
  protected:
@@ -34,11 +39,11 @@ class CollisionBound
  private:
   ViewPortImage* bindViewPortImage_;
 
-  CollisionBoundCorner* bindCornerStart_;
+  CollisionBoxCorner* bindCornerStart_;
 
-  CollisionBoundCorner* bindCornerEnd_;
+  CollisionBoxCorner* bindCornerEnd_;
 
-  CollisionBoundType boundType_;
+  CollisionBoxType collisionBoxType_;
 
   Color8Bit color_;
 

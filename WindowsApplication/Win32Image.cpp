@@ -610,6 +610,7 @@ void __stdcall Win32Image::AddImagePositionOffSet(unsigned int index, const Vect
 }
 
 bool __stdcall Win32Image::GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo** outInfo) {
+
   ImageInfo* pImageInfo = GetImageInfo(index);
 
   if (nullptr == pImageInfo) {

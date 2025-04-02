@@ -5,19 +5,6 @@ enum class ImageLoadType {
   Folder
 };
 
-enum CollisionBoxType {
-  CBT_None = -1,
-  CBT_HitBoxStart1,
-  CBT_HitBoxEnd1,
-  CBT_HitBoxStart2,
-  CBT_HitBoxEnd2,
-  CBT_AttackBoxStart,
-  CBT_AttackBoxEnd,
-  CBT_PushBoxStart,
-  CBT_PushBoxEnd,
-  CBT_MAX
-};
-
 struct ImageInfo {
   bool isOwner_;
   LINK_ITEM link_;

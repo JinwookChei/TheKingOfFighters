@@ -37,6 +37,12 @@
     <Filter Include="Contents\Tools\Button">
       <UniqueIdentifier>{b85391ce-4dd4-4163-9f94-41c6bbb166cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Level">
+      <UniqueIdentifier>{4570b7b5-3ee0-4299-8df4-045ae16440cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\KOF\Actor">
+      <UniqueIdentifier>{d736cefb-2e0e-44b9-b0d5-7b769727c1c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,25 +69,13 @@
     <ClCompile Include="ToolLevel.cpp">
       <Filter>Contents\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="KOFLevel.cpp">
-      <Filter>Contents\KOF</Filter>
-    </ClCompile>
-    <ClCompile Include="Iori.cpp">
-      <Filter>Contents\KOF</Filter>
-    </ClCompile>
-    <ClCompile Include="Chang.cpp">
-      <Filter>Contents\KOF</Filter>
-    </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>Contents\KOF</Filter>
-    </ClCompile>
     <ClCompile Include="ViewPortImage.cpp">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionBound.cpp">
+    <ClCompile Include="CollisionBox.cpp">
       <Filter>Contents\Tools\CollisionBox</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionBoundCorner.cpp">
+    <ClCompile Include="CollisionBoxCorner.cpp">
       <Filter>Contents\Tools\CollisionBox</Filter>
     </ClCompile>
     <ClCompile Include="CrossHair.cpp">
@@ -107,6 +101,18 @@
     </ClCompile>
     <ClCompile Include="ReadButton.cpp">
       <Filter>Contents\Tools\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="KOFLevel.cpp">
+      <Filter>Contents\KOF\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Iori.cpp">
+      <Filter>Contents\KOF\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Chang.cpp">
+      <Filter>Contents\KOF\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>Contents\KOF\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,25 +143,13 @@
     <ClInclude Include="ToolLevel.h">
       <Filter>Contents\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="KOFLevel.h">
-      <Filter>Contents\KOF</Filter>
-    </ClInclude>
-    <ClInclude Include="Iori.h">
-      <Filter>Contents\KOF</Filter>
-    </ClInclude>
-    <ClInclude Include="Chang.h">
-      <Filter>Contents\KOF</Filter>
-    </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <Filter>Contents\KOF</Filter>
-    </ClInclude>
     <ClInclude Include="ViewPortImage.h">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionBound.h">
+    <ClInclude Include="CollisionBox.h">
       <Filter>Contents\Tools\CollisionBox</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionBoundCorner.h">
+    <ClInclude Include="CollisionBoxCorner.h">
       <Filter>Contents\Tools\CollisionBox</Filter>
     </ClInclude>
     <ClInclude Include="CrossHair.h">
@@ -181,6 +175,18 @@
     </ClInclude>
     <ClInclude Include="ReadButton.h">
       <Filter>Contents\Tools\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="KOFLevel.h">
+      <Filter>Contents\KOF\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Iori.h">
+      <Filter>Contents\KOF\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Chang.h">
+      <Filter>Contents\KOF\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>Contents\KOF\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

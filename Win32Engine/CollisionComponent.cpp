@@ -108,6 +108,7 @@ CollisionFunctionInit functionInit;
 
 CollisionComponent::CollisionComponent()
     : collisionGroup_(CollisionGroupEngineType::CollisionGroupEngineType_Invalid),
+      isActive_(true),
       searchHandle_(nullptr),
       collisionActorLink_({nullptr, nullptr, this}),
       collisionLevelLink_({nullptr, nullptr, this}) {
@@ -207,6 +208,14 @@ void CollisionComponent::ChangeCollisionGroup(unsigned int group) {
 
 int CollisionComponent::GetCollisionGroup() const {
   return collisionGroup_;
+}
+
+void CollisionComponent::OnActive(bool isOn) {
+  isActive_ = isOn;
+}
+
+bool CollisionComponent::Active() const {
+  return isActive_;
 }
 
 CollisionInfo CollisionComponent::GetCollisionInfo() const {

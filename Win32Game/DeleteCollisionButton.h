@@ -8,7 +8,7 @@ class DeleteCollisionButton final
   DeleteCollisionButton();
   ~DeleteCollisionButton();
 
-  void Initialize(ViewPortImage* bindViewPortImage, CollisionBoundType boundType);
+  void Initialize(ViewPortImage* bindViewPortImage, CollisionBox* bindCollisionBox, CollisionBoxType collisionBoxType);
 
   void BeginPlay() override;
 
@@ -22,5 +22,7 @@ class DeleteCollisionButton final
  private:
   ViewPortImage* bindViewPortImage_;
 
-  CollisionBoundType boundType_;
+  CollisionBox* bindCollisionBox_;
+
+  CollisionBoxType collisionBoxType_;
 };

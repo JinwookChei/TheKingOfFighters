@@ -8,6 +8,19 @@ enum ImageType {
   ImageType_TGA,
 };
 
+//enum CollisionBoxType {
+//  CBT_None = -1,
+//  CBT_HitBoxStart1,
+//  CBT_HitBoxEnd1,
+//  CBT_HitBoxStart2,
+//  CBT_HitBoxEnd2,
+//  CBT_AttackBoxStart,
+//  CBT_AttackBoxEnd,
+//  CBT_PushBoxStart,
+//  CBT_PushBoxEnd,
+//  CBT_MAX
+//};
+
 struct CalculateTransformByAutoParameter {
   const Color8Bit& emptyColor;
   bool onlyLine = false;
