@@ -14,19 +14,32 @@ void ImageController::BeginPlay() {
 }
 
 void ImageController::Tick(unsigned long long curTick) {
+  // Drag Move
   Vector curMousePosition = GEngineCore->GetMousePosition();
   if (IsMouseClick()) {
     Vector deltaPosition = curMousePosition - prevMousePosition_;
 
     bindActor_->AddPositionOffSet(deltaPosition);
-    AddPosition(deltaPosition);
   }
+
+  // SetPosition
+  IImage* pImage = bindActor_->GetImage();
+  unsigned int imageIndex = bindActor_->GetImageIndex();
+  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
+    return;
+  }
+  IFileImage* pFileImage = (IFileImage*)pImage;
+  const Vector& imageOffset = pFileImage->GetImagePositionOffSet(imageIndex);
+
+  UI* ownerUI = GetOwner();
+  const Vector& ownerScale = ownerUI->GetScale();
+  Vector newPosition = {ownerScale.HalfX() + imageOffset.X, ownerScale.HalfY() + imageOffset.Y};
+  SetPosition(newPosition);
 
   prevMousePosition_ = curMousePosition;
 }
 
 void ImageController::ClickDownEvent() {
-
 }
 
 bool ImageController::Initialize(ToolActor* actor) {
@@ -49,14 +62,12 @@ bool ImageController::Initialize(ToolActor* actor) {
     return false;
   }
 
-
   IImage* pImage = pImageRenderer->GetImage();
   Vector imageLocalScale = pImageRenderer->GetLocalScale();
   unsigned int imageIndex = pImageRenderer->GetImageIndex();
 
   Vector imageScale = pImage->GetScale(imageIndex);
   SetScale(imageScale * imageLocalScale);
-
 
   return true;
 }

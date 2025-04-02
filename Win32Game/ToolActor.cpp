@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CollisionBox.h"
+#include "ImageController.h"
 #include "ToolActor.h"
 
 ToolActor::ToolActor()
@@ -83,6 +84,20 @@ unsigned int ToolActor::GetImageIndex() const {
   return pRender_->GetImageIndex();
 }
 
+void ToolActor::ChangeImage(unsigned int index) {
+  IImage* pImage = pRender_->GetImage();
+
+  if (nullptr == pImage) {
+    return;
+  }
+
+  if (index > pImage->GetImageCount() - 1) {
+    index = 0;
+  }
+
+  pRender_->SetImage(pImage, index);
+}
+
 void ToolActor::AddPositionOffSet(const Vector& offSet) {
   unsigned int imageIndex = pRender_->GetImageIndex();
   IImage* pImage = pRender_->GetImage();
@@ -93,6 +108,19 @@ void ToolActor::AddPositionOffSet(const Vector& offSet) {
 
   IFileImage* pFileImage = (IFileImage*)pImage;
   pFileImage->AddImagePositionOffSet(imageIndex, offSet);
+}
+
+void ToolActor::ResetPostionOffset() {
+  unsigned int imageIndex = pRender_->GetImageIndex();
+  IImage* pImage = pRender_->GetImage();
+
+  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
+    return;
+  }
+  IFileImage* pFileImage = (IFileImage*)pImage;
+
+  const Vector& offSet = pFileImage->GetImagePositionOffSet(imageIndex);
+  pFileImage->AddImagePositionOffSet(imageIndex, -offSet);
 }
 
 CollisionComponent* ToolActor::GetCollisionBox(CollisionBoxType boxType) {
@@ -132,9 +160,9 @@ void ToolActor::CollisionUpdate() {
   IFileImage* pFileImage = (IFileImage*)pImage;
   CollisionInfo* pCollisionInfo;
 
-  //Vector actorPosition = GetPosition();
-  //Vector imagePosition = pFileImage->RenderTransform(imageIndex).GetPosition();
-  //Vector imageScale = pFileImage->GetScale(imageIndex);
+  // Vector actorPosition = GetPosition();
+  // Vector imagePosition = pFileImage->RenderTransform(imageIndex).GetPosition();
+  // Vector imageScale = pFileImage->GetScale(imageIndex);
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxTop, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {

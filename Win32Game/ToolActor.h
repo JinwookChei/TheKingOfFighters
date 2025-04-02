@@ -16,15 +16,18 @@ class ToolActor
 
   bool Initialize(UI* ui);
 
+
   ImageRenderer* GetImageRenderer() const;
 
   IImage* GetImage() const;
 
   unsigned int GetImageIndex() const;
 
-  //void SetImageIndex(unsigned int index);
+  void ChangeImage(unsigned int index);
 
   void AddPositionOffSet(const Vector& offSet);
+
+  void ResetPostionOffset();
 
   CollisionComponent* GetCollisionBox(CollisionBoxType boxType);
 

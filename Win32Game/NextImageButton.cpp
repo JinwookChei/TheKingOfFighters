@@ -22,11 +22,11 @@ void NextImageButton::ClickDownEvent() {
     return;
   }
 
-  IImage* pImage = bindToolActor_->GetImage();
-  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
-    return;
-  }
-  IFileImage* pFileImage = (IFileImage*)pImage;
+  //IImage* pImage = bindToolActor_->GetImage();
+  //if (nullptr == pImage || true == pImage->IsRenderTexture()) {
+  //  return;
+  //}
+  //IFileImage* pFileImage = (IFileImage*)pImage;
   unsigned int imageIndex = bindToolActor_->GetImageIndex();
 
 
@@ -36,11 +36,11 @@ void NextImageButton::ClickDownEvent() {
     --imageIndex;
   }
 
-  if (imageIndex > pImage->GetImageCount() - 1) {
-    imageIndex = 0;
-  }
+  //if (imageIndex > pImage->GetImageCount() - 1) {
+  //  imageIndex = 0;
+  //}
 
-  //bindToolActor_->SetImageIndex(imageIndex);
+  bindToolActor_->ChangeImage(imageIndex);
 }
 
 ToolActor* NextImageButton::GetBindObject() const {

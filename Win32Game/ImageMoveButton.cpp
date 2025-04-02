@@ -48,8 +48,7 @@ void ImageMoveButton::ClickDownEvent() {
       break;
     }
     case IMD_Reset: {
-
-      //bindToolActor_->ResetPostionOffset();
+      bindToolActor_->ResetPostionOffset();
 
       break;
     }
