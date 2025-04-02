@@ -1,6 +1,6 @@
 #pragma once
 
-class ViewPortImage;
+class ToolActor;
 
 class DeleteCollisionButton final
     : public UIComponent {
@@ -8,7 +8,7 @@ class DeleteCollisionButton final
   DeleteCollisionButton();
   ~DeleteCollisionButton();
 
-  void Initialize(ViewPortImage* bindViewPortImage, CollisionBox* bindCollisionBox, CollisionBoxType collisionBoxType);
+  void Initialize(ToolActor* bindActor, CollisionBox* bindCollisionBox, CollisionBoxType collisionBoxType);
 
   void BeginPlay() override;
 
@@ -20,7 +20,7 @@ class DeleteCollisionButton final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  ViewPortImage* bindViewPortImage_;
+  ToolActor* bindToolActor_;
 
   CollisionBox* bindCollisionBox_;
 

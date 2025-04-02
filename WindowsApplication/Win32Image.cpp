@@ -605,8 +605,13 @@ void __stdcall Win32Image::AddImagePositionOffSet(unsigned int index, const Vect
   if (nullptr == pImg) {
     return;
   }
-
   pImg->positionOffSet_ += offSet;
+
+  for (int i = 0; i < pImg->collisionBoxInfo_.size(); ++i)
+  {
+    pImg->collisionBoxInfo_[i].position_ += offSet;
+  }
+
 }
 
 bool __stdcall Win32Image::GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo** outInfo) {

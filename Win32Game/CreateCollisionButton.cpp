@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "CollisionBox.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "CollisionBoxCorner.h"
 #include "CreateCollisionButton.h"
 
 CreateCollisionButton::CreateCollisionButton()
-    : bindViewPortImage_(nullptr),
+    : bindToolActor_(nullptr),
       bindCollisionBox_(nullptr),
       collisionBoxType_(CollisionBoxType::CBT_HitBoxTop) {
 }
@@ -13,8 +13,8 @@ CreateCollisionButton::CreateCollisionButton()
 CreateCollisionButton::~CreateCollisionButton() {
 }
 
-void CreateCollisionButton::Initialize(ViewPortImage* bindViewPortImage, CollisionBox* bindCollisionBox, CollisionBoxType collisionBoxType) {
-  bindViewPortImage_ = bindViewPortImage;
+void CreateCollisionButton::Initialize(ToolActor* bindActor, CollisionBox* bindCollisionBox, CollisionBoxType collisionBoxType) {
+  bindToolActor_ = bindActor;
   bindCollisionBox_ = bindCollisionBox;
   collisionBoxType_ = collisionBoxType;
 }
@@ -27,7 +27,7 @@ void CreateCollisionButton::Tick(unsigned long long curTick) {
 
 void CreateCollisionButton::ClickDownEvent() {
 
-  if (nullptr == bindViewPortImage_ || nullptr ==  bindCollisionBox_) {
+  if (nullptr == bindToolActor_ || nullptr == bindCollisionBox_) {
     return;
   }
 
@@ -42,13 +42,13 @@ void CreateCollisionButton::ClickDownEvent() {
   cornerEnd->EnableCollision(true);
 
 
-  IImage* pImage = bindViewPortImage_->GetImage();
+  IImage* pImage = bindToolActor_->GetImage();
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
 
   IFileImage* pFileImage = (IFileImage*)pImage;
-  unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
+  unsigned int imageIndex = bindToolActor_->GetImageIndex();
 
   CollisionInfo* pCollisionInfo;
   if (false == pFileImage->GetCollisionBoxInfo(imageIndex, collisionBoxType_, &pCollisionInfo)) {
@@ -56,8 +56,9 @@ void CreateCollisionButton::ClickDownEvent() {
   }
 
   pCollisionInfo->hasCollision_ = true;
-  pCollisionInfo->position_ = {0.0f, 0.0f};
+  pCollisionInfo->position_ = {100.0f, 100.0f};
   pCollisionInfo->scale_ = {100.0f, 100.0f};
+
 }
 
 void CreateCollisionButton::Render(IRenderTexture* renderTexture) {

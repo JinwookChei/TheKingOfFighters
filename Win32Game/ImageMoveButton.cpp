@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "ImageMoveButton.h"
 
 ImageMoveButton::ImageMoveButton()
-    : bindObject_(nullptr),
+    : bindToolActor_(nullptr),
       imageMoveDirType_(ImageMoveDirType::IMD_None) {
 }
 
@@ -17,39 +17,39 @@ void ImageMoveButton::Tick(unsigned long long curTick) {
 }
 
 void ImageMoveButton::ClickDownEvent() {
-  if (nullptr == bindObject_) {
+  if (nullptr == bindToolActor_) {
     return;
   }
 
-  IImage* pImage = bindObject_->GetImage();
+  IImage* pImage = bindToolActor_->GetImage();
   if (nullptr == pImage || true == pImage->IsRenderTexture())
   {
     return;
   }
 
   IFileImage* pFileImage = (IFileImage*)pImage;
-  unsigned int imageIndex = bindObject_->GetImageIndex();
+  unsigned int imageIndex = bindToolActor_->GetImageIndex();
 
   switch (imageMoveDirType_) {
     case IMD_PlusRow: {
-      bindObject_->AddPositionOffSet({1.0f, 0.0f});
+      bindToolActor_->AddPositionOffSet({1.0f, 0.0f});
       break;
     }
     case IMD_MinusRow: {
-      bindObject_->AddPositionOffSet({-1.0f, 0.0f});
+      bindToolActor_->AddPositionOffSet({-1.0f, 0.0f});
       break;
     }
     case IMD_PlusCol: {
-      bindObject_->AddPositionOffSet({0.0f, 1.0f});
+      bindToolActor_->AddPositionOffSet({0.0f, 1.0f});
       break;
     }
     case IMD_MinusCol: {
-      bindObject_->AddPositionOffSet({0.0f, -1.0f});
+      bindToolActor_->AddPositionOffSet({0.0f, -1.0f});
       break;
     }
     case IMD_Reset: {
 
-      bindObject_->ResetPostionOffset();
+      //bindToolActor_->ResetPostionOffset();
 
       break;
     }
@@ -58,16 +58,16 @@ void ImageMoveButton::ClickDownEvent() {
   }
 }
 
-ViewPortImage* ImageMoveButton::GetBindObject() const {
-  return bindObject_;
+ToolActor* ImageMoveButton::GetBindObject() const {
+  return bindToolActor_;
 }
 
-void ImageMoveButton::BindObject(ViewPortImage* object) {
+void ImageMoveButton::BindObject(ToolActor* object) {
   if (nullptr == object) {
     return;
   }
 
-  bindObject_ = object;
+  bindToolActor_ = object;
 }
 
 ImageMoveDirType ImageMoveButton::GetImageMoveDirType() const {

@@ -1,6 +1,7 @@
 #pragma once
 
-class ViewPortImage;
+class ToolActor;
+class ImageController;
 
 enum CollisionBoxCornerType {
   CBCT_Start,
@@ -17,11 +18,9 @@ class CollisionBoxCorner final
 
   void Tick(unsigned long long curTick) override;
 
-  
-
   void ClickDownEvent() override;
 
-  void Initialize(ViewPortImage* viewPortImage, CollisionBoxType collisionBoxType, CollisionBoxCornerType cornerType, const Color8Bit& color);
+  void Initialize(ToolActor* bindActor, ImageController* imageController, CollisionBoxType collisionBoxType, CollisionBoxCornerType cornerType, const Color8Bit& color);
 
  protected:
   void Render(struct IRenderTexture* renderTexture) override;
@@ -29,9 +28,10 @@ class CollisionBoxCorner final
 private:
   void MoveWithDrag();
 
-
 private:
-  ViewPortImage* bindViewPortImage_;
+  ToolActor* bindToolActor_;
+
+  ImageController* bindImageController_;
 
   CollisionBoxType collisionBoxType_;
 

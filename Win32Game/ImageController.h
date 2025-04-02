@@ -1,10 +1,10 @@
 #pragma once
 
-class ReadButton final
+class ImageController
     : public UIComponent {
  public:
-  ReadButton();
-  ~ReadButton();
+  ImageController();
+  ~ImageController();
 
   void BeginPlay() override;
 
@@ -12,17 +12,15 @@ class ReadButton final
 
   void ClickDownEvent() override;
 
-  void BindObject(ToolActor* toolActor);
+  bool Initialize(ToolActor* actor);
 
-  void SetFilePath(const std::string& filePath);
-
-  void ReadData();
+  ToolActor* GetBindActor() const;
 
  protected:
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  std::string filePath_;
+  ToolActor* bindActor_;
 
-  ToolActor* bindToolActor_;
+  Vector prevMousePosition_;
 };

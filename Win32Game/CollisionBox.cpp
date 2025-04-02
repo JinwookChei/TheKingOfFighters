@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "CollisionBox.h"
 #include "CollisionBoxCorner.h"
 
 
 CollisionBox::CollisionBox()
-    : bindViewPortImage_(nullptr),
+    : bindToolActor_(nullptr),
       bindCornerStart_(nullptr),
       bindCornerEnd_(nullptr),
       collisionBoxType_(CollisionBoxType::CBT_HitBoxTop),
@@ -36,7 +36,7 @@ void CollisionBox::ClickDownEvent() {
 void CollisionBox::ClickExit() {
 }
 
-void CollisionBox::Initialize(ViewPortImage* viewPortImage, CollisionBoxType collisionBoxType) {
+void CollisionBox::Initialize(ToolActor* toolActor, ImageController* imageController, CollisionBoxType collisionBoxType) {
   
   UI* owner = GetOwner();
 
@@ -44,12 +44,17 @@ void CollisionBox::Initialize(ViewPortImage* viewPortImage, CollisionBoxType col
     return;
   }
 
-  bindViewPortImage_ = viewPortImage;
-  if (nullptr == bindViewPortImage_)
+  if (nullptr == toolActor)
   {
     return;
   }
 
+  if (nullptr == imageController)
+  {
+    return;
+  }
+  
+  bindToolActor_ = toolActor;
   collisionBoxType_ = collisionBoxType;
 
   switch (collisionBoxType_) {
@@ -72,12 +77,11 @@ void CollisionBox::Initialize(ViewPortImage* viewPortImage, CollisionBoxType col
       break;
   }
 
-
   bindCornerStart_ = owner->CreateUIComponent<CollisionBoxCorner>();
-  bindCornerStart_->Initialize(bindViewPortImage_, collisionBoxType_, CollisionBoxCornerType::CBCT_Start, color_);
+  bindCornerStart_->Initialize(bindToolActor_, imageController, collisionBoxType_, CollisionBoxCornerType::CBCT_Start, color_);
 
   bindCornerEnd_ = owner->CreateUIComponent<CollisionBoxCorner>();
-  bindCornerEnd_->Initialize(bindViewPortImage_, collisionBoxType_, CollisionBoxCornerType::CBCT_End, color_);
+  bindCornerEnd_->Initialize(bindToolActor_, imageController, collisionBoxType_, CollisionBoxCornerType::CBCT_End, color_);
 }
 
 CollisionBoxCorner* CollisionBox::GetCornerStart() {
@@ -95,12 +99,12 @@ void CollisionBox::Render(IRenderTexture* renderTexture) {
   }
 
   // 이미지의 Collisioninfo.hasCollision이 False면 Render 안함.
-  if (nullptr == bindViewPortImage_) {
+  if (nullptr == bindToolActor_) {
     return;
   }
 
-  unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
-  IImage* pImage = bindViewPortImage_->GetImage();
+  unsigned int imageIndex = bindToolActor_->GetImageIndex();
+  IImage* pImage = bindToolActor_->GetImage();
 
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
@@ -111,7 +115,7 @@ void CollisionBox::Render(IRenderTexture* renderTexture) {
   if (false == pFileImage->GetCollisionBoxInfo(imageIndex, collisionBoxType_, &pCollisionInfo) || false == pCollisionInfo->hasCollision_) {
     return;
   }
-  //이미지의 Collisioninfo.hasCollision이 False면 Render 안함.
+  // --
 
 
   UI* owner = GetOwner();

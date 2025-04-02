@@ -114,6 +114,12 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>Contents\KOF\Level</Filter>
     </ClCompile>
+    <ClCompile Include="ToolActor.cpp">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageController.cpp">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -187,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>Contents\KOF\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolActor.h">
+      <Filter>Contents\Tools\ViewPort</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageController.h">
+      <Filter>Contents\Tools\ViewPort</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

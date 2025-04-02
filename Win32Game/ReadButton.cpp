@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "ReadButton.h"
 
 ReadButton::ReadButton()
     : filePath_("../ContentsResource/test.csv"),
-      bindObject_(nullptr) {
+      bindToolActor_(nullptr) {
 }
 
 ReadButton::~ReadButton() {
@@ -21,8 +21,8 @@ void ReadButton::ClickDownEvent() {
   ReadData();
 }
 
-void ReadButton::BindObject(ViewPortImage* object) {
-  bindObject_ = object;
+void ReadButton::BindObject(ToolActor* toolActor) {
+  bindToolActor_ = toolActor;
 }
 
 void ReadButton::SetFilePath(const std::string& filePath) {
@@ -30,11 +30,11 @@ void ReadButton::SetFilePath(const std::string& filePath) {
 }
 
 void ReadButton::ReadData() {
-  if (nullptr == bindObject_) {
+  if (nullptr == bindToolActor_) {
     return;
   }
 
-  IImage* pImage = bindObject_->GetImage();
+  IImage* pImage = bindToolActor_->GetImage();
 
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
@@ -46,8 +46,8 @@ void ReadButton::ReadData() {
   pFileImage->CalculateTransformFromCSV(filePath_);
 
 
-  unsigned int imageIndex = bindObject_->GetImageIndex();
-  bindObject_->SetImageIndex(imageIndex);
+  unsigned int imageIndex = bindToolActor_->GetImageIndex();
+  //bindToolActor_->SetImageIndex(imageIndex);
 
   MessageBox(NULL, L"안녕하세요! 이것은 간단한 메시지 창입니다.", L"알림", MB_OK);
 }

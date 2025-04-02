@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "WriteButton.h"
 
 WriteButton::WriteButton()
     : filePath_("../ContentsResource/test.csv"),
-      bindObject_(nullptr) {
+      bindToolActor_(nullptr) {
 }
 
 WriteButton::~WriteButton() {
@@ -21,8 +21,8 @@ void WriteButton::ClickDownEvent() {
   WriteData();
 }
 
-void WriteButton::BindObject(ViewPortImage* object) {
-  bindObject_ = object;
+void WriteButton::BindObject(ToolActor* toolActor) {
+  bindToolActor_ = toolActor;
 }
 
 void WriteButton::SetFilePath(const std::string& filePath) {
@@ -31,11 +31,11 @@ void WriteButton::SetFilePath(const std::string& filePath) {
 
 void WriteButton::WriteData() {
 
-  if (nullptr == bindObject_) {
+  if (nullptr == bindToolActor_) {
     return;
   }
 
-  IImage* pImage = bindObject_->GetImage();
+  IImage* pImage = bindToolActor_->GetImage();
 
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;

@@ -10,7 +10,8 @@ enum CollisionBoxType {
 };
 
 class CollisionBoxCorner;
-class ViewPortImage;
+class ToolActor;
+class ImageController;
 
 class CollisionBox
     : public UIComponent {
@@ -26,7 +27,7 @@ class CollisionBox
 
   void ClickExit() override;
 
-  void Initialize(ViewPortImage* viewPortImage, CollisionBoxType collisionBoxType);
+  void Initialize(ToolActor* toolActor, ImageController* imageController, CollisionBoxType collisionBoxType);
 
   CollisionBoxCorner* GetCornerStart();
 
@@ -37,7 +38,7 @@ class CollisionBox
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  ViewPortImage* bindViewPortImage_;
+  ToolActor* bindToolActor_;
 
   CollisionBoxCorner* bindCornerStart_;
 

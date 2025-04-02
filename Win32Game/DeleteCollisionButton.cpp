@@ -2,11 +2,11 @@
 
 #include "CollisionBox.h"
 #include "CollisionBoxCorner.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "DeleteCollisionButton.h"
 
 DeleteCollisionButton::DeleteCollisionButton()
-    : bindViewPortImage_(nullptr),
+    : bindToolActor_(nullptr),
       bindCollisionBox_(nullptr),
       collisionBoxType_(CollisionBoxType::CBT_HitBoxTop) {
 }
@@ -14,8 +14,8 @@ DeleteCollisionButton::DeleteCollisionButton()
 DeleteCollisionButton::~DeleteCollisionButton() {
 }
 
-void DeleteCollisionButton::Initialize(ViewPortImage* bindViewPortImage, CollisionBox* bindCollisionBox,  CollisionBoxType boundType) {
-  bindViewPortImage_ = bindViewPortImage;
+void DeleteCollisionButton::Initialize(ToolActor* bindActor, CollisionBox* bindCollisionBox, CollisionBoxType boundType) {
+  bindToolActor_ = bindActor;
   bindCollisionBox_ = bindCollisionBox;
   collisionBoxType_ = boundType;
 }
@@ -29,7 +29,7 @@ void DeleteCollisionButton::Tick(unsigned long long curTick) {
 
 void DeleteCollisionButton::ClickDownEvent() {
 
-    if (nullptr == bindViewPortImage_ || nullptr ==  bindCollisionBox_) {
+    if (nullptr == bindToolActor_ || nullptr == bindCollisionBox_) {
     return;
   }
 
@@ -43,13 +43,13 @@ void DeleteCollisionButton::ClickDownEvent() {
   cornerEnd->EnableCollision(false);
 
 
-  IImage* pImage = bindViewPortImage_->GetImage();
+  IImage* pImage = bindToolActor_->GetImage();
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
 
   IFileImage* pFileImage = (IFileImage*)pImage;
-  unsigned int imageIndex = bindViewPortImage_->GetImageIndex();
+  unsigned int imageIndex = bindToolActor_->GetImageIndex();
 
   CollisionInfo* pCollisionInfo;
   if (false == pFileImage->GetCollisionBoxInfo(imageIndex, collisionBoxType_, &pCollisionInfo)) {

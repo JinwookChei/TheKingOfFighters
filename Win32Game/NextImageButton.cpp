@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "ViewPortImage.h"
+#include "ToolActor.h"
 #include "NextImageButton.h"
 
 
 NextImageButton::NextImageButton()
-    : bindObject_(nullptr),
+    : bindToolActor_(nullptr),
       nextImageType_(NextImageType::NextImage_Next) {
 }
 
@@ -18,16 +18,16 @@ void NextImageButton::Tick(unsigned long long curTick) {
 }
 
 void NextImageButton::ClickDownEvent() {
-  if (nullptr == bindObject_) {
+  if (nullptr == bindToolActor_) {
     return;
   }
 
-  IImage* pImage = bindObject_->GetImage();
+  IImage* pImage = bindToolActor_->GetImage();
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
   IFileImage* pFileImage = (IFileImage*)pImage;
-  unsigned int imageIndex = bindObject_->GetImageIndex();
+  unsigned int imageIndex = bindToolActor_->GetImageIndex();
 
 
   if (nextImageType_ == NextImage_Next) {
@@ -40,19 +40,19 @@ void NextImageButton::ClickDownEvent() {
     imageIndex = 0;
   }
 
-  bindObject_->SetImageIndex(imageIndex);
+  //bindToolActor_->SetImageIndex(imageIndex);
 }
 
-ViewPortImage* NextImageButton::GetBindObject() const {
-  return bindObject_;
+ToolActor* NextImageButton::GetBindObject() const {
+  return bindToolActor_;
 }
 
-void NextImageButton::BindObject(ViewPortImage* object) {
+void NextImageButton::BindObject(ToolActor* object) {
   if (nullptr == object) {
     return;
   }
 
-  bindObject_ = object;
+  bindToolActor_ = object;
 }
 
 void NextImageButton::SetNextImageType(NextImageType nextImageType) {
