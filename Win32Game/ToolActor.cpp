@@ -17,10 +17,15 @@ ToolActor::~ToolActor() {
 
 void ToolActor::BeginPlay() {
   IImage* pImage = ImgManager::GetIntance()->GetImg(1);
+  Color8Bit transColor;
+  if (false == pImage->GetPixel({0.0f, 0.0f}, &transColor)) {
+    return;
+  }
 
   pRender_ = CreateImageRender();
   pRender_->SetImageRenderType(ImageRenderType::Center);
-  pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
+
+  pRender_->SetTransparentColor(transColor);  //
   pRender_->SetLocalScale({4.0f, 4.0f});
   unsigned int imageIndex = pRender_->GetImageIndex();
   if (nullptr != pImage) {

@@ -41,8 +41,8 @@ void KOFLevel::BeginPlay() {
 
   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  Chang* chang = SpawnActor<Chang>();
-  chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 210.0f));
+  Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
+  chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
 }
 
 void KOFLevel::Tick(unsigned long long dletaTick) {
