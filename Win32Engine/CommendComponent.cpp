@@ -27,7 +27,7 @@ void CommendComponent::Tick(unsigned long long curTick) {
   }
 }
 
-bool CommendComponent::RegistTask(std::initializer_list<CommendKey> commend, void (*task)()) {
+bool CommendComponent::RegistTask(std::initializer_list<CommendKey> commend, int task) {
   if (nullptr == pRootNode_) {
     return false;
   }
@@ -42,9 +42,17 @@ bool CommendComponent::RegistTask(std::initializer_list<CommendKey> commend, voi
     pCur = pCur->pSubNodes[*iter];
   }
 
-  pCur->Task = task;
+  pCur->task_ = task;
 
   return true;
+}
+
+int CommendComponent::GetTask() const {
+  if (nullptr == pCurNode_) {
+    return 0;
+  }
+
+  return pCurNode_->task_;
 }
 
 void CommendComponent::JumpNode(CommendKey key) {
@@ -61,10 +69,10 @@ void CommendComponent::JumpNode(CommendKey key) {
     return;
   }
 
-  if (nullptr != pCurNode_->Task) {
+  /*if (nullptr != pCurNode_->Task) {
     pCurNode_->Task();
     ResetNode();
-  }
+  }*/
 }
 
 void CommendComponent::SetTimeOutThreshold(unsigned long long threshold) {
@@ -75,6 +83,7 @@ void CommendComponent::ResetNode() {
   if (nullptr == pRootNode_) {
     return;
   }
+
   pCurNode_ = pRootNode_;
   timeOut_ = 0;
 }

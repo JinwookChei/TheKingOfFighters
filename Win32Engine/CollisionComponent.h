@@ -55,6 +55,8 @@ class CollisionComponent final
  protected:
   void DebugRender(struct IRenderTexture* renderTexture) override;
 
+  void CollisionRender(IRenderTexture* renderTexture) override;
+
   LINK_ITEM* GetCollisionActorLink();
 
   LINK_ITEM* GetCollisionLevelLink();

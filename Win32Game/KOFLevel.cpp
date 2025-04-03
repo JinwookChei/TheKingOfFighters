@@ -53,4 +53,8 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
   if (InputManager::Instance()->IsDown(VK_F1)) {
     SetDebugRender(!GetDebugRender());
   }
+
+  if (InputManager::Instance()->IsDown(VK_F2)) {
+    SetCollisionRender(!GetCollisionRender());
+  }
 }

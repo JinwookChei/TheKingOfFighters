@@ -20,7 +20,7 @@ enum CommendKey {
 struct CommendNode {
   CommendNode()
       : //key_(CommendKey::CK_None),
-        Task(nullptr) {
+        task_(0){
     for (int i = 0; i < CommendKey::CK_MAX; ++i) {
       pSubNodes[i] = nullptr;
     }
@@ -36,7 +36,9 @@ struct CommendNode {
 
   CommendNode* pSubNodes[CommendKey::CK_MAX];
 
-  void (*Task)();
+  //void (*Task)();
+  int task_;
+  
 };
 
 class CommendComponent
@@ -51,13 +53,15 @@ class CommendComponent
 
   JO_API void Tick(unsigned long long curTick) override;
 
-  JO_API bool RegistTask(std::initializer_list<CommendKey> commend, void (*task)());
+  JO_API bool RegistTask(std::initializer_list<CommendKey> commend, int task);
+
+  JO_API int GetTask() const;
 
   JO_API void JumpNode(CommendKey key);
 
   JO_API void SetTimeOutThreshold(unsigned long long threshold);
 
-  void ResetNode();
+  JO_API void ResetNode();
 
  private:
   CommendNode* const pRootNode_;

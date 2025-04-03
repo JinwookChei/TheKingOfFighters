@@ -2,10 +2,6 @@
 #include "Iori.h"
 #include "CollisionBox.h"
 
-void CommnedTaskI() {
-  MessageBox(NULL, L"커맨드 공격!!", L"알림", MB_OK);
-}
-
 Iori::Iori()
     : pRender_(nullptr),
       pHitBoxTop_(nullptr),
@@ -23,12 +19,12 @@ Iori::~Iori() {
 void Iori::BeginPlay() {
   // RENDERER
   pRender_ = CreateImageRender();
-  pRender_->CreateAnimation(1, 3, 7, 15, 50, true);     // 아이들
-  pRender_->CreateAnimation(2, 3, 16, 23, 50, false);   // 앉기.
-  pRender_->CreateAnimation(3, 3, 26, 35, 50, true);    // -> 걷기
-  pRender_->CreateAnimation(4, 3, 36, 44, 50, true);    // <- 뒤로가기
-  pRender_->CreateAnimation(5, 3, 109, 118, 50, true);  // 발차기
-  pRender_->CreateAnimation(6, 3, 137, 145, 50, true);  // 커맨드 테스트.
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_IDle, 3, 7, 15, 50, true);          // 아이들
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_Seat, 3, 16, 23, 50, false);        // 앉기.
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_Walk, 3, 26, 35, 50, true);         // -> 걷기
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_BackWalk, 3, 36, 44, 50, true);     // <- 뒤로가기
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_Kick, 3, 109, 118, 50, true);       // 발차기
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_SUperKick, 3, 137, 145, 50, true);  // 커맨드 테스트.
 
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
@@ -46,15 +42,7 @@ void Iori::BeginPlay() {
   // COMMEND
   pCommendComponent_ = CreateComponent<CommendComponent>();
   pCommendComponent_->SetTimeOutThreshold(80);
-  pCommendComponent_->RegistTask({CK_Left}, nullptr);
-  pCommendComponent_->RegistTask({CK_Up}, nullptr);
-  pCommendComponent_->RegistTask({CK_Right}, nullptr);
-  pCommendComponent_->RegistTask({CK_Down}, nullptr);
-  pCommendComponent_->RegistTask({CK_A}, nullptr);
-  pCommendComponent_->RegistTask({CK_B}, nullptr);
-  pCommendComponent_->RegistTask({CK_C}, nullptr);
-  pCommendComponent_->RegistTask({CK_D}, nullptr);
-  if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, CommnedTaskI)) {
+  if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, IoriAnim::IORIANIM_SUperKick)) {
     return;
   }
 
@@ -118,7 +106,6 @@ void Iori::RenderUpdate() {
   SetPosition(newPosition);
 }
 
-
 void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
     pCommendComponent_->JumpNode(CK_Left);
@@ -135,8 +122,35 @@ void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
     pCommendComponent_->JumpNode(CK_Down);
   }
-}
 
+  switch (pCommendComponent_->GetTask()) {
+    case IORIANIM_None:
+      break;
+
+    case IORIANIM_IDle:
+      break;
+
+    case IORIANIM_Seat:
+      break;
+
+    case IORIANIM_Walk:
+      break;
+
+    case IORIANIM_BackWalk:
+      break;
+
+    case IORIANIM_Kick:
+      break;
+
+    case IORIANIM_SUperKick:
+      pRender_->ChangeAnimation(IORIANIM_SUperKick);
+      pCommendComponent_->ResetNode();
+      //MessageBox(NULL, L"SuperKick!!", L"알림", MB_OK);
+      break;
+    default:
+      break;
+  }
+}
 
 void Iori::CollisionUpdate() {
   if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
@@ -206,7 +220,6 @@ void Iori::CollisionUpdate() {
     }
   }
 }
-
 
 // Regacy
 

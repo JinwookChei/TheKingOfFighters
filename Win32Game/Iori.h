@@ -1,5 +1,16 @@
 #pragma once
 
+enum IoriAnim
+{
+    IORIANIM_None = 0,
+  IORIANIM_IDle,
+  IORIANIM_Seat,
+  IORIANIM_Walk,
+  IORIANIM_BackWalk,
+  IORIANIM_Kick,
+  IORIANIM_SUperKick
+};
+
 
 class Iori
     : public Actor {
