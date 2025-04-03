@@ -17,16 +17,17 @@ class Iori
  private:
   ImageRenderer* pRender_;
 
-  CollisionComponent* hitBoxTop_;
+  CollisionComponent* pHitBoxTop_;
 
-  CollisionComponent* hitBoxBottom_;
+  CollisionComponent* pHitBoxBottom_;
 
-  CollisionComponent* attackBox_;
+  CollisionComponent* pAttackBox_;
 
-  CollisionComponent* pushBox_;
+  CollisionComponent* pPushBox_;
 
-  CollisionComponent* grabBox_;
+  CollisionComponent* pGrabBox_;
 
+  CommendComponent* pCommendComponent_;
 
   class BattleComponent* pBattle_;
 };

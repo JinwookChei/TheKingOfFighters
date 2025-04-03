@@ -1,0 +1,73 @@
+#pragma once
+#include "ActorComponent.h"
+#include <initializer_list>
+
+// inline void
+
+enum CommendKey {
+  CK_None = -1,
+  CK_Left = 0,
+  CK_Up,
+  CK_Right,
+  CK_Down,
+  CK_A,
+  CK_B,
+  CK_C,
+  CK_D,
+  CK_MAX
+};
+
+struct CommendNode {
+  CommendNode()
+      : //key_(CommendKey::CK_None),
+        Task(nullptr) {
+    for (int i = 0; i < CommendKey::CK_MAX; ++i) {
+      pSubNodes[i] = nullptr;
+    }
+  }
+
+  ~CommendNode() {
+    if (nullptr != pSubNodes) {
+      for (int i = 0; i < CommendKey::CK_MAX; ++i) {
+        delete pSubNodes[i];
+      }
+    }
+  }
+
+//  CommendKey key_;
+
+  CommendNode* pSubNodes[CommendKey::CK_MAX];
+
+  // Task
+  void (*Task)();
+};
+
+class CommendComponent
+    : public ActorComponent {
+  friend struct CommendNode;
+
+ public:
+  JO_API CommendComponent();
+  JO_API ~CommendComponent();
+
+  JO_API void BeginPlay() override;
+
+  JO_API void Tick(unsigned long long curTick) override;
+
+  JO_API bool RegistTask(std::initializer_list<CommendKey> commend, void (*task)());
+
+  JO_API void JumpNode(CommendKey key);
+
+  JO_API void SetTimeOutThreshold(unsigned long long threshold);
+
+  void ResetNode();
+
+ private:
+  CommendNode* const pRootNode_;
+
+  CommendNode* pCurNode_;
+
+  unsigned long long timeOut_;
+
+  unsigned long long timeOutThreshold_;
+};

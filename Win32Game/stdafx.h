@@ -34,6 +34,8 @@
 #include <Win32Engine/ResizeCornerComponent.h>
 #include <Win32Engine/TextComponent.h>
 #include <Win32Engine/CameraManager.h>
+#include <Win32Engine/CommendComponent.h>
+
 
 #include "Types.h"
 

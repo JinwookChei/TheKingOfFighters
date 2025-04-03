@@ -2,14 +2,19 @@
 #include "Iori.h"
 #include "CollisionBox.h"
 
+void CommnedTaskI() {
+  MessageBox(NULL, L"커맨드 공격!!", L"알림", MB_OK);
+}
+
 Iori::Iori()
     : pRender_(nullptr),
-      pBattle_(nullptr),
-      hitBoxTop_(nullptr),
-      hitBoxBottom_(nullptr),
-      attackBox_(nullptr),
-      pushBox_(nullptr),
-      grabBox_(nullptr) {
+      pHitBoxTop_(nullptr),
+      pHitBoxBottom_(nullptr),
+      pAttackBox_(nullptr),
+      pPushBox_(nullptr),
+      pGrabBox_(nullptr),
+      pCommendComponent_(nullptr),
+      pBattle_(nullptr) {
 }
 
 Iori::~Iori() {
@@ -18,12 +23,12 @@ Iori::~Iori() {
 void Iori::BeginPlay() {
   // RENDERER
   pRender_ = CreateImageRender();
-
   pRender_->CreateAnimation(1, 3, 7, 15, 50, true);     // 아이들
   pRender_->CreateAnimation(2, 3, 16, 23, 50, false);   // 앉기.
   pRender_->CreateAnimation(3, 3, 26, 35, 50, true);    // -> 걷기
   pRender_->CreateAnimation(4, 3, 36, 44, 50, true);    // <- 뒤로가기
   pRender_->CreateAnimation(5, 3, 109, 118, 50, true);  // 발차기
+  pRender_->CreateAnimation(6, 3, 137, 145, 50, true);  // 커맨드 테스트.
 
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
@@ -32,31 +37,46 @@ void Iori::BeginPlay() {
   pRender_->SetLocalScale({4.0f, 4.0f});
 
   // COLLISION
-  hitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
-  hitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
-  attackBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_AttackBox);
-  pushBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_PushBox);
-  grabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
+  pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
+  pHitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
+  pAttackBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_AttackBox);
+  pPushBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_PushBox);
+  pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
+
+  // COMMEND
+  pCommendComponent_ = CreateComponent<CommendComponent>();
+  pCommendComponent_->SetTimeOutThreshold(80);
+  pCommendComponent_->RegistTask({CK_Left}, nullptr);
+  pCommendComponent_->RegistTask({CK_Up}, nullptr);
+  pCommendComponent_->RegistTask({CK_Right}, nullptr);
+  pCommendComponent_->RegistTask({CK_Down}, nullptr);
+  pCommendComponent_->RegistTask({CK_A}, nullptr);
+  pCommendComponent_->RegistTask({CK_B}, nullptr);
+  pCommendComponent_->RegistTask({CK_C}, nullptr);
+  pCommendComponent_->RegistTask({CK_D}, nullptr);
+  if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, CommnedTaskI)) {
+    return;
+  }
 
   CollisionUpdate();
 
+  // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
-
   pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
-  hitBoxTop_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Blue});
-  hitBoxBottom_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Blue});
-  attackBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Red});
-  pushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
-  grabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
+  pHitBoxTop_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Blue});
+  pHitBoxBottom_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Blue});
+  pAttackBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Red});
+  pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
+  pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
+
   do {
     if (false == InputManager::Instance()->IsAnyKeyPress()) {
       pRender_->ChangeAnimation(1);
       break;
     }
-
     Vector moveDir = {0.0f, 0.0f};
 
     if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
@@ -92,6 +112,25 @@ void Iori::Tick(unsigned long long deltaTick) {
     SetPosition(newPosition);
 
   } while (false);
+
+  do {
+    if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
+      pCommendComponent_->JumpNode(CK_Left);
+    }
+
+    if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
+      pCommendComponent_->JumpNode(CK_Right);
+    }
+
+    if (InputManager::Instance()->IsDown('W') || InputManager::Instance()->IsDown('w')) {
+      pCommendComponent_->JumpNode(CK_Up);
+    }
+
+    if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
+      pCommendComponent_->JumpNode(CK_Down);
+    }
+  }
+    while (false);
 
   CollisionUpdate();
 }
@@ -149,7 +188,7 @@ void Iori::Tick(unsigned long long deltaTick) {
 //}
 
 void Iori::CollisionUpdate() {
-  if (nullptr == hitBoxTop_ || nullptr == hitBoxBottom_ || nullptr == attackBox_ || nullptr == pushBox_ || nullptr == grabBox_) {
+  if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
     return;
   }
 
@@ -165,56 +204,54 @@ void Iori::CollisionUpdate() {
   Vector actorPosition = GetPosition();
   Vector imagePosition = pFileImage->RenderTransform(imageIndex).GetPosition();
   Vector imageScale = pFileImage->GetScale(imageIndex);
-  
+
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxTop, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      hitBoxTop_->OnActive(true);
-      //Vector newPosition = {0.0f, 0.0f};
-      // hitBoxTop_->SetPosition(newPosition);
-      hitBoxTop_->SetPosition(pCollisionInfo->position_);
-      hitBoxTop_->SetScale(pCollisionInfo->scale_);
+      pHitBoxTop_->OnActive(true);
+      pHitBoxTop_->SetPosition(pCollisionInfo->position_);
+      pHitBoxTop_->SetScale(pCollisionInfo->scale_);
     } else {
-      hitBoxTop_->OnActive(false);
+      pHitBoxTop_->OnActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxBottom, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      hitBoxBottom_->OnActive(true);
-      hitBoxBottom_->SetPosition(pCollisionInfo->position_);
-      hitBoxBottom_->SetScale(pCollisionInfo->scale_);
+      pHitBoxBottom_->OnActive(true);
+      pHitBoxBottom_->SetPosition(pCollisionInfo->position_);
+      pHitBoxBottom_->SetScale(pCollisionInfo->scale_);
     } else {
-      hitBoxBottom_->OnActive(false);
+      pHitBoxBottom_->OnActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_AttackBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      attackBox_->OnActive(true);
-      attackBox_->SetPosition(pCollisionInfo->position_);
-      attackBox_->SetScale(pCollisionInfo->scale_);
+      pAttackBox_->OnActive(true);
+      pAttackBox_->SetPosition(pCollisionInfo->position_);
+      pAttackBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      attackBox_->OnActive(false);
+      pAttackBox_->OnActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_PushBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pushBox_->OnActive(true);
-      pushBox_->SetPosition(pCollisionInfo->position_);
-      pushBox_->SetScale(pCollisionInfo->scale_);
+      pPushBox_->OnActive(true);
+      pPushBox_->SetPosition(pCollisionInfo->position_);
+      pPushBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      pushBox_->OnActive(false);
+      pPushBox_->OnActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_GrabBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      grabBox_->OnActive(true);
-      grabBox_->SetPosition(pCollisionInfo->position_);
-      grabBox_->SetScale(pCollisionInfo->scale_);
+      pGrabBox_->OnActive(true);
+      pGrabBox_->SetPosition(pCollisionInfo->position_);
+      pGrabBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      grabBox_->OnActive(false);
+      pGrabBox_->OnActive(false);
     }
   }
 }

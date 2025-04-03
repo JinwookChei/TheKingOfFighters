@@ -40,6 +40,9 @@
     <Filter Include="Actor\UIComponent">
       <UniqueIdentifier>{74ba06be-3083-47f5-abde-1525473281f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Actor\Component\Commend">
+      <UniqueIdentifier>{bf7ad75a-7fd7-468b-bb6c-e8c6154c0eea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="ResizeCornerComponent.cpp">
       <Filter>Actor\UIComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="CommendComponent.cpp">
+      <Filter>Actor\Component\Commend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="ResizeCornerComponent.h">
       <Filter>Actor\UIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CommendComponent.h">
+      <Filter>Actor\Component\Commend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
