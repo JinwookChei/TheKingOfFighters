@@ -6,7 +6,9 @@ CommendComponent::CommendComponent()
       pCurNode_(pRootNode_),
       timeOut_(0),
       timeOutThreshold_(0) {
-
+  for (int i = 0; i < CommendKey::CK_MAX; ++i) {
+    pRootNode_->pSubNodes[i] = new CommendNode();
+  }
 }
 
 CommendComponent::~CommendComponent() {
@@ -46,11 +48,10 @@ bool CommendComponent::RegistTask(std::initializer_list<CommendKey> commend, voi
 }
 
 void CommendComponent::JumpNode(CommendKey key) {
-
   timeOut_ = 0;
 
   if (nullptr == pCurNode_->pSubNodes[key]) {
-    pCurNode_ = pRootNode_->pSubNodes[key];  
+    pCurNode_ = pRootNode_->pSubNodes[key];
     return;
   } else {
     pCurNode_ = pCurNode_->pSubNodes[key];
@@ -71,7 +72,6 @@ void CommendComponent::SetTimeOutThreshold(unsigned long long threshold) {
 }
 
 void CommendComponent::ResetNode() {
-
   if (nullptr == pRootNode_) {
     return;
   }

@@ -34,11 +34,8 @@ struct CommendNode {
     }
   }
 
-//  CommendKey key_;
-
   CommendNode* pSubNodes[CommendKey::CK_MAX];
 
-  // Task
   void (*Task)();
 };
 

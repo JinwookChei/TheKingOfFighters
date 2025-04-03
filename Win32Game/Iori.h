@@ -12,6 +12,10 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
+  void RenderUpdate();
+
+  void CommendUpdate();
+
   void CollisionUpdate(); 
 
  private:

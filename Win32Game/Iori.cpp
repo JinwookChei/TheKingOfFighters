@@ -71,121 +71,72 @@ void Iori::BeginPlay() {
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
+  RenderUpdate();
 
-  do {
-    if (false == InputManager::Instance()->IsAnyKeyPress()) {
-      pRender_->ChangeAnimation(1);
-      break;
-    }
-    Vector moveDir = {0.0f, 0.0f};
-
-    if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-      pRender_->ChangeAnimation(4);
-      moveDir += Vector::Left;
-    }
-    if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-      pRender_->ChangeAnimation(3);
-      moveDir += Vector::Right;
-    }
-    if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
-      moveDir += Vector::Up;
-    }
-    if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-      pRender_->ChangeAnimation(2);
-    }
-    if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
-      pRender_->ChangeAnimation(5);
-    }
-
-    if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-      // pRender_->SetFlipRendering(true);
-    }
-    if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-      // pRender_->SetFlipRendering(false);
-    }
-
-    if (moveDir == Vector(0.0f, 0.0f)) {
-      // pRender_->ChangeAnimation(1);
-    }
-
-    Vector newPosition = moveDir + GetPosition();
-    SetPosition(newPosition);
-
-  } while (false);
-
-  do {
-    if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
-      pCommendComponent_->JumpNode(CK_Left);
-    }
-
-    if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
-      pCommendComponent_->JumpNode(CK_Right);
-    }
-
-    if (InputManager::Instance()->IsDown('W') || InputManager::Instance()->IsDown('w')) {
-      pCommendComponent_->JumpNode(CK_Up);
-    }
-
-    if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
-      pCommendComponent_->JumpNode(CK_Down);
-    }
-  }
-    while (false);
+  CommendUpdate();
 
   CollisionUpdate();
 }
-//{
-//
-// if (false == InputManager::Instance()->IsAnyKeyPress()) {
-//   pRender_->ChangeAnimation(1);
-//   return;
-// }
 
-// Vector moveDir = {0.0f, 0.0f};
+void Iori::RenderUpdate() {
+  if (false == InputManager::Instance()->IsAnyKeyPress()) {
+    pRender_->ChangeAnimation(1);
+    return;
+  }
+  Vector moveDir = {0.0f, 0.0f};
 
-// if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-//   if (false == pRender_->GetFlipRendering()) {
-//     pRender_->ChangeAnimation(4);
+  if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
+    pRender_->ChangeAnimation(4);
+    moveDir += Vector::Left;
+  }
+  if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
+    pRender_->ChangeAnimation(3);
+    moveDir += Vector::Right;
+  }
+  if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
+    moveDir += Vector::Up;
+  }
+  if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
+    pRender_->ChangeAnimation(2);
+  }
+  if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
+    pRender_->ChangeAnimation(5);
+  }
 
-//  } else {
-//    pRender_->ChangeAnimation(3);
-//  }
+  if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
+    // pRender_->SetFlipRendering(true);
+  }
+  if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
+    // pRender_->SetFlipRendering(false);
+  }
 
-//  moveDir += Vector::Left;
-//}
-// if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-//  if (false == pRender_->GetFlipRendering()) {
-//    pRender_->ChangeAnimation(3);
-//  } else {
-//    pRender_->ChangeAnimation(4);
-//  }
+  if (moveDir == Vector(0.0f, 0.0f)) {
+    // pRender_->ChangeAnimation(1);
+  }
 
-//  moveDir += Vector::Right;
-//}
-// if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
-//  moveDir += Vector::Up;
-//}
-// if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-//  pRender_->ChangeAnimation(2);
-//}
-// if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
-//  pRender_->ChangeAnimation(5);
-//}
+  Vector newPosition = moveDir + GetPosition();
+  SetPosition(newPosition);
+}
 
-// if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-//   pRender_->SetFlipRendering(true);
-// }
-// if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-//   pRender_->SetFlipRendering(false);
-// }
 
-// if (moveDir == Vector(0.0f, 0.0f)) {
-//   // pRender_->ChangeAnimation(1);
-// }
+void Iori::CommendUpdate() {
+  if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
+    pCommendComponent_->JumpNode(CK_Left);
+  }
 
-// Vector newPosition = moveDir + GetPosition();
-// SetPosition(newPosition);
-//}
+  if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
+    pCommendComponent_->JumpNode(CK_Right);
+  }
+
+  if (InputManager::Instance()->IsDown('W') || InputManager::Instance()->IsDown('w')) {
+    pCommendComponent_->JumpNode(CK_Up);
+  }
+
+  if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
+    pCommendComponent_->JumpNode(CK_Down);
+  }
+}
+
 
 void Iori::CollisionUpdate() {
   if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
@@ -255,3 +206,59 @@ void Iori::CollisionUpdate() {
     }
   }
 }
+
+
+// Regacy
+
+//{
+//
+// if (false == InputManager::Instance()->IsAnyKeyPress()) {
+//   pRender_->ChangeAnimation(1);
+//   return;
+// }
+
+// Vector moveDir = {0.0f, 0.0f};
+
+// if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
+//   if (false == pRender_->GetFlipRendering()) {
+//     pRender_->ChangeAnimation(4);
+
+//  } else {
+//    pRender_->ChangeAnimation(3);
+//  }
+
+//  moveDir += Vector::Left;
+//}
+// if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
+//  if (false == pRender_->GetFlipRendering()) {
+//    pRender_->ChangeAnimation(3);
+//  } else {
+//    pRender_->ChangeAnimation(4);
+//  }
+
+//  moveDir += Vector::Right;
+//}
+// if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
+//  moveDir += Vector::Up;
+//}
+// if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
+//  pRender_->ChangeAnimation(2);
+//}
+// if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
+//  pRender_->ChangeAnimation(5);
+//}
+
+// if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
+//   pRender_->SetFlipRendering(true);
+// }
+// if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
+//   pRender_->SetFlipRendering(false);
+// }
+
+// if (moveDir == Vector(0.0f, 0.0f)) {
+//   // pRender_->ChangeAnimation(1);
+// }
+
+// Vector newPosition = moveDir + GetPosition();
+// SetPosition(newPosition);
+//}
