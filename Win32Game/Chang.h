@@ -1,5 +1,12 @@
 #pragma once
 
+enum ChangAnimStat
+{
+    CHAS_None = 0,
+    CHAS_Idel,
+    CHAS_Hit,
+    CHAS_MAX
+};
 
 class Chang
     : public Actor {
@@ -12,11 +19,13 @@ class Chang
 
   void Tick(unsigned long long curTick) override;
 
-  void RenderUpdate();
+  void InputUpdate();
 
   void CommendUpdate();
 
-  void CollisionUpdate();
+  void CollisionBoundUpdate();
+
+  bool CollisionHitUpdate();
 
  private:
   ImageRenderer* pRender_;
@@ -33,7 +42,9 @@ class Chang
 
   CommendComponent* pCommendComponent_;
 
-  StateComponent* pStateComponent_;
+  //StateComponent* pStateComponent_;
+
+  ChangAnimStat animState_;
 
   class BattleComponent* pBattle_;
 };

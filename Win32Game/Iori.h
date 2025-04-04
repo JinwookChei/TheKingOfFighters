@@ -1,13 +1,13 @@
 #pragma once
 
-enum IoriAnim {
-  IORIANIM_None = 0,
-  IORIANIM_IDle,
-  IORIANIM_Seat,
-  IORIANIM_Walk,
-  IORIANIM_BackWalk,
-  IORIANIM_Kick,
-  IORIANIM_SUperKick
+enum IoriAnimState {
+  IOAS_None = 0,
+  IOAS_IDle,
+  IOAS_Seat,
+  IOAS_Walk,
+  IOAS_BackWalk,
+  IOAS_Kick,
+  IOAS_SUperKick
 };
 
 class Iori
@@ -21,11 +21,15 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
-  void RenderUpdate();
+  void InputUpdate();
+
+  //void AnimUpdate();
 
   void CommendUpdate();
 
-  void CollisionUpdate();
+  void CollisionBoundUpdate();
+
+  bool CollisionHitUpdate();
 
  private:
   ImageRenderer* pRender_;
@@ -43,4 +47,6 @@ class Iori
   CommendComponent* pCommendComponent_;
 
   class BattleComponent* pBattle_;
+
+  IoriAnimState animState_;
 };

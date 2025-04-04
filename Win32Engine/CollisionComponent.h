@@ -44,13 +44,15 @@ class CollisionComponent final
 
   JO_API int GetCollisionGroup() const;
 
-  JO_API void OnActive(bool isOn);
-
-  JO_API bool Active() const;
-
   JO_API CollisionInfo GetCollisionInfo() const;
 
   static bool CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right);
+
+  JO_API bool IsHit();
+
+  JO_API void OnHit();
+
+  JO_API void OffHit();
 
  protected:
   void DebugRender(struct IRenderTexture* renderTexture) override;
@@ -68,10 +70,11 @@ class CollisionComponent final
  private:
   unsigned int collisionGroup_;
 
-  bool isActive_;
-
   void* searchHandle_;
 
   LINK_ITEM collisionActorLink_;
   LINK_ITEM collisionLevelLink_;
+
+  // 충돌 받음.
+  bool isHit_;
 };

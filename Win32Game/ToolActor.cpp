@@ -171,53 +171,53 @@ void ToolActor::CollisionUpdate() {
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxTop, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      hitBoxTop_->OnActive(true);
+      hitBoxTop_->SetActive(true);
       // Vector newPosition = {0.0f, 0.0f};
       //  hitBoxTop_->SetPosition(newPosition);
       hitBoxTop_->SetPosition(pCollisionInfo->position_);
       hitBoxTop_->SetScale(pCollisionInfo->scale_);
     } else {
-      hitBoxTop_->OnActive(false);
+      hitBoxTop_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxBottom, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      hitBoxBottom_->OnActive(true);
+      hitBoxBottom_->SetActive(true);
       hitBoxBottom_->SetPosition(pCollisionInfo->position_);
       hitBoxBottom_->SetScale(pCollisionInfo->scale_);
     } else {
-      hitBoxBottom_->OnActive(false);
+      hitBoxBottom_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_AttackBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      attackBox_->OnActive(true);
+      attackBox_->SetActive(true);
       attackBox_->SetPosition(pCollisionInfo->position_);
       attackBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      attackBox_->OnActive(false);
+      attackBox_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_PushBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pushBox_->OnActive(true);
+      pushBox_->SetActive(true);
       pushBox_->SetPosition(pCollisionInfo->position_);
       pushBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      pushBox_->OnActive(false);
+      pushBox_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_GrabBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      grabBox_->OnActive(true);
+      grabBox_->SetActive(true);
       grabBox_->SetPosition(pCollisionInfo->position_);
       grabBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      grabBox_->OnActive(false);
+      grabBox_->SetActive(false);
     }
   }
 }

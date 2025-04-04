@@ -2,14 +2,14 @@
 #include "ActorComponent.h"
 
 
-enum PlayerState
-{
-    PS_None = -1,
-    PS_Idle = 0,
-    PS_Hit,
-    PS_Attack,
-    PS_MAX
-};
+//enum PlayerState
+//{
+//    PS_None = -1,
+//    PS_Idle = 0,
+//    PS_Hit,
+//    PS_Attack,
+//    PS_MAX
+//};
 
 
 class StateComponent
@@ -24,8 +24,8 @@ class StateComponent
 
   int GetState() const;
 
-  void ChangeState(PlayerState state);
+  void ChangeState(int state);
 
  private:
-  PlayerState state_;
+  //int state_;
 };

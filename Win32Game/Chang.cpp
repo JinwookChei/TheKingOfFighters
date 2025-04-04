@@ -10,7 +10,8 @@ Chang::Chang()
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
       pCommendComponent_(nullptr),
-      pStateComponent_(nullptr),
+      animState_(CHAS_None),
+      // pStateComponent_(nullptr),
       pBattle_(nullptr) {
 }
 
@@ -20,8 +21,8 @@ Chang::~Chang() {
 void Chang::BeginPlay() {
   pRender_ = CreateImageRender();
 
-  pRender_->CreateAnimation(1, 4, 8, 13, 50, true);   // 아이들
-  pRender_->CreateAnimation(2, 4, 33, 35, 50, false);  // 뒷걸음질.
+  pRender_->CreateAnimation(CHAS_Idel, 4, 8, 13, 50, true);   // 아이들
+  pRender_->CreateAnimation(CHAS_Hit, 4, 33, 35, 50, false);  // HIT
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
 
@@ -38,14 +39,9 @@ void Chang::BeginPlay() {
   // COMMEND
   pCommendComponent_ = CreateComponent<CommendComponent>();
   pCommendComponent_->SetTimeOutThreshold(80);
-  if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, 2)) {
-    return;
-  }
-
-  // STATE
-  //pStateComponent_ = CreateComponent<StateComponent>();
-
-  CollisionUpdate();
+  //if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, 2)) {
+  //  return;
+  //}
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -58,41 +54,51 @@ void Chang::BeginPlay() {
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
-  RenderUpdate();
 
-  CommendUpdate();
+  if (true == CollisionHitUpdate()) {
+    pRender_->ChangeAnimation(animState_);
+  }
 
-  CollisionUpdate();
+  do {
+    if (false == pRender_->IsPlayingLoopAnimation()) {
+      break;
+    }
+
+    InputUpdate();
+
+    CommendUpdate();
+
+    pRender_->ChangeAnimation(animState_);
+  } while (false);
+
+  CollisionBoundUpdate();
 }
 
-void Chang::RenderUpdate() {
-  //if (pStateComponent_->GetState() == PlayerState::PS_Hit) {
-  //  return;
-  //}
-
-  if (false == InputManager::Instance()->IsAnyKeyPress()) {
-    pRender_->ChangeAnimation(1);
+void Chang::InputUpdate() {
+  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j')
+      && false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l')
+      && false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i')
+      && false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k') ){
+    animState_ = CHAS_Idel;
     return;
   }
 
   Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
-    // pRender_->ChangeAnimation(3);
+    //animState_ = CHAS_Idel;
     moveDir += Vector::Left;
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
-    // pRender_->ChangeAnimation(4);
+    //animState_ = CHAS_Idel;
     moveDir += Vector::Right;
   }
   if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {
     moveDir += Vector::Up;
   }
   if (InputManager::Instance()->IsPress('K') || InputManager::Instance()->IsPress('k')) {
-    // pRender_->ChangeAnimation(2);
   }
   if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
-    // pRender_->ChangeAnimation(5);
   }
 
   if (InputManager::Instance()->IsPress('U') || InputManager::Instance()->IsPress('u')) {
@@ -113,7 +119,7 @@ void Chang::RenderUpdate() {
 void Chang::CommendUpdate() {
 }
 
-void Chang::CollisionUpdate() {
+void Chang::CollisionBoundUpdate() {
   if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
     return;
   }
@@ -133,51 +139,67 @@ void Chang::CollisionUpdate() {
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxTop, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pHitBoxTop_->OnActive(true);
+      pHitBoxTop_->SetActive(true);
       pHitBoxTop_->SetPosition(pCollisionInfo->position_);
       pHitBoxTop_->SetScale(pCollisionInfo->scale_);
     } else {
-      pHitBoxTop_->OnActive(false);
+      pHitBoxTop_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxBottom, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pHitBoxBottom_->OnActive(true);
+      pHitBoxBottom_->SetActive(true);
       pHitBoxBottom_->SetPosition(pCollisionInfo->position_);
       pHitBoxBottom_->SetScale(pCollisionInfo->scale_);
     } else {
-      pHitBoxBottom_->OnActive(false);
+      pHitBoxBottom_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_AttackBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pAttackBox_->OnActive(true);
+      pAttackBox_->SetActive(true);
       pAttackBox_->SetPosition(pCollisionInfo->position_);
       pAttackBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      pAttackBox_->OnActive(false);
+      pAttackBox_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_PushBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pPushBox_->OnActive(true);
+      pPushBox_->SetActive(true);
       pPushBox_->SetPosition(pCollisionInfo->position_);
       pPushBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      pPushBox_->OnActive(false);
+      pPushBox_->SetActive(false);
     }
   }
 
   if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_GrabBox, &pCollisionInfo)) {
     if (true == pCollisionInfo->hasCollision_) {
-      pGrabBox_->OnActive(true);
+      pGrabBox_->SetActive(true);
       pGrabBox_->SetPosition(pCollisionInfo->position_);
       pGrabBox_->SetScale(pCollisionInfo->scale_);
     } else {
-      pGrabBox_->OnActive(false);
+      pGrabBox_->SetActive(false);
     }
   }
+}
+
+bool Chang::CollisionHitUpdate() {
+  if (pHitBoxTop_->IsHit()) {
+    animState_ = CHAS_Hit;
+    pHitBoxTop_->OffHit();
+    return true;
+  }
+
+  if (pHitBoxBottom_->IsHit()) {
+    animState_ = CHAS_Hit;
+    pHitBoxTop_->OffHit();
+    return true;
+  }
+
+  return false;
 }

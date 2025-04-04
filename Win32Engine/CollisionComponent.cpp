@@ -108,22 +108,25 @@ CollisionFunctionInit functionInit;
 
 CollisionComponent::CollisionComponent()
     : collisionGroup_(CollisionGroupEngineType::CollisionGroupEngineType_Invalid),
-      isActive_(true),
       searchHandle_(nullptr),
       collisionActorLink_({nullptr, nullptr, this}),
-      collisionLevelLink_({nullptr, nullptr, this}) {
+      collisionLevelLink_({nullptr, nullptr, this}),
+      isHit_(false) {
 }
 
 CollisionComponent::~CollisionComponent() {
 }
 
 bool CollisionComponent::Collision(const CollisionCheckParameter& parameter, CollisionComponent** targetCollision /*= nullptr*/) {
+
   if ((unsigned int)CollisionType::CollisionType_Max <= parameter.myCollisionType) {
     return false;
   }
   if ((unsigned int)CollisionType::CollisionType_Max <= parameter.targetCollisionType) {
     return false;
   }
+
+
   if (false == IsActive()) {
     return false;
   }
@@ -138,9 +141,9 @@ bool CollisionComponent::Collision(const CollisionCheckParameter& parameter, Col
 
   CollisionInfo myCollisionInfo = GetCollisionInfo();
 
-  CollisionComponent* collision[10] = {
-      nullptr,
-  };
+  //CollisionComponent* collision[10] = {
+  //    nullptr,
+  //};
 
   unsigned int startIndex = 0;
   unsigned int selectCount = 0;
@@ -210,63 +213,67 @@ int CollisionComponent::GetCollisionGroup() const {
   return collisionGroup_;
 }
 
-void CollisionComponent::OnActive(bool isOn) {
-  isActive_ = isOn;
-}
-
-bool CollisionComponent::Active() const {
-  return isActive_;
-}
-
 CollisionInfo CollisionComponent::GetCollisionInfo() const {
   Transform transform = GetTransform();
-  return CollisionInfo{.position_ = transform.GetPosition(), .scale_ = transform.GetScale()};
+  return CollisionInfo{.position_ = transform.GetPosition(), .scale_ = transform.GetScale(), .hasCollision_ = IsActive()};
 }
 
 bool CollisionComponent::CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right) {
   return ::CollisionPointToRect(left, right);
 }
 
+bool CollisionComponent::IsHit() {
+  return isHit_;
+}
+
+void CollisionComponent::OnHit() {
+  isHit_ = true;
+}
+
+void CollisionComponent::OffHit() {
+  isHit_ = false;
+}
+
 void CollisionComponent::DebugRender(IRenderTexture* renderTexture) {
-  //if (!parameter_.on_ || nullptr == renderTexture || false == isActive_) {
-  //  return;
-  //}
+  // if (!parameter_.on_ || nullptr == renderTexture || false == isActive_) {
+  //   return;
+  // }
 
-  //Transform transform = GetTransform();
+  // Transform transform = GetTransform();
 
-  //GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
+  // GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
 
-  //renderTexture->DrawPoint(parameter_.color_, parameter_.linethickness_);
+  // renderTexture->DrawPoint(parameter_.color_, parameter_.linethickness_);
 
-  //if (parameter_.withRectangle_) {
-  //  renderTexture->DrawRectagle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
-  //}
-  //if (parameter_.withCircle_) {
-  //  renderTexture->DrawCircle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
-  //}
+  // if (parameter_.withRectangle_) {
+  //   renderTexture->DrawRectagle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
+  // }
+  // if (parameter_.withCircle_) {
+  //   renderTexture->DrawCircle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
+  // }
 
-  //GGraphicDevice->RenderImgEnd(renderTexture);
+  // GGraphicDevice->RenderImgEnd(renderTexture);
 }
 
 void CollisionComponent::CollisionRender(IRenderTexture* renderTexture) {
-   if (!parameter_.on_ || nullptr == renderTexture || false == isActive_) {
+  if (!parameter_.on_ || nullptr == renderTexture || false == IsActive()) {
     return;
   }
 
-   Transform transform = GetTransform();
+  Transform transform = GetTransform();
 
-   GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
+  GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
 
-   renderTexture->DrawPoint(parameter_.color_, parameter_.linethickness_);
+  renderTexture->DrawPoint(parameter_.color_, parameter_.linethickness_);
 
-   if (parameter_.withRectangle_) {
-     renderTexture->DrawRectagle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
-   }
-   if (parameter_.withCircle_) {
-     renderTexture->DrawCircle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
-   }
+  if (parameter_.withRectangle_) {
+    renderTexture->DrawRectagle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
+  }
+  if (parameter_.withCircle_) {
+    renderTexture->DrawCircle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
+  }
 
-   GGraphicDevice->RenderImgEnd(renderTexture);
+  GGraphicDevice->RenderImgEnd(renderTexture);
 }
 
 LINK_ITEM* CollisionComponent::GetCollisionActorLink() {

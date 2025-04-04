@@ -259,10 +259,6 @@ bool ImageRenderer::CreateAnimation(unsigned long long animationTag, unsigned lo
 }
 
 bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFrame, unsigned long long time) {
-  if (nullptr != pCurAnimation_ && false == pCurAnimation_->isEnd_ && false == pCurAnimation_->loop_) {
-    return false;
-  }
-
   AnimationInfo* pFind = nullptr;
   if (0 == animations_.Select((void**)&pFind, 1, &animationTag, 8)) {
     return false;
@@ -281,6 +277,14 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFr
     pCurAnimation_->curTime_ = time;
   }
   pCurAnimation_->isEnd_ = false;
+
+  return true;
+}
+
+bool ImageRenderer::IsPlayingLoopAnimation() {
+  if (nullptr != pCurAnimation_ && false == pCurAnimation_->isEnd_ && false == pCurAnimation_->loop_) {
+    return false;
+  }
 
   return true;
 }
