@@ -10,6 +10,7 @@ Chang::Chang()
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
       pCommendComponent_(nullptr),
+      pStateComponent_(nullptr),
       pBattle_(nullptr) {
 }
 
@@ -20,7 +21,7 @@ void Chang::BeginPlay() {
   pRender_ = CreateImageRender();
 
   pRender_->CreateAnimation(1, 4, 8, 13, 50, true);   // 아이들
-  pRender_->CreateAnimation(2, 4, 33, 35, 50, true);  // 뒷걸음질.
+  pRender_->CreateAnimation(2, 4, 33, 35, 50, false);  // 뒷걸음질.
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
 
@@ -40,6 +41,9 @@ void Chang::BeginPlay() {
   if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, 2)) {
     return;
   }
+
+  // STATE
+  //pStateComponent_ = CreateComponent<StateComponent>();
 
   CollisionUpdate();
 
@@ -62,6 +66,10 @@ void Chang::Tick(unsigned long long deltaTick) {
 }
 
 void Chang::RenderUpdate() {
+  //if (pStateComponent_->GetState() == PlayerState::PS_Hit) {
+  //  return;
+  //}
+
   if (false == InputManager::Instance()->IsAnyKeyPress()) {
     pRender_->ChangeAnimation(1);
     return;

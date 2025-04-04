@@ -54,7 +54,7 @@
     <ClCompile Include="TestLevel.cpp">
       <Filter>Contents\TestLevel</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="PlayerDummy.cpp">
       <Filter>Contents\TestLevel</Filter>
     </ClCompile>
     <ClCompile Include="BattleComponent.cpp">
@@ -120,6 +120,9 @@
     <ClCompile Include="ImageController.cpp">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Contents\KOF\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -131,7 +134,7 @@
     <ClInclude Include="TestLevel.h">
       <Filter>Contents\TestLevel</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="PlayerDummy.h">
       <Filter>Contents\TestLevel</Filter>
     </ClInclude>
     <ClInclude Include="BattleComponent.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="ImageController.h">
       <Filter>Contents\Tools\ViewPort</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

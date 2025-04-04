@@ -1,8 +1,7 @@
 #pragma once
 
-enum IoriAnim
-{
-    IORIANIM_None = 0,
+enum IoriAnim {
+  IORIANIM_None = 0,
   IORIANIM_IDle,
   IORIANIM_Seat,
   IORIANIM_Walk,
@@ -10,7 +9,6 @@ enum IoriAnim
   IORIANIM_Kick,
   IORIANIM_SUperKick
 };
-
 
 class Iori
     : public Actor {
@@ -27,7 +25,7 @@ class Iori
 
   void CommendUpdate();
 
-  void CollisionUpdate(); 
+  void CollisionUpdate();
 
  private:
   ImageRenderer* pRender_;

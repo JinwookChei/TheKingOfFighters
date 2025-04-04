@@ -43,6 +43,9 @@
     <Filter Include="Actor\Component\Commend">
       <UniqueIdentifier>{bf7ad75a-7fd7-468b-bb6c-e8c6154c0eea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Actor\Component\State">
+      <UniqueIdentifier>{e9941d5d-5904-4316-bb27-ad3d83acfa7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -95,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="CommendComponent.cpp">
       <Filter>Actor\Component\Commend</Filter>
+    </ClCompile>
+    <ClCompile Include="StateComponent.cpp">
+      <Filter>Actor\Component\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="CommendComponent.h">
       <Filter>Actor\Component\Commend</Filter>
+    </ClInclude>
+    <ClInclude Include="StateComponent.h">
+      <Filter>Actor\Component\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

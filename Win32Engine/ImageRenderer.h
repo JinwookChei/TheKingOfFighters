@@ -24,6 +24,7 @@ struct AnimationInfo {
   std::vector<unsigned long long> times_;
   std::vector<unsigned int> indices_;
   void* searchHandle_ = nullptr;
+  
 
   unsigned int Update(unsigned long long curTick);
 };
@@ -74,7 +75,7 @@ class ImageRenderer
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 
-  void CollisionRender(IRenderTexture* renderTexture) override;
+  //void CollisionRender(IRenderTexture* renderTexture) override;
 
  private:
   IImage* image_;

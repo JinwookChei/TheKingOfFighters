@@ -1,5 +1,6 @@
 #pragma once
 
+
 class Chang
     : public Actor {
  public:
@@ -15,12 +16,12 @@ class Chang
 
   void CommendUpdate();
 
-  void CollisionUpdate(); 
+  void CollisionUpdate();
 
  private:
   ImageRenderer* pRender_;
 
-    CollisionComponent* pHitBoxTop_;
+  CollisionComponent* pHitBoxTop_;
 
   CollisionComponent* pHitBoxBottom_;
 
@@ -31,6 +32,8 @@ class Chang
   CollisionComponent* pGrabBox_;
 
   CommendComponent* pCommendComponent_;
+
+  StateComponent* pStateComponent_;
 
   class BattleComponent* pBattle_;
 };

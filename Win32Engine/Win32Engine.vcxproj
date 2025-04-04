@@ -172,6 +172,7 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CommendComponent.cpp" />
     <ClCompile Include="ResizeCornerComponent.cpp" />
+    <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CommendComponent.h" />
     <ClInclude Include="ResizeCornerComponent.h" />
+    <ClInclude Include="StateComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="CollisionComponent.h" />

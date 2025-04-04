@@ -10,6 +10,7 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
   curTime_ -= curTick;
   if (curTime_ <= 0) {
     curTime_ = times_[curFrame_];
+
     ++curFrame_;
 
     if (1 == indices_.size()) {
@@ -258,6 +259,10 @@ bool ImageRenderer::CreateAnimation(unsigned long long animationTag, unsigned lo
 }
 
 bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFrame, unsigned long long time) {
+  if (nullptr != pCurAnimation_ && false == pCurAnimation_->isEnd_ && false == pCurAnimation_->loop_) {
+    return false;
+  }
+
   AnimationInfo* pFind = nullptr;
   if (0 == animations_.Select((void**)&pFind, 1, &animationTag, 8)) {
     return false;
@@ -330,77 +335,77 @@ void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
   GGraphicDevice->RenderImgEnd(renderTexture);
 }
 
-void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
-  if (!parameter_.on_ || nullptr == renderTexture) {
-    return;
-  }
-
-  Transform renderTransform = GetTransform();
-  switch (imageRenderType_) {
-    case ImageRenderType::Left:
-      renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});
-      break;
-    case ImageRenderType::Right:
-      renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), 0.0f});
-      break;
-    case ImageRenderType::Top:
-      renderTransform.AddPostion({0.0f, renderTransform.GetScale().HalfY()});
-      break;
-    case ImageRenderType::Bottom:
-      renderTransform.AddPostion({0.0f, -renderTransform.GetScale().HalfY()});
-      break;
-    case ImageRenderType::LeftTop:
-      renderTransform.AddPostion({renderTransform.GetScale().HalfX(), renderTransform.GetScale().HalfY()});
-      break;
-    case ImageRenderType::LeftBottom:
-      renderTransform.AddPostion({renderTransform.GetScale().HalfX(), -renderTransform.GetScale().HalfY()});
-      break;
-    case ImageRenderType::RightTop:
-      renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), renderTransform.GetScale().HalfY()});
-      break;
-    case ImageRenderType::RightBottom:
-      renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), -renderTransform.GetScale().HalfY()});
-      break;
-    case ImageRenderType::Center:
-    default:
-      break;
-  }
-
-  //// TODO :  콜리전 위치 만큼 offset 해야함.
-  // if (false == image_->IsRenderTexture()) {
-  //   IFileImage* fileImage = (IFileImage*)image_;
-
-  //  CollisionInfo collisionInfo;
-
-  //  Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
-  //  if (false == fileImage->GetHitBoxTopInfo(imageIndex_, &collisionInfo)) {
-  //    return;
-  //  }
-
-  //  renderTransform.AddPostion(collisionInfo.position_);
-
-  //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
-
-  //  renderTexture->DrawRectagle(collisionInfo.scale_, parameter_.color_, parameter_.linethickness_);
-
-  //  GGraphicDevice->RenderImgEnd(renderTexture);
-  //}
-
-  //// TODO :  콜리전 위치 만큼 offset 해야함.
-  // if (false == image_->IsRenderTexture()) {
-  //   IFileImage* fileImage = (IFileImage*)image_;
-  //
-  //   Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
-  //   Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_) + imageOffSet;
-  //   Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_) + imageOffSet;
-  //   Vector hitBoxSize = hitBoxEnd - hitBoxStart;
-
-  //  renderTransform.AddPostion(hitBoxStart);
-
-  //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
-
-  //  renderTexture->DrawRectagle(hitBoxSize, parameter_.color_, parameter_.linethickness_);
-
-  //  GGraphicDevice->RenderImgEnd(renderTexture);
-  //}
-}
+// void ImageRenderer::CollisionRender(IRenderTexture* renderTexture) {
+//   if (!parameter_.on_ || nullptr == renderTexture) {
+//     return;
+//   }
+//
+//   Transform renderTransform = GetTransform();
+//   switch (imageRenderType_) {
+//     case ImageRenderType::Left:
+//       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});
+//       break;
+//     case ImageRenderType::Right:
+//       renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), 0.0f});
+//       break;
+//     case ImageRenderType::Top:
+//       renderTransform.AddPostion({0.0f, renderTransform.GetScale().HalfY()});
+//       break;
+//     case ImageRenderType::Bottom:
+//       renderTransform.AddPostion({0.0f, -renderTransform.GetScale().HalfY()});
+//       break;
+//     case ImageRenderType::LeftTop:
+//       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), renderTransform.GetScale().HalfY()});
+//       break;
+//     case ImageRenderType::LeftBottom:
+//       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), -renderTransform.GetScale().HalfY()});
+//       break;
+//     case ImageRenderType::RightTop:
+//       renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), renderTransform.GetScale().HalfY()});
+//       break;
+//     case ImageRenderType::RightBottom:
+//       renderTransform.AddPostion({-renderTransform.GetScale().HalfX(), -renderTransform.GetScale().HalfY()});
+//       break;
+//     case ImageRenderType::Center:
+//     default:
+//       break;
+//   }
+//
+//   //// TODO :  콜리전 위치 만큼 offset 해야함.
+//   // if (false == image_->IsRenderTexture()) {
+//   //   IFileImage* fileImage = (IFileImage*)image_;
+//
+//   //  CollisionInfo collisionInfo;
+//
+//   //  Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+//   //  if (false == fileImage->GetHitBoxTopInfo(imageIndex_, &collisionInfo)) {
+//   //    return;
+//   //  }
+//
+//   //  renderTransform.AddPostion(collisionInfo.position_);
+//
+//   //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
+//
+//   //  renderTexture->DrawRectagle(collisionInfo.scale_, parameter_.color_, parameter_.linethickness_);
+//
+//   //  GGraphicDevice->RenderImgEnd(renderTexture);
+//   //}
+//
+//   //// TODO :  콜리전 위치 만큼 offset 해야함.
+//   // if (false == image_->IsRenderTexture()) {
+//   //   IFileImage* fileImage = (IFileImage*)image_;
+//   //
+//   //   Vector imageOffSet = fileImage->GetImagePositionOffSet(imageIndex_);
+//   //   Vector hitBoxStart = fileImage->GetHitBoxStart(imageIndex_) + imageOffSet;
+//   //   Vector hitBoxEnd = fileImage->GetHitBoxEnd(imageIndex_) + imageOffSet;
+//   //   Vector hitBoxSize = hitBoxEnd - hitBoxStart;
+//
+//   //  renderTransform.AddPostion(hitBoxStart);
+//
+//   //  GGraphicDevice->RenderImgStart(renderTransform, angle_, renderTexture);
+//
+//   //  renderTexture->DrawRectagle(hitBoxSize, parameter_.color_, parameter_.linethickness_);
+//
+//   //  GGraphicDevice->RenderImgEnd(renderTexture);
+//   //}
+// }

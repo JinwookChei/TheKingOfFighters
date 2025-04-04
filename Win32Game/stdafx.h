@@ -35,6 +35,7 @@
 #include <Win32Engine/TextComponent.h>
 #include <Win32Engine/CameraManager.h>
 #include <Win32Engine/CommendComponent.h>
+#include <Win32Engine/StateComponent.h>
 
 
 #include "Types.h"

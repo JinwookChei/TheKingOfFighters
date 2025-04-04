@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Iori.h"
 #include "CollisionBox.h"
+#include "Chang.h"
 
 Iori::Iori()
     : pRender_(nullptr),
@@ -19,12 +20,12 @@ Iori::~Iori() {
 void Iori::BeginPlay() {
   // RENDERER
   pRender_ = CreateImageRender();
-  pRender_->CreateAnimation(IoriAnim::IORIANIM_IDle, 3, 7, 15, 50, true);          // 아이들
-  pRender_->CreateAnimation(IoriAnim::IORIANIM_Seat, 3, 16, 23, 50, false);        // 앉기.
-  pRender_->CreateAnimation(IoriAnim::IORIANIM_Walk, 3, 26, 35, 50, true);         // -> 걷기
-  pRender_->CreateAnimation(IoriAnim::IORIANIM_BackWalk, 3, 36, 44, 50, true);     // <- 뒤로가기
-  pRender_->CreateAnimation(IoriAnim::IORIANIM_Kick, 3, 109, 118, 50, true);       // 발차기
-  pRender_->CreateAnimation(IoriAnim::IORIANIM_SUperKick, 3, 137, 145, 50, true);  // 커맨드 테스트.
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_IDle, 3, 6, 14, 50, true);          // 아이들
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_Seat, 3, 15, 22, 50, true);        // 앉기.
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_Walk, 3, 27, 34, 50, true);         // -> 걷기
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_BackWalk, 3, 35, 43, 50, true);     // <- 뒤로가기
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_Kick, 3, 108, 117, 50, false);       // 발차기
+  pRender_->CreateAnimation(IoriAnim::IORIANIM_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
 
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
@@ -64,6 +65,25 @@ void Iori::Tick(unsigned long long deltaTick) {
   CommendUpdate();
 
   CollisionUpdate();
+
+  CollisionComponent* pTargetCollision = nullptr;
+  CollisionCheckParameter;
+
+  if (false == pAttackBox_->Collision(
+      {
+          .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop,
+          .targetCollisionType = CollisionType::CollisionType_Rect,
+          .myCollisionType = CollisionType::CollisionType_Rect,
+      },
+      &pTargetCollision))
+  {
+    return;
+  }
+
+  
+  //Actor* targetActor = pTargetCollision->GetOwner();
+  //targetActor
+
 }
 
 void Iori::RenderUpdate() {
@@ -220,6 +240,8 @@ void Iori::CollisionUpdate() {
     }
   }
 }
+
+
 
 // Regacy
 
