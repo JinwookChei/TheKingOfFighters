@@ -69,9 +69,6 @@
     <ClCompile Include="ToolLevel.cpp">
       <Filter>Contents\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="ViewPortImage.cpp">
-      <Filter>Contents\Tools\ViewPort</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionBox.cpp">
       <Filter>Contents\Tools\CollisionBox</Filter>
     </ClCompile>
@@ -151,9 +148,6 @@
     </ClInclude>
     <ClInclude Include="ToolLevel.h">
       <Filter>Contents\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewPortImage.h">
-      <Filter>Contents\Tools\ViewPort</Filter>
     </ClInclude>
     <ClInclude Include="CollisionBox.h">
       <Filter>Contents\Tools\CollisionBox</Filter>

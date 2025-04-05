@@ -184,7 +184,6 @@
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="ToolActor.cpp" />
     <ClCompile Include="ToolLevel.cpp" />
-    <ClCompile Include="ViewPortImage.cpp" />
     <ClCompile Include="WriteButton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -213,7 +212,6 @@
     <ClInclude Include="ToolActor.h" />
     <ClInclude Include="ToolLevel.h" />
     <ClInclude Include="Types.h" />
-    <ClInclude Include="ViewPortImage.h" />
     <ClInclude Include="WriteButton.h" />
   </ItemGroup>
   <ItemGroup>
