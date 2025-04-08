@@ -125,13 +125,14 @@ bool CollisionComponent::Collision(const CollisionCheckParameter& parameter, Col
   if ((unsigned int)CollisionType::CollisionType_Max <= parameter.targetCollisionType) {
     return false;
   }
-
-
   if (false == IsActive()) {
     return false;
   }
   Actor* owner = GetOwner();
   if (nullptr == owner) {
+    return false;
+  }
+  if (false == owner->IsActive()) {
     return false;
   }
   Level* level = owner->GetLevel();
@@ -165,6 +166,10 @@ bool CollisionComponent::Collision(const CollisionCheckParameter& parameter, Col
       continue;
     }
     if (false == otherCollision->IsActive()) {
+      continue;
+    }
+    Actor* otherOwner = otherCollision->GetOwner();
+    if (false == otherOwner->IsActive()) {
       continue;
     }
     if (owner == otherCollision->GetOwner()) {

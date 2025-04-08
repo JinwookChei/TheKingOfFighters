@@ -44,53 +44,6 @@ Level::~Level() {
   }
 }
 
-Actor* Level::Collision(const Actor* actor, int targetCollisionTag) {
-  if (nullptr == actor) {
-    return nullptr;
-  }
-
-  /*const Mesh* mesh = actor->GetMesh();
-  if (nullptr == mesh) {
-    return nullptr;
-  }
-
-  const Vector& position = actor->GetPosition();
-
-  IntRect2 rectPosition = {position.X, position.Y, position.X + (int)mesh->Width(), position.Y + (int)mesh->Height()};
-
-  LINK_ITEM* pCur = actorHead_;
-  while (pCur) {
-    Actor* curActor = (Actor*)pCur->item_;
-    pCur = pCur->next_;
-
-    if (curActor->IsDestroy()) {
-      continue;
-    }
-
-    if (curActor == actor) {
-      continue;
-    }
-
-    if (curActor->GetCollisionTag() != targetCollisionTag) {
-      continue;
-    }
-    const Mesh* targetMesh = curActor->GetMesh();
-    if (nullptr == targetMesh) {
-      continue;
-    }
-
-    const Int2& targetPosition = curActor->GetPosition();
-
-    IntRect2 targetRectPosition = {targetPosition.X, targetPosition.Y, targetPosition.X + (int)targetMesh->Width(), targetPosition.Y + (int)targetMesh->Height()};
-
-    if (rectPosition.IsCollision(targetRectPosition)) {
-      return curActor;
-    }
-  }*/
-
-  return nullptr;
-}
-
 void Level::SetDebugRender(bool isOn) {
   isDebugRender_ = isOn;
 }
@@ -229,6 +182,10 @@ void Level::OnTick(unsigned long long deltaTime) {
         continue;
       }
 
+      if (false == pActor->IsActive()) {
+        continue;
+      }
+
       pActor->OnTick(deltaTime);
     }
   }
@@ -245,7 +202,7 @@ void Level::OnRender() {
       Actor* pActor = (Actor*)pCur->item_;
       pCur = pCur->next_;
 
-      if (pActor->IsDestroy()) {
+      if (false == pActor->IsActive()) {
         continue;
       }
 
@@ -264,7 +221,7 @@ void Level::OnRender() {
         Actor* pActor = (Actor*)pCur->item_;
         pCur = pCur->next_;
 
-        if (pActor->IsDestroy()) {
+        if (false == pActor->IsActive()) {
           continue;
         }
 
@@ -284,7 +241,7 @@ void Level::OnRender() {
         Actor* pActor = (Actor*)pCur->item_;
         pCur = pCur->next_;
 
-        if (pActor->IsDestroy()) {
+        if (false == pActor->IsActive()) {
           continue;
         }
 
@@ -299,6 +256,7 @@ void Level::SpawnActorInternal(Actor* actor, unsigned int actorGroup /*= 0xfffff
     return;
   }
 
+  actor->SetActive(true);
   actor->SetLevel(this);
   actor->SetActorGroup(actorGroup);
   actor->OnBeginPlay();

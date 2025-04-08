@@ -6,6 +6,9 @@ IGraphicDevice* GGraphicDevice = nullptr;
 InputManager* GInputManager = nullptr;
 EngineCore* GEngine = nullptr;
 CameraManager* GCamera = nullptr;
+EffectManager* GEffectManager = nullptr;
+ImgManager* GImgManager = nullptr;
+
 
 EngineCore::EngineCore()
     : application_(nullptr),

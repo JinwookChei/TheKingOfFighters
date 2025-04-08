@@ -53,7 +53,7 @@ class CommendComponent
 
   JO_API void Tick(unsigned long long curTick) override;
 
-  JO_API bool RegistCommnd(std::initializer_list<CommendKey> commend, int task);
+  JO_API bool RegistCommend(std::initializer_list<CommendKey> commend, int task);
 
   JO_API int GetTask() const;
 

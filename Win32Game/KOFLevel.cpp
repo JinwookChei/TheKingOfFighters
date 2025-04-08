@@ -43,6 +43,25 @@ void KOFLevel::BeginPlay() {
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
   Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
+
+
+  // EFFECT
+  // pEffectComponent = CreateComponent();
+  // pEffectCompoennt->RegistEffect(이팩트 태그(=애니메이션정보 -> 애니메이션태그), 애니메이션 프레임정보, 리치, 속도(방향), ...);
+
+  // 방향은 바라보는 대칭에 따라 달라짐.
+  // GEffectManager->Instance()->RegistEffect(태그,  애니메이션 프레임정보,방향, 속도 리치 );
+
+  // 이펙트 태그를 테이블로 관리.
+  // GEffectManager->SpawnEffect(이펙트 태그, 위치, this);
+
+  if (false == EffectManager::Instance()->Initialize()) {
+    return;
+  }
+
+
+  const Vector& test{0.0f, 0.0f};
+  EffectManager::Instance()->RegistEffect(ioriImage, 1, 239, 244, 50, 0, 0, test);
 }
 
 void KOFLevel::Tick(unsigned long long dletaTick) {

@@ -16,6 +16,7 @@ Actor::Actor()
       componentTail_(nullptr),
       isUI_(false),
       useCameraPosition_(false),
+      isActive_(false),
       isDestroy_(false),
       collisionTag_(0),
       actorGroup_(ActorGroupEngineType::ActorGroupEngineType_Invalid) {
@@ -68,6 +69,12 @@ void Actor::SetUseCameraposition(bool use) {
 
 bool Actor::UseCameraposition() const {
   return useCameraPosition_;
+}
+void Actor::SetActive(bool isActive) {
+  isActive_ = isActive;
+}
+bool Actor::IsActive() const {
+  return isActive_ && false == isDestroy_;
 }
 void Actor::SetDestroy() {
   isDestroy_ = true;

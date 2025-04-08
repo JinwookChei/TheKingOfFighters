@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-ImgManager* GImgManager = nullptr;
 
 ImgManager* ImgManager::GetIntance() {
   return GImgManager;

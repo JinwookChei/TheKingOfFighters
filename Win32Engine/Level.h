@@ -30,8 +30,6 @@ class Level {
 
   JO_API virtual void Tick(unsigned long long deltaTime) = 0;
 
-  JO_API Actor* Collision(const Actor* actor, int targetCollisionTag);
-
   JO_API void SetDebugRender(bool isOn);
 
   JO_API bool GetDebugRender() const;

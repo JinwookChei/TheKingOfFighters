@@ -49,6 +49,10 @@ class Actor {
 
   JO_API bool UseCameraposition() const;
 
+  JO_API void SetActive(bool isActive);
+
+  JO_API bool IsActive() const;
+
   JO_API void SetDestroy();
 
   JO_API bool IsDestroy() const;
@@ -116,6 +120,8 @@ class Actor {
   Vector position_;
 
   LINK_ITEM link_;
+
+  bool isActive_;
 
   bool isDestroy_;
 

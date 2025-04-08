@@ -27,7 +27,7 @@ void CommendComponent::Tick(unsigned long long curTick) {
   }
 }
 
-bool CommendComponent::RegistCommnd(std::initializer_list<CommendKey> commend, int task) {
+bool CommendComponent::RegistCommend(std::initializer_list<CommendKey> commend, int task) {
   if (nullptr == pRootNode_) {
     return false;
   }

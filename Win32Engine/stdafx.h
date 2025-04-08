@@ -26,10 +26,14 @@
 #include "ImgManager.h"
 #include "InputManager.h"
 #include "CameraManager.h"
+#include "EffectManager.h"
 #include "EngineCore.h"
+
 
 extern ImgManager* GImgManager;
 extern InputManager* GInputManager;
+extern EffectManager* GEffectManager;
+
 
 extern IGraphicDevice* GGraphicDevice;
 extern EngineCore* GEngine;

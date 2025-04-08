@@ -44,7 +44,7 @@ void Iori::BeginPlay() {
   // COMMEND
   pCommendComponent_ = CreateComponent<CommendComponent>();
   pCommendComponent_->SetTimeOutThreshold(80);
-  if (false == pCommendComponent_->RegistCommnd({CK_Left, CK_Down, CK_Right}, IoriAnimState::IOAS_SUperKick)) {
+  if (false == pCommendComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, IoriAnimState::IOAS_SUperKick)) {
     return;
   }
 
@@ -56,6 +56,10 @@ void Iori::BeginPlay() {
   pAttackBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Red});
   pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
+
+
+  
+
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
