@@ -54,14 +54,10 @@ void KOFLevel::BeginPlay() {
 
   // 이펙트 태그를 테이블로 관리.
   // GEffectManager->SpawnEffect(이펙트 태그, 위치, this);
+  
+  EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, Color8Bit{169, 139, 150, 0});
+  EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});
 
-  if (false == EffectManager::Instance()->Initialize()) {
-    return;
-  }
-
-
-  const Vector& test{0.0f, 0.0f};
-  EffectManager::Instance()->RegistEffect(ioriImage, 1, 239, 244, 50, 0, 0, test);
 }
 
 void KOFLevel::Tick(unsigned long long dletaTick) {

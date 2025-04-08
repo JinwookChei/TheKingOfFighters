@@ -9,7 +9,6 @@ CameraManager* GCamera = nullptr;
 EffectManager* GEffectManager = nullptr;
 ImgManager* GImgManager = nullptr;
 
-
 EngineCore::EngineCore()
     : application_(nullptr),
       currentLevel_(nullptr),
@@ -64,6 +63,18 @@ bool EngineCore::Initialize(IApplication* application) {
 #ifdef _DEBUG
     __debugbreak();
 #endif  // _DEBUG
+    return false;
+  }
+
+  GEffectManager = new EffectManager;
+  if (nullptr == GEffectManager) {
+#ifdef _DEBUG
+    __debugbreak();
+#endif  // _DEBUG
+    return false;
+  }
+
+  if (false == GEffectManager->Initialize()) {
     return false;
   }
 
@@ -185,6 +196,11 @@ void EngineCore::Cleanup() {
   if (nullptr != GInputManager) {
     delete GInputManager;
     GInputManager = nullptr;
+  }
+  
+  if (nullptr != GEffectManager) {
+    delete GEffectManager;
+    GEffectManager = nullptr;
   }
 
   if (nullptr != GCamera) {

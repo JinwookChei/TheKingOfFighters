@@ -1,52 +1,43 @@
 #pragma once
 
-class Level;
-
 struct EffectInfo {
-
-  IImage* image_ = nullptr;
+  unsigned long long imageIndex_;
 
   unsigned long long effectTag_ = 0;
 
-  unsigned int startFrame_ = 0;
+  std::vector<unsigned int> indices_;
 
-  unsigned int endFrame_ = 0;
+  std::vector<unsigned long long> intervals_;
 
-  unsigned int interval_ = 0;
+  Color8Bit transColor_;
 
-  float velocity_ = 0.0f;
-
-  float reach_ = 0.0f;
-
-  Vector direction_{0.0f, 0.0f};
+  void* searchHandle_ = nullptr;
 };
 
+
+class Effect;
+class Level;
 class EffectManager final {
  public:
-  EffectManager();
-  ~EffectManager();
+  JO_API EffectManager();
+  JO_API ~EffectManager();
 
-  static EffectManager* Instance();
+  JO_API static EffectManager* Instance();
 
-  bool Initialize(Level* level);
+  JO_API bool Initialize();
 
-  bool RegistEffect(IImage* image, 
-	  unsigned long long effectTag, 
-	  unsigned int startFrame, 
-	  unsigned int endFrame, 
-	  unsigned int interval, 
-	  float velocity, 
-	  float reach, 
-	  const Vector& direction);
+  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, const Color8Bit& transColor);
+  											  
+  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, unsigned long long interval, const Color8Bit& transColor);
+											  
+  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, const Color8Bit& transColor);
 
-  void SpawnEffect(unsigned int tag, const Vector& position, Actor* owner);
+  JO_API Effect* SpawnEffect(Level* level, unsigned long long effectTag, const Vector& position);
 
  private:
-  Level* level_;
-
   HashTable effectTable_;
 
+  // TODO
   LINK_ITEM* effectHead_;
   LINK_ITEM* effectTail_;
-
 };

@@ -4,30 +4,46 @@
 #include "ImageRenderer.h"
 
 Effect::Effect()
-    : pRender_(nullptr),
-      pCollision_(nullptr),
-      velocity_({0.0f, 0.0f}),
-      reach_({0.0f, 0.0f})
-{
+    : pEffectInfo_(nullptr),
+      pRender_(nullptr) {
 }
 
 Effect::~Effect() {
 }
 
-void Effect::BeginPlay() {
+bool Effect::Initialize() {
   pRender_ = CreateImageRender();
-  pRender_->CreateAnimation();
 
-  pCollision_ = CreateCollision(CollisionGroupEngineType_None);
+  IImage* pImage = ImgManager::GetIntance()->GetImg(pEffectInfo_->imageIndex_);
+  if (nullptr == pImage) {
+    return false;
+  }
+
+  pRender_->SetImage(pImage);
+  pRender_->SetTransparentColor(pEffectInfo_->transColor_);
+  pRender_->SetLocalScale({4.0f, 4.0f});
+  pRender_->SetImageRenderType(ImageRenderType::Center);
+  pRender_->CreateAnimation(1, pEffectInfo_->imageIndex_, pEffectInfo_->indices_, pEffectInfo_->intervals_);
+  
+  pRender_->ChangeAnimation(1);
+
+  return true;
+}
+
+void Effect::BeginPlay() {
 }
 
 void Effect::Tick(unsigned long long curTick) {
 }
 
-Vector Effect::GetVelocity() const {
-  return velocity_;
+EffectInfo* Effect::GetEffectInfo() const {
+  return pEffectInfo_;
 }
 
-void Effect::SetVelocity(Vector velocity) {
-  velocity_ = velocity;
+void Effect::SetEffectInfo(EffectInfo* effectInfo) {
+  pEffectInfo_ = effectInfo;
+}
+
+LINK_ITEM* Effect::GetEffectLink() const {
+  return effectLink_;
 }

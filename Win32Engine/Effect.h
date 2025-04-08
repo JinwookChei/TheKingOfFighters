@@ -8,24 +8,25 @@ class Effect
 
   ~Effect();
 
+  bool Initialize();
+
   void BeginPlay() override;
 
   void Tick(unsigned long long curTick) override;
-    
-  Vector GetVelocity() const;
 
-  void SetVelocity(Vector velocity);
+  EffectInfo* GetEffectInfo() const;
+
+  void SetEffectInfo(EffectInfo* effectInfo);
+
+  LINK_ITEM* GetEffectLink() const;
 
  protected:
 
  private:
+
+  EffectInfo* pEffectInfo_;
+
   ImageRenderer* pRender_;
 
-  CollisionComponent* pCollision_;
-
-  Vector velocity_;
-
-  Vector reach_;
-
-
+  LINK_ITEM* effectLink_;
 };
