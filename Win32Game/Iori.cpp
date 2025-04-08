@@ -25,7 +25,7 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(IoriAnimState::IOAS_Walk, 3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(IoriAnimState::IOAS_BackWalk, 3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 50, false);       // 발차기
+  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 1000, false);       // 발차기
   pRender_->CreateAnimation(IoriAnimState::IOAS_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
 
   pRender_->SetImageRenderType(ImageRenderType::Center);

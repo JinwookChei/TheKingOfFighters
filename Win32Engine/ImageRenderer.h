@@ -48,6 +48,8 @@ class ImageRenderer
 
   JO_API unsigned int GetImageIndex() const;
 
+  JO_API void SetImageIndex(unsigned int imageIndex);
+
   JO_API void SetAngle(float angle);
 
   JO_API float GetAngle() const;

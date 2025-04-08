@@ -5,7 +5,10 @@
 
 Effect::Effect()
     : pEffectInfo_(nullptr),
-      pRender_(nullptr) {
+      pRender_(nullptr),
+      curTime_(0),
+      curFrame_(0),
+      isFirstTick_(true) {
 }
 
 Effect::~Effect() {
@@ -23,9 +26,8 @@ bool Effect::Initialize() {
   pRender_->SetTransparentColor(pEffectInfo_->transColor_);
   pRender_->SetLocalScale({4.0f, 4.0f});
   pRender_->SetImageRenderType(ImageRenderType::Center);
-  pRender_->CreateAnimation(1, pEffectInfo_->imageIndex_, pEffectInfo_->indices_, pEffectInfo_->intervals_);
-  
-  pRender_->ChangeAnimation(1);
+  // pRender_->CreateAnimation(1, pEffectInfo_->imageIndex_, pEffectInfo_->indices_, pEffectInfo_->intervals_, pEffectInfo_->loop_);
+  // pRender_->ChangeAnimation(1);
 
   return true;
 }
@@ -34,6 +36,34 @@ void Effect::BeginPlay() {
 }
 
 void Effect::Tick(unsigned long long curTick) {
+  if (true == IsDestroy()) {
+    return;
+  }
+
+  if (true == isFirstTick_) {
+    unsigned int imageIndex = pEffectInfo_->indices_[0];
+    pRender_->SetImageIndex(imageIndex);
+    curTime_ = pEffectInfo_->intervals_[0];
+    isFirstTick_ = false;
+  }
+
+  curTime_ -= curTick;
+  if (curTime_ <= 0) {
+    ++curFrame_;
+
+    if (curFrame_ >= pEffectInfo_->indices_.size()) {
+      if (true == pEffectInfo_->loop_) {
+        isFirstTick_ = true;
+        curFrame_ = 0;
+      } else {
+        SetDestroy();
+      }
+    } else {
+      unsigned int imageIndex = pEffectInfo_->indices_[curFrame_];
+      pRender_->SetImageIndex(imageIndex);
+      curTime_ = pEffectInfo_->intervals_[curFrame_];
+    }
+  }
 }
 
 EffectInfo* Effect::GetEffectInfo() const {
@@ -44,6 +74,6 @@ void Effect::SetEffectInfo(EffectInfo* effectInfo) {
   pEffectInfo_ = effectInfo;
 }
 
-LINK_ITEM* Effect::GetEffectLink() const {
-  return effectLink_;
-}
+// LINK_ITEM* Effect::GetEffectLink() const {
+//   return effectLink_;
+// }

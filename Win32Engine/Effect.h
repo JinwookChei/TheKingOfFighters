@@ -18,7 +18,7 @@ class Effect
 
   void SetEffectInfo(EffectInfo* effectInfo);
 
-  LINK_ITEM* GetEffectLink() const;
+  //LINK_ITEM* GetEffectLink() const;
 
  protected:
 
@@ -28,5 +28,13 @@ class Effect
 
   ImageRenderer* pRender_;
 
-  LINK_ITEM* effectLink_;
+  // TODO
+  //LINK_ITEM* effectLink_;
+
+  long long curTime_;
+
+  int curFrame_;
+
+  bool isFirstTick_;
+
 };

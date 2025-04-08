@@ -45,17 +45,8 @@ void KOFLevel::BeginPlay() {
   chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
 
 
-  // EFFECT
-  // pEffectComponent = CreateComponent();
-  // pEffectCompoennt->RegistEffect(이팩트 태그(=애니메이션정보 -> 애니메이션태그), 애니메이션 프레임정보, 리치, 속도(방향), ...);
-
-  // 방향은 바라보는 대칭에 따라 달라짐.
-  // GEffectManager->Instance()->RegistEffect(태그,  애니메이션 프레임정보,방향, 속도 리치 );
-
-  // 이펙트 태그를 테이블로 관리.
-  // GEffectManager->SpawnEffect(이펙트 태그, 위치, this);
   
-  EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, Color8Bit{169, 139, 150, 0});
+  EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
   EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});
 
 }
