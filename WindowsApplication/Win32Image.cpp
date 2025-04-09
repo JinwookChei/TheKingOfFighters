@@ -107,6 +107,21 @@ bool Win32Image::GetPixel(const Vector& position, Color8Bit* outColor) {
   return true;
 }
 
+bool Win32Image::SetPixel(const Vector& position, const Color8Bit& color) {
+  if (position.X < 0 || position.Y < 0) {
+    return false;
+  }
+
+  const Vector scale = GetScale();
+
+  if (scale.IntergerX() < position.IntergerX() || scale.IntergerY() < position.IntergerY()) {
+    return false;
+  }
+
+  ::SetPixel(GetDC(), position.IntergerX(), position.IntergerY(), color.Color);
+  return true;
+}
+
 bool Win32Image::Save(std::string_view filePath, unsigned int index) {
   ImageInfo* pFind = GetImageInfo(index);
   if (nullptr == pFind) {
@@ -367,7 +382,6 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
   for (int i = 0; i < gridCorner.size(); i += 2) {
     DetectBoundBox(gridCorner[i], gridCorner[i + 1], &boundingBoxDatas, emptyColor, lineColor);
   }
-  
 
   ImageInfo* pInfo = GetImageInfo(0);
   pInfo->isOwner_ = false;
@@ -376,7 +390,7 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
 
   Cleanup();
 
-   for (unsigned int height = 0; height < boundingBoxDatas.size(); ++height) {
+  for (unsigned int height = 0; height < boundingBoxDatas.size(); ++height) {
     ImageInfo* pNew = new ImageInfo;
     pNew->imageType_ = pInfo->imageType_;
     pNew->hBitMap_ = pInfo->hBitMap_;
@@ -396,8 +410,6 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
 
   pInfo = GetImageInfo(0);
   pInfo->isOwner_ = true;
-
-
 }
 
 void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath) {
@@ -457,12 +469,10 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
     pNew->transform_.SetScale(calcScale);
     pNew->positionOffSet_ = {csvInfo[height][4], csvInfo[height][5]};
 
-
     CollisionInfo tempCollisionInfo;
 
     for (int i = 6; i < csvInfo[height].size(); i += 5) {
       if (1 == csvInfo[height][i]) {
-
         tempCollisionInfo.hasCollision_ = true;
         tempCollisionInfo.position_ = {csvInfo[height][i + 1], csvInfo[height][i + 2]};
         tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
@@ -475,12 +485,136 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
       pNew->collisionBoxInfo_[(i - 6) / 5] = tempCollisionInfo;
     }
 
-    
+    LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
+    pNew->index_ = (unsigned int)imageCount_++;
+  }
 
+  delete pInfo;
+  pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = true;
+}
+
+void __stdcall Win32Image::ReverseCalculateTransformFromCSV(const std::string& filePath) {
+  if (imageLoadType_ != ImageLoadType::One) {
+    return;
+  }
+
+  std::vector<std::vector<float>> csvInfo;
+
+  std::ifstream file(filePath);
+  if (false == file.is_open()) {
+    __debugbreak();
+    return;
+  }
+
+  std::string line;
+  // 3번째 인자 없으면 공백기준으로 나눔.
+  // file을 공백단위로 읽어서 line에 저장,
+  while (std::getline(file, line)) {
+    if ('P' == line[0]) {
+      continue;
+    }
+    // 행
+    std::vector<float> row;
+    // 문자열스트림에 line을 대입.
+    std::stringstream ss(line);
+    // Cell
+    std::string cell;
+
+    // 문자열 스트림에서 cell에 , 단위로 행에 저장.
+    while (std::getline(ss, cell, ',')) {
+      float intCell = std::stof(cell);
+      row.push_back(intCell);
+    }
+    csvInfo.push_back(row);
+  }
+  file.close();
+
+  // imageList를 돌면서 인덱스가 0인 ImageInfo 가져옴.
+  ImageInfo* pInfo = GetImageInfo(0);
+
+  // REVERSE IMAGE
+  HDC imageDC = pInfo->imageDC_;
+  for (int i = 0; i < csvInfo.size(); ++i) {
+    float positionX = csvInfo[i][0];
+    float positionY = csvInfo[i][1];
+    float scaleX = csvInfo[i][2];
+    float scaleY = csvInfo[i][3];
+
+    unsigned int pixelScale = scaleX * scaleY;
+    Color8Bit* horizontalFlipPixels = (Color8Bit*)malloc(sizeof(Color8Bit) * pixelScale);
+
+    for (int col = positionY; col < positionY + scaleY; ++col) {
+      for (int row = positionX + scaleX; row > positionX; --row) {
+        Color8Bit tempPixel;
+        Vector pixelPosition{(float)row, (float)col};
+
+        if (false == GetPixel(pixelPosition, &tempPixel)) {
+          __debugbreak();
+          return;
+        }
+        int flipPixelIndex = (col - positionY) * scaleX + (positionX + scaleX - row);
+        horizontalFlipPixels[flipPixelIndex] = tempPixel;
+      }
+    }
+
+    for (int col = positionY; col < positionY + scaleY; ++col) {
+      for (int row = positionX; row < positionX + scaleX; ++row) {
+        int flipPixelIndex = (col - positionY) * scaleX + (row - positionX);
+        Vector pixelPosition{(float)row, (float)col};
+        if (false == SetPixel(pixelPosition, horizontalFlipPixels[flipPixelIndex])) {
+          __debugbreak();
+          return;
+        }
+      }
+    }
+
+    free(horizontalFlipPixels);
+  }
+  // REVERSE IMAGE END
+
+
+  // CALCULATE IMAGE INFO
+  pInfo->isOwner_ = false;
+
+  UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
+
+  Cleanup();
+
+
+  for (unsigned int height = 0; height < csvInfo.size(); ++height) {
+    ImageInfo* pNew = new ImageInfo;
+    pNew->imageType_ = pInfo->imageType_;
+    pNew->hBitMap_ = pInfo->hBitMap_;
+    pNew->imageDC_ = pInfo->imageDC_;
+    pNew->bitMapInfo_ = pInfo->bitMapInfo_;
+
+    Vector calcPosition = {csvInfo[height][0], csvInfo[height][1]};
+    Vector calcScale = {csvInfo[height][2], csvInfo[height][3]};
+    pNew->transform_.SetPosition(calcPosition);
+    pNew->transform_.SetScale(calcScale);
+    pNew->positionOffSet_ = {-csvInfo[height][4], csvInfo[height][5]};
+
+    CollisionInfo tempCollisionInfo;
+
+    for (int i = 6; i < csvInfo[height].size(); i += 5) {
+      if (1 == csvInfo[height][i]) {
+        tempCollisionInfo.hasCollision_ = true;
+        tempCollisionInfo.position_ = {-csvInfo[height][i + 1] /*- csvInfo[height][i + 3]*/, csvInfo[height][i + 2]};
+        tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
+      } else {
+        tempCollisionInfo.hasCollision_ = false;
+        tempCollisionInfo.position_ = {0.0f, 0.0f};
+        tempCollisionInfo.scale_ = {0.0f, 0.0f};
+      }
+
+      pNew->collisionBoxInfo_[(i - 6) / 5] = tempCollisionInfo;
+    }
 
     LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
     pNew->index_ = (unsigned int)imageCount_++;
   }
+  // CALCULATE IMAGE INFO END
 
   delete pInfo;
   pInfo = GetImageInfo(0);
@@ -607,15 +741,12 @@ void __stdcall Win32Image::AddImagePositionOffSet(unsigned int index, const Vect
   }
   pImg->positionOffSet_ += offSet;
 
-  for (int i = 0; i < pImg->collisionBoxInfo_.size(); ++i)
-  {
+  for (int i = 0; i < pImg->collisionBoxInfo_.size(); ++i) {
     pImg->collisionBoxInfo_[i].position_ += offSet;
   }
-
 }
 
 bool __stdcall Win32Image::GetCollisionBoxInfo(unsigned int index, unsigned int type, CollisionInfo** outInfo) {
-
   ImageInfo* pImageInfo = GetImageInfo(index);
 
   if (nullptr == pImageInfo) {

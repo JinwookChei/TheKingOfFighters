@@ -49,4 +49,6 @@ class Iori
   class BattleComponent* pBattle_;
 
   IoriAnimState animState_;
+
+  int isFlip_;
 };

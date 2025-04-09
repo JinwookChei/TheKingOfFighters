@@ -77,6 +77,8 @@ class Win32Image final
 
   bool GetPixel(const Vector& position, Color8Bit* outColor) override;
 
+  bool SetPixel(const Vector& position, const Color8Bit& color) override;
+
   bool Save(std::string_view filePath, unsigned int index = 0xffffffff) override;
 
   bool IsRenderTexture() override;
@@ -86,6 +88,8 @@ class Win32Image final
   void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) override;
 
   void __stdcall CalculateTransformFromCSV(const std::string& filePath) override;
+
+  void __stdcall ReverseCalculateTransformFromCSV(const std::string& filePath) override;
 
   void __stdcall CalculateTransform(unsigned int x, unsigned int y) override;
 

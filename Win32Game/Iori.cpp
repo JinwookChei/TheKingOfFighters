@@ -12,7 +12,8 @@ Iori::Iori()
       pGrabBox_(nullptr),
       pCommendComponent_(nullptr),
       pBattle_(nullptr),
-      animState_(IoriAnimState::IOAS_None) {
+      animState_(IoriAnimState::IOAS_None),
+      isFlip_(1) {
 }
 
 Iori::~Iori() {
@@ -27,6 +28,14 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(IoriAnimState::IOAS_BackWalk, 3, 35, 43, 50, true);      // <- 뒤로가기
   pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 1000, false);       // 발차기
   pRender_->CreateAnimation(IoriAnimState::IOAS_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
+
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_IDle, -3, 7, 15, 50, true);           // 아이들
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_Seat, -3, 15, 22, 50, true);          // 앉기.
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_Walk, -3, 27, 34, 50, true);          // -> 걷기
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_BackWalk, -3, 35, 43, 50, true);      // <- 뒤로가기
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 1000, false);     // 발차기
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_SUperKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
+
 
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
@@ -56,10 +65,6 @@ void Iori::BeginPlay() {
   pAttackBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Red});
   pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
-
-
-  
-
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
@@ -77,7 +82,7 @@ void Iori::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(animState_);
+    pRender_->ChangeAnimation(isFlip_*animState_);
   } while (false);
   
 
@@ -104,7 +109,9 @@ void Iori::InputUpdate() {
       && false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d')
       && false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w')
       && false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') 
-      && false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f')) {
+      && false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') 
+      && false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') 
+      && false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
     animState_ = IOAS_IDle;
     return;
   }
@@ -129,10 +136,11 @@ void Iori::InputUpdate() {
   }
 
   if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-    // pRender_->SetFlipRendering(true);
+
+    isFlip_ = -1;
   }
   if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-    // pRender_->SetFlipRendering(false);
+    isFlip_ = 1;
   }
 
   if (moveDir == Vector(0.0f, 0.0f)) {

@@ -40,6 +40,8 @@ struct IImage : public IUnknown {
 
   virtual bool GetPixel(const Vector& position, Color8Bit* outColor) = 0;
 
+  virtual bool SetPixel(const Vector& position, const Color8Bit& color) = 0;
+
   virtual bool Save(std::string_view filePath, unsigned int index = 0xffffffff) = 0;
 
   virtual bool IsRenderTexture() = 0;  // IFileImage인지, IRenderImage인지 flag
@@ -51,6 +53,8 @@ struct IFileImage : public IImage {
   virtual void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) = 0;
 
   virtual void __stdcall CalculateTransformFromCSV(const std::string& filePath) = 0;
+
+  virtual void __stdcall ReverseCalculateTransformFromCSV(const std::string& filePath) = 0;
 
   virtual void __stdcall CalculateTransform(unsigned int x, unsigned int y) = 0;
 

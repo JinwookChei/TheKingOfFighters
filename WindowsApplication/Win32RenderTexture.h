@@ -25,6 +25,8 @@ class Win32RenderTexture final
 
   bool GetPixel(const Vector& position, Color8Bit* outColor) override;
 
+  bool SetPixel(const Vector& position, const Color8Bit& color) override;
+
   bool Save(std::string_view filePath, unsigned int index = 0xffffffff) override;
 
   bool IsRenderTexture() override;

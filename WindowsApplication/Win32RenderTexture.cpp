@@ -74,6 +74,21 @@ bool Win32RenderTexture::GetPixel(const Vector& position, Color8Bit* outColor) {
   return true;
 }
 
+bool Win32RenderTexture::SetPixel(const Vector& position, const Color8Bit& color) {
+  if (position.X < 0 || position.Y < 0) {
+    return false;
+  }
+
+  const Vector scale = GetScale();
+
+  if (scale.IntergerX() < position.IntergerX() || scale.IntergerY() < position.IntergerY()) {
+    return false;
+  }
+
+  ::SetPixel(GetDC(), position.IntergerX(), position.IntergerY(), color.Color);
+  return true;
+}
+
 bool Win32RenderTexture::Save(std::string_view filePath, unsigned int index) {
   Path curr(filePath);
   FILE* saveFile = nullptr;
