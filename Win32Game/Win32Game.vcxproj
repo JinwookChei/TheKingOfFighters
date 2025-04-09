@@ -163,6 +163,7 @@
     <ClCompile Include="Chang.cpp" />
     <ClCompile Include="CollisionBox.cpp" />
     <ClCompile Include="CollisionBoxCorner.cpp" />
+    <ClCompile Include="CommandComponent.cpp" />
     <ClCompile Include="CreateCollisionButton.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="CrossHairControlButton.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Chang.h" />
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="CollisionBoxCorner.h" />
+    <ClInclude Include="CommandComponent.h" />
     <ClInclude Include="CreateCollisionButton.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="CrossHairControlButton.h" />

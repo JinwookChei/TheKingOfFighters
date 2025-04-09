@@ -10,6 +10,9 @@ enum IoriAnimState {
   IOAS_SUperKick
 };
 
+
+class CommandComponent;
+
 class Iori
     : public Actor {
  public:
@@ -44,7 +47,7 @@ class Iori
 
   CollisionComponent* pGrabBox_;
 
-  CommendComponent* pCommendComponent_;
+  CommandComponent* pCommandComponent_;
 
   class BattleComponent* pBattle_;
 

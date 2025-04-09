@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Chang.h"
+#include "CommandComponent.h"
 #include "CollisionBox.h"
 
 Chang::Chang()
@@ -9,7 +10,7 @@ Chang::Chang()
       pAttackBox_(nullptr),
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
-      pCommendComponent_(nullptr),
+      pCommandComponent_(nullptr),
       animState_(CHAS_None),
       // pStateComponent_(nullptr),
       pBattle_(nullptr) {
@@ -37,8 +38,8 @@ void Chang::BeginPlay() {
   pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
 
   // COMMEND
-  pCommendComponent_ = CreateComponent<CommendComponent>();
-  pCommendComponent_->SetTimeOutThreshold(80);
+  pCommandComponent_ = CreateComponent<CommandComponent>();
+  pCommandComponent_->SetTimeOutThreshold(80);
   //if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, 2)) {
   //  return;
   //}

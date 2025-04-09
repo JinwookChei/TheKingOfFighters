@@ -43,6 +43,9 @@
     <Filter Include="Contents\KOF\Actor">
       <UniqueIdentifier>{d736cefb-2e0e-44b9-b0d5-7b769727c1c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Component">
+      <UniqueIdentifier>{20b02786-351a-49f6-8569-1ba6ed0fc6c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Contents\KOF\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Contents\KOF\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandComponent.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

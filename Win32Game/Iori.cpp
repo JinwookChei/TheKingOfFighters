@@ -1,6 +1,7 @@
 #include "stdafx.h"
-#include "Iori.h"
+#include "CommandComponent.h"
 #include "CollisionBox.h"
+#include "Iori.h"
 #include "Chang.h"
 
 Iori::Iori()
@@ -10,7 +11,7 @@ Iori::Iori()
       pAttackBox_(nullptr),
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
-      pCommendComponent_(nullptr),
+      pCommandComponent_(nullptr),
       pBattle_(nullptr),
       animState_(IoriAnimState::IOAS_None),
       isFlip_(1) {
@@ -51,9 +52,9 @@ void Iori::BeginPlay() {
   pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
 
   // COMMEND
-  pCommendComponent_ = CreateComponent<CommendComponent>();
-  pCommendComponent_->SetTimeOutThreshold(80);
-  if (false == pCommendComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, IoriAnimState::IOAS_SUperKick)) {
+  pCommandComponent_ = CreateComponent<CommandComponent>();
+  pCommandComponent_->SetTimeOutThreshold(80);
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, IoriAnimState::IOAS_SUperKick)) {
     return;
   }
 
@@ -152,22 +153,22 @@ void Iori::InputUpdate() {
 
 void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
-    pCommendComponent_->JumpNode(CK_Left);
+    pCommandComponent_->JumpNode(CK_Left);
   }
 
   if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
-    pCommendComponent_->JumpNode(CK_Right);
+    pCommandComponent_->JumpNode(CK_Right);
   }
 
   if (InputManager::Instance()->IsDown('W') || InputManager::Instance()->IsDown('w')) {
-    pCommendComponent_->JumpNode(CK_Up);
+    pCommandComponent_->JumpNode(CK_Up);
   }
 
   if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
-    pCommendComponent_->JumpNode(CK_Down);
+    pCommandComponent_->JumpNode(CK_Down);
   }
 
-  switch (pCommendComponent_->GetTask()) {
+  switch (pCommandComponent_->GetTask()) {
     case IOAS_None:
       break;
     case IOAS_IDle:
@@ -182,7 +183,7 @@ void Iori::CommendUpdate() {
       break;
     case IOAS_SUperKick:
       animState_ = IOAS_SUperKick;
-      pCommendComponent_->ResetNode();
+      pCommandComponent_->ResetNode();
       break;
     default:
       break;

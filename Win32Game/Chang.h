@@ -8,6 +8,9 @@ enum ChangAnimStat
     CHAS_MAX
 };
 
+
+class CommandComponent;
+
 class Chang
     : public Actor {
  public:
@@ -40,7 +43,7 @@ class Chang
 
   CollisionComponent* pGrabBox_;
 
-  CommendComponent* pCommendComponent_;
+  CommandComponent* pCommandComponent_;
 
   //StateComponent* pStateComponent_;
 
