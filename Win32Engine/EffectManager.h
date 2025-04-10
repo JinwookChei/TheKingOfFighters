@@ -40,6 +40,6 @@ class EffectManager final {
   HashTable effectTable_;
 
   // TODO
-  LINK_ITEM* effectHead_;
-  LINK_ITEM* effectTail_;
+  //LINK_ITEM* effectHead_;
+  //LINK_ITEM* effectTail_;
 };

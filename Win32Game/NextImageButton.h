@@ -2,7 +2,9 @@
 
 enum NextImageType {
   NextImage_Next,
-  NextImage_Prev
+  NextImage_Prev,
+  NextImage_SuperNext,
+  NextImage_SuperPrev
 };
 
 class NextImageButton final

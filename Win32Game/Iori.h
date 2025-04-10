@@ -12,6 +12,7 @@ enum IoriAnimState {
 
 
 class CommandComponent;
+class ProjectileComponent;
 
 class Iori
     : public Actor {
@@ -49,7 +50,7 @@ class Iori
 
   CommandComponent* pCommandComponent_;
 
-  class BattleComponent* pBattle_;
+  ProjectileComponent* pProjectileComponent_;
 
   IoriAnimState animState_;
 

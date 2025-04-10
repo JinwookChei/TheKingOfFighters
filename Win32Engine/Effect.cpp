@@ -29,6 +29,7 @@ bool Effect::Initialize() {
   // pRender_->CreateAnimation(1, pEffectInfo_->imageIndex_, pEffectInfo_->indices_, pEffectInfo_->intervals_, pEffectInfo_->loop_);
   // pRender_->ChangeAnimation(1);
 
+  pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
   return true;
 }
 
@@ -61,6 +62,12 @@ void Effect::Tick(unsigned long long curTick) {
     } else {
       unsigned int imageIndex = pEffectInfo_->indices_[curFrame_];
       pRender_->SetImageIndex(imageIndex);
+      IImage* pImage = pRender_->GetImage();
+      if (nullptr == pImage) {
+        return;
+      }
+      pRender_->SetScale(pImage->GetScale(imageIndex));
+
       curTime_ = pEffectInfo_->intervals_[curFrame_];
     }
   }

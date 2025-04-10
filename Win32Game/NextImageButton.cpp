@@ -21,24 +21,19 @@ void NextImageButton::ClickDownEvent() {
   if (nullptr == bindToolActor_) {
     return;
   }
-
-  //IImage* pImage = bindToolActor_->GetImage();
-  //if (nullptr == pImage || true == pImage->IsRenderTexture()) {
-  //  return;
-  //}
-  //IFileImage* pFileImage = (IFileImage*)pImage;
   unsigned int imageIndex = bindToolActor_->GetImageIndex();
-
 
   if (nextImageType_ == NextImage_Next) {
     ++imageIndex;
   } else if (nextImageType_ == NextImage_Prev) {
     --imageIndex;
   }
-
-  //if (imageIndex > pImage->GetImageCount() - 1) {
-  //  imageIndex = 0;
-  //}
+  else if (nextImageType_ == NextImage_SuperNext)
+  {
+    imageIndex += 10;
+  } else if (nextImageType_ == NextImage_SuperPrev) {
+    imageIndex -= 10;
+  }
 
   bindToolActor_->ChangeImage(imageIndex);
 }

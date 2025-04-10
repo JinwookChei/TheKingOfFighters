@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CommandComponent.h"
+#include "ProjectileComponent.h"
 #include "CollisionBox.h"
 #include "Iori.h"
 #include "Chang.h"
@@ -12,7 +13,7 @@ Iori::Iori()
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
       pCommandComponent_(nullptr),
-      pBattle_(nullptr),
+      pProjectileComponent_(nullptr),
       animState_(IoriAnimState::IOAS_None),
       isFlip_(1) {
 }
@@ -27,16 +28,15 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(IoriAnimState::IOAS_Walk, 3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(IoriAnimState::IOAS_BackWalk, 3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 1000, false);       // 발차기
+  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 50, false);     // 발차기
   pRender_->CreateAnimation(IoriAnimState::IOAS_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
 
   pRender_->CreateAnimation(-IoriAnimState::IOAS_IDle, -3, 7, 15, 50, true);           // 아이들
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Seat, -3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Walk, -3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_BackWalk, -3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 1000, false);     // 발차기
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 50, false);     // 발차기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_SUperKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
-
 
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
@@ -58,6 +58,18 @@ void Iori::BeginPlay() {
     return;
   }
 
+
+  // PROJECTILE
+  pProjectileComponent_ = CreateComponent<ProjectileComponent>();
+  if (false == pProjectileComponent_->Initialize(GetLevel())) {
+    return;
+  }
+  if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {25.0f, 0.0f}, {200.0f, 0.0f}, {1500.0f, 0.0f}))
+  {
+    return;
+  }
+
+
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
   pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
@@ -69,7 +81,6 @@ void Iori::BeginPlay() {
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
-
   if (true == CollisionHitUpdate()) {
     pRender_->ChangeAnimation(animState_);
   }
@@ -83,9 +94,8 @@ void Iori::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(isFlip_*animState_);
+    pRender_->ChangeAnimation(isFlip_ * animState_);
   } while (false);
-  
 
   CollisionBoundUpdate();
 
@@ -102,21 +112,14 @@ void Iori::Tick(unsigned long long deltaTick) {
   }
 
   pTargetCollision->OnHit();
-  
 }
 
 void Iori::InputUpdate() {
-  if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a')
-      && false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d')
-      && false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w')
-      && false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') 
-      && false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') 
-      && false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') 
-      && false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
+  if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') && false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d') && false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w') && false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') && false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') && false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') && false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
     animState_ = IOAS_IDle;
     return;
   }
-    
+
   Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
@@ -134,10 +137,11 @@ void Iori::InputUpdate() {
   }
   if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
     animState_ = IOAS_Kick;
+
+    pProjectileComponent_->FireProjectile(1);
   }
 
   if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-
     isFlip_ = -1;
   }
   if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {

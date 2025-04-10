@@ -46,6 +46,9 @@
     <Filter Include="Contents\KOF\Component">
       <UniqueIdentifier>{20b02786-351a-49f6-8569-1ba6ed0fc6c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Actor\PLayer">
+      <UniqueIdentifier>{483b5a60-e977-4c70-ae4d-51efdb5ed76e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,12 +108,6 @@
     <ClCompile Include="KOFLevel.cpp">
       <Filter>Contents\KOF\Level</Filter>
     </ClCompile>
-    <ClCompile Include="Iori.cpp">
-      <Filter>Contents\KOF\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Chang.cpp">
-      <Filter>Contents\KOF\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>Contents\KOF\Level</Filter>
     </ClCompile>
@@ -120,10 +117,22 @@
     <ClCompile Include="ImageController.cpp">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClCompile>
+    <ClCompile Include="CommandComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Chang.cpp">
+      <Filter>Contents\KOF\Actor\PLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Iori.cpp">
+      <Filter>Contents\KOF\Actor\PLayer</Filter>
+    </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>Contents\KOF\Actor\PLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="CommandComponent.cpp">
+    <ClCompile Include="ProjectileComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,12 +197,6 @@
     <ClInclude Include="KOFLevel.h">
       <Filter>Contents\KOF\Level</Filter>
     </ClInclude>
-    <ClInclude Include="Iori.h">
-      <Filter>Contents\KOF\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Chang.h">
-      <Filter>Contents\KOF\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>Contents\KOF\Level</Filter>
     </ClInclude>
@@ -203,10 +206,22 @@
     <ClInclude Include="ImageController.h">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClInclude>
+    <ClInclude Include="CommandComponent.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Chang.h">
+      <Filter>Contents\KOF\Actor\PLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Iori.h">
+      <Filter>Contents\KOF\Actor\PLayer</Filter>
+    </ClInclude>
     <ClInclude Include="Player.h">
+      <Filter>Contents\KOF\Actor\PLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="CommandComponent.h">
+    <ClInclude Include="ProjectileComponent.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>

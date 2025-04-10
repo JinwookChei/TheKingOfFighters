@@ -12,10 +12,6 @@ EffectManager::~EffectManager() {
 
     iter = effectTable_.erase(iter);
 
-    //if (nullptr != pDel->image_) {
-    //  pDel->image_->Release();
-    //}
-
     delete pDel;
   }
 
@@ -68,14 +64,7 @@ bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long lon
     return false;
   }
 
-  //IImage* pImage = ImgManager::GetIntance()->GetImg(imageIndex);
-  //if (nullptr == pImage) {
-  //  return false;
-  //}
-  //pImage->AddRef();
-
   EffectInfo* newEffectInfo = new EffectInfo;
-  //newEffectInfo->image_ = pImage;
   newEffectInfo->imageIndex_ = imageIndex;
   newEffectInfo->effectTag_ = effectTag;
   newEffectInfo->indices_ = indices;

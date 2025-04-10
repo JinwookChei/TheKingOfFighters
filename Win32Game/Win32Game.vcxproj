@@ -177,6 +177,8 @@
     <ClCompile Include="ImageMoveButton.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerDummy.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ReadButton.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -208,6 +210,8 @@
     <ClInclude Include="ImageMoveButton.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerDummy.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="ReadButton.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />
