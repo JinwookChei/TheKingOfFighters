@@ -35,6 +35,8 @@ class Iori
 
   bool CollisionHitUpdate();
 
+  void Flip();
+
  private:
   ImageRenderer* pRender_;
 

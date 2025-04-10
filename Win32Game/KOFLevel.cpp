@@ -34,21 +34,24 @@ void KOFLevel::BeginPlay() {
   backGround->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f - 22));
 
   // GAME
+  // IORI
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 3);
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-
   IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -3);
   reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-
-
   Iori* iori = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   iori->SetPosition(Vector(backbufferScale.X * 0.5f - 200, backbufferScale.Y * 0.5f + 210.0f));
 
+
+  // CHANG
   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
+  reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
   Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
-
+  //chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 30.0f));
+  chang->Flip();
 
   
   EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});

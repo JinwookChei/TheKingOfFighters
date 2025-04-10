@@ -28,14 +28,14 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(IoriAnimState::IOAS_Walk, 3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(IoriAnimState::IOAS_BackWalk, 3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 50, false);     // 발차기
+  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 50, false);       // 발차기
   pRender_->CreateAnimation(IoriAnimState::IOAS_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
 
   pRender_->CreateAnimation(-IoriAnimState::IOAS_IDle, -3, 7, 15, 50, true);           // 아이들
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Seat, -3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Walk, -3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_BackWalk, -3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 50, false);     // 발차기
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 50, false);       // 발차기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_SUperKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
 
   pRender_->SetImageRenderType(ImageRenderType::Center);
@@ -58,17 +58,14 @@ void Iori::BeginPlay() {
     return;
   }
 
-
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();
   if (false == pProjectileComponent_->Initialize(GetLevel())) {
     return;
   }
-  if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {25.0f, 0.0f}, {200.0f, 0.0f}, {1500.0f, 0.0f}))
-  {
+  if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {25.0f, 0.0f}, {200.0f, 0.0f}, {1500.0f, 0.0f})) {
     return;
   }
-
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -99,19 +96,27 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
-  CollisionComponent* pTargetCollision = nullptr;
-
-  if (false == pAttackBox_->Collision(
-                   {
-                       .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop,
-                       .targetCollisionType = CollisionType::CollisionType_Rect,
-                       .myCollisionType = CollisionType::CollisionType_Rect,
-                   },
-                   &pTargetCollision)) {
-    return;
+  CollisionComponent* pTargetCollision_Top = nullptr;
+  if (true == pAttackBox_->Collision(
+                  {
+                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop,
+                      .targetCollisionType = CollisionType::CollisionType_Rect,
+                      .myCollisionType = CollisionType::CollisionType_Rect,
+                  },
+                  &pTargetCollision_Top)) {
+    pTargetCollision_Top->OnHit();
   }
 
-  pTargetCollision->OnHit();
+  CollisionComponent* pTargetCollision_Bottom = nullptr;
+  if (true == pAttackBox_->Collision(
+                  {
+                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom,
+                      .targetCollisionType = CollisionType::CollisionType_Rect,
+                      .myCollisionType = CollisionType::CollisionType_Rect,
+                  },
+                  &pTargetCollision_Bottom)) {
+    pTargetCollision_Bottom->OnHit();
+  }
 }
 
 void Iori::InputUpdate() {
@@ -275,57 +280,6 @@ bool Iori::CollisionHitUpdate() {
   return false;
 }
 
-// Regacy
-
-//{
-//
-// if (false == InputManager::Instance()->IsAnyKeyPress()) {
-//   pRender_->ChangeAnimation(1);
-//   return;
-// }
-
-// Vector moveDir = {0.0f, 0.0f};
-
-// if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-//   if (false == pRender_->GetFlipRendering()) {
-//     pRender_->ChangeAnimation(4);
-
-//  } else {
-//    pRender_->ChangeAnimation(3);
-//  }
-
-//  moveDir += Vector::Left;
-//}
-// if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-//  if (false == pRender_->GetFlipRendering()) {
-//    pRender_->ChangeAnimation(3);
-//  } else {
-//    pRender_->ChangeAnimation(4);
-//  }
-
-//  moveDir += Vector::Right;
-//}
-// if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
-//  moveDir += Vector::Up;
-//}
-// if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-//  pRender_->ChangeAnimation(2);
-//}
-// if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
-//  pRender_->ChangeAnimation(5);
-//}
-
-// if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-//   pRender_->SetFlipRendering(true);
-// }
-// if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-//   pRender_->SetFlipRendering(false);
-// }
-
-// if (moveDir == Vector(0.0f, 0.0f)) {
-//   // pRender_->ChangeAnimation(1);
-// }
-
-// Vector newPosition = moveDir + GetPosition();
-// SetPosition(newPosition);
-//}
+void Iori::Flip() {
+  isFlip_ *= -1;
+}

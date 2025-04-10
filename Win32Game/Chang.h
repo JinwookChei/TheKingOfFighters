@@ -1,15 +1,15 @@
 #pragma once
 
-enum ChangAnimStat
-{
-    CHAS_None = 0,
-    CHAS_Idel,
-    CHAS_Hit,
-    CHAS_MAX
+enum ChangAnimState {
+  CHAS_None = 0,
+  CHAS_Idle,
+  CHAS_HitTop,
+  CHAS_HitBottom,
+  CHAS_MAX
 };
 
-
 class CommandComponent;
+class ProjectileComponent;
 
 class Chang
     : public Actor {
@@ -24,11 +24,15 @@ class Chang
 
   void InputUpdate();
 
+  // void AnimUpdate();
+
   void CommendUpdate();
 
   void CollisionBoundUpdate();
 
   bool CollisionHitUpdate();
+
+  void Flip();
 
  private:
   ImageRenderer* pRender_;
@@ -45,9 +49,9 @@ class Chang
 
   CommandComponent* pCommandComponent_;
 
-  //StateComponent* pStateComponent_;
+  ProjectileComponent* pProjectileComponent_;
 
-  ChangAnimStat animState_;
+  ChangAnimState animState_;
 
-  class BattleComponent* pBattle_;
+  int isFlip_;
 };

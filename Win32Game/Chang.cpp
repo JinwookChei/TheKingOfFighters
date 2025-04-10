@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Chang.h"
 #include "CommandComponent.h"
+#include "ProjectileComponent.h"
 #include "CollisionBox.h"
 
 Chang::Chang()
@@ -11,9 +12,9 @@ Chang::Chang()
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
       pCommandComponent_(nullptr),
-      animState_(CHAS_None),
-      // pStateComponent_(nullptr),
-      pBattle_(nullptr) {
+      pProjectileComponent_(nullptr),
+      animState_(ChangAnimState::CHAS_None),
+      isFlip_(1) {
 }
 
 Chang::~Chang() {
@@ -22,12 +23,18 @@ Chang::~Chang() {
 void Chang::BeginPlay() {
   pRender_ = CreateImageRender();
 
-  pRender_->CreateAnimation(CHAS_Idel, 4, 8, 13, 50, true);   // 아이들
-  pRender_->CreateAnimation(CHAS_Hit, 4, 33, 35, 50, false);  // HIT
+  pRender_->CreateAnimation(CHAS_Idle, 4, 8, 13, 50, true);  // 아이들
+  pRender_->CreateAnimation(CHAS_HitTop, 4, 38, 42, 50, false);
+  pRender_->CreateAnimation(CHAS_HitBottom, 4, 43, 47, 50, false);
+
+  pRender_->CreateAnimation(-CHAS_Idle, -4, 8, 13, 50, true);  // 아이들
+  pRender_->CreateAnimation(-CHAS_HitTop, -4, 38, 42, 50, false);
+  pRender_->CreateAnimation(-CHAS_HitBottom, -4, 43, 47, 50, false);
+
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
 
-  pRender_->ChangeAnimation(1);
+  pRender_->ChangeAnimation(-CHAS_Idle);
   pRender_->SetLocalScale({4.0f, 4.0f});
 
   // COLLISION
@@ -40,9 +47,6 @@ void Chang::BeginPlay() {
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
   pCommandComponent_->SetTimeOutThreshold(80);
-  //if (false == pCommendComponent_->RegistTask({CK_Left, CK_Down, CK_Right}, 2)) {
-  //  return;
-  //}
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -57,7 +61,7 @@ void Chang::BeginPlay() {
 void Chang::Tick(unsigned long long deltaTick) {
 
   if (true == CollisionHitUpdate()) {
-    pRender_->ChangeAnimation(animState_);
+    pRender_->ChangeAnimation(animState_ * isFlip_);
   }
 
   do {
@@ -69,7 +73,7 @@ void Chang::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(animState_);
+    pRender_->ChangeAnimation(animState_ * isFlip_);
   } while (false);
 
   CollisionBoundUpdate();
@@ -80,7 +84,7 @@ void Chang::InputUpdate() {
       && false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l')
       && false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i')
       && false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k') ){
-    animState_ = CHAS_Idel;
+    animState_ = CHAS_Idle;
     return;
   }
 
@@ -191,16 +195,21 @@ void Chang::CollisionBoundUpdate() {
 
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
-    animState_ = CHAS_Hit;
+    animState_ = CHAS_HitTop;
     pHitBoxTop_->OffHit();
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
-    animState_ = CHAS_Hit;
-    pHitBoxTop_->OffHit();
+
+    animState_ = CHAS_HitBottom;
+    pHitBoxBottom_->OffHit();
     return true;
   }
 
   return false;
+}
+
+void Chang::Flip() {
+  isFlip_ *= -1;
 }
