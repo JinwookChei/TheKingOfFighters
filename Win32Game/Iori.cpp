@@ -1,29 +1,19 @@
 #include "stdafx.h"
+#include "Player.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "CollisionBox.h"
 #include "Iori.h"
-#include "Chang.h"
 
-Iori::Iori()
-    : pRender_(nullptr),
-      pHitBoxTop_(nullptr),
-      pHitBoxBottom_(nullptr),
-      pAttackBox_(nullptr),
-      pPushBox_(nullptr),
-      pGrabBox_(nullptr),
-      pCommandComponent_(nullptr),
-      pProjectileComponent_(nullptr),
-      animState_(IoriAnimState::IOAS_None),
-      isFlip_(1) {
+Iori::Iori() {
 }
 
 Iori::~Iori() {
 }
 
 void Iori::BeginPlay() {
+  Player::BeginPlay();
   // RENDERER
-  pRender_ = CreateImageRender();
   pRender_->CreateAnimation(IoriAnimState::IOAS_IDle, 3, 7, 15, 50, true);           // 아이들
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(IoriAnimState::IOAS_Walk, 3, 27, 34, 50, true);          // -> 걷기
@@ -38,43 +28,22 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 50, false);       // 발차기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_SUperKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
 
-  pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
-
   pRender_->ChangeAnimation(1);
-  pRender_->SetLocalScale({4.0f, 4.0f});
 
   // COLLISION
-  pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
-  pHitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
-  pAttackBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_AttackBox);
-  pPushBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_PushBox);
-  pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
 
-  // COMMEND
-  pCommandComponent_ = CreateComponent<CommandComponent>();
-  pCommandComponent_->SetTimeOutThreshold(80);
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, IoriAnimState::IOAS_SUperKick)) {
+  //// COMMEND
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, &Player::CommandSkill_1)) {
     return;
   }
 
   // PROJECTILE
-  pProjectileComponent_ = CreateComponent<ProjectileComponent>();
-  if (false == pProjectileComponent_->Initialize(GetLevel())) {
-    return;
-  }
   if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {25.0f, 0.0f}, {200.0f, 0.0f}, {1500.0f, 0.0f})) {
     return;
   }
 
   // DBUG SETTING
-  SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
-  pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
-  pHitBoxTop_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Blue});
-  pHitBoxBottom_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Blue});
-  pAttackBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Red});
-  pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
-  pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
@@ -176,27 +145,6 @@ void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
     pCommandComponent_->JumpNode(CK_Down);
   }
-
-  switch (pCommandComponent_->GetTask()) {
-    case IOAS_None:
-      break;
-    case IOAS_IDle:
-      break;
-    case IOAS_Seat:
-      break;
-    case IOAS_Walk:
-      break;
-    case IOAS_BackWalk:
-      break;
-    case IOAS_Kick:
-      break;
-    case IOAS_SUperKick:
-      animState_ = IOAS_SUperKick;
-      pCommandComponent_->ResetNode();
-      break;
-    default:
-      break;
-  }
 }
 
 void Iori::CollisionBoundUpdate() {
@@ -282,4 +230,8 @@ bool Iori::CollisionHitUpdate() {
 
 void Iori::Flip() {
   isFlip_ *= -1;
+}
+
+void Iori::CommandSkill_1() {
+  animState_ = IOAS_SUperKick;
 }

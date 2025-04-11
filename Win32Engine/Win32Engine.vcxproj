@@ -170,7 +170,6 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="CameraManager.cpp" />
-    <ClCompile Include="CommendComponent.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectComponent.cpp" />
     <ClCompile Include="EffectManager.cpp" />
@@ -198,7 +197,6 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="CameraManager.h" />
-    <ClInclude Include="CommendComponent.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectComponent.h" />
     <ClInclude Include="EffectManager.h" />

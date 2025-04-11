@@ -15,7 +15,7 @@ class CommandComponent;
 class ProjectileComponent;
 
 class Iori
-    : public Actor {
+    : public Player {
  public:
   Iori();
 
@@ -25,36 +25,19 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
-  void InputUpdate();
+  void InputUpdate() override;
 
-  //void AnimUpdate();
+  void CommendUpdate() override;
 
-  void CommendUpdate();
+  void CollisionBoundUpdate() override;
 
-  void CollisionBoundUpdate();
+  bool CollisionHitUpdate() override;
 
-  bool CollisionHitUpdate();
+  void Flip() override;
 
-  void Flip();
+
+  // Command Skills
+  void CommandSkill_1() override;
 
  private:
-  ImageRenderer* pRender_;
-
-  CollisionComponent* pHitBoxTop_;
-
-  CollisionComponent* pHitBoxBottom_;
-
-  CollisionComponent* pAttackBox_;
-
-  CollisionComponent* pPushBox_;
-
-  CollisionComponent* pGrabBox_;
-
-  CommandComponent* pCommandComponent_;
-
-  ProjectileComponent* pProjectileComponent_;
-
-  IoriAnimState animState_;
-
-  int isFlip_;
 };

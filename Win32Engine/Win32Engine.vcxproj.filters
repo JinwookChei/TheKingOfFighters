@@ -40,9 +40,6 @@
     <Filter Include="Actor\UIComponent">
       <UniqueIdentifier>{74ba06be-3083-47f5-abde-1525473281f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Component\Commend">
-      <UniqueIdentifier>{bf7ad75a-7fd7-468b-bb6c-e8c6154c0eea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Component\State">
       <UniqueIdentifier>{e9941d5d-5904-4316-bb27-ad3d83acfa7b}</UniqueIdentifier>
     </Filter>
@@ -95,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="CommendComponent.cpp">
-      <Filter>Actor\Component\Commend</Filter>
     </ClCompile>
     <ClCompile Include="StateComponent.cpp">
       <Filter>Actor\Component\State</Filter>
@@ -160,9 +154,6 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="CommendComponent.h">
-      <Filter>Actor\Component\Commend</Filter>
     </ClInclude>
     <ClInclude Include="StateComponent.h">
       <Filter>Actor\Component\State</Filter>

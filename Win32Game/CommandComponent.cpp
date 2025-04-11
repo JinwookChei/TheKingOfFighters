@@ -27,7 +27,7 @@ void CommandComponent::Tick(unsigned long long curTick) {
   }
 }
 
-bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, int task) {
+bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, void (Player::*Task)()) {
   if (nullptr == pRootNode_) {
     return false;
   }
@@ -42,17 +42,17 @@ bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, 
     pCur = pCur->pSubNodes[*iter];
   }
 
-  pCur->task_ = task;
+  pCur->Task_ = Task;
 
   return true;
 }
 
-int CommandComponent::GetTask() const {
+void* CommandComponent::GetTask() const {
   if (nullptr == pCurNode_) {
     return 0;
   }
 
-  return pCurNode_->task_;
+  return &pCurNode_->Task_;
 }
 
 void CommandComponent::JumpNode(CommandKey key) {
@@ -69,10 +69,15 @@ void CommandComponent::JumpNode(CommandKey key) {
     return;
   }
 
-  /*if (nullptr != pCurNode_->Task) {
-    pCurNode_->Task();
+  if (nullptr != pCurNode_->Task_) {
+    Actor* owner = GetOwner();
+    if (nullptr == owner) {
+      return;
+    }
+
+    pCurNode_->ExcuteTask((Player*)owner);
     ResetNode();
-  }*/
+  }
 }
 
 void CommandComponent::SetTimeOutThreshold(unsigned long long threshold) {

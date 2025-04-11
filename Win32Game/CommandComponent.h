@@ -1,7 +1,6 @@
 #pragma once
 #include <initializer_list>
-
-// inline void
+#include "Player.h"
 
 enum CommandKey {
   CK_None = -1,
@@ -18,8 +17,7 @@ enum CommandKey {
 
 struct CommandNode {
   CommandNode()
-      :  // key_(CommendKey::CK_None),
-        task_(0) {
+      : Task_(nullptr) {
     for (int i = 0; i < CommandKey::CK_MAX; ++i) {
       pSubNodes[i] = nullptr;
     }
@@ -33,10 +31,15 @@ struct CommandNode {
     }
   }
 
+  void ExcuteTask(Player* player) {
+    if (nullptr != player && nullptr != Task_) {
+      (player->*Task_)();
+    }
+  }
+
   CommandNode* pSubNodes[CommandKey::CK_MAX];
 
-  // void (*Task)();
-  int task_;
+  void (Player::*Task_)();
 };
 
 class CommandComponent
@@ -51,9 +54,9 @@ class CommandComponent
 
   void Tick(unsigned long long curTick) override;
 
-  bool RegistCommend(std::initializer_list<CommandKey> command, int task);
+  bool RegistCommend(std::initializer_list<CommandKey> command, void (Player::*Task)());
 
-  int GetTask() const;
+  void* GetTask() const;
 
   void JumpNode(CommandKey key);
 
@@ -62,6 +65,7 @@ class CommandComponent
   void ResetNode();
 
  private:
+ 
   CommandNode* const pRootNode_;
 
   CommandNode* pCurNode_;

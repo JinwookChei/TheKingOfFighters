@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "KOFLevel.h"
+#include "Player.h"
 #include "Iori.h"
 #include "Chang.h"
 #include "BackGround.h"
@@ -44,14 +45,13 @@ void KOFLevel::BeginPlay() {
 
 
   // CHANG
-  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
-  changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
-  reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
-  //chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 30.0f));
-  chang->Flip();
+  //IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
+  //changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  //IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
+  //reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  //Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
+  //chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
+  //chang->Flip();
 
   
   EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
