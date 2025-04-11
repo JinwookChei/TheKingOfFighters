@@ -5,7 +5,8 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
-Iori::Iori() {
+Iori::Iori()
+    : prevImageIndex(0) {
 }
 
 Iori::~Iori() {
@@ -13,6 +14,7 @@ Iori::~Iori() {
 
 void Iori::BeginPlay() {
   Player::BeginPlay();
+
   // RENDERER
   pRender_->CreateAnimation(IoriAnimState::IOAS_IDle, 3, 7, 15, 50, true);           // ¾ÆÀÌµé
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // ¾É±â.
@@ -31,9 +33,7 @@ void Iori::BeginPlay() {
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
   pRender_->ChangeAnimation(1);
 
-  // COLLISION
-
-  //// COMMEND
+  // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, &Player::CommandSkill_1)) {
     return;
   }
@@ -42,8 +42,6 @@ void Iori::BeginPlay() {
   if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {25.0f, 0.0f}, {200.0f, 0.0f}, {1500.0f, 0.0f})) {
     return;
   }
-
-  // DBUG SETTING
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
@@ -86,6 +84,8 @@ void Iori::Tick(unsigned long long deltaTick) {
                   &pTargetCollision_Bottom)) {
     pTargetCollision_Bottom->OnHit();
   }
+
+  SkillUpdate();
 }
 
 void Iori::InputUpdate() {
@@ -111,8 +111,6 @@ void Iori::InputUpdate() {
   }
   if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
     animState_ = IOAS_Kick;
-
-    pProjectileComponent_->FireProjectile(1);
   }
 
   if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
@@ -145,6 +143,30 @@ void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
     pCommandComponent_->JumpNode(CK_Down);
   }
+}
+
+void Iori::SkillUpdate() {
+
+  if (nullptr == pRender_) {
+    return;
+  }
+
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+
+  if (prevImageIndex == curImageIndex)
+  {
+    return;
+  }
+
+  switch (curImageIndex) {
+    case (115):
+      pProjectileComponent_->FireProjectile(1);
+      break;
+    default:
+      break;
+  }
+
+  prevImageIndex = curImageIndex;
 }
 
 void Iori::CollisionBoundUpdate() {
