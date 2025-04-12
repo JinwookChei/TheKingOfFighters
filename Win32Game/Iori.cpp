@@ -15,6 +15,13 @@ Iori::~Iori() {
 void Iori::BeginPlay() {
   Player::BeginPlay();
 
+  // CHARACTER SETTING
+  IImage* pImage = ImgManager::GetIntance()->GetImg(3);
+  if (nullptr == pImage) {
+    return;
+  }
+  SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
+
   // RENDERER
   pRender_->CreateAnimation(IoriAnimState::IOAS_IDle, 3, 7, 15, 50, true);           // ¾ÆÀÌµé
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // ¾É±â.
@@ -98,11 +105,11 @@ void Iori::InputUpdate() {
 
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
     animState_ = IOAS_BackWalk;
-    moveDir += Vector::Left;
+    moveDir += Vector::Left * 15;
   }
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
     animState_ = IOAS_Walk;
-    moveDir += Vector::Right;
+    moveDir += Vector::Right * 15;
   }
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
   }
@@ -146,15 +153,13 @@ void Iori::CommendUpdate() {
 }
 
 void Iori::SkillUpdate() {
-
   if (nullptr == pRender_) {
     return;
   }
 
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
-  if (prevImageIndex == curImageIndex)
-  {
+  if (prevImageIndex == curImageIndex) {
     return;
   }
 

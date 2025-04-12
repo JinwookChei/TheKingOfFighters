@@ -160,6 +160,8 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CameraLimitComponent.cpp" />
+    <ClCompile Include="CameraTarget.cpp" />
     <ClCompile Include="Chang.cpp" />
     <ClCompile Include="CollisionBox.cpp" />
     <ClCompile Include="CollisionBoxCorner.cpp" />
@@ -194,6 +196,8 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CameraLimitComponent.h" />
+    <ClInclude Include="CameraTarget.h" />
     <ClInclude Include="Chang.h" />
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="CollisionBoxCorner.h" />

@@ -49,6 +49,9 @@
     <Filter Include="Contents\KOF\Actor\PLayer">
       <UniqueIdentifier>{483b5a60-e977-4c70-ae4d-51efdb5ed76e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Camera">
+      <UniqueIdentifier>{b3ba4512-de49-4b88-8701-3e93b60bcbee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -134,6 +137,12 @@
     </ClCompile>
     <ClCompile Include="ProjectileComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraTarget.cpp">
+      <Filter>Contents\KOF\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraLimitComponent.cpp">
+      <Filter>Contents\KOF\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +232,12 @@
     </ClInclude>
     <ClInclude Include="ProjectileComponent.h">
       <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraTarget.h">
+      <Filter>Contents\KOF\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraLimitComponent.h">
+      <Filter>Contents\KOF\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

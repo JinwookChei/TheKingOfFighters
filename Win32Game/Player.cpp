@@ -14,6 +14,7 @@ Player::Player()
       pCommandComponent_(nullptr),
       pProjectileComponent_(nullptr),
       animState_(0),
+      characterScale_({0.0f, 0.0f}),
       isFlip_(1) {
 }
 
@@ -24,8 +25,7 @@ void Player::BeginPlay() {
   // RENDERER
   pRender_ = CreateImageRender();
   pRender_->SetImageRenderType(ImageRenderType::Center);
-  pRender_->SetLocalScale({4.0f, 4.0f});
-
+  pRender_->SetLocalScale({4.5f, 4.5f});
 
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
@@ -33,7 +33,6 @@ void Player::BeginPlay() {
   pAttackBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_AttackBox);
   pPushBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_PushBox);
   pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
-
 
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
@@ -44,7 +43,7 @@ void Player::BeginPlay() {
   if (false == pProjectileComponent_->Initialize(GetLevel())) {
     return;
   }
-  
+
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
   pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
@@ -71,5 +70,15 @@ bool Player::CollisionHitUpdate() {
   return false;
 }
 
+Vector Player::CharacterScale() const {
+  return characterScale_;
+}
+
+void Player::SetCharacterScale(const Vector& scale) {
+  characterScale_ = scale;
+}
+
+
 void Player::Flip() {
 }
+

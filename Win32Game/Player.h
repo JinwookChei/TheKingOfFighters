@@ -23,6 +23,10 @@ class Player
 
   virtual bool CollisionHitUpdate();
 
+  virtual Vector CharacterScale() const;
+
+  virtual void SetCharacterScale(const Vector& scale);
+
   virtual void Flip();
 
   // Command Skill
@@ -37,6 +41,7 @@ class Player
   virtual void CommandSkill_5() {};
 
  protected:
+
   ImageRenderer* pRender_;
 
   CollisionComponent* pHitBoxTop_;
@@ -55,5 +60,9 @@ class Player
 
   int animState_;
 
+  Vector characterScale_;
+
   int isFlip_;
+
+  
 };

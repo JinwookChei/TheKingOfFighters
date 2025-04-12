@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "KOFLevel.h"
+#include "CameraTarget.h"
 #include "Player.h"
 #include "Iori.h"
 #include "Chang.h"
@@ -32,7 +33,10 @@ void KOFLevel::BeginPlay() {
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", 2);
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
   BackGround* backGround = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
-  backGround->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f - 22));
+  Vector imageScale = backGoundImage->GetScale(1);
+  Vector backGroundImageScale = {imageScale.X * 4.5f, imageScale.Y * 4.5f};
+  backGround->SetPosition({backGroundImageScale.X / 2, backGroundImageScale.Y / 2});
+  backGround->SetUseCameraposition(true);
 
   // GAME
   // IORI
@@ -41,22 +45,28 @@ void KOFLevel::BeginPlay() {
   IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -3);
   reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
   Iori* iori = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  iori->SetPosition(Vector(backbufferScale.X * 0.5f - 200, backbufferScale.Y * 0.5f + 210.0f));
-
+  iori->SetPosition(Vector(backGroundImageScale.X * 0.5f - 200, backGroundImageScale.Y * 0.5f + 210.0f));
+  iori->SetUseCameraposition(true);
 
   // CHANG
-  //IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
-  //changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  //IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
-  //reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  //Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  //chang->SetPosition(Vector(backbufferScale.X * 0.5f + 200, backbufferScale.Y * 0.5f + 130.0f));
-  //chang->Flip();
+  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
+  changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
+  reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
+  chang->SetPosition(Vector(backGroundImageScale.X * 0.5f + 200, backGroundImageScale.Y * 0.5f + 130.0f));
+  chang->SetUseCameraposition(true);
+  chang->Flip();
 
-  
+  // CAMERA
+  cameraTarget = SpawnActor<CameraTarget>();
+  cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f);
+  cameraTarget->BindPlayer1(iori);
+  cameraTarget->BindPlayer2(chang);
+
+  CameraManager::Instance()->SetTarget(cameraTarget);
   EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
   EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});
-
 }
 
 void KOFLevel::Tick(unsigned long long dletaTick) {
@@ -70,5 +80,25 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
 
   if (InputManager::Instance()->IsDown(VK_F2)) {
     SetCollisionRender(!GetCollisionRender());
+  }
+
+  if (InputManager::Instance()->IsDown(VK_LEFT)) {
+    Vector pos = cameraTarget->GetPosition();
+    cameraTarget->SetPosition({pos.X - 50.0f, pos.Y});
+  }
+
+  if (InputManager::Instance()->IsDown(VK_RIGHT)) {
+    Vector pos = cameraTarget->GetPosition();
+    cameraTarget->SetPosition({pos.X + 50.0f, pos.Y});
+  }
+
+  if (InputManager::Instance()->IsDown(VK_UP)) {
+    Vector pos = cameraTarget->GetPosition();
+    cameraTarget->SetPosition({pos.X, pos.Y - 50.0f});
+  }
+
+  if (InputManager::Instance()->IsDown(VK_DOWN)) {
+    Vector pos = cameraTarget->GetPosition();
+    cameraTarget->SetPosition({pos.X, pos.Y + 50.0f});
   }
 }

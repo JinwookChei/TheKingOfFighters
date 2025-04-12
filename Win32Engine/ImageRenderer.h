@@ -75,7 +75,6 @@ class ImageRenderer
 
   JO_API bool IsPlayingLoopAnimation();
 
-
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 

@@ -11,10 +11,10 @@ BackGround::~BackGround() {
 void BackGround::BeginPlay() {
   pRender_ = CreateImageRender();
   pRender_->CreateAnimation(1, 2, 0, 7, 500, true);
-
+  
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->ChangeAnimation(1);
-  pRender_->SetLocalScale({2.6f, 4.1f});
+  pRender_->SetLocalScale({4.5f, 4.5f});
 }
 
 void BackGround::Tick(unsigned long long curTick) {
