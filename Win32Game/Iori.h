@@ -1,15 +1,15 @@
 #pragma once
 
-enum IoriAnimState {
-  IOAS_None = 0,
-  IOAS_IDle,
-  IOAS_Seat,
-  IOAS_Walk,
-  IOAS_BackWalk,
-  IOAS_Jump,
-  IOAS_Kick,
-  IOAS_SUperKick
-};
+//enum IoriAnimState {
+//  IOAS_None = 0,
+//  IOAS_IDle,
+//  IOAS_Seat,
+//  IOAS_Walk,
+//  IOAS_BackWalk,
+//  IOAS_Jump,
+//  IOAS_Kick,
+//  IOAS_SUperKick
+//};
 
 
 class CommandComponent;
@@ -40,6 +40,8 @@ class Iori
 
   // Command Skills
   void CommandSkill_1() override;
+
+  void CommandSkill_2() override;
 
  private:
   unsigned int prevImageIndex;

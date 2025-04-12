@@ -5,6 +5,24 @@ class MovementComponent;
 class CommandComponent;
 class ProjectileComponent;
 
+enum PlayerAnimState {
+  PAS_Start = 0,
+  PAS_Idle,
+  PAS_Seat,
+  PAS_FrontWalk,
+  PAS_BackWalk,
+  PAS_BackStep,
+  PAS_Run,
+  PAS_Jump,
+  PAS_HeavyPunch,
+  PAS_LightPunch,
+  PAS_HeavyKick,
+  PAS_LightKick,
+  PAS_HitTop,
+  PAS_HitBottom,
+  PAS_MAX
+};
+
 class Player
     : public Actor {
  public:
@@ -44,7 +62,6 @@ class Player
   virtual void CommandSkill_5() {};
 
  protected:
-
   ImageRenderer* pRender_;
 
   MovementComponent* pMovementComponent_;
@@ -68,5 +85,4 @@ class Player
   Vector characterScale_;
 
   int isFlip_;
-  
 };

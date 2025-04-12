@@ -27,27 +27,34 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // RENDERER
-  pRender_->CreateAnimation(IoriAnimState::IOAS_IDle, 3, 7, 15, 50, true);           // 아이들
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // 앉기.
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Walk, 3, 27, 34, 50, true);          // -> 걷기
-  pRender_->CreateAnimation(IoriAnimState::IOAS_BackWalk, 3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Jump, 3, 61, 69, 50, false);         // 점프
-  pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 50, false);       // 발차기
-  pRender_->CreateAnimation(IoriAnimState::IOAS_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
+  pRender_->CreateAnimation(PAS_Idle, 3, 7, 15, 50, true);           // 아이들
+  pRender_->CreateAnimation(PAS_Seat, 3, 15, 22, 50, true);          // 앉기.
+  pRender_->CreateAnimation(PAS_FrontWalk, 3, 27, 34, 50, true);     // -> 걷기
+  pRender_->CreateAnimation(PAS_BackWalk, 3, 35, 44, 50, true);      // <- 뒤로가기
+  pRender_->CreateAnimation(PAS_BackStep, 3, 45, 48, 50, false);      // <- <- 백스탭
+  pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false);         // 점프
+  pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false);  // 발차기
+  pRender_->CreateAnimation(PAS_LightKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
 
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_IDle, -3, 7, 15, 50, true);           // 아이들
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_Seat, -3, 15, 22, 50, true);          // 앉기.
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_Walk, -3, 27, 34, 50, true);          // -> 걷기
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_BackWalk, -3, 35, 43, 50, true);      // <- 뒤로가기
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_Jump, -3, 61, 69, 50, false);         // 점프
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 50, false);       // 발차기
-  pRender_->CreateAnimation(-IoriAnimState::IOAS_SUperKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
+
+  pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true);           // 아이들
+  pRender_->CreateAnimation(-PAS_Seat, -3, 15, 22, 50, true);          // 앉기.
+  pRender_->CreateAnimation(-PAS_FrontWalk, -3, 27, 34, 50, true);     // -> 걷기
+  pRender_->CreateAnimation(-PAS_BackWalk, -3, 35, 43, 50, true);      // <- 뒤로가기
+  pRender_->CreateAnimation(-PAS_BackStep, 3, 45, 48, 50, false);      // <- <- 백스탭
+  pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false);         // 점프
+  pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false);  // 발차기
+  pRender_->CreateAnimation(-PAS_LightKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
 
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
-  pRender_->ChangeAnimation(1);
+  pRender_->ChangeAnimation(PAS_Idle * isFlip_);
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, &Player::CommandSkill_1)) {
+    return;
+  }
+
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, &Player::CommandSkill_2)) {
     return;
   }
 
@@ -56,7 +63,6 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
     return;
   }
 }
-
 
 void Iori::Tick(unsigned long long deltaTick) {
   if (true == CollisionHitUpdate()) {
@@ -103,37 +109,40 @@ void Iori::Tick(unsigned long long deltaTick) {
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {
-  if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') && false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d') && false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w') && false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') && false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') && false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') && false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
-    animState_ = IOAS_IDle;
+  if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') && 
+      false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d') && 
+      false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w') && 
+      false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') && 
+      false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') && 
+      false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') && 
+      false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
+    animState_ = PAS_Idle;
     return;
   }
 
-  //Vector moveDir = {0.0f, 0.0f};
+  // Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-
-    animState_ = IOAS_BackWalk;
+    animState_ = PAS_BackWalk;
     pMovementComponent_->Move(curTick, false);
   }
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-    animState_ = IOAS_Walk;
+    animState_ = PAS_FrontWalk;
     pMovementComponent_->Move(curTick, true);
   }
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
-    animState_ = IOAS_Jump;
+    animState_ = PAS_Jump;
     pMovementComponent_->Jump();
   }
   if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-    animState_ = IOAS_Seat;
+    animState_ = PAS_Seat;
   }
   if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
-    animState_ = IOAS_Kick;
+    animState_ = PAS_HeavyKick;
   }
   if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-    
   }
   if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-    
   }
 }
 
@@ -244,13 +253,13 @@ void Iori::CollisionBoundUpdate() {
 
 bool Iori::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
-    animState_ = IOAS_IDle;
+    animState_ = PAS_Idle;
     pHitBoxTop_->OffHit();
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
-    animState_ = IOAS_IDle;
+    animState_ = PAS_Idle;
     pHitBoxTop_->OffHit();
     return true;
   }
@@ -259,5 +268,10 @@ bool Iori::CollisionHitUpdate() {
 }
 
 void Iori::CommandSkill_1() {
-  animState_ = IOAS_SUperKick;
+  animState_ = PAS_LightKick;
+}
+
+void Iori::CommandSkill_2() {
+  animState_ = PAS_BackStep;
+  pMovementComponent_->BackStep();
 }

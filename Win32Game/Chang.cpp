@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Chang.h"
+#include "MovementComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "CollisionBox.h"
@@ -25,16 +26,16 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   }
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  pRender_->CreateAnimation(CHAS_Idle, 4, 8, 13, 50, true);  // 아이들
-  pRender_->CreateAnimation(CHAS_HitTop, 4, 38, 42, 50, false);
-  pRender_->CreateAnimation(CHAS_HitBottom, 4, 43, 47, 50, false);
+  pRender_->CreateAnimation(PAS_Idle, 4, 8, 13, 50, true);  // 아이들
+  pRender_->CreateAnimation(PAS_HitTop, 4, 38, 42, 50, false);
+  pRender_->CreateAnimation(PAS_HitBottom, 4, 43, 47, 50, false);
 
-  pRender_->CreateAnimation(-CHAS_Idle, -4, 8, 13, 50, true);  // 아이들
-  pRender_->CreateAnimation(-CHAS_HitTop, -4, 38, 42, 50, false);
-  pRender_->CreateAnimation(-CHAS_HitBottom, -4, 43, 47, 50, false);
+  pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true);  // 아이들
+  pRender_->CreateAnimation(-PAS_HitTop, -4, 38, 42, 50, false);
+  pRender_->CreateAnimation(-PAS_HitBottom, -4, 43, 47, 50, false);
 
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
-  pRender_->ChangeAnimation(-CHAS_Idle);
+  pRender_->ChangeAnimation(PAS_Idle*isFlip_);
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
@@ -58,23 +59,26 @@ void Chang::Tick(unsigned long long deltaTick) {
 }
 
 void Chang::InputUpdate(unsigned long long deltaTick) {
-  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') && false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') && false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') && false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k')) {
-    animState_ = CHAS_Idle;
+  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') 
+      && false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') 
+      && false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') 
+      && false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k')) {
+    animState_ = PAS_Idle;
     return;
   }
 
   Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
-    // animState_ = CHAS_Idel;
-    moveDir += Vector::Left * 15;
+    //animState_ = PAS_
+    pMovementComponent_->Move(deltaTick, false);
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
     // animState_ = CHAS_Idel;
-    moveDir += Vector::Right * 15;
+    pMovementComponent_->Move(deltaTick, true);
   }
   if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {
-    moveDir += Vector::Up;
+    pMovementComponent_->Jump();
   }
   if (InputManager::Instance()->IsPress('K') || InputManager::Instance()->IsPress('k')) {
   }
@@ -173,13 +177,13 @@ void Chang::CollisionBoundUpdate() {
 
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
-    animState_ = CHAS_HitTop;
+    animState_ = PAS_HitTop;
     pHitBoxTop_->OffHit();
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
-    animState_ = CHAS_HitBottom;
+    animState_ = PAS_HitBottom;
     pHitBoxBottom_->OffHit();
     return true;
   }

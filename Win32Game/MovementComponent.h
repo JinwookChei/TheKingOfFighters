@@ -16,6 +16,8 @@ class MovementComponent final
 
   void Jump();
 
+  void BackStep();
+
  private:
   Vector startPosition_;
 
@@ -24,10 +26,19 @@ class MovementComponent final
 
   const float runVelocity_ = 1000.0f;
 
-  const float backStepVelocity_ = 3000.0f;
+  // BACK STEP
+  bool onBackStep_;
+
+  const float backStepVelocity_ = 1000.0f;
+
+  const float backStepTotalDistance_ = 300.0f;
+
+  float backStepAccumulation_;
 
   // JUMP
   bool isGrounded_;
+
+  bool onJump_;
 
   float jumpVelocity_;
 

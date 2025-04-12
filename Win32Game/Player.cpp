@@ -52,7 +52,8 @@ void Player::Initialize(const Vector& position, bool useCameraPosition, bool fli
 
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
-  pCommandComponent_->SetTimeOutThreshold(80);
+  pCommandComponent_->SetTimeOutThreshold(100);
+
 
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();
