@@ -28,7 +28,7 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
-  void InputUpdate() override;
+  void InputUpdate(unsigned long long curTick) override;
 
   void CommendUpdate() override;
 
@@ -37,9 +37,6 @@ class Iori
   void CollisionBoundUpdate() override;
 
   bool CollisionHitUpdate() override;
-
-  void Flip() override;
-
 
   // Command Skills
   void CommandSkill_1() override;

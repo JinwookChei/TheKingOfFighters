@@ -21,15 +21,23 @@ class Chang
 
   void BeginPlay() override;
 
+  void Initialize(const Vector& position, bool useCameraPosition, bool flip) override;
+
   void Tick(unsigned long long curTick) override;
 
-  void InputUpdate() override;
+  void InputUpdate(unsigned long long curTick) override;
 
   void CommendUpdate() override;
+
+  void SkillUpdate();
 
   void CollisionBoundUpdate() override;
 
   bool CollisionHitUpdate() override;
 
-  void Flip() override;
+  // Command Skills
+  void CommandSkill_1() override;
+
+ private:
+  unsigned int prevImageIndex;
 };

@@ -68,7 +68,7 @@ void Iori::Tick(unsigned long long deltaTick) {
       break;
     }
 
-    InputUpdate();
+    InputUpdate(deltaTick);
 
     CommendUpdate();
 
@@ -102,7 +102,7 @@ void Iori::Tick(unsigned long long deltaTick) {
   SkillUpdate();
 }
 
-void Iori::InputUpdate() {
+void Iori::InputUpdate(unsigned long long curTick) {
   if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') && false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d') && false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w') && false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') && false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') && false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') && false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
     animState_ = IOAS_IDle;
     return;
@@ -111,12 +111,13 @@ void Iori::InputUpdate() {
   //Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
+
     animState_ = IOAS_BackWalk;
-    //moveDir += Vector::Left * 15;
+    pMovementComponent_->Move(curTick, false);
   }
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
     animState_ = IOAS_Walk;
-    //moveDir += Vector::Right * 15;
+    pMovementComponent_->Move(curTick, true);
   }
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
     animState_ = IOAS_Jump;
@@ -128,19 +129,12 @@ void Iori::InputUpdate() {
   if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
     animState_ = IOAS_Kick;
   }
-
   if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-    isFlip_ = -1;
+    
   }
   if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-    isFlip_ = 1;
+    
   }
-
-  /*if (moveDir == Vector(0.0f, 0.0f)) {
-  }*/
-
-  //Vector newPosition = moveDir + GetPosition();
-  //SetPosition(newPosition);
 }
 
 void Iori::CommendUpdate() {
@@ -262,10 +256,6 @@ bool Iori::CollisionHitUpdate() {
   }
 
   return false;
-}
-
-void Iori::Flip() {
-  isFlip_ *= -1;
 }
 
 void Iori::CommandSkill_1() {

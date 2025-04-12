@@ -17,7 +17,7 @@ Player::Player()
       pProjectileComponent_(nullptr),
       animState_(0),
       characterScale_({0.0f, 0.0f}),
-      isFlip_(1){
+      isFlip_(1) {
 }
 
 Player::~Player() {
@@ -32,15 +32,12 @@ void Player::Tick(unsigned long long curTick) {
 void Player::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
   SetPosition(position);
   SetUseCameraposition(useCameraPosition);
-  if (true == flip) {
-    Flip();
-  }
+  Flip(flip);
 
   // RENDERER
   pRender_ = CreateImageRender();
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetLocalScale({4.5f, 4.5f});
-
 
   // MOVEMENT
   pMovementComponent_ = CreateComponent<MovementComponent>();
@@ -73,7 +70,7 @@ void Player::Initialize(const Vector& position, bool useCameraPosition, bool fli
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void Player::InputUpdate() {
+void Player::InputUpdate(unsigned long long deltaTick) {
 }
 
 void Player::CommendUpdate() {
@@ -94,5 +91,10 @@ void Player::SetCharacterScale(const Vector& scale) {
   characterScale_ = scale;
 }
 
-void Player::Flip() {
+void Player::Flip(bool flip) {
+  if (flip) {
+    isFlip_ = -1;
+  } else {
+    isFlip_ = 1;
+  }
 }

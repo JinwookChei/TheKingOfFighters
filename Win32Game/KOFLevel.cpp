@@ -6,7 +6,10 @@
 #include "Chang.h"
 #include "BackGround.h"
 
-KOFLevel::KOFLevel() {
+KOFLevel::KOFLevel()
+    : cameraTarget(nullptr),
+      player1_(nullptr),
+      player2_(nullptr) {
 }
 
 KOFLevel::~KOFLevel() {
@@ -38,30 +41,34 @@ void KOFLevel::BeginPlay() {
   backGround->SetPosition({backGroundImageScale.X / 2, backGroundImageScale.Y / 2});
   backGround->SetUseCameraposition(true);
 
-  
   // IORI
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 3);
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
   IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -3);
   reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-  Iori* iori = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  iori->Initialize(Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 210.0f), true, false);
+  player1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  player1_->Initialize(Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 210.0f), true, false);
 
-  Iori* iori2 = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  iori2->Initialize(Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 210.0f), true, false);
+  // Iori* iori = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  // iori->Initialize(Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 210.0f), true, false);
+
+  // Iori* iori2 = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  // iori2->Initialize(Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 210.0f), true, false);
 
   // CHANG
-  //IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
-  //changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  //IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
-  //reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  //Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  //chang->Initialize(Vector(backGroundImageScale.X * 0.5f + 200, backGroundImageScale.Y * 0.5f + 130.0f), true, true);
+  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
+  changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
+  reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
 
+  player2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
+  player2_->Initialize(Vector(backGroundImageScale.X * 0.5f + 200, backGroundImageScale.Y * 0.5f + 130.0f), true, true);
+  // Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
+  // chang->Initialize(Vector(backGroundImageScale.X * 0.5f + 200, backGroundImageScale.Y * 0.5f + 130.0f), true, true);
 
   // CAMERA
   cameraTarget = SpawnActor<CameraTarget>();
-  cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f, iori, iori2);
+  cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f, player1_, player2_);
   CameraManager::Instance()->SetTarget(cameraTarget);
 
   // EFFECT
@@ -70,6 +77,8 @@ void KOFLevel::BeginPlay() {
 }
 
 void KOFLevel::Tick(unsigned long long dletaTick) {
+  SwapPosition();
+
   if (false == InputManager::Instance()->IsAnyKeyPress()) {
     return;
   }
@@ -81,4 +90,12 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
   if (InputManager::Instance()->IsDown(VK_F2)) {
     SetCollisionRender(!GetCollisionRender());
   }
+}
+
+void KOFLevel::SwapPosition() {
+  const Vector& player1Postion = player1_->GetPosition();
+  const Vector& player2Postion = player2_->GetPosition();
+
+  player1_->Flip(!(player1Postion.X < player2Postion.X));
+  player2_->Flip(player1Postion.X < player2Postion.X);
 }

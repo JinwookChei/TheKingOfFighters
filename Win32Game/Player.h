@@ -18,7 +18,7 @@ class Player
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool flip);
 
-  virtual void InputUpdate();
+  virtual void InputUpdate(unsigned long long curTick);
 
   virtual void CommendUpdate();
 
@@ -30,7 +30,7 @@ class Player
 
   virtual void SetCharacterScale(const Vector& scale);
 
-  virtual void Flip();
+  virtual void Flip(bool flip);
 
   // Command Skill
   virtual void CommandSkill_1() {};

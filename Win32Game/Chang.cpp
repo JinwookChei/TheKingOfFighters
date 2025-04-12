@@ -5,14 +5,18 @@
 #include "ProjectileComponent.h"
 #include "CollisionBox.h"
 
-Chang::Chang() {
+Chang::Chang()
+    : prevImageIndex(0) {
 }
 
 Chang::~Chang() {
 }
 
 void Chang::BeginPlay() {
-  Player::BeginPlay();
+}
+
+void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
+  Player::Initialize(position, useCameraPosition, flip);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(4);
@@ -31,12 +35,6 @@ void Chang::BeginPlay() {
 
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
   pRender_->ChangeAnimation(-CHAS_Idle);
-
-  // COLLISION
-
-  // COMMEND
-
-  // DBUG SETTING
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
@@ -49,7 +47,7 @@ void Chang::Tick(unsigned long long deltaTick) {
       break;
     }
 
-    InputUpdate();
+    InputUpdate(deltaTick);
 
     CommendUpdate();
 
@@ -59,7 +57,7 @@ void Chang::Tick(unsigned long long deltaTick) {
   CollisionBoundUpdate();
 }
 
-void Chang::InputUpdate() {
+void Chang::InputUpdate(unsigned long long deltaTick) {
   if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') && false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') && false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') && false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k')) {
     animState_ = CHAS_Idle;
     return;
@@ -99,6 +97,9 @@ void Chang::InputUpdate() {
 }
 
 void Chang::CommendUpdate() {
+}
+
+void Chang::SkillUpdate() {
 }
 
 void Chang::CollisionBoundUpdate() {
@@ -186,6 +187,6 @@ bool Chang::CollisionHitUpdate() {
   return false;
 }
 
-void Chang::Flip() {
-  isFlip_ *= -1;
+
+void Chang::CommandSkill_1() {
 }
