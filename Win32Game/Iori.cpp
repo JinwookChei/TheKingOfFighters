@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "MovementComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "CollisionBox.h"
@@ -13,7 +14,10 @@ Iori::~Iori() {
 }
 
 void Iori::BeginPlay() {
-  Player::BeginPlay();
+}
+
+void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
+  Player::Initialize(position, useCameraPosition, flip);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(3);
@@ -27,6 +31,7 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(IoriAnimState::IOAS_Seat, 3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(IoriAnimState::IOAS_Walk, 3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(IoriAnimState::IOAS_BackWalk, 3, 35, 43, 50, true);      // <- 뒤로가기
+  pRender_->CreateAnimation(IoriAnimState::IOAS_Jump, 3, 61, 69, 50, false);         // 점프
   pRender_->CreateAnimation(IoriAnimState::IOAS_Kick, 3, 108, 117, 50, false);       // 발차기
   pRender_->CreateAnimation(IoriAnimState::IOAS_SUperKick, 3, 136, 146, 50, false);  // 커맨드 테스트.
 
@@ -34,6 +39,7 @@ void Iori::BeginPlay() {
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Seat, -3, 15, 22, 50, true);          // 앉기.
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Walk, -3, 27, 34, 50, true);          // -> 걷기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_BackWalk, -3, 35, 43, 50, true);      // <- 뒤로가기
+  pRender_->CreateAnimation(-IoriAnimState::IOAS_Jump, -3, 61, 69, 50, false);         // 점프
   pRender_->CreateAnimation(-IoriAnimState::IOAS_Kick, -3, 108, 117, 50, false);       // 발차기
   pRender_->CreateAnimation(-IoriAnimState::IOAS_SUperKick, -3, 136, 146, 50, false);  // 커맨드 테스트.
 
@@ -50,6 +56,7 @@ void Iori::BeginPlay() {
     return;
   }
 }
+
 
 void Iori::Tick(unsigned long long deltaTick) {
   if (true == CollisionHitUpdate()) {
@@ -101,17 +108,19 @@ void Iori::InputUpdate() {
     return;
   }
 
-  Vector moveDir = {0.0f, 0.0f};
+  //Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
     animState_ = IOAS_BackWalk;
-    moveDir += Vector::Left * 15;
+    //moveDir += Vector::Left * 15;
   }
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
     animState_ = IOAS_Walk;
-    moveDir += Vector::Right * 15;
+    //moveDir += Vector::Right * 15;
   }
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
+    animState_ = IOAS_Jump;
+    pMovementComponent_->Jump();
   }
   if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
     animState_ = IOAS_Seat;
@@ -127,11 +136,11 @@ void Iori::InputUpdate() {
     isFlip_ = 1;
   }
 
-  if (moveDir == Vector(0.0f, 0.0f)) {
-  }
+  /*if (moveDir == Vector(0.0f, 0.0f)) {
+  }*/
 
-  Vector newPosition = moveDir + GetPosition();
-  SetPosition(newPosition);
+  //Vector newPosition = moveDir + GetPosition();
+  //SetPosition(newPosition);
 }
 
 void Iori::CommendUpdate() {

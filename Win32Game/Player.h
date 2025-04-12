@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+class MovementComponent;
 class CommandComponent;
 class ProjectileComponent;
 
@@ -14,6 +15,8 @@ class Player
   virtual void BeginPlay() override;
 
   void Tick(unsigned long long curTick) override;
+
+  virtual void Initialize(const Vector& position, bool useCameraPosition, bool flip);
 
   virtual void InputUpdate();
 
@@ -44,6 +47,8 @@ class Player
 
   ImageRenderer* pRender_;
 
+  MovementComponent* pMovementComponent_;
+
   CollisionComponent* pHitBoxTop_;
 
   CollisionComponent* pHitBoxBottom_;
@@ -63,6 +68,5 @@ class Player
   Vector characterScale_;
 
   int isFlip_;
-
   
 };

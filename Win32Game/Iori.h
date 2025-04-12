@@ -6,6 +6,7 @@ enum IoriAnimState {
   IOAS_Seat,
   IOAS_Walk,
   IOAS_BackWalk,
+  IOAS_Jump,
   IOAS_Kick,
   IOAS_SUperKick
 };
@@ -22,6 +23,8 @@ class Iori
   ~Iori();
 
   void BeginPlay() override;
+
+  void Initialize(const Vector& position, bool useCameraPosition, bool flip) override;
 
   void Tick(unsigned long long curTick) override;
 

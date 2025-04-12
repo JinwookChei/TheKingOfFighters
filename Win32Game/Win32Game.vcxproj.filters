@@ -141,8 +141,8 @@
     <ClCompile Include="CameraTarget.cpp">
       <Filter>Contents\KOF\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CameraLimitComponent.cpp">
-      <Filter>Contents\KOF\Camera</Filter>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,8 +236,8 @@
     <ClInclude Include="CameraTarget.h">
       <Filter>Contents\KOF\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CameraLimitComponent.h">
-      <Filter>Contents\KOF\Camera</Filter>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
