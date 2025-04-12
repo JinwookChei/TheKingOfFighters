@@ -61,9 +61,7 @@ void KOFLevel::BeginPlay() {
 
   // CAMERA
   cameraTarget = SpawnActor<CameraTarget>();
-  cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f);
-  cameraTarget->BindPlayer1(iori);
-  cameraTarget->BindPlayer2(iori2);
+  cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f, iori, iori2);
   CameraManager::Instance()->SetTarget(cameraTarget);
 
   // EFFECT

@@ -11,14 +11,9 @@ class CameraTarget final
 
   void BeginPlay() override;
 
-  bool Initialize(const Vector& backGroundScale, float cameraRange, float cameraHeight);
+  bool Initialize(const Vector& backGroundScale, float cameraRange, float cameraHeight, Player* player1, Player* player2);
 
   void Tick(unsigned long long curTick) override;
-    
-
-  void BindPlayer1(Player* player1);
-
-  void BindPlayer2(Player* player2);
 
  private:
   Vector backGroundScale_;
@@ -30,6 +25,10 @@ class CameraTarget final
   Player* pPlayer1_;
 
   Player* pPlayer2_;
+
+  Vector player1StartPosition_;
+
+  Vector player2StartPosition_;
 
   
 };

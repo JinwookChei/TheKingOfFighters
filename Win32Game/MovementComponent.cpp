@@ -4,8 +4,8 @@
 MovementComponent::MovementComponent()
     : startPosition_({0.0f, 0.0f}),
       jumpVelocity_(0.0f),
-      gravity_(215.0f),
-      jumpForce_(57.0f),
+      gravity_(260.0f),
+      jumpForce_(60.0f),
       isGrounded_(true) {
 }
 
