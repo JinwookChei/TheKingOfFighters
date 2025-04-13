@@ -10,7 +10,7 @@ BackGround::~BackGround() {
 
 void BackGround::BeginPlay() {
   pRender_ = CreateImageRender();
-  pRender_->CreateAnimation(1, 2, 0, 7, 500, true);
+  pRender_->CreateAnimation(1, 2, 0, 7, 500, true, 0);
   
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->ChangeAnimation(1);

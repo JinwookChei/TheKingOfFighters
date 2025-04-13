@@ -32,8 +32,8 @@ class MovementComponent final
   float backstepDuration = 200.0f;
   float backstepTimer = 0.0f;
 
-  float backstepDistance = 250.0f;  // 전체 이동 거리
-  float backstepHeight = 120.0f;    // 위로 뜨는 높이
+  float backstepDistance = 280.0f;
+  float backstepHeight = 100.0f;
 
   Vector backstepStartPos;
   Vector backstepEndPos;

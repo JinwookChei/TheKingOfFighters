@@ -19,6 +19,7 @@ struct AnimationInfo {
   unsigned long long animationTag_ = 0;
   unsigned long long curFrame_ = 0;
   long long curTime_ = 0;
+  unsigned long long loopStartFrame_ = 0;
   bool loop_ = false;
   bool isEnd_ = false;
   std::vector<unsigned long long> times_;
@@ -65,11 +66,30 @@ class ImageRenderer
 
   LINK_ITEM* GetRenderActorLink();
 
-  JO_API bool CreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop = true);
+  JO_API bool CreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex, 
+      unsigned int startIndex, 
+      unsigned int endIndex, 
+      unsigned long long interval, 
+      bool loop,
+      unsigned long long loopStartFrame);
 
-  JO_API bool CreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop = true);
+  JO_API bool CreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex, 
+      const std::vector<unsigned int>& indices,
+      unsigned long long interval,
+      bool loop,
+      unsigned long long loopStartFrame);
 
-  JO_API bool CreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, bool loop = true);
+  JO_API bool CreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex,
+      const std::vector<unsigned int>& indices,
+      const std::vector<unsigned long long> intervals, 
+      bool loop,
+      unsigned long long loopStartFrame);
 
   JO_API bool ChangeAnimation(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
 

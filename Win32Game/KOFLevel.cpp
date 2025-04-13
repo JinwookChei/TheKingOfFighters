@@ -32,7 +32,6 @@ void KOFLevel::BeginPlay() {
   mouse->ShowCursor(false);
   mouse->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
-
   // BACKGROUND
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", 2);
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
@@ -41,6 +40,9 @@ void KOFLevel::BeginPlay() {
   Vector backGroundImageScale = {imageScale.X * 4.5f, imageScale.Y * 4.5f};
   backGround->SetPosition({backGroundImageScale.X / 2, backGroundImageScale.Y / 2});
   backGround->SetUseCameraposition(true);
+
+  // CAMERA SPAWN
+  cameraTarget = SpawnActor<CameraTarget>();
 
   // IORI
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 3);
@@ -67,10 +69,10 @@ void KOFLevel::BeginPlay() {
   // Chang* chang = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   // chang->Initialize(Vector(backGroundImageScale.X * 0.5f + 200, backGroundImageScale.Y * 0.5f + 130.0f), true, true);
 
-  // CAMERA
-  cameraTarget = SpawnActor<CameraTarget>();
+  // CAMERA SETTING
   cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f, player1_, player2_);
   CameraManager::Instance()->SetTarget(cameraTarget);
+
 
   // EFFECT
   EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});

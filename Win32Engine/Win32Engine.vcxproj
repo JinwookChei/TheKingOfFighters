@@ -175,7 +175,6 @@
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
@@ -204,7 +203,6 @@
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="StateComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="CollisionComponent.h" />

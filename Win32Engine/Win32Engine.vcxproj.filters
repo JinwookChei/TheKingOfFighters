@@ -40,9 +40,6 @@
     <Filter Include="Actor\UIComponent">
       <UniqueIdentifier>{74ba06be-3083-47f5-abde-1525473281f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Component\State">
-      <UniqueIdentifier>{e9941d5d-5904-4316-bb27-ad3d83acfa7b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Effect">
       <UniqueIdentifier>{1084ff6e-7ba2-467a-9930-a115d1dbc7bf}</UniqueIdentifier>
     </Filter>
@@ -95,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="StateComponent.cpp">
-      <Filter>Actor\Component\State</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>Actor\Effect</Filter>
@@ -163,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="StateComponent.h">
-      <Filter>Actor\Component\State</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Actor\Effect</Filter>

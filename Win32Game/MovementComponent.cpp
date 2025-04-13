@@ -34,15 +34,11 @@ void MovementComponent::Tick(unsigned long long curTick) {
     if (t >= 1.0f) {
       t = 1.0f;
       onBackStep_ = false;
-      // 애니메이션 복귀: PlayAnimation("Idle");
     }
 
-    // x축은 선형 보간
     Vector newPostion;
     newPostion.X = Lerp(backstepStartPos.X, backstepEndPos.X, t);
 
-    // y축은 포물선 곡선으로 위로 떠오르기 -> 떨어지기
-    // y(t) = -4h(t-0.5)^2 + h  :  t ∈ [0, 1]
     float height = -4 * backstepHeight * (t - 0.5f) * (t - 0.5f) + backstepHeight;
     newPostion.Y = backstepStartPos.Y - height;
 

@@ -26,13 +26,13 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   }
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  pRender_->CreateAnimation(PAS_Idle, 4, 8, 13, 50, true);  // 아이들
-  pRender_->CreateAnimation(PAS_HitTop, 4, 38, 42, 50, false);
-  pRender_->CreateAnimation(PAS_HitBottom, 4, 43, 47, 50, false);
+  pRender_->CreateAnimation(PAS_Idle, 4, 8, 13, 50, true, 8);  // 아이들
+  pRender_->CreateAnimation(PAS_HitTop, 4, 38, 42, 50, false, 38);
+  pRender_->CreateAnimation(PAS_HitBottom, 4, 43, 47, 50, false, 43);
 
-  pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true);  // 아이들
-  pRender_->CreateAnimation(-PAS_HitTop, -4, 38, 42, 50, false);
-  pRender_->CreateAnimation(-PAS_HitBottom, -4, 43, 47, 50, false);
+  pRender_->CreateAnimation(-PAS_Idle, 4, 8, 13, 50, true, 8);  // 아이들
+  pRender_->CreateAnimation(-PAS_HitTop, 4, 38, 42, 50, false, 38);
+  pRender_->CreateAnimation(-PAS_HitBottom, 4, 43, 47, 50, false, 43);
 
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
   pRender_->ChangeAnimation(PAS_Idle*isFlip_);

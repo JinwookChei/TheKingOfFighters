@@ -111,9 +111,6 @@
     <ClCompile Include="KOFLevel.cpp">
       <Filter>Contents\KOF\Level</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>Contents\KOF\Level</Filter>
-    </ClCompile>
     <ClCompile Include="ToolActor.cpp">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClCompile>
@@ -143,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +206,6 @@
     <ClInclude Include="KOFLevel.h">
       <Filter>Contents\KOF\Level</Filter>
     </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <Filter>Contents\KOF\Level</Filter>
-    </ClInclude>
     <ClInclude Include="ToolActor.h">
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClInclude>
@@ -238,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
       <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
