@@ -32,6 +32,7 @@ void KOFLevel::BeginPlay() {
   mouse->ShowCursor(false);
   mouse->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
+
   // BACKGROUND
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", 2);
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
@@ -74,6 +75,14 @@ void KOFLevel::BeginPlay() {
   // EFFECT
   EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
   EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});
+
+  // SOUND
+  Path soundPath;
+  soundPath.MoveParent();
+  soundPath.Move("ContentsResource\\Sound\\");
+  soundPath.Move("Kyoku-Gen.mp3");
+  SoundManager::Instance()->Load(soundPath, 0);
+  channel_ = SoundManager::Instance()->SoundPlay(0);
 }
 
 void KOFLevel::Tick(unsigned long long dletaTick) {

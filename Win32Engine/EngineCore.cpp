@@ -8,6 +8,7 @@ EngineCore* GEngine = nullptr;
 CameraManager* GCamera = nullptr;
 EffectManager* GEffectManager = nullptr;
 ImgManager* GImgManager = nullptr;
+SoundManager* GSound = nullptr;
 
 EngineCore::EngineCore()
     : application_(nullptr),
@@ -78,6 +79,20 @@ bool EngineCore::Initialize(IApplication* application) {
     return false;
   }
 
+  GSound = new SoundManager;
+  if (nullptr == GSound) {
+#ifdef _DEBUG
+    __debugbreak();
+#endif  // _DEBUG
+    return false;
+  }
+  if (false == GSound->Initialize()) {
+#ifdef _DEBUG
+    __debugbreak();
+#endif  // _DEBUG
+    return false;
+  }
+
   return true;
 }
 
@@ -99,6 +114,8 @@ void EngineCore::EngineLoop() {
     }
 
     application_->UpdateMousePosition();
+
+    GSound->Tick();
 
     GameLoop(curTick);
 
@@ -197,7 +214,7 @@ void EngineCore::Cleanup() {
     delete GInputManager;
     GInputManager = nullptr;
   }
-  
+
   if (nullptr != GEffectManager) {
     delete GEffectManager;
     GEffectManager = nullptr;
@@ -206,6 +223,11 @@ void EngineCore::Cleanup() {
   if (nullptr != GCamera) {
     delete GCamera;
     GCamera = nullptr;
+  }
+
+  if (nullptr != GSound) {
+    delete GSound;
+    GSound = nullptr;
   }
 
   if (nullptr != GGraphicDevice) {

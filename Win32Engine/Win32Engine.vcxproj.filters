@@ -46,6 +46,9 @@
     <Filter Include="Actor\Effect">
       <UniqueIdentifier>{1084ff6e-7ba2-467a-9930-a115d1dbc7bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{6be10121-e188-4d00-bab1-28d0eba830c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -103,6 +106,12 @@
       <Filter>Actor\Effect</Filter>
     </ClCompile>
     <ClCompile Include="EffectManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -165,6 +174,12 @@
       <Filter>Actor\Effect</Filter>
     </ClInclude>
     <ClInclude Include="EffectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>

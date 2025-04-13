@@ -36,6 +36,7 @@
 #include <Win32Engine/CameraManager.h>
 #include <Win32Engine/StateComponent.h>
 #include <Win32Engine/EffectManager.h>
+#include <Win32Engine/SoundManager.h>
 
 
 #include "Types.h"

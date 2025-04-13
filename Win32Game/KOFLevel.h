@@ -9,7 +9,7 @@ class KOFLevel final
   KOFLevel();
 
   ~KOFLevel();
-  
+
   void BeginPlay() override;
 
   void Tick(unsigned long long dletaTick) override;
@@ -17,10 +17,11 @@ class KOFLevel final
   void SwapPosition();
 
  private:
+  SoundChannel channel_;
+
   CameraTarget* cameraTarget;
 
   Player* player1_;
 
   Player* player2_;
-
 };

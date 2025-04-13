@@ -15,6 +15,8 @@
 #include <vector>
 #include <list>
 
+#include <Fmod/fmod.hpp>
+
 #include <Math/Math.h>
 #include <Math/Path.h>
 #include <Math/LinkedList.h>
@@ -27,6 +29,7 @@
 #include "InputManager.h"
 #include "CameraManager.h"
 #include "EffectManager.h"
+#include "SoundManager.h"
 #include "EngineCore.h"
 
 
@@ -38,3 +41,6 @@ extern EffectManager* GEffectManager;
 extern IGraphicDevice* GGraphicDevice;
 extern EngineCore* GEngine;
 extern CameraManager* GCamera;
+
+extern SoundManager* GSound;
+extern FMOD::System* GSoundSystem;
