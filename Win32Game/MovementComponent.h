@@ -22,18 +22,21 @@ class MovementComponent final
   Vector startPosition_;
 
   // MOVE
-  const float moveVelocity_ = 500.0f;
+  const float moveVelocity_ = 0.5f;
 
-  const float runVelocity_ = 1000.0f;
+  const float runVelocity_ = 1.0f;
 
   // BACK STEP
   bool onBackStep_;
 
-  const float backStepVelocity_ = 1000.0f;
+  float backstepDuration = 200.0f;
+  float backstepTimer = 0.0f;
 
-  const float backStepTotalDistance_ = 300.0f;
+  float backstepDistance = 250.0f;  // 전체 이동 거리
+  float backstepHeight = 120.0f;    // 위로 뜨는 높이
 
-  float backStepAccumulation_;
+  Vector backstepStartPos;
+  Vector backstepEndPos;
 
   // JUMP
   bool isGrounded_;
@@ -42,8 +45,7 @@ class MovementComponent final
 
   float jumpVelocity_;
 
-  const float gravity_ = 260.0f;
+  const float gravity_ = 0.26f;
 
   const float jumpForce_ = 60.0f;
-  
 };
