@@ -170,6 +170,9 @@
     <ClCompile Include="CrossHairControlButton.cpp" />
     <ClCompile Include="DeleteCollisionButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Health.cpp" />
+    <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="ImageController.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
@@ -179,6 +182,7 @@
     <ClCompile Include="ImageMoveButton.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerDummy.cpp" />
+    <ClCompile Include="Portrait.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ReadButton.cpp" />
@@ -206,6 +210,10 @@
     <ClInclude Include="CrossHairControlButton.h" />
     <ClInclude Include="DeleteCollisionButton.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Health.h" />
+    <ClInclude Include="HealthBar.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="Portrait.h" />
     <ClInclude Include="ImageController.h" />
     <ClInclude Include="Iori.h" />
     <ClInclude Include="KOFLevel.h" />

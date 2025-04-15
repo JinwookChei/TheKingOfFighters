@@ -177,8 +177,10 @@ void __stdcall Win32Image::CalculateTransformByAuto(const CalculateTransformByAu
   }
 
   ImageInfo* pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = false;
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
   --imageCount_;
+
 
   Cleanup();
 

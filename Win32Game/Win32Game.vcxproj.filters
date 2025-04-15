@@ -52,6 +52,9 @@
     <Filter Include="Contents\KOF\Camera">
       <UniqueIdentifier>{b3ba4512-de49-4b88-8701-3e93b60bcbee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\UI">
+      <UniqueIdentifier>{071543ac-8ef8-4772-beb4-e297a3fc15fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -143,6 +146,18 @@
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>Contents\KOF\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Contents\KOF\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Portrait.cpp">
+      <Filter>Contents\KOF\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Health.cpp">
+      <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +253,18 @@
     </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>Contents\KOF\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBar.h">
+      <Filter>Contents\KOF\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Portrait.h">
+      <Filter>Contents\KOF\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
+      <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
