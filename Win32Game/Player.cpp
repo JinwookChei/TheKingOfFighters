@@ -2,12 +2,14 @@
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
+#include "HealthComponent.h"
 #include "CollisionBox.h"
 #include "Player.h"
 
 Player::Player()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
+      pHealthComponent_(nullptr),
       pHitBoxTop_(nullptr),
       pHitBoxBottom_(nullptr),
       pAttackBox_(nullptr),
@@ -43,6 +45,10 @@ void Player::Initialize(const Vector& position, bool useCameraPosition, bool fli
   pMovementComponent_ = CreateComponent<MovementComponent>();
   pMovementComponent_->Initialize(position);
 
+  // HEALTH
+  pHealthComponent_ = CreateComponent<HealthComponent>();
+  pHealthComponent_->Initialize(100.0f);
+
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
   pHitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
@@ -53,7 +59,6 @@ void Player::Initialize(const Vector& position, bool useCameraPosition, bool fli
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
   pCommandComponent_->SetTimeOutThreshold(100);
-
 
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();
@@ -72,6 +77,10 @@ void Player::Initialize(const Vector& position, bool useCameraPosition, bool fli
 }
 
 void Player::InputUpdate(unsigned long long deltaTick) {
+}
+
+HealthComponent* Player::GetHealthComponent() const {
+  return pHealthComponent_;
 }
 
 void Player::CommendUpdate() {

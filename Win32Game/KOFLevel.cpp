@@ -98,8 +98,7 @@ void KOFLevel::BeginPlay() {
   healthBarPlayer1->SetPosition({490.0f, 102.0f});
 
   Health* healthPlayer1 = HUD->CreateUIComponent<Health>();
-  healthPlayer1->Initialize(player1_, 6, 0, Color8Bit(0, 0, 0, 0));
-  healthPlayer1->SetPosition({490.0f, 102.0f});
+  healthPlayer1->Initialize(player1_, 6, 0, Color8Bit(0, 0, 0, 0), {490.0f, 102.0f}, false);
 
   // PLAYER_2 UI
   Portrait* portraitPlayer2 = HUD->CreateUIComponent<Portrait>();
@@ -111,8 +110,7 @@ void KOFLevel::BeginPlay() {
   healthBarPlayer2->SetPosition({1435.0f, 102.0f});
 
   Health* healthPlayer2 = HUD->CreateUIComponent<Health>();
-  healthPlayer2->Initialize(player2_, -6, 0, Color8Bit(0, 0, 0, 0));
-  healthPlayer2->SetPosition({1435.0f, 102.0f});
+  healthPlayer2->Initialize(player2_, -6, 0, Color8Bit(0, 0, 0, 0), {1435.0f, 102.0f}, true);
 
   // CAMERA SETTING
   cameraTarget->Initialize(backGroundImageScale, backbufferScale.X, 600.0f, player1_, player2_);

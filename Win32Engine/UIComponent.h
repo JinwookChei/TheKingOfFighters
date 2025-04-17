@@ -25,6 +25,8 @@ class UIComponent {
 
   JO_API void AddPosition(const Vector& addMove);
 
+  JO_API Vector GetPosition() const;
+
   JO_API void SetScale(const Vector& scale);
 
   JO_API Vector GetScale() const;

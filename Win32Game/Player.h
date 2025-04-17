@@ -4,6 +4,8 @@
 class MovementComponent;
 class CommandComponent;
 class ProjectileComponent;
+class HealthComponent;
+
 
 enum PlayerAnimState {
   PAS_Start = 0,
@@ -38,6 +40,8 @@ class Player
 
   virtual void InputUpdate(unsigned long long curTick);
 
+  HealthComponent* GetHealthComponent() const;
+
   virtual void CommendUpdate();
 
   virtual void CollisionBoundUpdate();
@@ -65,6 +69,8 @@ class Player
   ImageRenderer* pRender_;
 
   MovementComponent* pMovementComponent_;
+
+  HealthComponent* pHealthComponent_;
 
   CollisionComponent* pHitBoxTop_;
 

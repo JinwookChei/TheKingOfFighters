@@ -13,6 +13,10 @@ void HealthComponent::BeginPlay() {
 }
 
 bool HealthComponent::Initialize(float maxHealth) {
+  if (maxHealth < 0.0f) {
+    return false;
+  }
+
   maxHealth_ = maxHealth;
   health_ = maxHealth_;
   return true;

@@ -10,7 +10,7 @@ class Health final
 
   void BeginPlay() override;
 
-  bool Initialize(Player* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent);
+  bool Initialize(Player* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent, const Vector& position, bool isFlip);
 
   void Tick(unsigned long long curTick) override;
 
@@ -22,7 +22,15 @@ class Health final
 
   IImage* pImage_;
 
+  bool isFlip_;
+
   unsigned int imageIndex_;
 
   Color8Bit colorTransparent_;
+
+  Transform originComponentTransform_;
+
+  Transform originImageTransform_;
+
+  float healthPercentage_;
 };

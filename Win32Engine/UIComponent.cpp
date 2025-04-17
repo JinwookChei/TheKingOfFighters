@@ -44,6 +44,10 @@ void UIComponent::AddPosition(const Vector& addMove) {
   transform_.AddPostion(addMove);
 }
 
+Vector UIComponent::GetPosition() const {
+  return transform_.GetPosition();
+}
+
 void UIComponent::SetScale(const Vector& scale) {
   transform_.SetScale(scale);
 }
