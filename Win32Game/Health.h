@@ -10,7 +10,7 @@ class Health final
 
   void BeginPlay() override;
 
-  bool Initialize(Player* bindPlayer);
+  bool Initialize(Player* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent);
 
   void Tick(unsigned long long curTick) override;
 
@@ -18,4 +18,11 @@ class Health final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
+  Player* pPlayer_;
+
+  IImage* pImage_;
+
+  unsigned int imageIndex_;
+
+  Color8Bit colorTransparent_;
 };

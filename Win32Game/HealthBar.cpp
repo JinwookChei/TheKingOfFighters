@@ -2,23 +2,30 @@
 #include "HealthBar.h"
 #include "Player.h"
 
-HealthBar::HealthBar(){
+HealthBar::HealthBar()
+    : pImage_(nullptr),
+      imageIndex_(0),
+      colorTransparent_({0, 0, 0, 0}) {
 }
 
 HealthBar::~HealthBar() {
 }
 
 void HealthBar::BeginPlay() {
-  //pImageRenderer_ = CreateImageRender();
-  //IImage* pImage = ImgManager::GetIntance()->GetImg(5);
-
-  //pImageRenderer_->SetImage(pImage);
-  //pImageRenderer_->SetTransparentColor(Color8Bit{0, 0, 0, 0});
-  //pImageRenderer_->SetLocalScale({1.0f, 1.0f});
-  //pImageRenderer_->SetImageRenderType(ImageRenderType::LeftTop);
+  EnableCollision(false);
 }
 
-bool HealthBar::Initialize(Player* bindPlayer) {
+bool HealthBar::Initialize(unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent) {
+  pImage_ = ImgManager::GetIntance()->GetImg(imageNum);
+  if (nullptr == pImage_) {
+    return false;
+  }
+
+  SetScale(pImage_->GetScale(imageIndex));
+
+  imageIndex_ = imageIndex;
+  colorTransparent_ = colorTransparent;
+
   return true;
 }
 
@@ -26,7 +33,7 @@ void HealthBar::Tick(unsigned long long curTick) {
 }
 
 void HealthBar::Render(IRenderTexture* renderTexture) {
-  if (nullptr == renderTexture) {
+  if (nullptr == renderTexture || nullptr == pImage_) {
     return;
   }
 
@@ -35,5 +42,7 @@ void HealthBar::Render(IRenderTexture* renderTexture) {
     return;
   }
 
-  //renderTexture->Text(font_, text_, fontSize_, {0.0f, 0.0f} /*localPosition_*/, textColor_);
+  const Vector& imageScale = pImage_->GetScale(imageIndex_);
+
+  renderTexture->Transparent(pImage_, imageIndex_, imageScale, colorTransparent_);
 }

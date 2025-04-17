@@ -10,7 +10,7 @@ class HealthBar final
 
   void BeginPlay() override;
 
-  bool Initialize(Player* bindPlayer);
+  bool Initialize(unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent);
 
   void Tick(unsigned long long curTick) override;
 
@@ -18,5 +18,9 @@ class HealthBar final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  
+  IImage* pImage_;
+
+  unsigned int imageIndex_;
+
+  Color8Bit colorTransparent_;
 };

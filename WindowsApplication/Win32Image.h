@@ -87,6 +87,8 @@ class Win32Image final
 
   void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) override;
 
+  void __stdcall ReverseCalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) override;
+
   void __stdcall CalculateTransformFromCSV(const std::string& filePath) override;
 
   void __stdcall ReverseCalculateTransformFromCSV(const std::string& filePath) override;

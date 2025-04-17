@@ -3,6 +3,7 @@
 
 Portrait::Portrait()
     : pImage_(nullptr),
+      localeScale_({0.0f, 0.0f}),
       imageIndex_(0),
       colorTransparent_({0, 0, 0, 0}) {
 }
@@ -12,6 +13,7 @@ Portrait::~Portrait() {
 
 void Portrait::BeginPlay() {
   EnableCollision(false);
+
 }
 
 bool Portrait::Initialize(unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent) {
@@ -24,6 +26,7 @@ bool Portrait::Initialize(unsigned long long imageNum, unsigned int imageIndex, 
 
   imageIndex_ = imageIndex;
   colorTransparent_ = colorTransparent;
+  localeScale_ = Vector(4.5f, 4.5f);
 
   return true;
 }
@@ -41,7 +44,7 @@ void Portrait::Render(IRenderTexture* renderTexture) {
     return;
   }
 
-  const Vector& imageScale = pImage_->GetScale(imageIndex_);
+  const Vector& imageScale = pImage_->GetScale(imageIndex_) * localeScale_;
 
   renderTexture->Transparent(pImage_, imageIndex_, imageScale, colorTransparent_);
 }

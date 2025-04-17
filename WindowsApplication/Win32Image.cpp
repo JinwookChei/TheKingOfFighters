@@ -181,7 +181,6 @@ void __stdcall Win32Image::CalculateTransformByAuto(const CalculateTransformByAu
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
   --imageCount_;
 
-
   Cleanup();
 
   LINK_ITEM* lineInfoHead = nullptr;
@@ -414,6 +413,98 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
   pInfo->isOwner_ = true;
 }
 
+void __stdcall Win32Image::ReverseCalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) {
+  if (imageLoadType_ != ImageLoadType::One) {
+    return;
+  }
+
+  Vector partitionLineRowStart = {0.0f, 0.0f};
+  Vector partitionLineGridStart;
+
+  std::vector<Vector> gridCorner;
+  std::vector<std::vector<float>> boundingBoxDatas;
+
+  while (1) {
+    if (false == SearchPartitionLineRow(partitionLineRowStart, &partitionLineGridStart, lineColor)) {
+      break;
+    }
+    SearchPartitionGrid(partitionLineGridStart, &partitionLineRowStart, &gridCorner, emptyColor, lineColor);
+  }
+
+  for (int i = 0; i < gridCorner.size(); i += 2) {
+    DetectBoundBox(gridCorner[i], gridCorner[i + 1], &boundingBoxDatas, emptyColor, lineColor);
+  }
+
+  // REVERSE IMAGE
+  for (int i = 0; i < boundingBoxDatas.size(); ++i) {
+    float positionX = boundingBoxDatas[i][0];
+    float positionY = boundingBoxDatas[i][1];
+    float scaleX = boundingBoxDatas[i][2] - boundingBoxDatas[i][0];
+    float scaleY = boundingBoxDatas[i][3] - boundingBoxDatas[i][1];
+
+    size_t pixelScale = scaleX * scaleY;
+    Color8Bit* horizontalFlipPixels = (Color8Bit*)malloc(sizeof(Color8Bit) * pixelScale);
+
+    for (float col = positionY; col < positionY + scaleY; ++col) {
+      for (float row = positionX + scaleX; row > positionX; --row) {
+        Color8Bit tempPixel;
+        Vector pixelPosition{row, col};
+
+        if (false == GetPixel(pixelPosition, &tempPixel)) {
+          __debugbreak();
+          return;
+        }
+        int flipPixelIndex = (col - positionY) * scaleX + (positionX + scaleX - row);
+        horizontalFlipPixels[flipPixelIndex] = tempPixel;
+      }
+    }
+
+    for (float col = positionY; col < positionY + scaleY; ++col) {
+      for (float row = positionX; row < positionX + scaleX; ++row) {
+        int flipPixelIndex = (col - positionY) * scaleX + (row - positionX);
+        Vector pixelPosition{row, col};
+        if (false == SetPixel(pixelPosition, horizontalFlipPixels[flipPixelIndex])) {
+          __debugbreak();
+          return;
+        }
+      }
+    }
+
+    free(horizontalFlipPixels);
+  }
+  // REVERSE IMAGE END
+
+  ImageInfo* pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = false;
+
+  UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
+
+  Cleanup();
+
+  HDC imageDC = pInfo->imageDC_;
+
+  for (unsigned int height = 0; height < boundingBoxDatas.size(); ++height) {
+    ImageInfo* pNew = new ImageInfo;
+    pNew->imageType_ = pInfo->imageType_;
+    pNew->hBitMap_ = pInfo->hBitMap_;
+    pNew->imageDC_ = pInfo->imageDC_;
+    pNew->bitMapInfo_ = pInfo->bitMapInfo_;
+
+    Vector calcPosition = {boundingBoxDatas[height][0], boundingBoxDatas[height][1]};
+    Vector calcScale = {boundingBoxDatas[height][2] - boundingBoxDatas[height][0], boundingBoxDatas[height][3] - boundingBoxDatas[height][1]};
+    pNew->transform_.SetPosition(calcPosition);
+    pNew->transform_.SetScale(calcScale);
+
+    LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
+    pNew->index_ = (unsigned int)imageCount_++;
+  }
+
+  delete pInfo;
+
+  pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = true;
+}
+
 void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
@@ -543,13 +634,13 @@ void __stdcall Win32Image::ReverseCalculateTransformFromCSV(const std::string& f
     float scaleX = csvInfo[i][2];
     float scaleY = csvInfo[i][3];
 
-    unsigned int pixelScale = scaleX * scaleY;
+    size_t pixelScale = scaleX * scaleY;
     Color8Bit* horizontalFlipPixels = (Color8Bit*)malloc(sizeof(Color8Bit) * pixelScale);
 
-    for (int col = positionY; col < positionY + scaleY; ++col) {
-      for (int row = positionX + scaleX; row > positionX; --row) {
+    for (float col = positionY; col < positionY + scaleY; ++col) {
+      for (float row = positionX + scaleX; row > positionX; --row) {
         Color8Bit tempPixel;
-        Vector pixelPosition{(float)row, (float)col};
+        Vector pixelPosition{row, col};
 
         if (false == GetPixel(pixelPosition, &tempPixel)) {
           __debugbreak();
@@ -560,10 +651,10 @@ void __stdcall Win32Image::ReverseCalculateTransformFromCSV(const std::string& f
       }
     }
 
-    for (int col = positionY; col < positionY + scaleY; ++col) {
-      for (int row = positionX; row < positionX + scaleX; ++row) {
+    for (float col = positionY; col < positionY + scaleY; ++col) {
+      for (float row = positionX; row < positionX + scaleX; ++row) {
         int flipPixelIndex = (col - positionY) * scaleX + (row - positionX);
-        Vector pixelPosition{(float)row, (float)col};
+        Vector pixelPosition{row, col};
         if (false == SetPixel(pixelPosition, horizontalFlipPixels[flipPixelIndex])) {
           __debugbreak();
           return;
@@ -575,14 +666,12 @@ void __stdcall Win32Image::ReverseCalculateTransformFromCSV(const std::string& f
   }
   // REVERSE IMAGE END
 
-
   // CALCULATE IMAGE INFO
   pInfo->isOwner_ = false;
 
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
 
   Cleanup();
-
 
   for (unsigned int height = 0; height < csvInfo.size(); ++height) {
     ImageInfo* pNew = new ImageInfo;

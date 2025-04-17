@@ -3,37 +3,44 @@
 #include "Player.h"
 
 Health::Health()
-{
+    : pPlayer_(nullptr),
+      pImage_(nullptr),
+      imageIndex_(0),
+      colorTransparent_({0, 0, 0, 0}) {
 }
 
 Health::~Health() {
 }
 
 void Health::BeginPlay() {
-  //pImageRenderer_ = CreateImageRender();
-  //IImage* pImage = ImgManager::GetIntance()->GetImg(6);
-
-  //pImageRenderer_->SetImage(pImage);
-  //pImageRenderer_->SetTransparentColor(Color8Bit{0, 0, 0, 0});
-  //pImageRenderer_->SetLocalScale({1.0f, 1.0f});
-  //pImageRenderer_->SetImageRenderType(ImageRenderType::LeftTop);
+  EnableCollision(false);
 }
 
-bool Health::Initialize(Player* bindPlayer) {
-  //if (nullptr == bindPlayer) {
-  //  return false;
-  //}
+bool Health::Initialize(Player* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent) {
+  if (nullptr == bindPlayer) {
+    return false;
+  }
 
-  //pBindPalyer_ = bindPlayer;
+  pImage_ = ImgManager::GetIntance()->GetImg(imageNum);
+  if (nullptr == pImage_) {
+    return false;
+  }
+
+  SetScale(pImage_->GetScale(imageIndex));
+
+  pPlayer_ = bindPlayer;
+  imageIndex_ = imageIndex;
+  colorTransparent_ = colorTransparent;
 
   return true;
 }
 
 void Health::Tick(unsigned long long curTick) {
+
 }
 
 void Health::Render(IRenderTexture* renderTexture) {
-  if (nullptr == renderTexture) {
+  if (nullptr == renderTexture || nullptr == pPlayer_|| nullptr == pImage_) {
     return;
   }
 
@@ -42,5 +49,7 @@ void Health::Render(IRenderTexture* renderTexture) {
     return;
   }
 
-  //renderTexture->Text(font_, text_, fontSize_, {0.0f, 0.0f} /*localPosition_*/, textColor_);
+  const Vector& imageScale = pImage_->GetScale(imageIndex_);
+
+  renderTexture->Transparent(pImage_, imageIndex_, imageScale, colorTransparent_);
 }

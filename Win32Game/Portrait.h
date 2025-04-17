@@ -18,6 +18,8 @@ class Portrait final
  private:
   IImage* pImage_;
 
+  Vector localeScale_;
+
   unsigned long long imageIndex_;
 
   Color8Bit colorTransparent_;

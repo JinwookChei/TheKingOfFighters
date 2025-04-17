@@ -52,6 +52,8 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) = 0;
 
+  virtual void __stdcall ReverseCalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) = 0;
+
   virtual void __stdcall CalculateTransformFromCSV(const std::string& filePath) = 0;
 
   virtual void __stdcall ReverseCalculateTransformFromCSV(const std::string& filePath) = 0;
