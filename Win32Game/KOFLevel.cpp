@@ -146,6 +146,7 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
 }
 
 void KOFLevel::SwapPosition() {
+
   const Vector& player1Postion = player1_->GetPosition();
   const Vector& player2Postion = player2_->GetPosition();
 

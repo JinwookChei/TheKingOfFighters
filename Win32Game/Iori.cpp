@@ -37,14 +37,14 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(PAS_LightKick, 3, 136, 146, 50, false, 136);  // 커맨드 테스트.
 
 
-  pRender_->CreateAnimation(-PAS_Idle, 3, 7, 15, 50, true, 7);             // 아이들
-  pRender_->CreateAnimation(-PAS_Seat, 3, 16, 23, 50, true, 18);           // 앉기.
-  pRender_->CreateAnimation(-PAS_FrontWalk, 3, 27, 34, 50, true, 27);      // -> 걷기
-  pRender_->CreateAnimation(-PAS_BackWalk, 3, 35, 44, 50, true, 35);       // <- 뒤로가기
-  pRender_->CreateAnimation(-PAS_BackStep, 3, 45, 48, 50, false, 45);      // <- <- 백스탭
-  pRender_->CreateAnimation(-PAS_Jump, 3, 61, 69, 50, false, 61);          // 점프
-  pRender_->CreateAnimation(-PAS_HeavyKick, 3, 108, 117, 50, false, 108);  // 발차기
-  pRender_->CreateAnimation(-PAS_LightKick, 3, 136, 146, 50, false, 136);  // 커맨드 테스트.
+  pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);             // 아이들
+  pRender_->CreateAnimation(-PAS_Seat, -3, 16, 23, 50, true, 18);           // 앉기.
+  pRender_->CreateAnimation(-PAS_FrontWalk, -3, 27, 34, 50, true, 27);      // -> 걷기
+  pRender_->CreateAnimation(-PAS_BackWalk, -3, 35, 44, 50, true, 35);       // <- 뒤로가기
+  pRender_->CreateAnimation(-PAS_BackStep, -3, 45, 48, 50, false, 45);      // <- <- 백스탭
+  pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false, 61);          // 점프
+  pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false, 108);  // 발차기
+  pRender_->CreateAnimation(-PAS_LightKick, -3, 136, 146, 50, false, 136);  // 커맨드 테스트.
 
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
   pRender_->ChangeAnimation(PAS_Idle * isFlip_);
@@ -66,7 +66,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 
 void Iori::Tick(unsigned long long deltaTick) {
   if (true == CollisionHitUpdate()) {
-    pRender_->ChangeAnimation(animState_);
+    pRender_->ChangeAnimation(animState_ * isFlip_);
   }
 
   do {
@@ -78,7 +78,7 @@ void Iori::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(isFlip_ * animState_);
+    pRender_->ChangeAnimation(animState_ * isFlip_);
   } while (false);
 
   CollisionBoundUpdate();

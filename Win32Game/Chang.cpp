@@ -30,15 +30,16 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(PAS_HitTop, 4, 38, 42, 50, false, 38);
   pRender_->CreateAnimation(PAS_HitBottom, 4, 43, 47, 50, false, 43);
 
-  pRender_->CreateAnimation(-PAS_Idle, 4, 8, 13, 50, true, 8);  // 아이들
-  pRender_->CreateAnimation(-PAS_HitTop, 4, 38, 42, 50, false, 38);
-  pRender_->CreateAnimation(-PAS_HitBottom, 4, 43, 47, 50, false, 43);
+  pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true, 8);  // 아이들
+  pRender_->CreateAnimation(-PAS_HitTop, -4, 38, 42, 50, false, 38);
+  pRender_->CreateAnimation(-PAS_HitBottom, -4, 43, 47, 50, false, 43);
 
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
   pRender_->ChangeAnimation(PAS_Idle*isFlip_);
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
+
   if (true == CollisionHitUpdate()) {
     pRender_->ChangeAnimation(animState_ * isFlip_);
   }
@@ -53,6 +54,7 @@ void Chang::Tick(unsigned long long deltaTick) {
     CommendUpdate();
 
     pRender_->ChangeAnimation(animState_ * isFlip_);
+    
   } while (false);
 
   CollisionBoundUpdate();

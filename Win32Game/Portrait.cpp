@@ -13,7 +13,6 @@ Portrait::~Portrait() {
 
 void Portrait::BeginPlay() {
   EnableCollision(false);
-
 }
 
 bool Portrait::Initialize(unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent) {

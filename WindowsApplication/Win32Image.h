@@ -93,6 +93,8 @@ class Win32Image final
 
   void __stdcall ReverseCalculateTransformFromCSV(const std::string& filePath) override;
 
+  void __stdcall ReverseCalculateTransformFromCSV_Async(const std::string& filePath) override;
+
   void __stdcall CalculateTransform(unsigned int x, unsigned int y) override;
 
   void __stdcall RefreshImage(unsigned int count) override;

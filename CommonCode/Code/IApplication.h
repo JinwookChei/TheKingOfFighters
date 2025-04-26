@@ -58,6 +58,8 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall ReverseCalculateTransformFromCSV(const std::string& filePath) = 0;
 
+  virtual void __stdcall ReverseCalculateTransformFromCSV_Async(const std::string& filePath) = 0;
+
   virtual void __stdcall CalculateTransform(unsigned int x, unsigned int y) = 0;
 
   virtual void __stdcall RefreshImage(unsigned int count) = 0;
