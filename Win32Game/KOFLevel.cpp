@@ -28,12 +28,12 @@ void KOFLevel::BeginPlay() {
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 3);
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-  IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -3);
-  reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
+  IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box_Reverse.png", -3);
+  reverseIoriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
+  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box_Reverse.png", 4);
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
   IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
-  reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  reverseChangImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
   IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", 5);
   healthBarImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* reverseHealthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", -5);

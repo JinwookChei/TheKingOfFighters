@@ -33,9 +33,15 @@ ToolLevel::ToolLevel() {
   // VIEWPORT
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
   ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 2);
+  reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
+  reverseIoriImage->Save("..\\ContentsResource\\IoriYagami_Box_Reverse.png", 2);
 
-  /*IFileImage* ChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
-  ChangImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);*/
+  //IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
+  //changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
+  //IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 2);
+  //reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  //reverseChangImage->Save("..\\ContentsResource\\Chang Koehan_Box_Reverse.png", 2);
 
   //!!!!!!!!!!!! ¡÷¿«!!!!!!!!!
   const std::string& filePath("..\\ContentsResource\\Iori.csv");
