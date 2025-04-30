@@ -50,11 +50,11 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->ChangeAnimation(PAS_Idle * isFlip_);
 
   // COMMAND
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, &Player::CommandSkill_1)) {
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
     return;
   }
 
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, &Player::CommandSkill_2)) {
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, std::bind(&Iori::CommandSkill_2, this))) {
     return;
   }
 
@@ -69,41 +69,18 @@ void Iori::Tick(unsigned long long deltaTick) {
     pRender_->ChangeAnimation(animState_ * isFlip_);
   }
 
-  do {
-    if (false == pRender_->IsPlayingLoopAnimation()) {
-      break;
-    }
-
+  if (true == pRender_->IsPlayingLoopAnimation())
+  {
     InputUpdate(deltaTick);
 
     CommendUpdate();
 
     pRender_->ChangeAnimation(animState_ * isFlip_);
-  } while (false);
+  }
 
   CollisionBoundUpdate();
 
-  CollisionComponent* pTargetCollision_Top = nullptr;
-  if (true == pAttackBox_->Collision(
-                  {
-                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop,
-                      .targetCollisionType = CollisionType::CollisionType_Rect,
-                      .myCollisionType = CollisionType::CollisionType_Rect,
-                  },
-                  &pTargetCollision_Top)) {
-    pTargetCollision_Top->OnHit();
-  }
-
-  CollisionComponent* pTargetCollision_Bottom = nullptr;
-  if (true == pAttackBox_->Collision(
-                  {
-                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom,
-                      .targetCollisionType = CollisionType::CollisionType_Rect,
-                      .myCollisionType = CollisionType::CollisionType_Rect,
-                  },
-                  &pTargetCollision_Bottom)) {
-    pTargetCollision_Bottom->OnHit();
-  }
+  CollisionAttackUpdate();
 
   SkillUpdate();
 }

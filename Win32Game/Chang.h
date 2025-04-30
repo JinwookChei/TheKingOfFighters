@@ -34,10 +34,6 @@ class Chang
   void CollisionBoundUpdate() override;
 
   bool CollisionHitUpdate() override;
-
-  // Command Skills
-  void CommandSkill_1() override;
-
  private:
   unsigned int prevImageIndex;
 };

@@ -93,6 +93,34 @@ bool Player::CollisionHitUpdate() {
   return false;
 }
 
+bool Player::CollisionAttackUpdate() {
+  CollisionComponent* pTargetCollision_Top = nullptr;
+  if (true == pAttackBox_->Collision(
+                  {
+                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop,
+                      .targetCollisionType = CollisionType::CollisionType_Rect,
+                      .myCollisionType = CollisionType::CollisionType_Rect,
+                  },
+                  &pTargetCollision_Top)) {
+    pTargetCollision_Top->OnHit();
+    return true;
+  }
+
+  CollisionComponent* pTargetCollision_Bottom = nullptr;
+  if (true == pAttackBox_->Collision(
+                  {
+                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom,
+                      .targetCollisionType = CollisionType::CollisionType_Rect,
+                      .myCollisionType = CollisionType::CollisionType_Rect,
+                  },
+                  &pTargetCollision_Bottom)) {
+    pTargetCollision_Bottom->OnHit();
+    return true;
+  }
+
+  return false;
+}
+
 Vector Player::CharacterScale() const {
   return characterScale_;
 }

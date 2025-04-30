@@ -36,6 +36,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
   pRender_->ChangeAnimation(PAS_Idle*isFlip_);
+
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
@@ -191,8 +192,4 @@ bool Chang::CollisionHitUpdate() {
   }
 
   return false;
-}
-
-
-void Chang::CommandSkill_1() {
 }

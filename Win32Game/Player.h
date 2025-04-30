@@ -48,22 +48,13 @@ class Player
 
   virtual bool CollisionHitUpdate();
 
+  virtual bool CollisionAttackUpdate();
+
   virtual Vector CharacterScale() const;
 
   virtual void SetCharacterScale(const Vector& scale);
 
   virtual void Flip(bool flip);
-
-  // Command Skill
-  virtual void CommandSkill_1() {};
-
-  virtual void CommandSkill_2() {};
-
-  virtual void CommandSkill_3() {};
-
-  virtual void CommandSkill_4() {};
-
-  virtual void CommandSkill_5() {};
 
  protected:
   ImageRenderer* pRender_;

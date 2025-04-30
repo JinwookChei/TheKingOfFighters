@@ -1,6 +1,7 @@
 #pragma once
 #include <initializer_list>
 #include "Player.h"
+#include <functional>
 
 enum CommandKey {
   CK_None = -1,
@@ -33,13 +34,16 @@ struct CommandNode {
 
   void ExcuteTask(Player* player) {
     if (nullptr != player && nullptr != Task_) {
-      (player->*Task_)();
+      //(player->*Task_)();
+      Task_();
     }
   }
 
   CommandNode* pSubNodes[CommandKey::CK_MAX];
 
-  void (Player::*Task_)();
+  //void (Player::*Task_)();
+  std::function<void()> Task_;
+
 };
 
 class CommandComponent
@@ -54,7 +58,7 @@ class CommandComponent
 
   void Tick(unsigned long long curTick) override;
 
-  bool RegistCommend(std::initializer_list<CommandKey> command, void (Player::*Task)());
+  bool RegistCommend(std::initializer_list<CommandKey> command, std::function<void()> func);
 
   void* GetTask() const;
 

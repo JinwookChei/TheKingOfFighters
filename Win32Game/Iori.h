@@ -39,9 +39,9 @@ class Iori
   bool CollisionHitUpdate() override;
 
   // Command Skills
-  void CommandSkill_1() override;
+  void CommandSkill_1();
 
-  void CommandSkill_2() override;
+  void CommandSkill_2();
 
  private:
   unsigned int prevImageIndex;

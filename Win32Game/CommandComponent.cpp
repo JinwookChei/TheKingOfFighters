@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CommandComponent.h"
+#include <functional>
 
 CommandComponent::CommandComponent()
     : pRootNode_(new CommandNode()),
@@ -27,7 +28,7 @@ void CommandComponent::Tick(unsigned long long curTick) {
   }
 }
 
-bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, void (Player::*Task)()) {
+bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, std::function<void()> func) {
   if (nullptr == pRootNode_) {
     return false;
   }
@@ -42,7 +43,7 @@ bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, 
     pCur = pCur->pSubNodes[*iter];
   }
 
-  pCur->Task_ = Task;
+  pCur->Task_ = func;
 
   return true;
 }
