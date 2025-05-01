@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "HealthBar.h"
-#include "Player.h"
 
 HealthBar::HealthBar()
     : pImage_(nullptr),

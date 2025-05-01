@@ -15,6 +15,7 @@ Actor::Actor()
       componentHead_(nullptr),
       componentTail_(nullptr),
       isUI_(false),
+      isPlayer_(false),
       useCameraPosition_(false),
       isActive_(false),
       isDestroy_(false),
@@ -112,6 +113,10 @@ CollisionComponent* Actor::CreateCollision(unsigned int collisionGroup) {
 
 bool Actor::IsUI() const {
   return isUI_;
+}
+
+bool Actor::IsPlayer() const {
+  return isPlayer_;
 }
 
 void Actor::OnBeginPlay() {

@@ -25,12 +25,12 @@ enum PlayerAnimState {
   PAS_MAX
 };
 
-class Player
-    : public Actor {
+class KOFPlayer
+    : public Player {
  public:
-  Player();
+  KOFPlayer();
 
-  ~Player();
+  ~KOFPlayer();
 
   virtual void BeginPlay() override;
 

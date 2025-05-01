@@ -10,10 +10,10 @@
 
 class CommandComponent;
 class ProjectileComponent;
-class Player;
+class KOFPlayer;
 
 class Chang
-    : public Player {
+    : public KOFPlayer {
  public:
   Chang();
 

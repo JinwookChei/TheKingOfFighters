@@ -129,7 +129,7 @@
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="KOFPlayer.cpp">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
@@ -236,7 +236,7 @@
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="KOFPlayer.h">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">

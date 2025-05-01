@@ -3,7 +3,7 @@
 class Mouse;
 class BackGround;
 class CameraTarget;
-class Player;
+class KOFPlayer;
 class UI;
 
 class KOFLevel final
@@ -35,9 +35,9 @@ class KOFLevel final
 
   BackGround* pBackGround_;
 
-  Player* pPlayer1_;
+  KOFPlayer* pPlayer1_;
 
-  Player* pPlayer2_;
+  KOFPlayer* pPlayer2_;
 
   UI* HUD_;
 

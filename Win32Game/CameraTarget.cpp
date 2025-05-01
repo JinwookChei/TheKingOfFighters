@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Player.h"
 #include "CameraTarget.h"
 
 CameraTarget::CameraTarget() {

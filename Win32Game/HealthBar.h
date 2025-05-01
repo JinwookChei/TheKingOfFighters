@@ -1,7 +1,5 @@
 #pragma once
 
-class Player;
-
 class HealthBar final
     : public UIComponent {
  public:

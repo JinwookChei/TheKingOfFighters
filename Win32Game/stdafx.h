@@ -23,6 +23,7 @@
 #include <Win32Engine/EngineCore.h>
 #include <Win32Engine/Level.h>
 #include <Win32Engine/Actor.h>
+#include <Win32Engine/Player.h>
 #include <Win32Engine/ImgManager.h>
 #include <Win32Engine/InputManager.h>
 #include <Win32Engine/ActorComponent.h>

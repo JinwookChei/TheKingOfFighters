@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Health.h"
-#include "Player.h"
+#include "KOFPlayer.h"
 #include "HealthComponent.h";
 
 Health::Health()
@@ -21,7 +21,7 @@ void Health::BeginPlay() {
   EnableCollision(false);
 }
 
-bool Health::Initialize(Player* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent, const Vector& position, bool isFlip) {
+bool Health::Initialize(KOFPlayer* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent, const Vector& position, bool isFlip) {
   if (nullptr == bindPlayer) {
     return false;
   }

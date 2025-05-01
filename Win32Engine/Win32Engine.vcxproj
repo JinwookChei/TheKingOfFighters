@@ -173,6 +173,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectComponent.cpp" />
     <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="TextComponent.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectComponent.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="TextComponent.h" />

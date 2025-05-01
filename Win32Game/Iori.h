@@ -16,7 +16,7 @@ class CommandComponent;
 class ProjectileComponent;
 
 class Iori
-    : public Player {
+    : public KOFPlayer {
  public:
   Iori();
 

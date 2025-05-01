@@ -4,10 +4,10 @@
 #include "MovementComponent.h"
 #include "HealthComponent.h"
 #include "CollisionBox.h"
-#include "Player.h"
+#include "KOFPlayer.h"
 #include "KOFLevel.h"
 
-Player::Player()
+KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
       pHealthComponent_(nullptr),
@@ -24,16 +24,16 @@ Player::Player()
       isAtMapEdge_(false) {
 }
 
-Player::~Player() {
+KOFPlayer::~KOFPlayer() {
 }
 
-void Player::BeginPlay() {
+void KOFPlayer::BeginPlay() {
 }
 
-void Player::Tick(unsigned long long curTick) {
+void KOFPlayer::Tick(unsigned long long curTick) {
 }
 
-void Player::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
+void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
   SetPosition(position);
 
   SetUseCameraposition(useCameraPosition);
@@ -79,24 +79,24 @@ void Player::Initialize(const Vector& position, bool useCameraPosition, bool fli
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void Player::InputUpdate(unsigned long long deltaTick) {
+void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
 }
 
-HealthComponent* Player::GetHealthComponent() const {
+HealthComponent* KOFPlayer::GetHealthComponent() const {
   return pHealthComponent_;
 }
 
-void Player::CommendUpdate() {
+void KOFPlayer::CommendUpdate() {
 }
 
-void Player::CollisionBoundUpdate() {
+void KOFPlayer::CollisionBoundUpdate() {
 }
 
-bool Player::CollisionHitUpdate() {
+bool KOFPlayer::CollisionHitUpdate() {
   return false;
 }
 
-bool Player::CollisionAttackUpdate() {
+bool KOFPlayer::CollisionAttackUpdate() {
   CollisionComponent* pTargetCollision_Top = nullptr;
   if (true == pAttackBox_->Collision(
                   {
@@ -124,7 +124,7 @@ bool Player::CollisionAttackUpdate() {
   return false;
 }
 
-bool Player::CollisionPushUpdate() {
+bool KOFPlayer::CollisionPushUpdate() {
   CollisionComponent* pTargetPushCollision = nullptr;
   if (true == pPushBox_->Collision(
                   {
@@ -139,20 +139,15 @@ bool Player::CollisionPushUpdate() {
     if (nullptr == pTarget) {
       return false;
     }
+    // TODO : Casting
+    KOFPlayer* pTargetPlayer = (KOFPlayer*)pTarget;
+
+
     Vector TargetPostion = pTarget->GetPosition();
 
     Vector myPosition = GetPosition();
 
     if (std::abs(TargetPostion.X - myPosition.X) < 400.0f) {
-      Level* level = GetLevel();
-      KOFLevel* kofLevel = (KOFLevel*)level;
-      kofLevel->GetBackGroundImageScale();
-
-      if (isFlip_)
-      {
-
-      }
-
       const Vector& moveDir = pMovementComponent_->GetMoveDir();
       if (moveDir.X > 0 && isFlip_ == 1) {
         pTarget->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
@@ -160,6 +155,8 @@ bool Player::CollisionPushUpdate() {
       } else if (moveDir.X < 0 && isFlip_ == -1) {
         pTarget->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
       }
+
+      //if (pTarget->i)
     }
 
     return true;
@@ -168,7 +165,7 @@ bool Player::CollisionPushUpdate() {
   return false;
 }
 
-void Player::CollisionReset() {
+void KOFPlayer::CollisionReset() {
   pHitBoxTop_->OffHit();
   pHitBoxBottom_->OffHit();
   pAttackBox_->OffHit();
@@ -176,18 +173,18 @@ void Player::CollisionReset() {
   pGrabBox_->OffHit();
 }
 
-Vector Player::CharacterScale() const {
+Vector KOFPlayer::CharacterScale() const {
   return characterScale_;
 }
 
-void Player::SetCharacterScale(const Vector& scale) {
+void KOFPlayer::SetCharacterScale(const Vector& scale) {
   characterScale_ = scale;
 }
 
-void Player::PushOverlappingPlayer() {
+void KOFPlayer::PushOverlappingPlayer() {
 }
 
-void Player::Flip(bool flip) {
+void KOFPlayer::Flip(bool flip) {
   if (flip) {
     isFlip_ = -1;
   } else {
@@ -195,10 +192,10 @@ void Player::Flip(bool flip) {
   }
 }
 
-void Player::SetIsAtMapEdge(bool isAtEdge) {
+void KOFPlayer::SetIsAtMapEdge(bool isAtEdge) {
   isAtMapEdge_ = isAtEdge;
 }
 
-bool Player::IsAtMapEdge() const {
+bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-class Player;
+class KOFPlayer;
 
 class Health final
     : public UIComponent {
@@ -10,7 +10,7 @@ class Health final
 
   void BeginPlay() override;
 
-  bool Initialize(Player* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent, const Vector& position, bool isFlip);
+  bool Initialize(KOFPlayer* bindPlayer, unsigned long long imageNum, unsigned int imageIndex, const Color8Bit& colorTransparent, const Vector& position, bool isFlip);
 
   void Tick(unsigned long long curTick) override;
 
@@ -18,7 +18,7 @@ class Health final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  Player* pPlayer_;
+  KOFPlayer* pPlayer_;
 
   IImage* pImage_;
 

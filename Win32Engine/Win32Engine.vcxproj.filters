@@ -46,6 +46,15 @@
     <Filter Include="Sound">
       <UniqueIdentifier>{6be10121-e188-4d00-bab1-28d0eba830c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Actor\Mouse">
+      <UniqueIdentifier>{b00a23d4-aa7c-4525-bdc9-7d53faa39b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\UI">
+      <UniqueIdentifier>{018a7d36-c857-4a55-9524-5856f68ec0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player">
+      <UniqueIdentifier>{362b3a33-dd2d-49f5-905c-7e0497f76d22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,12 +87,6 @@
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Actor\Component\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
     <ClCompile Include="UIComponent.cpp">
       <Filter>Actor\UIComponent</Filter>
     </ClCompile>
@@ -107,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Actor\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Actor\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Actor\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,12 +155,6 @@
     <ClInclude Include="CollisionComponent.h">
       <Filter>Actor\Component\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
     <ClInclude Include="UIComponent.h">
       <Filter>Actor\UIComponent</Filter>
     </ClInclude>
@@ -172,6 +178,15 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Actor\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Actor\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Actor\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

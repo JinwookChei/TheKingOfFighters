@@ -1,6 +1,6 @@
 #pragma once
 #include <initializer_list>
-#include "Player.h"
+#include "KOFPlayer.h"
 #include <functional>
 
 enum CommandKey {
@@ -32,7 +32,7 @@ struct CommandNode {
     }
   }
 
-  void ExcuteTask(Player* player) {
+  void ExcuteTask(KOFPlayer* player) {
     if (nullptr != player && nullptr != Task_) {
       //(player->*Task_)();
       Task_();

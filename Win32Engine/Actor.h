@@ -1,6 +1,4 @@
 #pragma once
-// #include "Level.h"
-// #include "Mesh.h"
 
 #include "ActorComponent.h"
 
@@ -27,6 +25,7 @@ class Actor {
  private:
   friend class GameEngine;
   friend class Level;
+  friend class Player;
   friend class UI;
 
  public:
@@ -67,6 +66,8 @@ class Actor {
   JO_API CollisionComponent* CreateCollision(unsigned int collisionGroup);
 
   JO_API bool IsUI() const;
+
+  JO_API bool IsPlayer() const;
 
   template <typename ComponentType>
   ComponentType* CreateComponent() {
@@ -129,6 +130,8 @@ class Actor {
   bool useCameraPosition_;
 
   bool isUI_;
+
+  bool isPlayer_;
 
   int collisionTag_;
 

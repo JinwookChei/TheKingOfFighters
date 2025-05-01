@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
-#include "Player.h"
+#include "KOFPlayer.h"
 #include "Iori.h"
 #include "Chang.h"
 #include "BackGround.h"
@@ -150,6 +150,10 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
 
+
+  pPlayer1_->SetIsAtMapEdge(false);
+  pPlayer2_->SetIsAtMapEdge(false);
+
   float margin = 15.0f;
   float cameraHeight = pCamera_->GetCameraHeight();
 
@@ -172,6 +176,7 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
         pCamera_->SetPosition({player1Left + backbufferScale.X / 2, cameraHeight});
       } else {
         pPlayer1_->SetPosition({left + pPlayer1_->CharacterScale().HalfX(), player1Position.Y});
+        pPlayer1_->SetIsAtMapEdge(true);
       }
     }
 
@@ -180,6 +185,7 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
         pCamera_->SetPosition({player2Right - backbufferScale.X / 2, cameraHeight});
       } else {
         pPlayer2_->SetPosition({right - pPlayer2_->CharacterScale().HalfX(), player2Position.Y});
+        pPlayer2_->SetIsAtMapEdge(true);
       }
     }
 
@@ -189,6 +195,7 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
         pCamera_->SetPosition({player2Left + backbufferScale.X / 2, cameraHeight});
       } else {
         pPlayer2_->SetPosition({left + pPlayer2_->CharacterScale().HalfX(), player2Position.Y});
+        pPlayer2_->SetIsAtMapEdge(true);
       }
     }
 
@@ -197,6 +204,7 @@ void KOFLevel::Tick(unsigned long long dletaTick) {
         pCamera_->SetPosition({player1Right - backbufferScale.X / 2, cameraHeight});
       } else {
         pPlayer1_->SetPosition({right - pPlayer1_->CharacterScale().HalfX(), player1Position.Y});
+        pPlayer1_->SetIsAtMapEdge(true);
       }
     }
   }

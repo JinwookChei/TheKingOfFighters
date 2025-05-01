@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Player.h"
+#include "KOFPlayer.h"
 #include "Chang.h"
 #include "MovementComponent.h"
 #include "CommandComponent.h"
@@ -17,7 +17,7 @@ void Chang::BeginPlay() {
 }
 
 void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
-  Player::Initialize(position, useCameraPosition, flip);
+  KOFPlayer::Initialize(position, useCameraPosition, flip);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(4);

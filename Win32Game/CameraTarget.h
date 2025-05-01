@@ -1,8 +1,5 @@
 #pragma once
 
-class CameraLimitComponent;
-class Player;
-
 class CameraTarget final
     : public Actor {
  public:

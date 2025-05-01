@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Player.h"
+#include "KOFPlayer.h"
 #include "MovementComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
@@ -17,7 +17,7 @@ void Iori::BeginPlay() {
 }
 
 void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
-  Player::Initialize(position, useCameraPosition, flip);
+  KOFPlayer::Initialize(position, useCameraPosition, flip);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(3);

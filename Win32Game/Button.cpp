@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Button.h"
-#include "Player.h"
+
 
 Button::Button()
     : capture_(false),

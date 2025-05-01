@@ -180,7 +180,7 @@
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="NextImageButton.cpp" />
     <ClCompile Include="ImageMoveButton.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="KOFPlayer.cpp" />
     <ClCompile Include="PlayerDummy.cpp" />
     <ClCompile Include="Portrait.cpp" />
     <ClCompile Include="Projectile.cpp" />
@@ -220,7 +220,7 @@
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="NextImageButton.h" />
     <ClInclude Include="ImageMoveButton.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="KOFPlayer.h" />
     <ClInclude Include="PlayerDummy.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileComponent.h" />
