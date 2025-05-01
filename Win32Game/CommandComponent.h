@@ -32,9 +32,8 @@ struct CommandNode {
     }
   }
 
-  void ExcuteTask(KOFPlayer* player) {
-    if (nullptr != player && nullptr != Task_) {
-      //(player->*Task_)();
+  void ExcuteTask() {
+    if ( nullptr != Task_) {
       Task_();
     }
   }

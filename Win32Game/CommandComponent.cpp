@@ -76,8 +76,7 @@ void CommandComponent::JumpNode(CommandKey key) {
       return;
     }
 
-    // TODO : Casting
-    pCurNode_->ExcuteTask((KOFPlayer*)owner);
+    pCurNode_->ExcuteTask();
     ResetNode();
   }
 }

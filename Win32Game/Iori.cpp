@@ -93,6 +93,7 @@ void Iori::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
   CollisionReset();
+
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {

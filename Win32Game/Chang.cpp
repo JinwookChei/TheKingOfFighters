@@ -63,6 +63,7 @@ void Chang::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
   CollisionReset();
+
 }
 
 void Chang::InputUpdate(unsigned long long deltaTick) {

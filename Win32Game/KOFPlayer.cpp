@@ -134,29 +134,37 @@ bool KOFPlayer::CollisionPushUpdate() {
                   },
                   &pTargetPushCollision)) {
     pPushBox_->OnHit();
-    Actor* pTarget = pTargetPushCollision->GetOwner();
 
+    Actor* pTarget = pTargetPushCollision->GetOwner();
     if (nullptr == pTarget) {
       return false;
     }
-    // TODO : Casting
-    KOFPlayer* pTargetPlayer = (KOFPlayer*)pTarget;
+
+    KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
+    if (nullptr == pTargetPlayer)
+    {
+      return false;
+    }
 
 
-    Vector TargetPostion = pTarget->GetPosition();
-
+    Vector TargetPostion = pTargetPlayer->GetPosition();
     Vector myPosition = GetPosition();
 
+
+    // TODO : Push 충돌시 최소 거리보장해야함. 앞으로 가기 버튼에서 press가 아니면 보간해서 조금씩 Position 조정.
+    // TODO : 벽에서 서로 밀고있는 상황. 한쪽캐릭터가 대쉬 이동 중이면, 뒤로 밀려나는 현상 해결.
+    // TODO : 우측 캐릭터는 뒤로 가고 있는데, 좌측 캐릭터가 대쉬 이동으로 밀고 있는 상황 -> 뭔가 뒤로 밀림.
     if (std::abs(TargetPostion.X - myPosition.X) < 400.0f) {
       const Vector& moveDir = pMovementComponent_->GetMoveDir();
       if (moveDir.X > 0 && isFlip_ == 1) {
-        pTarget->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
-
+        pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
       } else if (moveDir.X < 0 && isFlip_ == -1) {
-        pTarget->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
+        pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
       }
-
-      //if (pTarget->i)
+      if (pTargetPlayer->IsAtMapEdge())
+      {
+        SetPosition({myPosition.X - moveDir.X, myPosition.Y});
+      }
     }
 
     return true;
