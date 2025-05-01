@@ -1,7 +1,10 @@
 #pragma once
 
+class Mouse;
+class BackGround;
 class CameraTarget;
 class Player;
+class UI;
 
 class KOFLevel final
     : public Level {
@@ -16,12 +19,29 @@ class KOFLevel final
 
   void SwapPosition();
 
+  Vector GetBackGroundImageScale() const;
+
  private:
-  SoundChannel channel_;
+ public:
+  const Vector levelLocalScale_{4.5f, 4.5f};
+  
+  Vector backGroundImageScale_;
 
-  CameraTarget* cameraTarget;
+  SoundChannel* channel_;
 
-  Player* player1_;
+  CameraTarget* pCamera_;
 
-  Player* player2_;
+  Mouse* pMouse_;
+
+  BackGround* pBackGround_;
+
+  Player* pPlayer1_;
+
+  Player* pPlayer2_;
+
+  UI* HUD_;
+
+  Vector player1SpawnPostion_;
+
+  Vector player2SpawnPostion_;
 };

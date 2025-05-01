@@ -43,6 +43,8 @@ class Iori
 
   void CommandSkill_2();
 
+  void CommandSkill_3();
+
  private:
   unsigned int prevImageIndex;
 

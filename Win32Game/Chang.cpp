@@ -40,25 +40,29 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
+ CollisionPushUpdate();
 
   if (true == CollisionHitUpdate()) {
     pRender_->ChangeAnimation(animState_ * isFlip_);
   }
 
-  do {
-    if (false == pRender_->IsPlayingLoopAnimation()) {
-      break;
-    }
-
+  if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
 
     CommendUpdate();
 
     pRender_->ChangeAnimation(animState_ * isFlip_);
-    
-  } while (false);
+  }
 
   CollisionBoundUpdate();
+
+  CollisionAttackUpdate();
+
+  SkillUpdate();
+
+  CollisionPushUpdate();
+
+  CollisionReset();
 }
 
 void Chang::InputUpdate(unsigned long long deltaTick) {
@@ -74,11 +78,11 @@ void Chang::InputUpdate(unsigned long long deltaTick) {
 
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
     //animState_ = PAS_
-    pMovementComponent_->Move(deltaTick, false);
+    pMovementComponent_->Move(deltaTick, false, pPushBox_->IsHit());
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
     // animState_ = CHAS_Idel;
-    pMovementComponent_->Move(deltaTick, true);
+    pMovementComponent_->Move(deltaTick, true, pPushBox_->IsHit());
   }
   if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {
     pMovementComponent_->Jump();
@@ -181,13 +185,13 @@ void Chang::CollisionBoundUpdate() {
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
     animState_ = PAS_HitTop;
-    pHitBoxTop_->OffHit();
+    //pHitBoxTop_->OffHit();
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
     animState_ = PAS_HitBottom;
-    pHitBoxBottom_->OffHit();
+    //pHitBoxBottom_->OffHit();
     return true;
   }
 

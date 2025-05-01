@@ -7,7 +7,8 @@ float Lerp(float a, float b, float t) {
 }
 
 MovementComponent::MovementComponent()
-    : startPosition_({0.0f, 0.0f}),
+    : moveDir_({0.0f, 0.0f}),
+      startPosition_({0.0f, 0.0f}),
       onBackStep_(false),
       jumpVelocity_(0.0f),
       isGrounded_(true),
@@ -21,13 +22,19 @@ void MovementComponent::BeginPlay() {
 }
 
 void MovementComponent::Tick(unsigned long long curTick) {
+  Actor* owner = GetOwner();
+  if (nullptr == owner) {
+    return;
+  }
+
+  // MOVEDIR
+  const Vector& curPosition = owner->GetPosition();
+  const Vector& newPosition = curPosition + moveDir_;
+  owner->SetPosition(newPosition);
+  // MOVEDIR END
+  
   // BACKSTEP
   if (onBackStep_) {
-    Actor* owner = GetOwner();
-    if (nullptr == owner) {
-      return;
-    }
-
     backstepTimer += curTick;
     float t = backstepTimer / backstepDuration;
 
@@ -48,11 +55,6 @@ void MovementComponent::Tick(unsigned long long curTick) {
 
   // JUMP
   if (onJump_) {
-    Actor* owner = GetOwner();
-    if (nullptr == owner) {
-      return;
-    }
-
     jumpVelocity_ -= gravity_ * curTick;
     const Vector& ownerPosition = owner->GetPosition();
     Vector newPosition = {ownerPosition.X, ownerPosition.Y - jumpVelocity_};
@@ -66,6 +68,8 @@ void MovementComponent::Tick(unsigned long long curTick) {
     owner->SetPosition(newPosition);
   }
   // JUMP END
+
+  moveDir_ = {0.0f, 0.0f};
 }
 
 void MovementComponent::Initialize(const Vector& startPosition) {
@@ -73,27 +77,42 @@ void MovementComponent::Initialize(const Vector& startPosition) {
   jumpVelocity_ = 0.0f;
 }
 
-void MovementComponent::Move(unsigned long long curTick, bool isFoward) {
+Vector MovementComponent::GetMoveDir() const {
+  return moveDir_;
+}
+
+void MovementComponent::Move(unsigned long long curTick, bool isFoward, bool isPushing) {
   if (false == isGrounded_) {
     return;
   }
 
-  Actor* owner = GetOwner();
-  if (nullptr == owner) {
-    return;
+  float weight = 1.0f;
+  if (true == isPushing) {
+    weight = 0.8f;
   }
 
   if (isFoward) {
-    const Vector& moveDir = Vector::Right * moveVelocity_ * curTick;
-    const Vector& curPosition = owner->GetPosition();
-    const Vector& newPosition = curPosition + moveDir;
-    owner->SetPosition(newPosition);
+    moveDir_ = Vector::Right * moveVelocity_ * curTick * weight;
   } else {
-    const Vector& moveDir = Vector::Left * moveVelocity_ * curTick;
-    const Vector& curPosition = owner->GetPosition();
-    const Vector& newPosition = curPosition + moveDir;
-    owner->SetPosition(newPosition);
+    moveDir_ = Vector::Left * moveVelocity_ * curTick * weight;
   }
+}
+
+void MovementComponent::Run(unsigned long long curTick, bool isPushing) {
+  if (false == isGrounded_) {
+    return;
+  }
+
+  float weight = 1.0f;
+  if (true == isPushing) {
+    weight = 0.5f;
+  }
+
+  // if (isFoward) {
+  moveDir_ = Vector::Right * runVelocity_ * curTick * weight;
+  /*} else {
+    moveDir_ = Vector::Left * moveVelocity_ * curTick;
+  }*/
 }
 
 void MovementComponent::Jump() {

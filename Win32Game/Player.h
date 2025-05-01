@@ -50,11 +50,21 @@ class Player
 
   virtual bool CollisionAttackUpdate();
 
+  virtual bool CollisionPushUpdate();
+
+  void CollisionReset();
+
   virtual Vector CharacterScale() const;
 
   virtual void SetCharacterScale(const Vector& scale);
 
+  void PushOverlappingPlayer();
+
   virtual void Flip(bool flip);
+
+  void SetIsAtMapEdge(bool isAtEdge);
+
+  bool IsAtMapEdge() const;
 
  protected:
   ImageRenderer* pRender_;
@@ -77,9 +87,11 @@ class Player
 
   ProjectileComponent* pProjectileComponent_;
 
-  int animState_;
-
   Vector characterScale_;
 
+  int animState_;
+
   int isFlip_;
+
+  bool isAtMapEdge_;
 };

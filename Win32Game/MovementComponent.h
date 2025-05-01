@@ -12,7 +12,11 @@ class MovementComponent final
 
   void Initialize(const Vector& startPosition);
 
-  void Move(unsigned long long curTick, bool isFoward);
+  Vector GetMoveDir() const;
+
+  void Move(unsigned long long curTick, bool isFoward, bool isPushing);
+
+  void Run(unsigned long long curTick, bool isPushing);
 
   void Jump();
 
@@ -22,18 +26,20 @@ class MovementComponent final
   Vector startPosition_;
 
   // MOVE
+  Vector moveDir_;
+
   const float moveVelocity_ = 0.5f;
 
-  const float runVelocity_ = 1.0f;
+  const float runVelocity_ = 1.5f;
 
   // BACK STEP
   bool onBackStep_;
 
-  float backstepDuration = 200.0f;
+  float backstepDuration = 170.0f;
   float backstepTimer = 0.0f;
 
   float backstepDistance = 280.0f;
-  float backstepHeight = 100.0f;
+  float backstepHeight = 110.0f;
 
   Vector backstepStartPos;
   Vector backstepEndPos;

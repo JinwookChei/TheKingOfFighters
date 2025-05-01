@@ -5,6 +5,7 @@
 #include "HealthComponent.h"
 #include "CollisionBox.h"
 #include "Player.h"
+#include "KOFLevel.h"
 
 Player::Player()
     : pRender_(nullptr),
@@ -17,9 +18,10 @@ Player::Player()
       pGrabBox_(nullptr),
       pCommandComponent_(nullptr),
       pProjectileComponent_(nullptr),
-      animState_(0),
       characterScale_({0.0f, 0.0f}),
-      isFlip_(1) {
+      animState_(0),
+      isFlip_(1),
+      isAtMapEdge_(false) {
 }
 
 Player::~Player() {
@@ -33,6 +35,7 @@ void Player::Tick(unsigned long long curTick) {
 
 void Player::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
   SetPosition(position);
+
   SetUseCameraposition(useCameraPosition);
   Flip(flip);
 
@@ -121,6 +124,58 @@ bool Player::CollisionAttackUpdate() {
   return false;
 }
 
+bool Player::CollisionPushUpdate() {
+  CollisionComponent* pTargetPushCollision = nullptr;
+  if (true == pPushBox_->Collision(
+                  {
+                      .targetGroup = CollisionGroupEngineType::CollisionGroupEngineType_PushBox,
+                      .targetCollisionType = CollisionType::CollisionType_Rect,
+                      .myCollisionType = CollisionType::CollisionType_Rect,
+                  },
+                  &pTargetPushCollision)) {
+    pPushBox_->OnHit();
+    Actor* pTarget = pTargetPushCollision->GetOwner();
+
+    if (nullptr == pTarget) {
+      return false;
+    }
+    Vector TargetPostion = pTarget->GetPosition();
+
+    Vector myPosition = GetPosition();
+
+    if (std::abs(TargetPostion.X - myPosition.X) < 400.0f) {
+      Level* level = GetLevel();
+      KOFLevel* kofLevel = (KOFLevel*)level;
+      kofLevel->GetBackGroundImageScale();
+
+      if (isFlip_)
+      {
+
+      }
+
+      const Vector& moveDir = pMovementComponent_->GetMoveDir();
+      if (moveDir.X > 0 && isFlip_ == 1) {
+        pTarget->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
+
+      } else if (moveDir.X < 0 && isFlip_ == -1) {
+        pTarget->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
+      }
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+void Player::CollisionReset() {
+  pHitBoxTop_->OffHit();
+  pHitBoxBottom_->OffHit();
+  pAttackBox_->OffHit();
+  pPushBox_->OffHit();
+  pGrabBox_->OffHit();
+}
+
 Vector Player::CharacterScale() const {
   return characterScale_;
 }
@@ -129,10 +184,21 @@ void Player::SetCharacterScale(const Vector& scale) {
   characterScale_ = scale;
 }
 
+void Player::PushOverlappingPlayer() {
+}
+
 void Player::Flip(bool flip) {
   if (flip) {
     isFlip_ = -1;
   } else {
     isFlip_ = 1;
   }
+}
+
+void Player::SetIsAtMapEdge(bool isAtEdge) {
+  isAtMapEdge_ = isAtEdge;
+}
+
+bool Player::IsAtMapEdge() const {
+  return isAtMapEdge_;
 }
