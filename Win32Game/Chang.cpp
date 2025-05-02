@@ -35,7 +35,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(-PAS_HitBottom, -4, 43, 47, 50, false, 43);
 
   pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
-  pRender_->ChangeAnimation(PAS_Idle*FacingDirection());
+  pRender_->ChangeAnimation(PAS_Idle*FacingRightFlag());
 
 }
 
@@ -43,7 +43,7 @@ void Chang::Tick(unsigned long long deltaTick) {
  CollisionPushUpdate();
 
   if (true == CollisionHitUpdate()) {
-   pRender_->ChangeAnimation(animState_ * FacingDirection());
+   pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
@@ -51,7 +51,7 @@ void Chang::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(animState_ * FacingDirection());
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
   CollisionBoundUpdate();

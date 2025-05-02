@@ -20,6 +20,8 @@ class MovementComponent final
 
   void Jump();
 
+  void JumpForward(bool isRightDirection, bool isRunning);
+
   void BackStep(int facingDirection);
 
  private:
@@ -49,9 +51,16 @@ class MovementComponent final
 
   bool onJump_;
 
-  float jumpVelocity_;
+  float curJumpVelocity_;
 
-  const float gravity_ = 0.26f;
+  const float gravity_ = 0.36f;
 
-  const float jumpForce_ = 60.0f;
+  const float jumpForce_ = 75.0f;
+
+  // JUMP FOWARD
+  float curJumpFowardVelocity_;
+
+  const float jumpFowardVelocityInWalking_ = 0.7f;
+
+  const float jumpFowardVelocityInRunning_ = 1.1f;
 };

@@ -20,7 +20,7 @@ KOFPlayer::KOFPlayer()
       pProjectileComponent_(nullptr),
       characterScale_({0.0f, 0.0f}),
       animState_(0),
-      isFlip_(false),
+      isFacingRight_(true),
       isAtMapEdge_(false) {
 }
 
@@ -33,11 +33,11 @@ void KOFPlayer::BeginPlay() {
 void KOFPlayer::Tick(unsigned long long curTick) {
 }
 
-void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
+void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight) {
   SetPosition(position);
 
   SetUseCameraposition(useCameraPosition);
-  SetFlip(flip);
+  SetFacingRight(isFacingRight);
 
   // RENDERER
   pRender_ = CreateImageRender();
@@ -153,9 +153,9 @@ bool KOFPlayer::CollisionPushUpdate() {
     // TODO : 우측 캐릭터는 뒤로 가고 있는데, 좌측 캐릭터가 대쉬 이동으로 밀고 있는 상황 -> 뭔가 뒤로 밀림.
     if (std::abs(TargetPostion.X - myPosition.X) < 400.0f) {
       const Vector& moveDir = pMovementComponent_->GetMoveDir();
-      if (moveDir.X > 0 && FacingDirection() == 1) {
+      if (moveDir.X > 0 && FacingRight() == true) {
         pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
-      } else if (moveDir.X < 0 && FacingDirection() == -1) {
+      } else if (moveDir.X < 0 && FacingRight() == false) {
         pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
       }
       if (pTargetPlayer->IsAtMapEdge()) {
@@ -188,20 +188,20 @@ void KOFPlayer::SetCharacterScale(const Vector& scale) {
 void KOFPlayer::PushOverlappingPlayer() {
 }
 
-int KOFPlayer::FacingDirection() const {
-  if (isFlip_) {
-    return -1;
+int KOFPlayer::FacingRightFlag() const {
+  if (isFacingRight_) {
+    return 1;
   }
 
-  return 1;
+  return -1;
 }
 
-bool KOFPlayer::Flip() const {
-  return isFlip_;
+bool KOFPlayer::FacingRight() const {
+  return isFacingRight_;
 }
 
-void KOFPlayer::SetFlip(bool flip) {
-  isFlip_ = flip;
+void KOFPlayer::SetFacingRight(bool isFacingRight) {
+  isFacingRight_ = isFacingRight;
 }
 
 void KOFPlayer::SetIsAtMapEdge(bool isAtEdge) {

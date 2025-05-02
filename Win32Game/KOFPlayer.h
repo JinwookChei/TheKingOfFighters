@@ -36,7 +36,7 @@ class KOFPlayer
 
   void Tick(unsigned long long curTick) override;
 
-  virtual void Initialize(const Vector& position, bool useCameraPosition, bool flip);
+  virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
   virtual void InputUpdate(unsigned long long curTick);
 
@@ -60,12 +60,11 @@ class KOFPlayer
 
   void PushOverlappingPlayer();
 
-  int FacingDirection() const;
+  int FacingRightFlag() const;
   
-  bool Flip() const;
+  bool FacingRight() const;
 
-  void SetFlip(bool flip);
-
+  void SetFacingRight(bool isFacingRight);
 
   void SetIsAtMapEdge(bool isAtEdge);
 
@@ -96,7 +95,7 @@ class KOFPlayer
 
   int animState_;
 
-  bool isFlip_;
+  bool isFacingRight_;
 
   bool isAtMapEdge_;
 };

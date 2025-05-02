@@ -10,7 +10,8 @@ MovementComponent::MovementComponent()
     : moveDir_({0.0f, 0.0f}),
       startPosition_({0.0f, 0.0f}),
       onBackStep_(false),
-      jumpVelocity_(0.0f),
+      curJumpVelocity_(0.0f),
+      curJumpFowardVelocity_(0.0f),
       isGrounded_(true),
       onJump_(false) {
 }
@@ -53,28 +54,56 @@ void MovementComponent::Tick(unsigned long long curTick) {
   }
   // BACKSTEP END
 
+  //// JUMP
+  // if (onJump_) {
+  //   jumpVelocity_ -= gravity_ * curTick;
+  //   const Vector& ownerPosition = owner->GetPosition();
+  //   Vector newPosition = {ownerPosition.X, ownerPosition.Y - jumpVelocity_};
+
+  //  if (newPosition.Y >= startPosition_.Y) {
+  //    newPosition.Y = startPosition_.Y;
+  //    jumpVelocity_ = 0.0f;
+  //    onJump_ = false;
+  //    isGrounded_ = true;
+  //  }
+  //  owner->SetPosition(newPosition);
+  //}
+  //// JUMP END
+
   // JUMP
   if (onJump_) {
-    jumpVelocity_ -= gravity_ * curTick;
-    const Vector& ownerPosition = owner->GetPosition();
-    Vector newPosition = {ownerPosition.X, ownerPosition.Y - jumpVelocity_};
+    curJumpVelocity_ -= gravity_ * curTick;
 
+    const Vector& ownerPosition = owner->GetPosition();
+
+    // 앞으로 이동할 속도 지정
+    // float forwardSpeed = 0.5f;  // 필요에 따라 속도 조절
+
+    // 새 위치 계산: X축은 앞으로 이동, Y축은 점프 곡선
+    Vector newPosition = {
+        ownerPosition.X + curJumpFowardVelocity_ * curTick,  // X축 앞으로 이동
+        ownerPosition.Y - curJumpVelocity_                   // Y축 점프
+    };
+
+    // 땅에 도착했는지 체크
     if (newPosition.Y >= startPosition_.Y) {
       newPosition.Y = startPosition_.Y;
-      jumpVelocity_ = 0.0f;
+      curJumpVelocity_ = 0.0f;
       onJump_ = false;
       isGrounded_ = true;
     }
+
     owner->SetPosition(newPosition);
   }
-  // JUMP END
+
+  // JUMP
 
   moveDir_ = {0.0f, 0.0f};
 }
 
 void MovementComponent::Initialize(const Vector& startPosition) {
   startPosition_ = startPosition;
-  jumpVelocity_ = 0.0f;
+  // curJumpVelocity_ = 0.0f;
 }
 
 Vector MovementComponent::GetMoveDir() const {
@@ -117,9 +146,32 @@ void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, b
 
 void MovementComponent::Jump() {
   if (isGrounded_) {
-    jumpVelocity_ = jumpForce_;
+    curJumpVelocity_ = jumpForce_;
+    curJumpFowardVelocity_ = 0.0f;
     onJump_ = true;
     isGrounded_ = false;
+  }
+}
+
+void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
+  if (isGrounded_) {
+    curJumpVelocity_ = jumpForce_;
+    onJump_ = true;
+    isGrounded_ = false;
+
+    if (isRightDirection) {
+      if (isRunning) {
+        curJumpFowardVelocity_ = jumpFowardVelocityInRunning_;
+      } else {
+        curJumpFowardVelocity_ = jumpFowardVelocityInWalking_;
+      }
+    } else {
+      if (isRunning) {
+        curJumpFowardVelocity_ = -jumpFowardVelocityInRunning_;
+      } else {
+        curJumpFowardVelocity_ = -jumpFowardVelocityInWalking_;
+      }
+    }
   }
 }
 

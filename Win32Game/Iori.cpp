@@ -48,7 +48,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(-PAS_LightKick, -3, 136, 146, 50, false, 136);  // 커맨드 테스트.
 
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
-  pRender_->ChangeAnimation(PAS_Idle * FacingDirection());
+  pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
@@ -73,7 +73,7 @@ void Iori::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
   if (true == CollisionHitUpdate()) {
-    pRender_->ChangeAnimation(animState_ * FacingDirection());
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
@@ -81,7 +81,7 @@ void Iori::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(animState_ * FacingDirection());
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
   CollisionBoundUpdate();
@@ -108,34 +108,45 @@ void Iori::InputUpdate(unsigned long long curTick) {
   }
 
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-    if (Flip()) {
+    if (FacingRight()) {
+      animState_ = PAS_BackWalk;
+      pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+    } else {
       if (animState_ == PAS_Run) {
         pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
       } else {
         animState_ = PAS_FrontWalk;
         pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
       }
-    } else {
-      animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
     }
   }
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-    if (Flip()) {
-      animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
-    } else {
+    if (FacingRight()) {
       if (animState_ == PAS_Run) {
         pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
       } else {
         animState_ = PAS_FrontWalk;
         pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
       }
+    } else {
+      animState_ = PAS_BackWalk;
+      pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
     }
   }
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
-    animState_ = PAS_Jump;
-    pMovementComponent_->Jump();
+    if (PAS_FrontWalk == animState_) {
+      pMovementComponent_->JumpForward(FacingRight(), false);
+      animState_ = PAS_Jump;
+    } else if (PAS_Run == animState_) {
+      pMovementComponent_->JumpForward(FacingRight(), true);
+      animState_ = PAS_Jump;
+    } else if (PAS_BackWalk == animState_) {
+      pMovementComponent_->JumpForward(!FacingRight(), false);
+      animState_ = PAS_Jump;
+    } else {
+      pMovementComponent_->Jump();
+      animState_ = PAS_Jump;
+    }
   }
   if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
     animState_ = PAS_Seat;
@@ -151,18 +162,18 @@ void Iori::InputUpdate(unsigned long long curTick) {
 
 void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
-    if (Flip()) {
-      pCommandComponent_->JumpNode(CK_Right);
-    } else {
+    if (FacingRight()) {
       pCommandComponent_->JumpNode(CK_Left);
+    } else {
+      pCommandComponent_->JumpNode(CK_Right);
     }
   }
 
   if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
-    if (Flip()) {
-      pCommandComponent_->JumpNode(CK_Left);
-    } else {
+    if (FacingRight()) {
       pCommandComponent_->JumpNode(CK_Right);
+    } else {
+      pCommandComponent_->JumpNode(CK_Left);
     }
   }
 
@@ -284,7 +295,7 @@ void Iori::CommandSkill_1() {
 
 void Iori::CommandSkill_2() {
   animState_ = PAS_BackStep;
-  pMovementComponent_->BackStep(FacingDirection());
+  pMovementComponent_->BackStep((FacingRightFlag()));
 }
 
 void Iori::CommandSkill_3() {

@@ -45,6 +45,8 @@ struct CommandNode {
 
 };
 
+
+// TODO : 커맨드 버퍼 시스템을 만들어야함.
 class CommandComponent
     : public ActorComponent {
   friend struct CommandNode;
