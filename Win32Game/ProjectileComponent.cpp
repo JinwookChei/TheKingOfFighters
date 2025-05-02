@@ -45,6 +45,7 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag) {
 
   newProjectile->SetOwner(owner);
   newProjectile->SetProjectileInfo(*pInfo);
+  newProjectile->SetUseCameraposition(true);
   if (false == newProjectile->Initialize()) {
     return;
   }

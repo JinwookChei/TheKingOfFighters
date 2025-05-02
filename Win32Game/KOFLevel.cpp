@@ -124,7 +124,8 @@ void KOFLevel::BeginPlay() {
 
   // EFFECT
   EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
-  EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});
+  /*EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
+  EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});*/
 
   // SOUND
   /*Path soundPath;

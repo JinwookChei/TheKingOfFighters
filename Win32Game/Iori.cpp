@@ -3,6 +3,7 @@
 #include "MovementComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
+#include "HealthComponent.h"
 #include "CollisionBox.h"
 #include "Iori.h"
 
@@ -35,7 +36,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(PAS_Run, 3, 49, 58, 50, true, 51);            // ->-> 뛰기
   pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);          // 점프
   pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);  // 발차기
-  pRender_->CreateAnimation(PAS_LightKick, 3, 136, 146, 50, false, 136);  // 커맨드 테스트.
+  pRender_->CreateAnimation(PAS_Skill1, 3, 223, 230, 50, false, 223);     // 커맨드 테스트.
 
   pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);             // 아이들
   pRender_->CreateAnimation(-PAS_Seat, -3, 16, 23, 50, true, 18);           // 앉기.
@@ -45,7 +46,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(-PAS_Run, -3, 49, 58, 50, true, 51);            // ->-> 뛰기
   pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false, 61);          // 점프
   pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false, 108);  // 발차기
-  pRender_->CreateAnimation(-PAS_LightKick, -3, 136, 146, 50, false, 136);  // 커맨드 테스트.
+  pRender_->CreateAnimation(-PAS_Skill1, -3, 223, 230, 50, false, 223);     // 커맨드 테스트.
 
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
   pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
@@ -64,7 +65,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   }
 
   // PROJECTILE
-  if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {25.0f, 0.0f}, {200.0f, 0.0f}, {1500.0f, 0.0f})) {
+  if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
     return;
   }
 }
@@ -86,7 +87,22 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
-  CollisionAttackUpdate();
+  // TODO : 두번 타격하는 버그 수정.
+  Actor* pTarget;
+  if (CollisionAttackUpdate(&pTarget)) {
+    if (nullptr != pTarget) {
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
+      if (nullptr != pTargetPlayer) {
+        if (pTargetPlayer->animState_ == PAS_Idle) {
+          pTargetPlayer->GetHealthComponent()->TakeDamage(5.0f);
+          EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
+        }
+      }
+    }
+  }
+
+
+  Vector t = GetPosition();
 
   SkillUpdate();
 
@@ -198,7 +214,7 @@ void Iori::SkillUpdate() {
   }
 
   switch (curImageIndex) {
-    case (115):
+    case (226):
       pProjectileComponent_->FireProjectile(1);
       break;
     default:
@@ -289,8 +305,9 @@ bool Iori::CollisionHitUpdate() {
   return false;
 }
 
+
 void Iori::CommandSkill_1() {
-  animState_ = PAS_LightKick;
+  animState_ = PAS_Skill1;
 }
 
 void Iori::CommandSkill_2() {

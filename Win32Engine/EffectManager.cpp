@@ -90,6 +90,7 @@ Effect* EffectManager::SpawnEffect(Level* level, unsigned long long effectTag, c
   Effect* newEffect = level->SpawnActor<Effect>(ActorGroupEngineType::ActorGroupEngineType_None);
   newEffect->SetPosition(position);
   newEffect->SetEffectInfo(pFind);
+  newEffect->SetUseCameraposition(true);
   newEffect->Initialize();
 
   //LinkToLinkedListFIFO(&effectHead_, &effectTail_, newEffect->GetEffectLink());

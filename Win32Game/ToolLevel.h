@@ -9,7 +9,7 @@ class ToolLevel final
 
   void BeginPlay() override;
 
-  void Tick(unsigned long long dletaTick) override;
+  void Tick(unsigned long long deltaTick) override;
 
  private:
   Vector position_;

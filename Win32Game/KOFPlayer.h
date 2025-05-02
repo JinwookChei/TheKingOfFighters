@@ -22,6 +22,7 @@ enum PlayerAnimState {
   PAS_LightKick,
   PAS_HitTop,
   PAS_HitBottom,
+  PAS_Skill1,
   PAS_MAX
 };
 
@@ -48,7 +49,7 @@ class KOFPlayer
 
   virtual bool CollisionHitUpdate();
 
-  virtual bool CollisionAttackUpdate();
+  virtual bool CollisionAttackUpdate(Actor** outTarget);
 
   virtual bool CollisionPushUpdate();
 
@@ -93,6 +94,7 @@ class KOFPlayer
 
   Vector characterScale_;
 
+ public:
   int animState_;
 
   bool isFacingRight_;

@@ -2,6 +2,7 @@
 #include "KOFPlayer.h"
 #include "Chang.h"
 #include "MovementComponent.h"
+#include "HealthComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "CollisionBox.h"
@@ -40,10 +41,10 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
- CollisionPushUpdate();
+  CollisionPushUpdate();
 
   if (true == CollisionHitUpdate()) {
-   pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
@@ -56,7 +57,15 @@ void Chang::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
-  CollisionAttackUpdate();
+  Actor* pTarget;
+  if (CollisionAttackUpdate(&pTarget)) {
+    if (nullptr != pTarget) {
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
+      if (nullptr != pTargetPlayer) {
+        pTargetPlayer->GetHealthComponent()->TakeDamage(50.0f);
+      }
+    }
+  }
 
   SkillUpdate();
 
@@ -186,13 +195,13 @@ void Chang::CollisionBoundUpdate() {
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
     animState_ = PAS_HitTop;
-    //pHitBoxTop_->OffHit();
+    pMovementComponent_->BackStep((FacingRightFlag()));
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
     animState_ = PAS_HitBottom;
-    //pHitBoxBottom_->OffHit();
+    pMovementComponent_->BackStep((FacingRightFlag()));
     return true;
   }
 

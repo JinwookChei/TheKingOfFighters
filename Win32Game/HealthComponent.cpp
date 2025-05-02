@@ -50,4 +50,5 @@ void HealthComponent::TakeDamage(float damage) {
   }
 
   health_ -= damage;
+
 }

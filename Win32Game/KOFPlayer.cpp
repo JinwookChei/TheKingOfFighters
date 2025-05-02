@@ -96,7 +96,7 @@ bool KOFPlayer::CollisionHitUpdate() {
   return false;
 }
 
-bool KOFPlayer::CollisionAttackUpdate() {
+bool KOFPlayer::CollisionAttackUpdate(Actor** outTarget) {
   CollisionComponent* pTargetCollision_Top = nullptr;
   if (true == pAttackBox_->Collision(
                   {
@@ -106,6 +106,13 @@ bool KOFPlayer::CollisionAttackUpdate() {
                   },
                   &pTargetCollision_Top)) {
     pTargetCollision_Top->OnHit();
+
+    Actor* pTargetOwner = pTargetCollision_Top->GetOwner();
+    if (pTargetOwner == nullptr) {
+      return false;
+    }
+    *outTarget = pTargetOwner;
+
     return true;
   }
 
@@ -118,6 +125,13 @@ bool KOFPlayer::CollisionAttackUpdate() {
                   },
                   &pTargetCollision_Bottom)) {
     pTargetCollision_Bottom->OnHit();
+
+    Actor* pTargetOwner = pTargetCollision_Bottom->GetOwner();
+    if (pTargetOwner == nullptr) {
+      return false;
+    }
+    *outTarget = pTargetOwner;
+
     return true;
   }
 
