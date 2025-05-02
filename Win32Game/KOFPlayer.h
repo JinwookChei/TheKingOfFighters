@@ -60,7 +60,12 @@ class KOFPlayer
 
   void PushOverlappingPlayer();
 
-  virtual void Flip(bool flip);
+  int FacingDirection() const;
+  
+  bool Flip() const;
+
+  void SetFlip(bool flip);
+
 
   void SetIsAtMapEdge(bool isAtEdge);
 
@@ -91,7 +96,7 @@ class KOFPlayer
 
   int animState_;
 
-  int isFlip_;
+  bool isFlip_;
 
   bool isAtMapEdge_;
 };

@@ -20,7 +20,7 @@ KOFPlayer::KOFPlayer()
       pProjectileComponent_(nullptr),
       characterScale_({0.0f, 0.0f}),
       animState_(0),
-      isFlip_(1),
+      isFlip_(false),
       isAtMapEdge_(false) {
 }
 
@@ -37,7 +37,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   SetPosition(position);
 
   SetUseCameraposition(useCameraPosition);
-  Flip(flip);
+  SetFlip(flip);
 
   // RENDERER
   pRender_ = CreateImageRender();
@@ -141,28 +141,24 @@ bool KOFPlayer::CollisionPushUpdate() {
     }
 
     KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
-    if (nullptr == pTargetPlayer)
-    {
+    if (nullptr == pTargetPlayer) {
       return false;
     }
 
-
     Vector TargetPostion = pTargetPlayer->GetPosition();
     Vector myPosition = GetPosition();
-
 
     // TODO : Push 충돌시 최소 거리보장해야함. 앞으로 가기 버튼에서 press가 아니면 보간해서 조금씩 Position 조정.
     // TODO : 벽에서 서로 밀고있는 상황. 한쪽캐릭터가 대쉬 이동 중이면, 뒤로 밀려나는 현상 해결.
     // TODO : 우측 캐릭터는 뒤로 가고 있는데, 좌측 캐릭터가 대쉬 이동으로 밀고 있는 상황 -> 뭔가 뒤로 밀림.
     if (std::abs(TargetPostion.X - myPosition.X) < 400.0f) {
       const Vector& moveDir = pMovementComponent_->GetMoveDir();
-      if (moveDir.X > 0 && isFlip_ == 1) {
+      if (moveDir.X > 0 && FacingDirection() == 1) {
         pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
-      } else if (moveDir.X < 0 && isFlip_ == -1) {
+      } else if (moveDir.X < 0 && FacingDirection() == -1) {
         pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
       }
-      if (pTargetPlayer->IsAtMapEdge())
-      {
+      if (pTargetPlayer->IsAtMapEdge()) {
         SetPosition({myPosition.X - moveDir.X, myPosition.Y});
       }
     }
@@ -192,12 +188,20 @@ void KOFPlayer::SetCharacterScale(const Vector& scale) {
 void KOFPlayer::PushOverlappingPlayer() {
 }
 
-void KOFPlayer::Flip(bool flip) {
-  if (flip) {
-    isFlip_ = -1;
-  } else {
-    isFlip_ = 1;
+int KOFPlayer::FacingDirection() const {
+  if (isFlip_) {
+    return -1;
   }
+
+  return 1;
+}
+
+bool KOFPlayer::Flip() const {
+  return isFlip_;
+}
+
+void KOFPlayer::SetFlip(bool flip) {
+  isFlip_ = flip;
 }
 
 void KOFPlayer::SetIsAtMapEdge(bool isAtEdge) {

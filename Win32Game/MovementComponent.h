@@ -14,13 +14,13 @@ class MovementComponent final
 
   Vector GetMoveDir() const;
 
-  void Move(unsigned long long curTick, bool isFoward, bool isPushing);
+  void Move(unsigned long long curTick, bool isRightDirection, bool isPushing);
 
-  void Run(unsigned long long curTick, bool isPushing);
+  void Run(unsigned long long curTick, bool isRightDirection, bool isPushing);
 
   void Jump();
 
-  void BackStep();
+  void BackStep(int facingDirection);
 
  private:
   Vector startPosition_;

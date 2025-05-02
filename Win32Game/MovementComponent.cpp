@@ -32,7 +32,7 @@ void MovementComponent::Tick(unsigned long long curTick) {
   const Vector& newPosition = curPosition + moveDir_;
   owner->SetPosition(newPosition);
   // MOVEDIR END
-  
+
   // BACKSTEP
   if (onBackStep_) {
     backstepTimer += curTick;
@@ -81,7 +81,7 @@ Vector MovementComponent::GetMoveDir() const {
   return moveDir_;
 }
 
-void MovementComponent::Move(unsigned long long curTick, bool isFoward, bool isPushing) {
+void MovementComponent::Move(unsigned long long curTick, bool isRightDirection, bool isPushing) {
   if (false == isGrounded_) {
     return;
   }
@@ -91,14 +91,14 @@ void MovementComponent::Move(unsigned long long curTick, bool isFoward, bool isP
     weight = 0.8f;
   }
 
-  if (isFoward) {
+  if (isRightDirection) {
     moveDir_ = Vector::Right * moveVelocity_ * curTick * weight;
   } else {
     moveDir_ = Vector::Left * moveVelocity_ * curTick * weight;
   }
 }
 
-void MovementComponent::Run(unsigned long long curTick, bool isPushing) {
+void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, bool isPushing) {
   if (false == isGrounded_) {
     return;
   }
@@ -108,11 +108,11 @@ void MovementComponent::Run(unsigned long long curTick, bool isPushing) {
     weight = 0.5f;
   }
 
-  // if (isFoward) {
-  moveDir_ = Vector::Right * runVelocity_ * curTick * weight;
-  /*} else {
-    moveDir_ = Vector::Left * moveVelocity_ * curTick;
-  }*/
+  if (isRightDirection) {
+    moveDir_ = Vector::Right * runVelocity_ * curTick * weight;
+  } else {
+    moveDir_ = Vector::Left * runVelocity_ * curTick * weight;
+  }
 }
 
 void MovementComponent::Jump() {
@@ -123,7 +123,7 @@ void MovementComponent::Jump() {
   }
 }
 
-void MovementComponent::BackStep() {
+void MovementComponent::BackStep(int facingDirection) {
   if (false == isGrounded_) {
     return;
   }
@@ -137,7 +137,7 @@ void MovementComponent::BackStep() {
 
   backstepStartPos = owner->GetPosition();
   backstepEndPos = owner->GetPosition();
-  backstepEndPos.X -= backstepDistance;
+  backstepEndPos.X -= backstepDistance * facingDirection;
 
   onBackStep_ = true;
 }

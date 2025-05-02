@@ -32,7 +32,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(PAS_FrontWalk, 3, 27, 34, 50, true, 27);      // -> 걷기
   pRender_->CreateAnimation(PAS_BackWalk, 3, 35, 44, 50, true, 35);       // <- 뒤로가기
   pRender_->CreateAnimation(PAS_BackStep, 3, 45, 48, 50, false, 45);      // <- <- 백스탭
-  pRender_->CreateAnimation(PAS_Run, 3, 49, 58, 50, true, 51);           // ->-> 뛰기
+  pRender_->CreateAnimation(PAS_Run, 3, 49, 58, 50, true, 51);            // ->-> 뛰기
   pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);          // 점프
   pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);  // 발차기
   pRender_->CreateAnimation(PAS_LightKick, 3, 136, 146, 50, false, 136);  // 커맨드 테스트.
@@ -48,7 +48,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(-PAS_LightKick, -3, 136, 146, 50, false, 136);  // 커맨드 테스트.
 
   pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
-  pRender_->ChangeAnimation(PAS_Idle * isFlip_);
+  pRender_->ChangeAnimation(PAS_Idle * FacingDirection());
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
@@ -73,7 +73,7 @@ void Iori::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
   if (true == CollisionHitUpdate()) {
-    pRender_->ChangeAnimation(animState_ * isFlip_);
+    pRender_->ChangeAnimation(animState_ * FacingDirection());
   }
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
@@ -81,7 +81,7 @@ void Iori::Tick(unsigned long long deltaTick) {
 
     CommendUpdate();
 
-    pRender_->ChangeAnimation(animState_ * isFlip_);
+    pRender_->ChangeAnimation(animState_ * FacingDirection());
   }
 
   CollisionBoundUpdate();
@@ -93,7 +93,6 @@ void Iori::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
   CollisionReset();
-
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {
@@ -108,18 +107,30 @@ void Iori::InputUpdate(unsigned long long curTick) {
     return;
   }
 
-  // Vector moveDir = {0.0f, 0.0f};
-
   if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-    animState_ = PAS_BackWalk;
-    pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+    if (Flip()) {
+      if (animState_ == PAS_Run) {
+        pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
+      } else {
+        animState_ = PAS_FrontWalk;
+        pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+      }
+    } else {
+      animState_ = PAS_BackWalk;
+      pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+    }
   }
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-    if (animState_ == PAS_Run) {
-      pMovementComponent_->Run(curTick, pPushBox_->IsHit());
-    } else {
-      animState_ = PAS_FrontWalk;
+    if (Flip()) {
+      animState_ = PAS_BackWalk;
       pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+    } else {
+      if (animState_ == PAS_Run) {
+        pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
+      } else {
+        animState_ = PAS_FrontWalk;
+        pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+      }
     }
   }
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
@@ -140,11 +151,19 @@ void Iori::InputUpdate(unsigned long long curTick) {
 
 void Iori::CommendUpdate() {
   if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
-    pCommandComponent_->JumpNode(CK_Left);
+    if (Flip()) {
+      pCommandComponent_->JumpNode(CK_Right);
+    } else {
+      pCommandComponent_->JumpNode(CK_Left);
+    }
   }
 
   if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
-    pCommandComponent_->JumpNode(CK_Right);
+    if (Flip()) {
+      pCommandComponent_->JumpNode(CK_Left);
+    } else {
+      pCommandComponent_->JumpNode(CK_Right);
+    }
   }
 
   if (InputManager::Instance()->IsDown('W') || InputManager::Instance()->IsDown('w')) {
@@ -265,7 +284,7 @@ void Iori::CommandSkill_1() {
 
 void Iori::CommandSkill_2() {
   animState_ = PAS_BackStep;
-  pMovementComponent_->BackStep();
+  pMovementComponent_->BackStep(FacingDirection());
 }
 
 void Iori::CommandSkill_3() {

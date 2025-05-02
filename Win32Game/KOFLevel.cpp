@@ -224,8 +224,8 @@ void KOFLevel::SwapPosition() {
   const Vector& player1Postion = pPlayer1_->GetPosition();
   const Vector& player2Postion = pPlayer2_->GetPosition();
 
-  pPlayer1_->Flip(!(player1Postion.X < player2Postion.X));
-  pPlayer2_->Flip(player1Postion.X < player2Postion.X);
+  pPlayer1_->SetFlip(!(player1Postion.X < player2Postion.X));
+  pPlayer2_->SetFlip(player1Postion.X < player2Postion.X);
 }
 
 Vector KOFLevel::GetBackGroundImageScale() const {
