@@ -225,3 +225,4 @@ void KOFPlayer::SetIsAtMapEdge(bool isAtEdge) {
 bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
 }
+

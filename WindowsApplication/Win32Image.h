@@ -13,11 +13,7 @@ struct ImageInfo {
   Transform transform_;
   Vector positionOffSet_;
   std::vector<CollisionInfo> collisionBoxInfo_;
-  /*CollisionInfo hitBoxTop_;
-  CollisionInfo hitBoxBottom_;
-  CollisionInfo attackBox_;
-  CollisionInfo pushBox_;
-  CollisionInfo grabBox_;*/
+
 
   HBITMAP hBitMap_;
   HDC imageDC_;

@@ -34,18 +34,23 @@ void KOFLevel::BeginPlay() {
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 3);
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-  IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box_Reverse.png", -3);
-  reverseIoriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
+  IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -3);
+  //reverseIoriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
+  reverseIoriImage->ReverseCalculateTransformFromCSV_Async("..\\ContentsResource\\Iori.csv");
   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 4);
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box_Reverse.png", -4);
-  reverseChangImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", -4);
+  //reverseChangImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  reverseChangImage->ReverseCalculateTransformFromCSV_Async("..\\ContentsResource\\Chang.csv");
   IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", 5);
   healthBarImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* reverseHealthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", -5);
   reverseHealthBarImage->ReverseCalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", 6);
   healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
+
+  // 반전된 Health는 logic으로, 원본 이미지는 여러 포인터가 가르킥로있고, 이미지를 어떻게 그릴지만 각자 알아서 그림.
+  // UI 이미지는 래퍼로 감싸서 position하고, scale 등 정보로 Render를 그림.
   IFileImage* reverseHealthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", -6);
   reverseHealthImage->ReverseCalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
 

@@ -9,6 +9,8 @@
 #include <thread>
 #include <mutex>
 
+#include <map>
+
 #pragma pack(push, 1)
 struct TGAHeader {
   BYTE idLength;
@@ -719,116 +721,124 @@ void __stdcall Win32Image::ReverseCalculateTransformFromCSV(const std::string& f
   pInfo->isOwner_ = true;
 }
 
+struct Key {
+  union {
+    struct {
+      int X;
+      int Y;
+    };
+    unsigned __int64 key;
+  };
+};
+
 void __stdcall Win32Image::ReverseCalculateTransformFromCSV_Async(const std::string& filePath) {
-   if (imageLoadType_ != ImageLoadType::One) {
-     return;
-   }
+  if (imageLoadType_ != ImageLoadType::One) {
+    return;
+  }
 
-   std::vector<std::vector<float>> csvInfo;
+  std::vector<std::vector<float>> csvInfo;
 
-   std::ifstream file(filePath);
-   if (false == file.is_open()) {
-     __debugbreak();
-     return;
-   }
+  std::ifstream file(filePath);
+  if (false == file.is_open()) {
+    __debugbreak();
+    return;
+  }
 
-   std::string line;
-  // 3번째 인자 없으면 공백기준으로 나눔.
-  // file을 공백단위로 읽어서 line에 저장,
-   while (std::getline(file, line)) {
-     if ('P' == line[0]) {
-       continue;
-     }
-     // 행
-     std::vector<float> row;
-     // 문자열스트림에 line을 대입.
-     std::stringstream ss(line);
-     // Cell
-     std::string cell;
+  std::string line;
+  while (std::getline(file, line)) {
+    if ('P' == line[0]) {
+      continue;
+    }
+    // 행
+    std::vector<float> row;
+    std::stringstream ss(line);
+    std::string cell;
 
-    // 문자열 스트림에서 cell에 , 단위로 행에 저장.
     while (std::getline(ss, cell, ',')) {
       float intCell = std::stof(cell);
       row.push_back(intCell);
     }
     csvInfo.push_back(row);
   }
-   file.close();
+  file.close();
 
-  // imageList를 돌면서 인덱스가 0인 ImageInfo 가져옴.
-   ImageInfo* pInfo = GetImageInfo(0);
+  
+  ImageInfo* pInfo = GetImageInfo(0);
+  LONG bmWidth = pInfo->bitMapInfo_.bmWidth;
+  LONG bmHeight = pInfo->bitMapInfo_.bmHeight;
+  BYTE* pBits = (BYTE*)pInfo->bitMapInfo_.bmBits;
+  WORD bmPixel = pInfo->bitMapInfo_.bmBitsPixel;
+  int pixelFormat = bmPixel / 8;
+  size_t bmSize = bmWidth * bmHeight;
 
   // REVERSE IMAGE
-   HDC imageDC = pInfo->imageDC_;
+  unsigned int num_threads = std::thread::hardware_concurrency();
 
-   std::mutex mtx;
-   std::vector<std::thread> threads;
-   threads.reserve(csvInfo.size());
+  std::vector<std::thread> threads;
+  threads.reserve(num_threads);
 
-   for (int i = 0; i < csvInfo.size(); ++i) {
-     threads.emplace_back(std::thread(
-         ([this, i, &csvInfo, &mtx]() {
-           //std::lock_guard<std::mutex> lck(mtx);
-           int positionX = (int)csvInfo[i][0];
-           int positionY = (int)csvInfo[i][1];
-           int scaleX = (int)csvInfo[i][2];
-           int scaleY = (int)csvInfo[i][3];
+  BYTE* pCopyBits = (BYTE*)malloc(bmSize * pixelFormat);
+  std::memcpy(pCopyBits, pBits, bmSize * pixelFormat);
 
-           size_t pixelScale = scaleX * scaleY;
-           Color8Bit* horizontalFlipPixels = (Color8Bit*)malloc(sizeof(Color8Bit) * pixelScale);
+  int div = csvInfo.size() / num_threads;
+  int mod = csvInfo.size() % num_threads;
 
-           for (int col = positionY; col < positionY + scaleY; ++col) {
-             for (int row = positionX + scaleX - 1; row >= positionX; --row) {
-               Color8Bit tempPixel;
-               Vector pixelPosition{(float)row, (float)col};
+  int start = 0;
+  int end = 0;
 
-               if (!GetPixel(pixelPosition, &tempPixel)) {
-                 __debugbreak();
-                 free(horizontalFlipPixels);
-                 return;
-               }
 
-               int flipPixelIndex = (col - positionY) * scaleX + (positionX + scaleX - 1 - row);
-               horizontalFlipPixels[flipPixelIndex] = tempPixel;
-             }
-           }
+  for (int i = 0; i < num_threads; ++i) {
+    start = end;
+    end = end + div;
+    if (mod > 0) {
+      end += 1;
+      --mod;
+    }
 
-           for (int col = positionY; col < positionY + scaleY; ++col) {
-             for (int row = positionX; row < positionX + scaleX; ++row) {
-               int flipPixelIndex = (col - positionY) * scaleX + (row - positionX);
-               Vector pixelPosition{(float)row, (float)col};
+    threads.emplace_back(
+        [&csvInfo, &pBits, &pCopyBits](int start, int end, const int& bmHeight, const int& bmWidth, const int& pixelFormat) {
+          for (int j = start; j < end; ++j) {
+            int positionX = (int)csvInfo[j][0];
+            int positionY = (int)csvInfo[j][1];
+            int scaleX = (int)csvInfo[j][2];
+            int scaleY = (int)csvInfo[j][3];
 
-               if (!SetPixel(pixelPosition, horizontalFlipPixels[flipPixelIndex])) {
-                 __debugbreak();
-                 free(horizontalFlipPixels);
-                 return;
-               }
-             }
-           }
+            for (int col = positionY; col < positionY + scaleY; ++col) {
+              for (int row = positionX; row < positionX + scaleX; ++row) {
+                BYTE* pixel = pBits + (bmHeight - 1 - col) * (bmWidth * pixelFormat) + (row * pixelFormat);
+                BYTE* copyPixel = pCopyBits + (bmHeight - 1 - col) * (bmWidth * pixelFormat) + ((positionX + scaleX - (row - positionX)) * pixelFormat);
 
-           free(horizontalFlipPixels);
-         })));
-   }
-  
-   for (int i = 0; i < threads.size(); ++i) {
-     threads[i].join();
-   }
+                pixel[0] = copyPixel[0];
+                pixel[1] = copyPixel[1];
+                pixel[2] = copyPixel[2];
+                pixel[3] = copyPixel[3];
+              }
+            }
+          }
+        },
+        start, end, bmHeight, bmWidth, pixelFormat);
+  }
 
+  for (int i = 0; i < threads.size(); ++i) {
+    threads[i].join();
+  }
+
+  free(pCopyBits);
   // REVERSE IMAGE END
 
   // CALCULATE IMAGE INFO
-   pInfo->isOwner_ = false;
+  pInfo->isOwner_ = false;
 
-   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
+  UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
 
-   Cleanup();
+  Cleanup();
 
-   for (unsigned int height = 0; height < csvInfo.size(); ++height) {
-     ImageInfo* pNew = new ImageInfo;
-     pNew->imageType_ = pInfo->imageType_;
-     pNew->hBitMap_ = pInfo->hBitMap_;
-     pNew->imageDC_ = pInfo->imageDC_;
-     pNew->bitMapInfo_ = pInfo->bitMapInfo_;
+  for (unsigned int height = 0; height < csvInfo.size(); ++height) {
+    ImageInfo* pNew = new ImageInfo;
+    pNew->imageType_ = pInfo->imageType_;
+    pNew->hBitMap_ = pInfo->hBitMap_;
+    pNew->imageDC_ = pInfo->imageDC_;
+    pNew->bitMapInfo_ = pInfo->bitMapInfo_;
 
     Vector calcPosition = {csvInfo[height][0], csvInfo[height][1]};
     Vector calcScale = {csvInfo[height][2], csvInfo[height][3]};
@@ -857,9 +867,9 @@ void __stdcall Win32Image::ReverseCalculateTransformFromCSV_Async(const std::str
   }
   // CALCULATE IMAGE INFO END
 
-   delete pInfo;
-   pInfo = GetImageInfo(0);
-   pInfo->isOwner_ = true;
+  delete pInfo;
+  pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = true;
 }
 
 void __stdcall Win32Image::CalculateTransform(unsigned int x, unsigned int y) {
