@@ -55,6 +55,9 @@
     <Filter Include="Contents\KOF\UI">
       <UniqueIdentifier>{071543ac-8ef8-4772-beb4-e297a3fc15fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Common">
+      <UniqueIdentifier>{283e86d7-ad13-499b-9ea7-cbcaeb2230da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Health.h">
       <Filter>Contents\KOF\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="KOFCommon.h">
+      <Filter>Contents\KOF\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

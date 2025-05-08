@@ -773,7 +773,7 @@ void __stdcall Win32Image::ReverseCalculateTransformFromCSV_Async(const std::str
 
   // REVERSE IMAGE
   unsigned int num_threads = std::thread::hardware_concurrency();
-
+  
   std::vector<std::thread> threads;
   threads.reserve(num_threads);
 

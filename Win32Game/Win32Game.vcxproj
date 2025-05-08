@@ -213,6 +213,7 @@
     <ClInclude Include="Health.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="KOFCommon.h" />
     <ClInclude Include="Portrait.h" />
     <ClInclude Include="ImageController.h" />
     <ClInclude Include="Iori.h" />

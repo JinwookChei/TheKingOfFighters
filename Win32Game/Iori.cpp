@@ -312,7 +312,7 @@ void Iori::CommandSkill_1() {
 
 void Iori::CommandSkill_2() {
   animState_ = PAS_BackStep;
-  pMovementComponent_->BackStep((FacingRightFlag()));
+  pMovementComponent_->BackStep((FacingRight()));
 }
 
 void Iori::CommandSkill_3() {

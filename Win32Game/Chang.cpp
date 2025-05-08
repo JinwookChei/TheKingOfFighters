@@ -195,13 +195,15 @@ void Chang::CollisionBoundUpdate() {
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
     animState_ = PAS_HitTop;
-    pMovementComponent_->BackStep((FacingRightFlag()));
+
+    pMovementComponent_->StrongKnockBack((FacingRight()));
+
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
     animState_ = PAS_HitBottom;
-    pMovementComponent_->BackStep((FacingRightFlag()));
+    pMovementComponent_->StrongKnockBack((FacingRight()));
     return true;
   }
 
