@@ -50,7 +50,7 @@ void Health::Tick(unsigned long long curTick) {
 
   // Calculate Health Start
   if (false == isFlip_) {
-    HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
+    const HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
     float maxHealth = pHealthComponent->MaxHealth();
     float curHealth = pHealthComponent->Health();
 
@@ -74,7 +74,7 @@ void Health::Tick(unsigned long long curTick) {
     SetPosition(componentPosition);
 
   } else {
-    HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
+    const HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
     float maxHealth = pHealthComponent->MaxHealth();
     float curHealth = pHealthComponent->Health();
 

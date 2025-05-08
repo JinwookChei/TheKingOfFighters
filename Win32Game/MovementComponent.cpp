@@ -21,6 +21,7 @@ MovementComponent::MovementComponent()
       curJumpVelocity_({0.0f, 0.0f}),
       // KNOCK BACK
       onKnockBack_(false),
+      knockBackForce_({0.0f, 0.0f}),
       curKnockBackVelocity_({0.0f, 0.0f}) {
 }
 
@@ -153,8 +154,9 @@ void MovementComponent::Tick(unsigned long long curTick) {
   moveDir_ = {0.0f, 0.0f};
 }
 
-void MovementComponent::Initialize(const Vector& startPosition) {
+bool MovementComponent::Initialize(const Vector& startPosition) {
   startPosition_ = startPosition;
+  return true;
 }
 
 Vector MovementComponent::GetMoveDir() const {
@@ -249,7 +251,7 @@ void MovementComponent::BackStep(bool isRightDirection) {
   onBackStep_ = true;
 }
 
-void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
+void MovementComponent::KnockBack(bool isRightDirection) {
   // if (false == isGrounded_) {
   //   return;
   // }
@@ -277,9 +279,9 @@ void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBack
   // onKnockBack_ = true;
 
   if (isRightDirection) {
-    curKnockBackVelocity_ = {-knockBackForce.X, knockBackForce.Y};
+    curKnockBackVelocity_ = {-knockBackForce_.X, knockBackForce_.Y};
   } else {
-    curKnockBackVelocity_ = {knockBackForce.X, knockBackForce.Y};
+    curKnockBackVelocity_ = {knockBackForce_.X, knockBackForce_.Y};
   }
 
   if (onJump_) {
@@ -287,6 +289,10 @@ void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBack
   }
 
   onKnockBack_ = true;
+}
+
+void MovementComponent::SetKnockBackForce(const Vector& knockBackForce) {
+  knockBackForce_ = knockBackForce;
 }
 
 // void MovementComponent::StrongKnockBack(bool isRightDirection) {

@@ -162,6 +162,9 @@
     <ClCompile Include="Health.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
+    <ClCompile Include="HitHandlerComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="KOFCommon.h">
       <Filter>Contents\KOF\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="HitHandlerComponent.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

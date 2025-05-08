@@ -94,7 +94,7 @@ void Iori::Tick(unsigned long long deltaTick) {
       KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
       if (nullptr != pTargetPlayer) {
         if (pTargetPlayer->animState_ == PAS_Idle) {
-          pTargetPlayer->GetHealthComponent()->TakeDamage(5.0f);
+          pTargetPlayer->ReceiveHitInfo(50.0f, {30.0f, 0.0f});
           EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
         }
       }

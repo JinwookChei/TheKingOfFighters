@@ -5,7 +5,7 @@ class MovementComponent;
 class CommandComponent;
 class ProjectileComponent;
 class HealthComponent;
-
+class HitHandlerComponent;
 
 enum PlayerAnimState {
   PAS_Start = 0,
@@ -41,9 +41,11 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
-  virtual void InputUpdate(unsigned long long curTick);
+  const HealthComponent* GetHealthComponent() const;
 
-  HealthComponent* GetHealthComponent() const;
+  void ReceiveHitInfo(float damage, const Vector& knockBackForce);
+
+  virtual void InputUpdate(unsigned long long curTick);
 
   virtual void CommendUpdate();
 
@@ -64,7 +66,7 @@ class KOFPlayer
   void PushOverlappingPlayer();
 
   int FacingRightFlag() const;
-  
+
   bool FacingRight() const;
 
   void SetFacingRight(bool isFacingRight);
@@ -79,6 +81,8 @@ class KOFPlayer
   MovementComponent* pMovementComponent_;
 
   HealthComponent* pHealthComponent_;
+
+  HitHandlerComponent* pHitHandlerComponent_;
 
   CollisionComponent* pHitBoxTop_;
 

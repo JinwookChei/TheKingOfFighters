@@ -3,6 +3,7 @@
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "HealthComponent.h"
+#include "HitHandlerComponent.h"
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
@@ -11,6 +12,7 @@ KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
       pHealthComponent_(nullptr),
+      pHitHandlerComponent_(nullptr),
       pHitBoxTop_(nullptr),
       pHitBoxBottom_(nullptr),
       pAttackBox_(nullptr),
@@ -46,11 +48,21 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
   // MOVEMENT
   pMovementComponent_ = CreateComponent<MovementComponent>();
-  pMovementComponent_->Initialize(position);
+  if (false == pMovementComponent_->Initialize(position)) {
+    return;
+  }
 
   // HEALTH
   pHealthComponent_ = CreateComponent<HealthComponent>();
-  pHealthComponent_->Initialize(100.0f);
+  if (false == pHealthComponent_->Initialize(100.0f)) {
+    return;
+  }
+
+  // HIT HANDLER
+  pHitHandlerComponent_ = CreateComponent<HitHandlerComponent>();
+  if (false == pHitHandlerComponent_->Initialize(pHealthComponent_, pMovementComponent_)) {
+    return;
+  }
 
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
@@ -79,11 +91,19 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
+const HealthComponent* KOFPlayer::GetHealthComponent() const {
+  return pHealthComponent_;
 }
 
-HealthComponent* KOFPlayer::GetHealthComponent() const {
-  return pHealthComponent_;
+void KOFPlayer::ReceiveHitInfo(float damage, const Vector& knockBackForce) {
+  HitPacket hitPacket;
+  hitPacket.damage_ = damage;
+  hitPacket.knockBackForce_ = knockBackForce;
+
+  pHitHandlerComponent_->BroadcastHitPacket(hitPacket);
+}
+
+void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
 }
 
 void KOFPlayer::CommendUpdate() {
@@ -225,4 +245,3 @@ void KOFPlayer::SetIsAtMapEdge(bool isAtEdge) {
 bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
 }
-

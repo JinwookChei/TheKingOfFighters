@@ -89,7 +89,7 @@ void Chang::Tick(unsigned long long deltaTick) {
       KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
       if (nullptr != pTargetPlayer) {
         if (pTargetPlayer->animState_ == PAS_Idle) {
-          pTargetPlayer->GetHealthComponent()->TakeDamage(5.0f);
+          //pTargetPlayer->GetHealthComponent()->TakeDamage(5.0f);
           EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
         }
       }
@@ -247,14 +247,14 @@ void Chang::CollisionBoundUpdate() {
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
     animState_ = PAS_HitTop;
-    pMovementComponent_->KnockBack(FacingRight(), {20.0f, 0.0f});
+    pMovementComponent_->KnockBack(FacingRight());
 
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
     animState_ = PAS_HitBottom;
-    pMovementComponent_->KnockBack(FacingRight(), {20.0f, 0.0f});
+    pMovementComponent_->KnockBack(FacingRight());
     return true;
   }
 

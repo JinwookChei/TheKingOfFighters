@@ -18,7 +18,7 @@ class MovementComponent final
 
   void Tick(unsigned long long curTick) override;
 
-  void Initialize(const Vector& startPosition);
+  bool Initialize(const Vector& startPosition);
 
   Vector GetMoveDir() const;
 
@@ -32,7 +32,9 @@ class MovementComponent final
 
   void BackStep(bool isRightDirection);
 
-  void KnockBack(bool isRightDirection, const Vector& knockBackForce);
+  void KnockBack(bool isRightDirection);
+
+  void SetKnockBackForce(const Vector& knockBackForce);
 
   //void StrongKnockBack(bool isRightDirection);
 
@@ -69,7 +71,9 @@ class MovementComponent final
 
   // KNOCK BACK 
   bool onKnockBack_;
+  Vector knockBackForce_;
   Vector curKnockBackVelocity_;
+  
 
   // ragacy
   //bool onKnockBack_;
