@@ -101,9 +101,6 @@ void Iori::Tick(unsigned long long deltaTick) {
     }
   }
 
-
-  Vector t = GetPosition();
-
   SkillUpdate();
 
   CollisionPushUpdate();

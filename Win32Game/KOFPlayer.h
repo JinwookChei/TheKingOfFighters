@@ -22,6 +22,8 @@ enum PlayerAnimState {
   PAS_LightKick,
   PAS_HitTop,
   PAS_HitBottom,
+  PAS_HitStrong,
+  PAS_HitWhileJumping,
   PAS_Skill1,
   PAS_MAX
 };

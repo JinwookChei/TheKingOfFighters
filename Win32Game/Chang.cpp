@@ -27,17 +27,42 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   }
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  pRender_->CreateAnimation(PAS_Idle, 4, 8, 13, 50, true, 8);  // 아이들
-  pRender_->CreateAnimation(PAS_HitTop, 4, 38, 42, 50, false, 38);
-  pRender_->CreateAnimation(PAS_HitBottom, 4, 43, 47, 50, false, 43);
+  pRender_->CreateAnimation(PAS_Idle, 4, 8, 13, 50, true, 8);           // 아이들
+  pRender_->CreateAnimation(PAS_Seat, 4, 14, 20, 50, true, 16);         // 앉기.
+  pRender_->CreateAnimation(PAS_FrontWalk, 4, 23, 32, 50, true, 23);    // -> 걷기
+  pRender_->CreateAnimation(PAS_BackWalk, 4, 32, 23, 50, true, 32);     // <- 뒤로가기
+  pRender_->CreateAnimation(PAS_BackStep, 4, 33, 35, 50, false, 0);     // <- <- 백스탭
+  pRender_->CreateAnimation(PAS_Run, 4, 23, 32, 20, true, 23);          // ->-> 뛰기
+  pRender_->CreateAnimation(PAS_Jump, 4, 36, 42, 50, false, 0);         // 점프
+  pRender_->CreateAnimation(PAS_HeavyKick, 4, 82, 89, 50, false, 0);    // 발차기
+  pRender_->CreateAnimation(PAS_HitTop, 4, 310, 314, 50, false, 0);     //
+  pRender_->CreateAnimation(PAS_HitBottom, 4, 315, 319, 50, false, 0);  //
+  pRender_->CreateAnimation(PAS_HitStrong, 4,
+                            {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
+                            {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
+                            false, 0);                                       
+  pRender_->CreateAnimation(PAS_HitWhileJumping, 4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
-  pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true, 8);  // 아이들
-  pRender_->CreateAnimation(-PAS_HitTop, -4, 38, 42, 50, false, 38);
-  pRender_->CreateAnimation(-PAS_HitBottom, -4, 43, 47, 50, false, 43);
+  pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true, 8);           // 아이들
+  pRender_->CreateAnimation(-PAS_Seat, -4, 14, 20, 50, true, 16);         // 앉기.
+  pRender_->CreateAnimation(-PAS_FrontWalk, -4, 23, 32, 50, true, 23);    // -> 걷기
+  pRender_->CreateAnimation(-PAS_BackWalk, -4, 32, 23, 50, true, 32);     // <- 뒤로가기
+  pRender_->CreateAnimation(-PAS_BackStep, -4, 33, 35, 50, false, 0);     // <- <- 백스탭
+  pRender_->CreateAnimation(-PAS_Run, -4, 23, 32, 20, true, 23);          // ->-> 뛰기
+  pRender_->CreateAnimation(-PAS_Jump, -4, 36, 42, 50, false, 0);         // 점프
+  pRender_->CreateAnimation(-PAS_HeavyKick, -4, 82, 89, 50, false, 0);    // 발차기
+  pRender_->CreateAnimation(-PAS_HitTop, -4, 310, 314, 50, false, 0);     //
+  pRender_->CreateAnimation(-PAS_HitBottom, -4, 315, 319, 50, false, 0);  //
+  pRender_->CreateAnimation(-PAS_HitStrong, -4,
+                            {339, 335, 336, 337, 338, /*335, 336, 337, 338,*/ 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
+                            {80, 80, 80, 80, 80, 80, /*50, 50, 50, 50,*/ 80, 80, 80, 80, 80, 80, 80, 80, 80},
+                            false, 0);
+  pRender_->CreateAnimation(-PAS_HitWhileJumping, -4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
-  pRender_->SetTransparentColor(Color8Bit{17, 91, 124, 0});
-  pRender_->ChangeAnimation(PAS_Idle*FacingRightFlag());
 
+
+  pRender_->SetTransparentColor(changTransparentColor);
+  pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
@@ -57,12 +82,16 @@ void Chang::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
+  // TODO : 두번 타격하는 버그 수정.
   Actor* pTarget;
   if (CollisionAttackUpdate(&pTarget)) {
     if (nullptr != pTarget) {
       KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
       if (nullptr != pTargetPlayer) {
-        pTargetPlayer->GetHealthComponent()->TakeDamage(50.0f);
+        if (pTargetPlayer->animState_ == PAS_Idle) {
+          pTargetPlayer->GetHealthComponent()->TakeDamage(5.0f);
+          EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
+        }
       }
     }
   }
@@ -72,49 +101,72 @@ void Chang::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
   CollisionReset();
-
 }
 
-void Chang::InputUpdate(unsigned long long deltaTick) {
-  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') 
-      && false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') 
-      && false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') 
-      && false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k')) {
+void Chang::InputUpdate(unsigned long long curTick) {
+  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') && 
+      false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') && 
+      false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') && 
+      false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k') &&
+      false == InputManager::Instance()->IsPress('H') && false == InputManager::Instance()->IsPress('h') &&
+      false == InputManager::Instance()->IsPress('U') && false == InputManager::Instance()->IsPress('u') &&
+      false == InputManager::Instance()->IsPress('O') && false == InputManager::Instance()->IsPress('o')) {
     animState_ = PAS_Idle;
     return;
   }
 
-  Vector moveDir = {0.0f, 0.0f};
 
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
-    //animState_ = PAS_
-    pMovementComponent_->Move(deltaTick, false, pPushBox_->IsHit());
+    if (FacingRight()) {
+      animState_ = PAS_BackWalk;
+      pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+    } else {
+      if (animState_ == PAS_Run) {
+        pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
+      } else {
+        animState_ = PAS_FrontWalk;
+        pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+      }
+    }
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
-    // animState_ = CHAS_Idel;
-    pMovementComponent_->Move(deltaTick, true, pPushBox_->IsHit());
+    if (FacingRight()) {
+      if (animState_ == PAS_Run) {
+        pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
+      } else {
+        animState_ = PAS_FrontWalk;
+        pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+      }
+    } else {
+      animState_ = PAS_BackWalk;
+      pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+    }
   }
   if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {
-    pMovementComponent_->Jump();
+    if (PAS_FrontWalk == animState_) {
+      pMovementComponent_->JumpForward(FacingRight(), false);
+      animState_ = PAS_Jump;
+    } else if (PAS_Run == animState_) {
+      pMovementComponent_->JumpForward(FacingRight(), true);
+      animState_ = PAS_Jump;
+    } else if (PAS_BackWalk == animState_) {
+      pMovementComponent_->JumpForward(!FacingRight(), false);
+      animState_ = PAS_Jump;
+    } else {
+      pMovementComponent_->Jump();
+      animState_ = PAS_Jump;
+    }
   }
   if (InputManager::Instance()->IsPress('K') || InputManager::Instance()->IsPress('k')) {
+    animState_ = PAS_Seat;
   }
-  if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
+  if (InputManager::Instance()->IsPress('H') || InputManager::Instance()->IsPress('h')) {
+    animState_ = PAS_HeavyKick;
   }
-
-  if (InputManager::Instance()->IsPress('U') || InputManager::Instance()->IsPress('u')) {
-    // pRender_->SetFlipRendering(true);
+  if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
   }
-  if (InputManager::Instance()->IsPress('O') || InputManager::Instance()->IsPress('o')) {
-    // pRender_->SetFlipRendering(false);
+  if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
   }
-
-  if (moveDir == Vector(0.0f, 0.0f)) {
-    // pRender_->ChangeAnimation(1);
-  }
-
-  Vector newPosition = moveDir + GetPosition();
-  SetPosition(newPosition);
 }
 
 void Chang::CommendUpdate() {
@@ -195,15 +247,14 @@ void Chang::CollisionBoundUpdate() {
 bool Chang::CollisionHitUpdate() {
   if (pHitBoxTop_->IsHit()) {
     animState_ = PAS_HitTop;
-
-    pMovementComponent_->StrongKnockBack((FacingRight()));
+    pMovementComponent_->KnockBack(FacingRight(), {20.0f, 0.0f});
 
     return true;
   }
 
   if (pHitBoxBottom_->IsHit()) {
     animState_ = PAS_HitBottom;
-    pMovementComponent_->StrongKnockBack((FacingRight()));
+    pMovementComponent_->KnockBack(FacingRight(), {20.0f, 0.0f});
     return true;
   }
 

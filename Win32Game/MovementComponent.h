@@ -32,11 +32,11 @@ class MovementComponent final
 
   void BackStep(bool isRightDirection);
 
-  void KnockBack(bool isRightDirection);
+  void KnockBack(bool isRightDirection, const Vector& knockBackForce);
 
-  void StrongKnockBack(bool isRightDirection);
+  //void StrongKnockBack(bool isRightDirection);
 
-  void JumpKnockBack(bool isRightDirection);
+  //void JumpKnockBack(bool isRightDirection);
 
  private:
   Vector startPosition_;
@@ -59,6 +59,7 @@ class MovementComponent final
   bool isGrounded_;
   bool onJump_;
   const float gravity_ = 0.36f;
+  const float airResistance_ = 0.12f;
 
   Vector curJumpVelocity_;
   const Vector normalJumpForce_ = {0.0f, 75.0f};
@@ -66,27 +67,26 @@ class MovementComponent final
   const Vector fowardJumpForceInRunning_ = {1.1f, 75.0f};
 
 
-  // KNOCK BACK
+  // KNOCK BACK 
   bool onKnockBack_;
-  float knockBackTimer_;
-  const float knockBackDuration_ = 170.0f; // TODO : 넉백 애니메이션의 Duration이랑 맞춰야함.
-  const float knockBackDistance_ = 280.0f;
-  Vector knockBackStartPos_;
-  Vector knockBackEndPos_;
+  Vector curKnockBackVelocity_;
 
-  bool onStrongKnockBack_;
-  const float strongKnockBackDuration_ = 200.0f; // TODO : 넉백 애니메이션의 Duration이랑 맞춰야함.
-  const float strongKnockBackDistance_ = 450.0f;
-  const float strongKnockBackHeight_ = 200.0f;
-
-
+  // ragacy
+  //bool onKnockBack_;
+  //float knockBackTimer_;
+  //const float knockBackDuration_ = 170.0f; // TODO : 넉백 애니메이션의 Duration이랑 맞춰야함.
+  //const float knockBackDistance_ = 280.0f;
+  //Vector knockBackStartPos_;
+  //Vector knockBackEndPos_;
+  //bool onStrongKnockBack_;
+  //const float strongKnockBackDuration_ = 530.0f; // TODO : 넉백 애니메이션의 Duration이랑 맞춰야함.
+  //const float strongKnockBackDistance_ = 800.0f;
+  //const float strongKnockBackHeight_ = 350.0f;
   // TODO : 초기화.
-  bool onJumpKnockBack_;
-  Vector curJumpKnockBackVelocity_;
-  const Vector jumpKnockBackForce_ = {170.0f, 170.0f};
-  //const float airResistance_ = 80.0f; // 아직 사용안함.
+  //bool onJumpKnockBack_;
+  //Vector curJumpKnockBackVelocity_;
+  //const Vector jumpKnockBackForce_ = {30.0f, 0.0f};
+  //const float airResistance_ = 0.12f; // 아직 사용안함.
+  //const Vector jumpKnockBackForce_ = {30.0f, 0.0f};
 
-  //const float jumpKnockBackDuration_ = 170.0f;
-  //const float jumpKnockBackDistance_ = 280.0f;
-  //const float jumpKnockBackHeight_ = 110.0f;
 };

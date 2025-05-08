@@ -218,14 +218,17 @@ bool ImageRenderer::CreateAnimation(
   std::vector<unsigned int> indices;
 
   int size = (int)(endIndex - startIndex);
-  if (size < 0) {
-    return false;
-  }
 
-  indices.reserve(size);
+  indices.reserve(abs(size));
 
-  for (unsigned int n = startIndex; n <= endIndex; ++n) {
-    indices.push_back(n);
+  if (size > 0) {
+    for (unsigned int n = startIndex; n <= endIndex; ++n) {
+      indices.push_back(n);
+    }
+  } else {
+    for (unsigned int n = startIndex; n >= endIndex; --n) {
+      indices.push_back(n);
+    }
   }
 
   return CreateAnimation(animationTag, imageIndex, indices, interval, loop, loopStartFrame);
@@ -266,8 +269,6 @@ bool ImageRenderer::CreateAnimation(
   }
 
   pImg->AddRef();
-
-  
 
   AnimationInfo* pNew = new AnimationInfo;
   pNew->image_ = pImg;
