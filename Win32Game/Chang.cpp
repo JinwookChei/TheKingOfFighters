@@ -40,7 +40,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(PAS_HitStrong, 4,
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
-                            false, 0);                                       
+                            false, 0);
   pRender_->CreateAnimation(PAS_HitWhileJumping, 4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true, 8);           // 아이들
@@ -59,18 +59,12 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
                             false, 0);
   pRender_->CreateAnimation(-PAS_HitWhileJumping, -4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
-
-
   pRender_->SetTransparentColor(changTransparentColor);
   pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
-
-  if (true == CollisionHitUpdate()) {
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-  }
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
@@ -82,17 +76,20 @@ void Chang::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
-  // TODO : 두번 타격하는 버그 수정.
-  Actor* pTarget;
-  if (CollisionAttackUpdate(&pTarget)) {
-    if (nullptr != pTarget) {
-      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
-      if (nullptr != pTargetPlayer) {
-        if (pTargetPlayer->animState_ == PAS_Idle) {
-          //pTargetPlayer->GetHealthComponent()->TakeDamage(5.0f);
-          EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
-        }
+  CollisionComponent* pTargetCollision = nullptr;
+  if (CheckAttackCollision(&pTargetCollision)) {
+    if (nullptr != pTargetCollision) {
+      Actor* pTargetOwner = pTargetCollision->GetOwner();
+      if (nullptr == pTargetOwner) {
+        return;
       }
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
+      if (nullptr == pTargetPlayer) {
+        return;
+      }
+      pTargetCollision->OnHit();
+      pTargetPlayer->HitEvent(50.0f, {30.0f, 0.0f});
+      EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
     }
   }
 
@@ -103,10 +100,26 @@ void Chang::Tick(unsigned long long deltaTick) {
   CollisionReset();
 }
 
+void Chang::HitEvent(float damage, const Vector& knockBackForce) {
+  pHealthComponent_->TakeDamage(damage);
+
+  if (pHitBoxTop_->IsHit()) {
+    animState_ = PAS_HitTop;
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
+  }
+
+  if (pHitBoxBottom_->IsHit()) {
+    animState_ = PAS_HitBottom;
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
+  }
+}
+
 void Chang::InputUpdate(unsigned long long curTick) {
-  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') && 
-      false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') && 
-      false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') && 
+  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') &&
+      false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') &&
+      false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') &&
       false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k') &&
       false == InputManager::Instance()->IsPress('H') && false == InputManager::Instance()->IsPress('h') &&
       false == InputManager::Instance()->IsPress('U') && false == InputManager::Instance()->IsPress('u') &&
@@ -114,7 +127,6 @@ void Chang::InputUpdate(unsigned long long curTick) {
     animState_ = PAS_Idle;
     return;
   }
-
 
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
     if (FacingRight()) {
@@ -242,21 +254,4 @@ void Chang::CollisionBoundUpdate() {
       pGrabBox_->SetActive(false);
     }
   }
-}
-
-bool Chang::CollisionHitUpdate() {
-  if (pHitBoxTop_->IsHit()) {
-    animState_ = PAS_HitTop;
-    pMovementComponent_->KnockBack(FacingRight());
-
-    return true;
-  }
-
-  if (pHitBoxBottom_->IsHit()) {
-    animState_ = PAS_HitBottom;
-    pMovementComponent_->KnockBack(FacingRight());
-    return true;
-  }
-
-  return false;
 }

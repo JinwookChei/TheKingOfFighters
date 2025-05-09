@@ -73,10 +73,6 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 void Iori::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
-  if (true == CollisionHitUpdate()) {
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-  }
-
   if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
 
@@ -88,16 +84,20 @@ void Iori::Tick(unsigned long long deltaTick) {
   CollisionBoundUpdate();
 
   // TODO : 두번 타격하는 버그 수정.
-  Actor* pTarget;
-  if (CollisionAttackUpdate(&pTarget)) {
-    if (nullptr != pTarget) {
-      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTarget);
-      if (nullptr != pTargetPlayer) {
-        if (pTargetPlayer->animState_ == PAS_Idle) {
-          pTargetPlayer->ReceiveHitInfo(50.0f, {30.0f, 0.0f});
-          EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
-        }
+  CollisionComponent* pTargetCollision = nullptr;
+  if (CheckAttackCollision(&pTargetCollision)) {
+    if (nullptr != pTargetCollision) {
+      Actor* pTargetOwner = pTargetCollision->GetOwner();
+      if (nullptr == pTargetOwner) {
+        return;
       }
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
+      if (nullptr == pTargetPlayer) {
+        return;
+      }
+      pTargetCollision->OnHit();
+      pTargetPlayer->HitEvent(50.0f, {30.0f, 0.0f});
+      EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
     }
   }
 
@@ -285,23 +285,6 @@ void Iori::CollisionBoundUpdate() {
     }
   }
 }
-
-bool Iori::CollisionHitUpdate() {
-  if (pHitBoxTop_->IsHit()) {
-    animState_ = PAS_Idle;
-    pHitBoxTop_->OffHit();
-    return true;
-  }
-
-  if (pHitBoxBottom_->IsHit()) {
-    animState_ = PAS_Idle;
-    pHitBoxTop_->OffHit();
-    return true;
-  }
-
-  return false;
-}
-
 
 void Iori::CommandSkill_1() {
   animState_ = PAS_Skill1;

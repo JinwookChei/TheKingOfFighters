@@ -25,6 +25,8 @@ class Chang
 
   void Tick(unsigned long long curTick) override;
 
+  void HitEvent(float damage, const Vector& knockBackForce);
+
   void InputUpdate(unsigned long long curTick) override;
 
   void CommendUpdate() override;
@@ -32,8 +34,6 @@ class Chang
   void SkillUpdate();
 
   void CollisionBoundUpdate() override;
-
-  bool CollisionHitUpdate() override;
  private:
   unsigned int prevImageIndex;
 };

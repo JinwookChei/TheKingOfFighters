@@ -43,7 +43,7 @@ bool HitHandlerComponent::Initialize(HealthComponent* ownerHealthComponent, Move
 }
 
 
-void HitHandlerComponent::BroadcastHitPacket(const HitPacket& hitPacket) {
-  pOwnerHealthComponent_->TakeDamage(hitPacket.damage_);
-  pOwnerMovementComponent_->SetKnockBackForce(hitPacket.knockBackForce_);
-}
+//void HitHandlerComponent::BroadcastHitPacket(const HitPacket& hitPacket) {
+//  pOwnerHealthComponent_->TakeDamage(hitPacket.damage_);
+//  pOwnerMovementComponent_->SetKnockBackForce(hitPacket.knockBackForce_);
+//}

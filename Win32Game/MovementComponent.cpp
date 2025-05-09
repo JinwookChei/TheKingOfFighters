@@ -21,7 +21,6 @@ MovementComponent::MovementComponent()
       curJumpVelocity_({0.0f, 0.0f}),
       // KNOCK BACK
       onKnockBack_(false),
-      knockBackForce_({0.0f, 0.0f}),
       curKnockBackVelocity_({0.0f, 0.0f}) {
 }
 
@@ -94,40 +93,8 @@ void MovementComponent::Tick(unsigned long long curTick) {
   // JUMP END
 
   // KNOCK BACK
-  // if (onKnockBack_) {
-  //  knockBackTimer_ += curTick;
-  //  float t = knockBackTimer_ / knockBackDuration_;
-
-  //  if (t >= 1.0f) {
-  //    t = 1.0f;
-  //    onKnockBack_ = false;
-  //  }
-
-  //  Vector newPostion = owner->GetPosition();
-  //  newPostion.X = Lerp(knockBackStartPos_.X, knockBackEndPos_.X, t);
-  //  owner->SetPosition(newPostion);
-  //}
-
-  // if (onStrongKnockBack_) {
-  //   knockBackTimer_ += curTick;
-  //   float t = knockBackTimer_ / strongKnockBackDuration_;
-
-  //  if (t >= 1.0f) {
-  //    t = 1.0f;
-
-  //    onStrongKnockBack_ = false;
-  //  }
-
-  //  Vector newPostion;
-  //  newPostion.X = Lerp(knockBackStartPos_.X, knockBackEndPos_.X, t);
-
-  //  float height = -4 * strongKnockBackHeight_ * (t - 0.5f) * (t - 0.5f) + strongKnockBackHeight_;
-  //  newPostion.Y = startPosition_.Y - height;
-
-  //  owner->SetPosition(newPostion);
-  //}
-
   if (onKnockBack_) {
+
     curKnockBackVelocity_.Y -= gravity_ * curTick;
     curKnockBackVelocity_.X -= airResistance_ * curTick;
     const Vector& ownerPosition = owner->GetPosition();
@@ -141,7 +108,7 @@ void MovementComponent::Tick(unsigned long long curTick) {
       newPosition.Y = startPosition_.Y;
       curKnockBackVelocity_.Y = 0.0f;
 
-      if (curKnockBackVelocity_.X <= 0.0f) {
+      if (curKnockBackVelocity_.X <= knockBackMinVelocity_) {
         curKnockBackVelocity_.X = 0;
         onKnockBack_ = false;
       }
@@ -200,14 +167,12 @@ void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, b
 void MovementComponent::Jump() {
   if (isGrounded_) {
     curJumpVelocity_ = normalJumpForce_;
-    // curJumpFowardVelocity_ = 0.0f;
     onJump_ = true;
   }
 }
 
 void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
   if (isGrounded_) {
-    // curJumpVelocity_ = jumpForce_;
     onJump_ = true;
 
     if (isRightDirection) {
@@ -251,37 +216,11 @@ void MovementComponent::BackStep(bool isRightDirection) {
   onBackStep_ = true;
 }
 
-void MovementComponent::KnockBack(bool isRightDirection) {
-  // if (false == isGrounded_) {
-  //   return;
-  // }
-
-  // Actor* owner = GetOwner();
-  // if (nullptr == owner) {
-  //   return;
-  // }
-
-  // knockBackTimer_ = 0.0f;
-
-  // if (isRightDirection)
-  //{
-  //   knockBackStartPos_ = owner->GetPosition();
-  //   knockBackEndPos_ = owner->GetPosition();
-  //   knockBackEndPos_.X -= knockBackDistance_;
-  // }
-  // else
-  //{
-  //   knockBackStartPos_ = owner->GetPosition();
-  //   knockBackEndPos_ = owner->GetPosition();
-  //   knockBackEndPos_.X += knockBackDistance_;
-  // }
-
-  // onKnockBack_ = true;
-
+void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
   if (isRightDirection) {
-    curKnockBackVelocity_ = {-knockBackForce_.X, knockBackForce_.Y};
+    curKnockBackVelocity_ = {-knockBackForce.X, knockBackForce.Y};
   } else {
-    curKnockBackVelocity_ = {knockBackForce_.X, knockBackForce_.Y};
+    curKnockBackVelocity_ = {knockBackForce.X, knockBackForce.Y};
   }
 
   if (onJump_) {
@@ -290,49 +229,3 @@ void MovementComponent::KnockBack(bool isRightDirection) {
 
   onKnockBack_ = true;
 }
-
-void MovementComponent::SetKnockBackForce(const Vector& knockBackForce) {
-  knockBackForce_ = knockBackForce;
-}
-
-// void MovementComponent::StrongKnockBack(bool isRightDirection) {
-//   if (false == isGrounded_) {
-//     return;
-//   }
-//
-//   Actor* owner = GetOwner();
-//   if (nullptr == owner) {
-//     return;
-//   }
-//
-//   knockBackTimer_ = 0.0f;
-//
-//
-//   if (isRightDirection)
-//   {
-//     knockBackStartPos_ = owner->GetPosition();
-//     knockBackEndPos_ = owner->GetPosition();
-//     knockBackEndPos_.X -= strongKnockBackDistance_;
-//   }
-//   else
-//   {
-//     knockBackStartPos_ = owner->GetPosition();
-//     knockBackEndPos_ = owner->GetPosition();
-//     knockBackEndPos_.X += strongKnockBackDistance_;
-//   }
-//   onStrongKnockBack_ = true;
-// }
-//
-// void MovementComponent::JumpKnockBack(bool isRightDirection) {
-//   //if (isGrounded_) {
-//   //  return;
-//   //}
-//   if (isRightDirection)
-//   {
-//     curJumpKnockBackVelocity_ = {-jumpKnockBackForce_.X, jumpKnockBackForce_.Y};
-//   } else {
-//     curJumpKnockBackVelocity_ = {jumpKnockBackForce_.X, jumpKnockBackForce_.Y};
-//   }
-//   onJump_ = false;
-//   onJumpKnockBack_ = true;
-// }

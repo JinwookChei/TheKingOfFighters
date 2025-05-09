@@ -12,7 +12,6 @@ KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
       pHealthComponent_(nullptr),
-      pHitHandlerComponent_(nullptr),
       pHitBoxTop_(nullptr),
       pHitBoxBottom_(nullptr),
       pAttackBox_(nullptr),
@@ -58,12 +57,6 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
     return;
   }
 
-  // HIT HANDLER
-  pHitHandlerComponent_ = CreateComponent<HitHandlerComponent>();
-  if (false == pHitHandlerComponent_->Initialize(pHealthComponent_, pMovementComponent_)) {
-    return;
-  }
-
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
   pHitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
@@ -95,12 +88,7 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
   return pHealthComponent_;
 }
 
-void KOFPlayer::ReceiveHitInfo(float damage, const Vector& knockBackForce) {
-  HitPacket hitPacket;
-  hitPacket.damage_ = damage;
-  hitPacket.knockBackForce_ = knockBackForce;
-
-  pHitHandlerComponent_->BroadcastHitPacket(hitPacket);
+void KOFPlayer::HitEvent(float damage, const Vector& knockBackForce) {
 }
 
 void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
@@ -112,11 +100,7 @@ void KOFPlayer::CommendUpdate() {
 void KOFPlayer::CollisionBoundUpdate() {
 }
 
-bool KOFPlayer::CollisionHitUpdate() {
-  return false;
-}
-
-bool KOFPlayer::CollisionAttackUpdate(Actor** outTarget) {
+bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
   CollisionComponent* pTargetCollision_Top = nullptr;
   if (true == pAttackBox_->Collision(
                   {
@@ -125,14 +109,8 @@ bool KOFPlayer::CollisionAttackUpdate(Actor** outTarget) {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetCollision_Top)) {
-    pTargetCollision_Top->OnHit();
 
-    Actor* pTargetOwner = pTargetCollision_Top->GetOwner();
-    if (pTargetOwner == nullptr) {
-      return false;
-    }
-    *outTarget = pTargetOwner;
-
+    *outTargetCollision = pTargetCollision_Top;
     return true;
   }
 
@@ -144,17 +122,12 @@ bool KOFPlayer::CollisionAttackUpdate(Actor** outTarget) {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetCollision_Bottom)) {
-    pTargetCollision_Bottom->OnHit();
 
-    Actor* pTargetOwner = pTargetCollision_Bottom->GetOwner();
-    if (pTargetOwner == nullptr) {
-      return false;
-    }
-    *outTarget = pTargetOwner;
-
+    *outTargetCollision = pTargetCollision_Bottom;
     return true;
   }
 
+  *outTargetCollision = nullptr;
   return false;
 }
 

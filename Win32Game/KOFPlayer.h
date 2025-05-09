@@ -36,14 +36,14 @@ class KOFPlayer
   ~KOFPlayer();
 
   virtual void BeginPlay() override;
-
+  
   void Tick(unsigned long long curTick) override;
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
   const HealthComponent* GetHealthComponent() const;
 
-  void ReceiveHitInfo(float damage, const Vector& knockBackForce);
+  virtual void HitEvent(float damage, const Vector& knockBackForce);
 
   virtual void InputUpdate(unsigned long long curTick);
 
@@ -51,9 +51,7 @@ class KOFPlayer
 
   virtual void CollisionBoundUpdate();
 
-  virtual bool CollisionHitUpdate();
-
-  virtual bool CollisionAttackUpdate(Actor** outTarget);
+  virtual bool CheckAttackCollision(CollisionComponent** outTargetCollision);
 
   virtual bool CollisionPushUpdate();
 
@@ -81,8 +79,6 @@ class KOFPlayer
   MovementComponent* pMovementComponent_;
 
   HealthComponent* pHealthComponent_;
-
-  HitHandlerComponent* pHitHandlerComponent_;
 
   CollisionComponent* pHitBoxTop_;
 

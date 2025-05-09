@@ -36,8 +36,6 @@ class Iori
 
   void CollisionBoundUpdate() override;
 
-  bool CollisionHitUpdate() override;
-
   // Command Skills
   void CommandSkill_1();
 

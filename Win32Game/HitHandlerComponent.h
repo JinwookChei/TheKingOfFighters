@@ -22,7 +22,7 @@ class HitHandlerComponent final
 
   //HitPacket GetHitInfo() const;
 
-  void BroadcastHitPacket(const HitPacket& hitPacket);
+  //void BroadcastHitPacket(const HitPacket& hitPacket);
 
   private:
   //HitPacket hitPacket_;

@@ -1,12 +1,5 @@
 #pragma once
 
-//enum MovementState
-//{
-//    MS_None = -1,
-//    MS_Idle = 0,
-//    MS_Move
-//};
-
 
 class MovementComponent final
     : public ActorComponent {
@@ -32,13 +25,7 @@ class MovementComponent final
 
   void BackStep(bool isRightDirection);
 
-  void KnockBack(bool isRightDirection);
-
-  void SetKnockBackForce(const Vector& knockBackForce);
-
-  //void StrongKnockBack(bool isRightDirection);
-
-  //void JumpKnockBack(bool isRightDirection);
+  void KnockBack(bool isRightDirection, const Vector& knockBackForce);
 
  private:
   Vector startPosition_;
@@ -71,26 +58,6 @@ class MovementComponent final
 
   // KNOCK BACK 
   bool onKnockBack_;
-  Vector knockBackForce_;
   Vector curKnockBackVelocity_;
-  
-
-  // ragacy
-  //bool onKnockBack_;
-  //float knockBackTimer_;
-  //const float knockBackDuration_ = 170.0f; // TODO : 넉백 애니메이션의 Duration이랑 맞춰야함.
-  //const float knockBackDistance_ = 280.0f;
-  //Vector knockBackStartPos_;
-  //Vector knockBackEndPos_;
-  //bool onStrongKnockBack_;
-  //const float strongKnockBackDuration_ = 530.0f; // TODO : 넉백 애니메이션의 Duration이랑 맞춰야함.
-  //const float strongKnockBackDistance_ = 800.0f;
-  //const float strongKnockBackHeight_ = 350.0f;
-  // TODO : 초기화.
-  //bool onJumpKnockBack_;
-  //Vector curJumpKnockBackVelocity_;
-  //const Vector jumpKnockBackForce_ = {30.0f, 0.0f};
-  //const float airResistance_ = 0.12f; // 아직 사용안함.
-  //const Vector jumpKnockBackForce_ = {30.0f, 0.0f};
-
+  const float knockBackMinVelocity_ = 10.0f;
 };
