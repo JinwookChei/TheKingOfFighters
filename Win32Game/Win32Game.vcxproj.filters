@@ -58,6 +58,9 @@
     <Filter Include="Contents\KOF\Common">
       <UniqueIdentifier>{283e86d7-ad13-499b-9ea7-cbcaeb2230da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Manager">
+      <UniqueIdentifier>{1fa86f26-bfbc-44c8-96d8-cb1a8250aa81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -161,9 +164,6 @@
     </ClCompile>
     <ClCompile Include="Health.cpp">
       <Filter>Contents\KOF\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="HitHandlerComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,9 +274,6 @@
     </ClInclude>
     <ClInclude Include="KOFCommon.h">
       <Filter>Contents\KOF\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="HitHandlerComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

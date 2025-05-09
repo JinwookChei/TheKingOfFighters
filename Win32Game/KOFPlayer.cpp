@@ -3,7 +3,6 @@
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "HealthComponent.h"
-#include "HitHandlerComponent.h"
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"

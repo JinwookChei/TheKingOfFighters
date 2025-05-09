@@ -124,8 +124,6 @@ void Actor::OnBeginPlay() {
 }
 
 void Actor::OnTick(unsigned long long curTick) {
-  Tick(curTick);
-
   LINK_ITEM* pCur = componentHead_;
   while (pCur) {
     ActorComponent* pCom = (ActorComponent*)pCur->item_;
@@ -137,6 +135,8 @@ void Actor::OnTick(unsigned long long curTick) {
 
     pCom->OnTick(curTick);
   }
+
+  Tick(curTick);
 }
 
 void Actor::SetCollisionTag(int newCollisionTag) {

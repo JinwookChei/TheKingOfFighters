@@ -173,7 +173,6 @@
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
-    <ClCompile Include="HitHandlerComponent.cpp" />
     <ClCompile Include="ImageController.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
@@ -214,7 +213,6 @@
     <ClInclude Include="Health.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="HitHandlerComponent.h" />
     <ClInclude Include="KOFCommon.h" />
     <ClInclude Include="Portrait.h" />
     <ClInclude Include="ImageController.h" />

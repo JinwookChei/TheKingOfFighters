@@ -120,6 +120,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Actor\Player</Filter>
     </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,7 @@
 #include <Win32Engine/CameraManager.h>
 #include <Win32Engine/EffectManager.h>
 #include <Win32Engine/SoundManager.h>
+#include <Win32Engine/TimeManager.h>
 
 #include "KOFCommon.h"
 #include "Types.h"

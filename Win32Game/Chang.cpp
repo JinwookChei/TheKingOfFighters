@@ -66,6 +66,8 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 void Chang::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
+  CollisionBoundUpdate();
+
   if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
 
@@ -74,7 +76,7 @@ void Chang::Tick(unsigned long long deltaTick) {
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
-  CollisionBoundUpdate();
+  
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
@@ -87,9 +89,8 @@ void Chang::Tick(unsigned long long deltaTick) {
       if (nullptr == pTargetPlayer) {
         return;
       }
-      pTargetCollision->OnHit();
-      pTargetPlayer->HitEvent(50.0f, {30.0f, 0.0f});
-      EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
+      
+      //
     }
   }
 

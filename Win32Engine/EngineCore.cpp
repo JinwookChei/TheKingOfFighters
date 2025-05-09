@@ -9,6 +9,7 @@ CameraManager* GCamera = nullptr;
 EffectManager* GEffectManager = nullptr;
 ImgManager* GImgManager = nullptr;
 SoundManager* GSound = nullptr;
+TimeManager* GTimeManager = nullptr;
 
 EngineCore::EngineCore()
     : application_(nullptr),
@@ -93,6 +94,14 @@ bool EngineCore::Initialize(IApplication* application) {
     return false;
   }
 
+  GTimeManager = new TimeManager;
+  if (nullptr == GTimeManager) {
+#ifdef _DEBUG
+    __debugbreak();
+#endif  // _DEBUG
+    return false;
+  }
+
   return true;
 }
 
@@ -152,6 +161,17 @@ void EngineCore::GameLoop(unsigned long long curTick) {
     return;
   } else if (20 <= deltaTick) {
     deltaTick = 16;
+  }
+
+  if (GTimeManager->onFrameFreeze_ == true) {
+    GTimeManager->curFreezeTime_ += deltaTick;
+
+    if (GTimeManager->curFreezeTime_ >= GTimeManager->freezeDuration_) {
+      GTimeManager->curFreezeTime_ = 0;
+      GTimeManager->onFrameFreeze_ = false;
+    } else {
+      return;
+    }
   }
 
   GInputManager->Tick(deltaTick);

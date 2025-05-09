@@ -73,6 +73,8 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 void Iori::Tick(unsigned long long deltaTick) {
   CollisionPushUpdate();
 
+  CollisionBoundUpdate();
+
   if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
 
@@ -81,7 +83,7 @@ void Iori::Tick(unsigned long long deltaTick) {
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
-  CollisionBoundUpdate();
+  
 
   // TODO : 두번 타격하는 버그 수정.
   CollisionComponent* pTargetCollision = nullptr;
@@ -97,7 +99,10 @@ void Iori::Tick(unsigned long long deltaTick) {
       }
       pTargetCollision->OnHit();
       pTargetPlayer->HitEvent(50.0f, {30.0f, 0.0f});
-      EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
+      TimeManager::Instance()->OnFrameFreeze(150);
+
+      // 이펙트도 여기서 스폰.
+      //EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
     }
   }
 

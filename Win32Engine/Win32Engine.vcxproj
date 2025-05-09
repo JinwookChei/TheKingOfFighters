@@ -177,6 +177,7 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="TextComponent.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="EngineCore.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="TextComponent.h" />
+    <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="EngineCore.h" />

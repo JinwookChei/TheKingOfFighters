@@ -30,12 +30,14 @@
 #include "CameraManager.h"
 #include "EffectManager.h"
 #include "SoundManager.h"
+#include "TimeManager.h"
 #include "EngineCore.h"
 
 
 extern ImgManager* GImgManager;
 extern InputManager* GInputManager;
 extern EffectManager* GEffectManager;
+extern TimeManager* GTimeManager;
 
 
 extern IGraphicDevice* GGraphicDevice;
