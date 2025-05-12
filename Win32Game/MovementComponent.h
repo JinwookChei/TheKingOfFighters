@@ -48,7 +48,7 @@ class MovementComponent final
   bool isGrounded_;
   bool onJump_;
   const float gravity_ = 0.36f;
-  const float airResistance_ = 0.12f;
+  const float airResistance_ = 0.06f;
 
   Vector curJumpVelocity_;
   const Vector normalJumpForce_ = {0.0f, 75.0f};
@@ -59,5 +59,5 @@ class MovementComponent final
   // KNOCK BACK 
   bool onKnockBack_;
   Vector curKnockBackVelocity_;
-  const float knockBackMinVelocity_ = 10.0f;
+  const float knockBackMinVelocity_ = 15.0f;
 };

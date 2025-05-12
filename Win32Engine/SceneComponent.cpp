@@ -21,7 +21,7 @@ const Vector& SceneComponent::GetScale() const {
   return transform_.GetScale();
 }
 
-Transform SceneComponent::GetTransform() const {
+Transform SceneComponent::GetBackBufferTransform() const {
   Transform newTransform = transform_;
 
   Actor* owner = GetOwner();
@@ -31,6 +31,21 @@ Transform SceneComponent::GetTransform() const {
     if (owner->UseCameraposition()) {
       actorPosition = GCamera->GetRenderPosition(actorPosition);
     }
+
+    newTransform.AddPostion(actorPosition);
+  }
+
+  newTransform.SetScale(newTransform.GetScale() * localScale_);
+
+  return newTransform;
+}
+
+Transform SceneComponent::GetWorldTransform() const {
+  Transform newTransform = transform_;
+
+  Actor* owner = GetOwner();
+  if (nullptr != owner) {
+    Vector actorPosition = owner->GetPosition();
 
     newTransform.AddPostion(actorPosition);
   }

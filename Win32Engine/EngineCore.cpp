@@ -163,6 +163,7 @@ void EngineCore::GameLoop(unsigned long long curTick) {
     deltaTick = 16;
   }
 
+  // TODO 
   if (GTimeManager->onFrameFreeze_ == true) {
     GTimeManager->curFreezeTime_ += deltaTick;
 
@@ -248,6 +249,11 @@ void EngineCore::Cleanup() {
   if (nullptr != GSound) {
     delete GSound;
     GSound = nullptr;
+  }
+
+  if (nullptr != GTimeManager) {
+    delete GTimeManager;
+    GTimeManager = nullptr;
   }
 
   if (nullptr != GGraphicDevice) {

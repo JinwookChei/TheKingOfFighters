@@ -225,7 +225,7 @@ void Level::OnRender() {
           continue;
         }
 
-        pActor->DebugRender(GGraphicDevice->GetBackBuffer());
+        pActor->OnDebugRender(GGraphicDevice->GetBackBuffer());
       }
     }
   }

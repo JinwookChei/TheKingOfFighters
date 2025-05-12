@@ -94,6 +94,8 @@ void Mouse::Tick(unsigned long long curTick) {
     }
     prevHoverCollision_ = nullptr;
   }
+
+  
 }
 
 void Mouse::SetImage(IImage* image) {

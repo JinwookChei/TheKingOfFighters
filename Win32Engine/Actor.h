@@ -98,7 +98,7 @@ class Actor {
  private:
   void OnRender(IRenderTexture* renderTexture) const;
 
-  void DebugRender(IRenderTexture* renderTexture) const;
+  void OnDebugRender(IRenderTexture* renderTexture) const;
 
   void OnCollisionRender(IRenderTexture* renderTexture) const;
 

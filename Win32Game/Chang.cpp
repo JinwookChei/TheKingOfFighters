@@ -105,13 +105,13 @@ void Chang::HitEvent(float damage, const Vector& knockBackForce) {
   pHealthComponent_->TakeDamage(damage);
 
   if (pHitBoxTop_->IsHit()) {
-    animState_ = PAS_HitTop;
+    animState_ = PAS_HitStrong;
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
     pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
   }
 
   if (pHitBoxBottom_->IsHit()) {
-    animState_ = PAS_HitBottom;
+    animState_ = PAS_HitStrong;
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
     pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
   }
@@ -186,73 +186,4 @@ void Chang::CommendUpdate() {
 }
 
 void Chang::SkillUpdate() {
-}
-
-void Chang::CollisionBoundUpdate() {
-  if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
-    return;
-  }
-
-  unsigned int imageIndex = pRender_->GetImageIndex();
-  IImage* pImage = pRender_->GetImage();
-  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
-    return;
-  }
-
-  IFileImage* pFileImage = (IFileImage*)pImage;
-  CollisionInfo* pCollisionInfo;
-
-  Vector actorPosition = GetPosition();
-  Vector imagePosition = pFileImage->RenderTransform(imageIndex).GetPosition();
-  Vector imageScale = pFileImage->GetScale(imageIndex);
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxTop, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pHitBoxTop_->SetActive(true);
-      pHitBoxTop_->SetPosition(pCollisionInfo->position_);
-      pHitBoxTop_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pHitBoxTop_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxBottom, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pHitBoxBottom_->SetActive(true);
-      pHitBoxBottom_->SetPosition(pCollisionInfo->position_);
-      pHitBoxBottom_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pHitBoxBottom_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_AttackBox, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pAttackBox_->SetActive(true);
-      pAttackBox_->SetPosition(pCollisionInfo->position_);
-      pAttackBox_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pAttackBox_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_PushBox, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pPushBox_->SetActive(true);
-      pPushBox_->SetPosition(pCollisionInfo->position_);
-      pPushBox_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pPushBox_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_GrabBox, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pGrabBox_->SetActive(true);
-      pGrabBox_->SetPosition(pCollisionInfo->position_);
-      pGrabBox_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pGrabBox_->SetActive(false);
-    }
-  }
 }

@@ -71,8 +71,9 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
-  CollisionPushUpdate();
 
+  CollisionPushUpdate();
+    
   CollisionBoundUpdate();
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
@@ -83,9 +84,6 @@ void Iori::Tick(unsigned long long deltaTick) {
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
 
-  
-
-  // TODO : 두번 타격하는 버그 수정.
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
     if (nullptr != pTargetCollision) {
@@ -98,11 +96,31 @@ void Iori::Tick(unsigned long long deltaTick) {
         return;
       }
       pTargetCollision->OnHit();
-      pTargetPlayer->HitEvent(50.0f, {30.0f, 0.0f});
-      TimeManager::Instance()->OnFrameFreeze(150);
+      pTargetPlayer->HitEvent(50.0f, {50.0f, 80.0f});
+      TimeManager::Instance()->OnFrameFreeze(200);
+
+
+      
+
+      // Calculate Effect Position.
+      Vector collisionSectionLeftTop = {
+          pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
+          pAttackBox_->GetCollisionInfo().Top() > pTargetCollision->GetCollisionInfo().Top() ? pAttackBox_->GetCollisionInfo().Top() : pTargetCollision->GetCollisionInfo().Top(),
+      };
+
+      Vector collisionSectionRightBottom = {
+          pAttackBox_->GetCollisionInfo().Right() < pTargetCollision->GetCollisionInfo().Right() ? pAttackBox_->GetCollisionInfo().Right() : pTargetCollision->GetCollisionInfo().Right(),
+          pAttackBox_->GetCollisionInfo().Bottom() < pTargetCollision->GetCollisionInfo().Bottom() ? pAttackBox_->GetCollisionInfo().Bottom() : pTargetCollision->GetCollisionInfo().Bottom(),
+      };
+
+      Vector effectPosition = {
+          (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
+          (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
+
+
 
       // 이펙트도 여기서 스폰.
-      //EffectManager::Instance()->SpawnEffect(GetLevel(), 1, GetPosition() + Vector{300.0f, -50.0f});
+      EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
     }
   }
 
@@ -226,70 +244,6 @@ void Iori::SkillUpdate() {
   prevImageIndex = curImageIndex;
 }
 
-void Iori::CollisionBoundUpdate() {
-  if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
-    return;
-  }
-
-  unsigned int imageIndex = pRender_->GetImageIndex();
-  IImage* pImage = pRender_->GetImage();
-  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
-    return;
-  }
-
-  IFileImage* pFileImage = (IFileImage*)pImage;
-  CollisionInfo* pCollisionInfo;
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxTop, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pHitBoxTop_->SetActive(true);
-      pHitBoxTop_->SetPosition(pCollisionInfo->position_);
-      pHitBoxTop_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pHitBoxTop_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_HitBoxBottom, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pHitBoxBottom_->SetActive(true);
-      pHitBoxBottom_->SetPosition(pCollisionInfo->position_);
-      pHitBoxBottom_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pHitBoxBottom_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_AttackBox, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pAttackBox_->SetActive(true);
-      pAttackBox_->SetPosition(pCollisionInfo->position_);
-      pAttackBox_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pAttackBox_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_PushBox, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pPushBox_->SetActive(true);
-      pPushBox_->SetPosition(pCollisionInfo->position_);
-      pPushBox_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pPushBox_->SetActive(false);
-    }
-  }
-
-  if (true == pFileImage->GetCollisionBoxInfo(imageIndex, CollisionBoxType::CBT_GrabBox, &pCollisionInfo)) {
-    if (true == pCollisionInfo->hasCollision_) {
-      pGrabBox_->SetActive(true);
-      pGrabBox_->SetPosition(pCollisionInfo->position_);
-      pGrabBox_->SetScale(pCollisionInfo->scale_);
-    } else {
-      pGrabBox_->SetActive(false);
-    }
-  }
-}
 
 void Iori::CommandSkill_1() {
   animState_ = PAS_Skill1;

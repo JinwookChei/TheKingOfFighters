@@ -184,7 +184,7 @@ void Actor::OnRender(IRenderTexture* renderTexture) const {
   }
 }
 
-void Actor::DebugRender(IRenderTexture* renderTexture) const {
+void Actor::OnDebugRender(IRenderTexture* renderTexture) const {
   if (nullptr == renderTexture) {
     return;
   }
@@ -221,19 +221,6 @@ void Actor::OnCollisionRender(IRenderTexture* renderTexture) const {
     pCur = pCur->next_;
     pItem->CollisionRender(renderTexture);
   }
-
-  // if (!debugParameter.on_) {
-  //   return;
-  // }
-
-  // Transform transform;
-  // transform.SetPosition(position_);
-
-  // GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
-
-  // renderTexture->DrawPoint(debugParameter.color_, debugParameter.linethickness_);
-
-  // GGraphicDevice->RenderImgEnd(renderTexture);
 }
 
 void Actor::SetLevel(Level* level) {

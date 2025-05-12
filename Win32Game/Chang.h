@@ -33,7 +33,6 @@ class Chang
 
   void SkillUpdate();
 
-  void CollisionBoundUpdate() override;
  private:
   unsigned int prevImageIndex;
 };

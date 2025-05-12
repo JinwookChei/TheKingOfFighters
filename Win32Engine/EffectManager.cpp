@@ -87,7 +87,7 @@ Effect* EffectManager::SpawnEffect(Level* level, unsigned long long effectTag, c
   }
 
 
-  Effect* newEffect = level->SpawnActor<Effect>(ActorGroupEngineType::ActorGroupEngineType_None);
+  Effect* newEffect = level->SpawnActor<Effect>(ActorGroupEngineType::ActorGroupEngineType_Effect);
   newEffect->SetPosition(position);
   newEffect->SetEffectInfo(pFind);
   newEffect->SetUseCameraposition(true);

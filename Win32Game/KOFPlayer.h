@@ -49,7 +49,7 @@ class KOFPlayer
 
   virtual void CommendUpdate();
 
-  virtual void CollisionBoundUpdate();
+  void CollisionBoundUpdate();
 
   virtual bool CheckAttackCollision(CollisionComponent** outTargetCollision);
 

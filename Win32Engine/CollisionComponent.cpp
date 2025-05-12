@@ -219,7 +219,7 @@ int CollisionComponent::GetCollisionGroup() const {
 }
 
 CollisionInfo CollisionComponent::GetCollisionInfo() const {
-  Transform transform = GetTransform();
+  Transform transform = GetWorldTransform();
   return CollisionInfo{.position_ = transform.GetPosition(), .scale_ = transform.GetScale(), .hasCollision_ = IsActive()};
 }
 
@@ -239,33 +239,13 @@ void CollisionComponent::OffHit() {
   isHit_ = false;
 }
 
-void CollisionComponent::DebugRender(IRenderTexture* renderTexture) {
-  // if (!parameter_.on_ || nullptr == renderTexture || false == isActive_) {
-  //   return;
-  // }
-
-  // Transform transform = GetTransform();
-
-  // GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
-
-  // renderTexture->DrawPoint(parameter_.color_, parameter_.linethickness_);
-
-  // if (parameter_.withRectangle_) {
-  //   renderTexture->DrawRectagle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
-  // }
-  // if (parameter_.withCircle_) {
-  //   renderTexture->DrawCircle(transform.GetScale(), parameter_.color_, parameter_.linethickness_);
-  // }
-
-  // GGraphicDevice->RenderImgEnd(renderTexture);
-}
 
 void CollisionComponent::CollisionRender(IRenderTexture* renderTexture) {
   if (!parameter_.on_ || nullptr == renderTexture || false == IsActive()) {
     return;
   }
 
-  Transform transform = GetTransform();
+  Transform transform = GetBackBufferTransform();
 
   GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
 

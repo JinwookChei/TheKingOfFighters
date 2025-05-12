@@ -147,7 +147,7 @@ void ImageRenderer::Render(IRenderTexture* renderTexture) {
     return;
   }
 
-  Transform renderTransform = GetTransform();
+  Transform renderTransform = GetBackBufferTransform();
   switch (imageRenderType_) {
     case ImageRenderType::Left:
       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});
@@ -321,7 +321,7 @@ void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
     return;
   }
 
-  Transform renderTransform = GetTransform();
+  Transform renderTransform = GetBackBufferTransform();
   switch (imageRenderType_) {
     case ImageRenderType::Left:
       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});

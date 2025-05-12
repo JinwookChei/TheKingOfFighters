@@ -55,7 +55,6 @@ class CollisionComponent final
   JO_API void OffHit();
 
  protected:
-  void DebugRender(struct IRenderTexture* renderTexture) override;
 
   void CollisionRender(IRenderTexture* renderTexture) override;
 
