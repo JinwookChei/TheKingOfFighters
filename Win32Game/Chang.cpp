@@ -33,7 +33,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(PAS_FrontWalk, 4, 23, 32, 50, true, 23);    // -> °È±â
   pRender_->CreateAnimation(PAS_BackWalk, 4, 32, 23, 50, true, 32);     // <- µÚ·Î°¡±â
   pRender_->CreateAnimation(PAS_BackStep, 4, 33, 35, 50, false, 0);     // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(PAS_RunStart, 4, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
+  pRender_->CreateAnimation(PAS_Run, 4, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
   pRender_->CreateAnimation(PAS_Jump, 4, 36, 42, 50, false, 0);         // Á¡ÇÁ
   pRender_->CreateAnimation(PAS_HeavyKick, 4, 82, 89, 50, false, 0);    // ¹ßÂ÷±â
   pRender_->CreateAnimation(PAS_HitTop, 4, 310, 314, 50, false, 0);     //
@@ -49,7 +49,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(-PAS_FrontWalk, -4, 23, 32, 50, true, 23);    // -> °È±â
   pRender_->CreateAnimation(-PAS_BackWalk, -4, 32, 23, 50, true, 32);     // <- µÚ·Î°¡±â
   pRender_->CreateAnimation(-PAS_BackStep, -4, 33, 35, 50, false, 0);     // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(-PAS_RunStart, -4, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
+  pRender_->CreateAnimation(-PAS_Run, -4, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
   pRender_->CreateAnimation(-PAS_Jump, -4, 36, 42, 50, false, 0);         // Á¡ÇÁ
   pRender_->CreateAnimation(-PAS_HeavyKick, -4, 82, 89, 50, false, 0);    // ¹ßÂ÷±â
   pRender_->CreateAnimation(-PAS_HitTop, -4, 310, 314, 50, false, 0);     //
@@ -143,7 +143,7 @@ void Chang::InputUpdate(unsigned long long curTick) {
       animState_ = PAS_BackWalk;
       pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
     } else {
-      if (animState_ == PAS_RunStart) {
+      if (animState_ == PAS_Run) {
         pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
       } else {
         animState_ = PAS_FrontWalk;
@@ -153,7 +153,7 @@ void Chang::InputUpdate(unsigned long long curTick) {
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
     if (FacingRight()) {
-      if (animState_ == PAS_RunStart) {
+      if (animState_ == PAS_Run) {
         pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
       } else {
         animState_ = PAS_FrontWalk;
@@ -168,7 +168,7 @@ void Chang::InputUpdate(unsigned long long curTick) {
     if (PAS_FrontWalk == animState_) {
       pMovementComponent_->JumpForward(FacingRight(), false);
       animState_ = PAS_Jump;
-    } else if (PAS_RunStart == animState_) {
+    } else if (PAS_Run == animState_) {
       pMovementComponent_->JumpForward(FacingRight(), true);
       animState_ = PAS_Jump;
     } else if (PAS_BackWalk == animState_) {

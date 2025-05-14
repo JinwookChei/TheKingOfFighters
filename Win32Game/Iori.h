@@ -32,7 +32,7 @@ class Iori
 
   void CommendUpdate() override;
 
-  void SkillUpdate();
+  virtual void TriggerEventAtAnimationIndex() override;
 
   // Command Skills
   void CommandSkill_1();

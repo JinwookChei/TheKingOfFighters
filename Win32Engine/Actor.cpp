@@ -187,7 +187,10 @@ void Actor::OnRender(IRenderTexture* renderTexture) const {
   while (pCur) {
     ImageRenderer* pRender = (ImageRenderer*)pCur->item_;
     pCur = pCur->next_;
-    pRender->Render(renderTexture);
+
+    if (pRender->IsActive()) {
+      pRender->Render(renderTexture);
+    }
   }
 }
 

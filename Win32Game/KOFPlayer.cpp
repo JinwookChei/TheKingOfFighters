@@ -251,6 +251,9 @@ void KOFPlayer::CollisionReset() {
   pGrabBox_->OffHit();
 }
 
+void KOFPlayer::TriggerEventAtAnimationIndex() {
+}
+
 Vector KOFPlayer::CharacterScale() const {
   return characterScale_;
 }

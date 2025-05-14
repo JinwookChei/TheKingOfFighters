@@ -93,10 +93,13 @@ class GhostEffect final
 
   void SetTransparentColor(const Color8Bit& transColor);
 
- private:
- public:
-  Actor* owner_;
+  void On();
 
+  void Off();
+
+ private:
+  Actor* owner_;
+  
   ImageRenderer* pOwnerRenderer_;
 
   ImageRenderer** ppGhostRenderers_;

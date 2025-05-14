@@ -16,7 +16,7 @@ enum PlayerAnimState {
   PAS_FrontWalk,
   PAS_BackWalk,
   PAS_BackStep,
-  PAS_RunStart,
+  PAS_Run,
   PAS_RunEnd,
   PAS_Jump,
   PAS_HeavyPunch,
@@ -59,6 +59,8 @@ class KOFPlayer
   virtual bool CollisionPushUpdate();
 
   void CollisionReset();
+
+  virtual void TriggerEventAtAnimationIndex();
 
   virtual Vector CharacterScale() const;
 

@@ -19,6 +19,7 @@ GhostEffect::~GhostEffect() {
 }
 
 void GhostEffect::BeginPlay() {
+  Off();
 }
 
 void GhostEffect::Tick(unsigned long long deltaTick) {
@@ -84,4 +85,18 @@ void GhostEffect::SetTransparentColor(const Color8Bit& transColor) {
   for (int i = 0; i < ghostNum_; ++i) {
     ppGhostRenderers_[i]->SetTransparentColor(transColor);
   };
+}
+
+void GhostEffect::On() {
+  SetActive(true);
+  for (int i = 0; i < ghostNum_; ++i) {
+    ppGhostRenderers_[i]->SetActive(true);
+  }
+}
+
+void GhostEffect::Off() {
+  for (int i = 0; i < ghostNum_; ++i) {
+    ppGhostRenderers_[i]->SetActive(false);
+  }
+  SetActive(false);
 }
