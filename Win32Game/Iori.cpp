@@ -4,7 +4,9 @@
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "HealthComponent.h"
+#include "GhostEffect.h"
 #include "CollisionBox.h"
+
 #include "Iori.h"
 
 Iori::Iori()
@@ -29,26 +31,28 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 
   // RENDERER
   pRender_->CreateAnimation(PAS_Idle, 3, 7, 15, 50, true, 7);             // ¾ÆÀÌµé
-  pRender_->CreateAnimation(PAS_Seat, 3, 16, 23, 50, true, 18);           // ¾É±â.
+  pRender_->CreateAnimation(PAS_SeatDown, 3, 16, 23, 50, true, 18);       // ¾É±â. Down
+  pRender_->CreateAnimation(PAS_SeatUp, 3, 24, 25, 50, false, 24);        // ¾É±â. Up
   pRender_->CreateAnimation(PAS_FrontWalk, 3, 27, 34, 50, true, 27);      // -> °È±â
   pRender_->CreateAnimation(PAS_BackWalk, 3, 35, 44, 50, true, 35);       // <- µÚ·Î°¡±â
   pRender_->CreateAnimation(PAS_BackStep, 3, 45, 48, 50, false, 45);      // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(PAS_Run, 3, 49, 58, 50, true, 51);            // ->-> ¶Ù±â
+  pRender_->CreateAnimation(PAS_RunStart, 3, 49, 57, 50, true, 51);       // ->-> ¶Ù±â Start
+  pRender_->CreateAnimation(PAS_RunEnd, 3, 58, 60, 50, false, 59);        // ->-> ¶Ù±â Stop
   pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);          // Á¡ÇÁ
   pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);  // ¹ßÂ÷±â
   pRender_->CreateAnimation(PAS_Skill1, 3, 223, 230, 50, false, 223);     // Ä¿¸Çµå Å×½ºÆ®.
 
   pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);             // ¾ÆÀÌµé
-  pRender_->CreateAnimation(-PAS_Seat, -3, 16, 23, 50, true, 18);           // ¾É±â.
+  pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);       // ¾É±â.
   pRender_->CreateAnimation(-PAS_FrontWalk, -3, 27, 34, 50, true, 27);      // -> °È±â
   pRender_->CreateAnimation(-PAS_BackWalk, -3, 35, 44, 50, true, 35);       // <- µÚ·Î°¡±â
   pRender_->CreateAnimation(-PAS_BackStep, -3, 45, 48, 50, false, 45);      // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(-PAS_Run, -3, 49, 58, 50, true, 51);            // ->-> ¶Ù±â
+  pRender_->CreateAnimation(-PAS_RunStart, -3, 49, 58, 50, true, 51);       // ->-> ¶Ù±â
   pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false, 61);          // Á¡ÇÁ
   pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false, 108);  // ¹ßÂ÷±â
   pRender_->CreateAnimation(-PAS_Skill1, -3, 223, 230, 50, false, 223);     // Ä¿¸Çµå Å×½ºÆ®.
 
-  pRender_->SetTransparentColor(Color8Bit{169, 139, 150, 0});
+  pRender_->SetTransparentColor(ioriTransparentColor);
   pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
 
   // COMMAND
@@ -68,12 +72,17 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
     return;
   }
+
+  // GHOST EFFECT
+  pGhostEffect_->SetTransparentColor(ioriTransparentColor);
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
 
+
+
   CollisionPushUpdate();
-    
+
   CollisionBoundUpdate();
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
@@ -99,9 +108,6 @@ void Iori::Tick(unsigned long long deltaTick) {
       pTargetPlayer->HitEvent(50.0f, {50.0f, 80.0f});
       TimeManager::Instance()->OnFrameFreeze(200);
 
-
-      
-
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {
           pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
@@ -117,8 +123,6 @@ void Iori::Tick(unsigned long long deltaTick) {
           (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
-
-
       // ÀÌÆåÆ®µµ ¿©±â¼­ ½ºÆù.
       EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
     }
@@ -133,12 +137,19 @@ void Iori::Tick(unsigned long long deltaTick) {
 
 void Iori::InputUpdate(unsigned long long curTick) {
   if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') &&
+      false == InputManager::Instance()->IsUp('A') && false == InputManager::Instance()->IsUp('a') &&
       false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d') &&
+      false == InputManager::Instance()->IsUp('D') && false == InputManager::Instance()->IsUp('d') &&
       false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w') &&
+      false == InputManager::Instance()->IsUp('W') && false == InputManager::Instance()->IsUp('w') &&
       false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') &&
+      false == InputManager::Instance()->IsUp('S') && false == InputManager::Instance()->IsUp('s') &&
       false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') &&
+      false == InputManager::Instance()->IsUp('F') && false == InputManager::Instance()->IsUp('f') &&
       false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') &&
-      false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e')) {
+      false == InputManager::Instance()->IsUp('Q') && false == InputManager::Instance()->IsUp('q') &&
+      false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e') &&
+      false == InputManager::Instance()->IsUp('E') && false == InputManager::Instance()->IsUp('e')) {
     animState_ = PAS_Idle;
     return;
   }
@@ -148,7 +159,7 @@ void Iori::InputUpdate(unsigned long long curTick) {
       animState_ = PAS_BackWalk;
       pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
     } else {
-      if (animState_ == PAS_Run) {
+      if (animState_ == PAS_RunStart) {
         pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
       } else {
         animState_ = PAS_FrontWalk;
@@ -156,9 +167,15 @@ void Iori::InputUpdate(unsigned long long curTick) {
       }
     }
   }
+
+  if (InputManager::Instance()->IsUp('A') || InputManager::Instance()->IsUp('a')) {
+    if (FacingRight()) {
+    }
+  }
+
   if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
     if (FacingRight()) {
-      if (animState_ == PAS_Run) {
+      if (animState_ == PAS_RunStart) {
         pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
       } else {
         animState_ = PAS_FrontWalk;
@@ -169,11 +186,20 @@ void Iori::InputUpdate(unsigned long long curTick) {
       pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
     }
   }
+
+  if (InputManager::Instance()->IsUp('D') || InputManager::Instance()->IsUp('d')) {
+    if (FacingRight()) {
+      if (PAS_RunStart == animState_) {
+        animState_ = PAS_RunEnd;
+      }
+    }
+  }
+
   if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
     if (PAS_FrontWalk == animState_) {
       pMovementComponent_->JumpForward(FacingRight(), false);
       animState_ = PAS_Jump;
-    } else if (PAS_Run == animState_) {
+    } else if (PAS_RunStart == animState_) {
       pMovementComponent_->JumpForward(FacingRight(), true);
       animState_ = PAS_Jump;
     } else if (PAS_BackWalk == animState_) {
@@ -185,7 +211,13 @@ void Iori::InputUpdate(unsigned long long curTick) {
     }
   }
   if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-    animState_ = PAS_Seat;
+    animState_ = PAS_SeatDown;
+  }
+
+  if (InputManager::Instance()->IsUp('S') || InputManager::Instance()->IsUp('s')) {
+    if (PAS_SeatDown == animState_) {
+      animState_ = PAS_SeatUp;
+    }
   }
   if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
     animState_ = PAS_HeavyKick;
@@ -244,7 +276,6 @@ void Iori::SkillUpdate() {
   prevImageIndex = curImageIndex;
 }
 
-
 void Iori::CommandSkill_1() {
   animState_ = PAS_Skill1;
 }
@@ -255,5 +286,5 @@ void Iori::CommandSkill_2() {
 }
 
 void Iori::CommandSkill_3() {
-  animState_ = PAS_Run;
+  animState_ = PAS_RunStart;
 }

@@ -17,7 +17,7 @@ Mouse::~Mouse() {
 }
 
 void Mouse::BeginPlay() {
-  imageRener_ = CreateImageRender();
+  imageRener_ = CreateImageRenderFIFO();
   imageRener_->SetImageRenderType(ImageRenderType::Top);
 
   collision_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_MOUSE);

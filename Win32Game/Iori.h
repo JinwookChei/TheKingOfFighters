@@ -41,6 +41,11 @@ class Iori
 
   void CommandSkill_3();
 
+  // Sprite
+  ImageRenderer* spriteRenderer_[10];
+
+
+
  private:
   unsigned int prevImageIndex;
 

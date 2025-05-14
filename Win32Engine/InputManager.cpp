@@ -105,6 +105,7 @@ unsigned long long InputManager::PressTime(int key) {
 bool InputManager::IsUp(int key) {
   InputState* pFind = nullptr;
   if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+
     return false;
   }
 

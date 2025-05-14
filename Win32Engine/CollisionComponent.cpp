@@ -245,7 +245,7 @@ void CollisionComponent::CollisionRender(IRenderTexture* renderTexture) {
     return;
   }
 
-  Transform transform = GetBackBufferTransform();
+  Transform transform = GetViewTransform();
 
   GGraphicDevice->RenderImgStart(transform, 0.0f, renderTexture);
 

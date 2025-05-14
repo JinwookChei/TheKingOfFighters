@@ -61,7 +61,9 @@ class Actor {
 
   JO_API unsigned int GetActorGroup() const;
 
-  JO_API ImageRenderer* CreateImageRender();
+  JO_API ImageRenderer* CreateImageRenderFIFO();
+
+  JO_API ImageRenderer* CreateImageRenderLIFO();
 
   JO_API CollisionComponent* CreateCollision(unsigned int collisionGroup);
 

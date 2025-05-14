@@ -133,9 +133,17 @@ void ImageRenderer::SetAlpha(float alpha) {
   alpha_ = alpha;
 }
 
+Color8Bit ImageRenderer::GetTransparentColor() const {
+  return transparentColor_;
+}
+
 void ImageRenderer::SetTransparentColor(const Color8Bit& color) {
   isAlpha_ = false;
   transparentColor_ = color;
+}
+
+ImageRenderType ImageRenderer::GetImageRenderType() const {
+  return imageRenderType_;
 }
 
 void ImageRenderer::SetImageRenderType(ImageRenderType newType) {
@@ -146,8 +154,7 @@ void ImageRenderer::Render(IRenderTexture* renderTexture) {
   if (nullptr == image_ || nullptr == renderTexture) {
     return;
   }
-
-  Transform renderTransform = GetBackBufferTransform();
+  Transform renderTransform = GetViewTransform();
   switch (imageRenderType_) {
     case ImageRenderType::Left:
       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});
@@ -194,7 +201,8 @@ void ImageRenderer::Render(IRenderTexture* renderTexture) {
   }
 
   // 나중에 디버깅 모드로 무언가 그리기 모드를 켰을경우 이곳에서 그리기 작업
-  // GGraphicDevice->DrawRectagle({100.0f, 100.0f}, Color8Bit::RedAlpha, 10.0f);
+  // Actor* owner = GetOwner();
+  // GGraphicDevice->DrawRectagle(owner->GetPosition(), Color8Bit::RedAlpha, 1.0f);
 
   GGraphicDevice->RenderImgEnd(renderTexture);
 }
@@ -321,7 +329,7 @@ void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
     return;
   }
 
-  Transform renderTransform = GetBackBufferTransform();
+  Transform renderTransform = GetViewTransform();
   switch (imageRenderType_) {
     case ImageRenderType::Left:
       renderTransform.AddPostion({renderTransform.GetScale().HalfX(), 0.0f});

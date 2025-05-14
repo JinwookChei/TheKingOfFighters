@@ -186,6 +186,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ReadButton.cpp" />
+    <ClCompile Include="GhostEffect.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -226,6 +227,7 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="ReadButton.h" />
+    <ClInclude Include="GhostEffect.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="ToolActor.h" />

@@ -34,7 +34,7 @@ UI::~UI() {
 void UI::BeginPlay() { 
   SetDebugParameter({.on_ = true, .linethickness_ = 5.0f});
   SetActorGroup(ActorGroupEngineType::ActorGroupEngineType_UI);
-  imageRenderer_ = CreateImageRender();
+  imageRenderer_ = CreateImageRenderFIFO();
   imageRenderer_->SetAlpha(1.0f);
   imageRenderer_->SetImageRenderType(ImageRenderType::Center);
 

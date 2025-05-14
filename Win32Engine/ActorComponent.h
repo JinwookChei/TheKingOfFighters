@@ -22,7 +22,7 @@ class ActorComponent {
 
   JO_API virtual void BeginPlay();
 
-  JO_API virtual void Tick(unsigned long long curTick);
+  JO_API virtual void Tick(unsigned long long deltaTick);
 
   JO_API virtual bool IsActive() const;
 

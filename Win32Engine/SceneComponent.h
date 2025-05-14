@@ -17,7 +17,7 @@ class SceneComponent
 
   JO_API const Vector& GetScale() const;
 
-  JO_API Transform GetBackBufferTransform() const;
+  JO_API Transform GetViewTransform() const;
 
   JO_API Transform GetWorldTransform() const;
 

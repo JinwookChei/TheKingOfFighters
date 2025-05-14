@@ -21,7 +21,7 @@ const Vector& SceneComponent::GetScale() const {
   return transform_.GetScale();
 }
 
-Transform SceneComponent::GetBackBufferTransform() const {
+Transform SceneComponent::GetViewTransform() const {
   Transform newTransform = transform_;
 
   Actor* owner = GetOwner();

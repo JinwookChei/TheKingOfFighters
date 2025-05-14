@@ -3,6 +3,7 @@
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "HealthComponent.h"
+#include "GhostEffect.h"
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
@@ -18,6 +19,7 @@ KOFPlayer::KOFPlayer()
       pGrabBox_(nullptr),
       pCommandComponent_(nullptr),
       pProjectileComponent_(nullptr),
+      pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
       animState_(0),
       isFacingRight_(true),
@@ -30,7 +32,7 @@ KOFPlayer::~KOFPlayer() {
 void KOFPlayer::BeginPlay() {
 }
 
-void KOFPlayer::Tick(unsigned long long curTick) {
+void KOFPlayer::Tick(unsigned long long deltaTick) {
 }
 
 void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight) {
@@ -40,7 +42,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   SetFacingRight(isFacingRight);
 
   // RENDERER
-  pRender_ = CreateImageRender();
+  pRender_ = CreateImageRenderFIFO();
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetLocalScale({4.5f, 4.5f});
 
@@ -70,6 +72,12 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();
   if (false == pProjectileComponent_->Initialize(GetLevel())) {
+    return;
+  }
+
+  // GHOST EFFECT
+  pGhostEffect_ = CreateComponent<GhostEffect>();
+  if (false == pGhostEffect_->Initialize(pRender_, 5, 30)) {
     return;
   }
 
@@ -170,7 +178,6 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetCollision_Top)) {
-
     *outTargetCollision = pTargetCollision_Top;
     return true;
   }
@@ -183,7 +190,6 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetCollision_Bottom)) {
-
     *outTargetCollision = pTargetCollision_Bottom;
     return true;
   }

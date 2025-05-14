@@ -165,6 +165,9 @@
     <ClCompile Include="Health.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GhostEffect.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="KOFCommon.h">
       <Filter>Contents\KOF\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostEffect.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

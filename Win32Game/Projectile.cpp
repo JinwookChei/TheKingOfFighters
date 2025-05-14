@@ -67,7 +67,7 @@ void Projectile::Tick(unsigned long long curTick) {
 bool Projectile::Initialize() {
   SetPosition(owner_->GetPosition() + projectileInfo_.position_);
 
-  pRender_ = CreateImageRender();
+  pRender_ = CreateImageRenderFIFO();
   IImage* pImage = ImgManager::GetIntance()->GetImg(projectileInfo_.imageIndex_);
   if (nullptr == pImage) {
     return false;

@@ -53,9 +53,6 @@ void Button::Render(IRenderTexture* renderTexture) {
 
   renderTexture->Transparent(image_, 0, transform.GetScale(), Color8Bit::White);
   renderTexture->SetAlpha(1.0f, transform, true, owner->GetCurrentColor());
-
-  // renderTexture->DrawLine(Color8Bit::BlackAlpha, {0.0f, -owner->GetScale().HalfY()}, {0.0f, owner->GetScale().HalfY()}, 2.0f);
-  // renderTexture->DrawLine(Color8Bit::BlackAlpha, {-owner->GetScale().HalfX(), 0.0f}, {owner->GetScale().HalfX(), 0.0f}, 2.0f);
 }
 
 void Button::Tick(unsigned long long curTick) {

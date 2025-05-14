@@ -56,7 +56,11 @@ class ImageRenderer
 
   JO_API void SetAlpha(float alpha);
 
+  JO_API Color8Bit GetTransparentColor() const;
+
   JO_API void SetTransparentColor(const Color8Bit& color);
+
+  JO_API ImageRenderType GetImageRenderType() const;
 
   JO_API void SetImageRenderType(ImageRenderType newType);
 
@@ -68,16 +72,16 @@ class ImageRenderer
 
   JO_API bool CreateAnimation(
       unsigned long long animationTag,
-      unsigned long long imageIndex, 
-      unsigned int startIndex, 
-      unsigned int endIndex, 
-      unsigned long long interval, 
+      unsigned long long imageIndex,
+      unsigned int startIndex,
+      unsigned int endIndex,
+      unsigned long long interval,
       bool loop,
       unsigned long long loopStartFrame);
 
   JO_API bool CreateAnimation(
       unsigned long long animationTag,
-      unsigned long long imageIndex, 
+      unsigned long long imageIndex,
       const std::vector<unsigned int>& indices,
       unsigned long long interval,
       bool loop,
@@ -87,7 +91,7 @@ class ImageRenderer
       unsigned long long animationTag,
       unsigned long long imageIndex,
       const std::vector<unsigned int>& indices,
-      const std::vector<unsigned long long> intervals, 
+      const std::vector<unsigned long long> intervals,
       bool loop,
       unsigned long long loopStartFrame);
 
@@ -98,7 +102,7 @@ class ImageRenderer
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 
-  //void CollisionRender(IRenderTexture* renderTexture) override;
+  // void CollisionRender(IRenderTexture* renderTexture) override;
 
  private:
   IImage* image_;
@@ -108,7 +112,7 @@ class ImageRenderer
   LINK_ITEM sceneLink_;
 
   LINK_ITEM renderActorLink_;
-  
+
   ImageRenderType imageRenderType_;
 
   float alpha_;

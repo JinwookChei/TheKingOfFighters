@@ -15,7 +15,7 @@ Effect::~Effect() {
 }
 
 bool Effect::Initialize() {
-  pRender_ = CreateImageRender();
+  pRender_ = CreateImageRenderFIFO();
 
   IImage* pImage = ImgManager::GetIntance()->GetImg(pEffectInfo_->imageIndex_);
   if (nullptr == pImage) {

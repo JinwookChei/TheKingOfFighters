@@ -22,7 +22,7 @@ void ToolActor::BeginPlay() {
     return;
   }
 
-  pRender_ = CreateImageRender();
+  pRender_ = CreateImageRenderFIFO();
   pRender_->SetImageRenderType(ImageRenderType::Center);
 
   pRender_->SetTransparentColor(transColor);  //

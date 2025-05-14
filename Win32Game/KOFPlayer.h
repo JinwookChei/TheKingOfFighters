@@ -6,15 +6,18 @@ class CommandComponent;
 class ProjectileComponent;
 class HealthComponent;
 class HitHandlerComponent;
+class GhostEffect;
 
 enum PlayerAnimState {
   PAS_Start = 0,
   PAS_Idle,
-  PAS_Seat,
+  PAS_SeatDown,
+  PAS_SeatUp,
   PAS_FrontWalk,
   PAS_BackWalk,
   PAS_BackStep,
-  PAS_Run,
+  PAS_RunStart,
+  PAS_RunEnd,
   PAS_Jump,
   PAS_HeavyPunch,
   PAS_LightPunch,
@@ -37,7 +40,7 @@ class KOFPlayer
 
   virtual void BeginPlay() override;
   
-  void Tick(unsigned long long curTick) override;
+  void Tick(unsigned long long deltaTick) override;
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
@@ -45,7 +48,7 @@ class KOFPlayer
 
   virtual void HitEvent(float damage, const Vector& knockBackForce);
 
-  virtual void InputUpdate(unsigned long long curTick);
+  virtual void InputUpdate(unsigned long long deltaTick);
 
   virtual void CommendUpdate();
 
@@ -93,6 +96,8 @@ class KOFPlayer
   CommandComponent* pCommandComponent_;
 
   ProjectileComponent* pProjectileComponent_;
+
+  GhostEffect* pGhostEffect_;
 
   Vector characterScale_;
 

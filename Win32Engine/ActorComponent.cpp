@@ -17,7 +17,7 @@ Actor* ActorComponent::GetOwner() const {
 void ActorComponent::BeginPlay() {
 }
 
-void ActorComponent::Tick(unsigned long long curTick) {
+void ActorComponent::Tick(unsigned long long deltaTick) {
 }
 
 bool ActorComponent::IsActive() const {

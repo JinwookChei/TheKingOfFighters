@@ -51,16 +51,8 @@ class HashTable final {
 
   MATH_API bool Initialize(unsigned int maxBucketCount, unsigned int maxKeySize);
 
-  // Player* selectPlayer[10] = {nullptr, };
-  // 8 = Select((void**)selectPlayer, 10, "A", 1);
-  // for
-
-  // Player* selectPlayer = nullptr;
-  // 1 = Select((void**)&selectPlayer, 1, "A", 1);
-
   MATH_API unsigned int Select(void** ppOutItemList, unsigned int maxItemCount, const void* keyData, unsigned int keySize, unsigned int startIndex = 0);
 
-  // pItem == Player* / pKeyData == int
   MATH_API void* Insert(const void* pItem, const void* pKeyData, unsigned int keySize);
 
   MATH_API void Delete(const void* searchHandle);

@@ -93,11 +93,18 @@ unsigned int Actor::GetActorGroup() const {
   return actorGroup_;
 }
 
-ImageRenderer* Actor::CreateImageRender() {
+ImageRenderer* Actor::CreateImageRenderFIFO() {
   ImageRenderer* newImage = CreateComponent<ImageRenderer>();
 
   LinkToLinkedListFIFO(&renderHead_, &renderTail_, newImage->GetRenderActorLink());
 
+  return newImage;
+}
+
+ImageRenderer* Actor::CreateImageRenderLIFO() {
+  ImageRenderer* newImage = CreateComponent<ImageRenderer>();
+
+  LinkToLinkedList(&renderHead_, &renderTail_, newImage->GetRenderActorLink());
   return newImage;
 }
 
