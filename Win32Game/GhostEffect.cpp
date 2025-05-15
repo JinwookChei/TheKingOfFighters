@@ -7,6 +7,8 @@ GhostEffect::GhostEffect()
       pOwnerRenderer_(nullptr),
       ppGhostRenderers_(nullptr),
       ghostNum_(0),
+      isRenderOn_(false),
+      renderOnCount_(0),
       updateTime_(0),
       accumulTime_(0) {
 }
@@ -19,7 +21,8 @@ GhostEffect::~GhostEffect() {
 }
 
 void GhostEffect::BeginPlay() {
-  Off();
+  isRenderOn_ = false;
+  SetActive(false);
 }
 
 void GhostEffect::Tick(unsigned long long deltaTick) {
@@ -37,6 +40,22 @@ void GhostEffect::Tick(unsigned long long deltaTick) {
 
     ghostBuffer_.Update(spriteInfo);
     accumulTime_ = 0;
+
+    if (isRenderOn_) {
+      if (renderOnCount_ < ghostNum_) {
+        ppGhostRenderers_[ghostNum_ - renderOnCount_ - 1]->SetActive(true);
+        ++renderOnCount_;
+      }
+    } else {
+      if (renderOnCount_ > 0 && renderOnCount_ <= ghostNum_) {
+        --renderOnCount_;
+        ppGhostRenderers_[renderOnCount_]->SetActive(false);
+      }
+
+      if (renderOnCount_ == 0) {
+        SetActive(false);
+      }
+    }
   }
 
   for (int i = 0; i < ghostNum_; ++i) {
@@ -88,15 +107,11 @@ void GhostEffect::SetTransparentColor(const Color8Bit& transColor) {
 }
 
 void GhostEffect::On() {
+  renderOnCount_ = 0;
+  isRenderOn_ = true;
   SetActive(true);
-  for (int i = 0; i < ghostNum_; ++i) {
-    ppGhostRenderers_[i]->SetActive(true);
-  }
 }
 
 void GhostEffect::Off() {
-  for (int i = 0; i < ghostNum_; ++i) {
-    ppGhostRenderers_[i]->SetActive(false);
-  }
-  SetActive(false);
+  isRenderOn_ = false;
 }

@@ -108,6 +108,10 @@ class GhostEffect final
 
   int ghostNum_;
 
+  bool isRenderOn_;
+
+  int renderOnCount_;
+
   unsigned long long updateTime_;
 
   unsigned long long accumulTime_;
