@@ -1,15 +1,9 @@
 #pragma once
 
-//enum IoriAnimState {
-//  IOAS_None = 0,
-//  IOAS_IDle,
-//  IOAS_Seat,
-//  IOAS_Walk,
-//  IOAS_BackWalk,
-//  IOAS_Jump,
-//  IOAS_Kick,
-//  IOAS_SUperKick
-//};
+enum IoriAnimState {
+  IOAS_MONGTAN_1 = PAS_MAX + 1,
+  IOAS_MONGTAN_2,
+};
 
 
 class CommandComponent;
