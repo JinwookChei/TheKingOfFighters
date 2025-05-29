@@ -84,10 +84,15 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
+  CommendUpdate();
+
   if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
 
-    CommendUpdate();
+    if (true == pCommandComponent_->isWaitingTask())
+    {
+      pCommandComponent_->ExcuteTask();
+    }
 
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
@@ -187,14 +192,6 @@ void Iori::InputUpdate(unsigned long long curTick) {
       {
         if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
           animState_ = IOAS_MONGTAN_1;
-        }
-      }
-
-      unsigned int curImageIndex = pRender_->GetImageIndex();
-      if (animState_ == IOAS_MONGTAN_1 && curImageIndex == )
-      {
-        if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
-          animState_ = IOAS_MONGTAN_2;
         }
       }
     } else {

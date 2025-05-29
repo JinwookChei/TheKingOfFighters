@@ -39,8 +39,6 @@ class Iori
   // Sprite
   ImageRenderer* spriteRenderer_[10];
 
-
-
  private:
   unsigned int prevImageIndex;
 

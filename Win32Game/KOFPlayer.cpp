@@ -67,7 +67,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
-  pCommandComponent_->SetTimeOutThreshold(100);
+  pCommandComponent_->SetTimeOutThreshold(100, 400);
 
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();

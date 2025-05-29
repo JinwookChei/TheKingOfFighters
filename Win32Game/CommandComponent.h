@@ -32,19 +32,10 @@ struct CommandNode {
     }
   }
 
-  void ExcuteTask() {
-    if ( nullptr != Task_) {
-      Task_();
-    }
-  }
-
   CommandNode* pSubNodes[CommandKey::CK_MAX];
 
-  //void (Player::*Task_)();
   std::function<void()> Task_;
-
 };
-
 
 // TODO : 커맨드 버퍼 시스템을 만들어야함.
 class CommandComponent
@@ -61,21 +52,28 @@ class CommandComponent
 
   bool RegistCommend(std::initializer_list<CommandKey> command, std::function<void()> func);
 
-  void* GetTask() const;
+  bool isWaitingTask() const;
+
+  void ExcuteTask();
 
   void JumpNode(CommandKey key);
 
-  void SetTimeOutThreshold(unsigned long long threshold);
+  void SetTimeOutThreshold(unsigned long long inputTimeThreshold, unsigned long long waitingTaskTimeThreshold);
 
   void ResetNode();
 
  private:
- 
   CommandNode* const pRootNode_;
 
   CommandNode* pCurNode_;
 
-  unsigned long long timeOut_;
+  unsigned long long inputTimeout_;
 
-  unsigned long long timeOutThreshold_;
+  unsigned long long inputTimeThreshold_;
+
+  unsigned long long waitingTaskTimeout_;
+
+  unsigned long long waitingTaskTimeThreshold_;
+
+  std::function<void()> waitingTask_;
 };

@@ -5,8 +5,11 @@
 CommandComponent::CommandComponent()
     : pRootNode_(new CommandNode()),
       pCurNode_(pRootNode_),
-      timeOut_(0),
-      timeOutThreshold_(0) {
+      inputTimeout_(0),
+      inputTimeThreshold_(0),
+      waitingTaskTimeout_(0),
+      waitingTaskTimeThreshold_(0),
+      waitingTask_(nullptr) {
   for (int i = 0; i < CommandKey::CK_MAX; ++i) {
     pRootNode_->pSubNodes[i] = new CommandNode();
   }
@@ -22,9 +25,18 @@ void CommandComponent::BeginPlay() {
 }
 
 void CommandComponent::Tick(unsigned long long curTick) {
-  timeOut_ += curTick;
-  if (timeOut_ > timeOutThreshold_) {
+  inputTimeout_ += curTick;
+  if (inputTimeout_ > inputTimeThreshold_) {
     ResetNode();
+  }
+
+  if (nullptr == waitingTask_) {
+    waitingTaskTimeout_ = 0;
+  } else {
+    waitingTaskTimeout_ += curTick;
+    if (waitingTaskTimeout_ > waitingTaskTimeThreshold_) {
+      waitingTask_ = nullptr;
+    }
   }
 }
 
@@ -48,16 +60,22 @@ bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, 
   return true;
 }
 
-void* CommandComponent::GetTask() const {
-  if (nullptr == pCurNode_) {
-    return 0;
+bool CommandComponent::isWaitingTask() const {
+  if (nullptr != waitingTask_) {
+    return true;
   }
+  return false;
+}
 
-  return &pCurNode_->Task_;
+void CommandComponent::ExcuteTask() {
+  if (nullptr != waitingTask_) {
+    waitingTask_();
+    waitingTask_ = nullptr;
+  }
 }
 
 void CommandComponent::JumpNode(CommandKey key) {
-  timeOut_ = 0;
+  inputTimeout_ = 0;
 
   if (nullptr == pCurNode_->pSubNodes[key]) {
     pCurNode_ = pRootNode_->pSubNodes[key];
@@ -76,13 +94,15 @@ void CommandComponent::JumpNode(CommandKey key) {
       return;
     }
 
-    pCurNode_->ExcuteTask();
+    waitingTask_ = pCurNode_->Task_;
+
     ResetNode();
   }
 }
 
-void CommandComponent::SetTimeOutThreshold(unsigned long long threshold) {
-  timeOutThreshold_ = threshold;
+void CommandComponent::SetTimeOutThreshold(unsigned long long threshold, unsigned long long waitingTaskTimeThreshold) {
+  inputTimeThreshold_ = threshold;
+  waitingTaskTimeThreshold_ = waitingTaskTimeThreshold;
 }
 
 void CommandComponent::ResetNode() {
@@ -91,5 +111,5 @@ void CommandComponent::ResetNode() {
   }
 
   pCurNode_ = pRootNode_;
-  timeOut_ = 0;
+  inputTimeout_ = 0;
 }
