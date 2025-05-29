@@ -28,6 +28,7 @@ class Iori
 
   virtual void TriggerEventAtAnimationIndex() override;
 
+
   // Command Skills
   void CommandSkill_1();
 

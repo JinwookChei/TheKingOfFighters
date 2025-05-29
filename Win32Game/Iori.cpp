@@ -182,6 +182,21 @@ void Iori::InputUpdate(unsigned long long curTick) {
         animState_ = PAS_FrontWalk;
         pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
       }
+
+      if (animState_ == PAS_FrontWalk)
+      {
+        if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
+          animState_ = IOAS_MONGTAN_1;
+        }
+      }
+
+      unsigned int curImageIndex = pRender_->GetImageIndex();
+      if (animState_ == IOAS_MONGTAN_1 && curImageIndex == )
+      {
+        if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
+          animState_ = IOAS_MONGTAN_2;
+        }
+      }
     } else {
       animState_ = PAS_BackWalk;
       pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
@@ -255,6 +270,22 @@ void Iori::CommendUpdate() {
 
   if (InputManager::Instance()->IsDown(VK_DOWN) || InputManager::Instance()->IsDown(VK_DOWN)) {
     pCommandComponent_->JumpNode(CK_Down);
+  }
+
+  if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
+    pCommandComponent_->JumpNode(CK_D);
+  }
+
+  if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
+    pCommandComponent_->JumpNode(CK_C);
+  }
+
+  if (InputManager::Instance()->IsDown('Z') || InputManager::Instance()->IsDown('z')) {
+    pCommandComponent_->JumpNode(CK_B);
+  }
+
+  if (InputManager::Instance()->IsDown('X') || InputManager::Instance()->IsDown('x')) {
+    pCommandComponent_->JumpNode(CK_A);
   }
 }
 
@@ -390,9 +421,8 @@ void Iori::CommandSkill_3() {
 // if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
 // }
 
-
 // COMMENT TEMP
-//void Iori::CommendUpdate() {
+// void Iori::CommendUpdate() {
 //  if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
 //    if (FacingRight()) {
 //      pCommandComponent_->JumpNode(CK_Left);
