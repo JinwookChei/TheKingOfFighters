@@ -1,5 +1,8 @@
 #pragma once
 
+class ToolActor;
+class TextComponent;
+
 class ToolLevel final
     : public Level {
  public:
@@ -15,4 +18,10 @@ class ToolLevel final
   Vector position_;
 
   Vector scale_;
+
+  ToolActor* toolActor_;
+
+  TextComponent* imageIndexTextComponent_;
+
+  wchar_t* imageIndexTextBuffer_;
 };

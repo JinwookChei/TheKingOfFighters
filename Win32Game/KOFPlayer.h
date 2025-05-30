@@ -44,13 +44,15 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
+  void ChangeAnimation(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
+
   const HealthComponent* GetHealthComponent() const;
 
   virtual void HitEvent(float damage, const Vector& knockBackForce);
 
   virtual void InputUpdate(unsigned long long deltaTick);
 
-  virtual void CommendUpdate();
+  virtual void CommandUpdate();
 
   void CollisionBoundUpdate();
 
@@ -103,7 +105,9 @@ class KOFPlayer
 
   Vector characterScale_;
 
- public:
+public:
+  int forcedReservedAnim_ = -1;
+
   int animState_;
 
   bool isFacingRight_;

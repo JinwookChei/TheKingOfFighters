@@ -192,7 +192,7 @@ void Chang::InputUpdate(unsigned long long curTick) {
   }
 }
 
-void Chang::CommendUpdate() {
+void Chang::CommandUpdate() {
 }
 
 void Chang::SkillUpdate() {

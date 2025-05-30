@@ -24,7 +24,7 @@ class Iori
 
   void InputUpdate(unsigned long long curTick) override;
 
-  void CommendUpdate() override;
+  void CommandUpdate() override;
 
   virtual void TriggerEventAtAnimationIndex() override;
 

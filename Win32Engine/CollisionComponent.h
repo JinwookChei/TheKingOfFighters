@@ -50,9 +50,9 @@ class CollisionComponent final
 
   JO_API bool IsHit();
 
-  JO_API void OnHit();
+  JO_API void OnCollision();
 
-  JO_API void OffHit();
+  JO_API void OffCollision();
 
  protected:
 
@@ -74,6 +74,5 @@ class CollisionComponent final
   LINK_ITEM collisionActorLink_;
   LINK_ITEM collisionLevelLink_;
 
-  // 충돌 받음.
-  bool isHit_;
+  bool isCollided_;
 };

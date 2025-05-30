@@ -55,7 +55,9 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(-PAS_Skill1, -3, 223, 230, 50, false, 223);     // 커맨드 테스트.
 
   pRender_->SetTransparentColor(ioriTransparentColor);
-  pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+
+  //pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  ChangeAnimation(PAS_Idle * FacingRightFlag());
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
@@ -84,17 +86,25 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   CollisionBoundUpdate();
 
-  CommendUpdate();
+  CommandUpdate();
+
+  if (-1 != forcedReservedAnim_)
+  {
+    //pRender_->ChangeAnimation(forcedReservedAnim_ * FacingRightFlag());
+    ChangeAnimation(forcedReservedAnim_ * FacingRightFlag());
+    forcedReservedAnim_ = -1;
+      return;
+  }
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
     InputUpdate(deltaTick);
 
-    if (true == pCommandComponent_->isWaitingTask())
-    {
+    if (true == pCommandComponent_->isWaitingTask()) {
       pCommandComponent_->ExcuteTask();
     }
 
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    //pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    ChangeAnimation(animState_ * FacingRightFlag());
   }
 
   CollisionComponent* pTargetCollision = nullptr;
@@ -108,7 +118,7 @@ void Iori::Tick(unsigned long long deltaTick) {
       if (nullptr == pTargetPlayer) {
         return;
       }
-      pTargetCollision->OnHit();
+      pTargetCollision->OnCollision();
       pTargetPlayer->HitEvent(50.0f, {50.0f, 80.0f});
       TimeManager::Instance()->OnFrameFreeze(200);
 
@@ -136,7 +146,7 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   CollisionPushUpdate();
 
-  CollisionReset();
+  //CollisionReset();
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {
@@ -187,13 +197,6 @@ void Iori::InputUpdate(unsigned long long curTick) {
         animState_ = PAS_FrontWalk;
         pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
       }
-
-      if (animState_ == PAS_FrontWalk)
-      {
-        if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
-          animState_ = IOAS_MONGTAN_1;
-        }
-      }
     } else {
       animState_ = PAS_BackWalk;
       pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
@@ -241,10 +244,18 @@ void Iori::InputUpdate(unsigned long long curTick) {
   if (InputManager::Instance()->IsPress('Z') || InputManager::Instance()->IsPress('z')) {
   }
   if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
+    if (animState_ == PAS_FrontWalk) {
+      animState_ = IOAS_MONGTAN_1;
+    }
+
+    if (animState_ == IOAS_MONGTAN_1)
+    {
+      forcedReservedAnim_ = IOAS_MONGTAN_2;
+    }
   }
 }
 
-void Iori::CommendUpdate() {
+void Iori::CommandUpdate() {
   if (InputManager::Instance()->IsDown(VK_LEFT) || InputManager::Instance()->IsDown(VK_LEFT)) {
     if (FacingRight()) {
       pCommandComponent_->JumpNode(CK_Left);

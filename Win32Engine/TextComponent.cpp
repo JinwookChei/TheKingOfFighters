@@ -34,6 +34,7 @@ void TextComponent::Render(IRenderTexture* renderTexture) {
 // }
 
 void TextComponent::SetText(const wchar_t* text, unsigned __int64 size, const Color8Bit& color) {
+
   text_ = text;
   if (nullptr == text_) {
     text_ = L"";

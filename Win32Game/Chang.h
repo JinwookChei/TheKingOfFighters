@@ -29,7 +29,7 @@ class Chang
 
   void InputUpdate(unsigned long long curTick) override;
 
-  void CommendUpdate() override;
+  void CommandUpdate() override;
 
   void SkillUpdate();
 

@@ -55,7 +55,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
   application->Release();
   application = nullptr;
 
-  GEngineCore->ChangeLevel<KOFLevel>();
+  GEngineCore->ChangeLevel<ToolLevel>();
 
   GEngineCore->EngineLoop();
 

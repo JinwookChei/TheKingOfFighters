@@ -14,7 +14,12 @@
 #include "ImageMoveButton.h"
 #include "NextImageButton.h"
 
-ToolLevel::ToolLevel() {
+ToolLevel::ToolLevel()
+    : position_(0.0f, 0.0f),
+      scale_(0.0f, 0.0f),
+      toolActor_(nullptr),
+      imageIndexTextComponent_(nullptr),
+      imageIndexTextBuffer_(nullptr) {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
 
   // MOUSE
@@ -31,22 +36,23 @@ ToolLevel::ToolLevel() {
   mouse->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
   // VIEWPORT
-  //IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
-  //ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  //IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 2);
-  //reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-  //reverseIoriImage->Save("..\\ContentsResource\\IoriYagami_Box_Reverse.png", 2);
+  IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
+  ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
 
-  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
-  changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
+  // IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 2);
+  // reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
+  // reverseIoriImage->Save("..\\ContentsResource\\IoriYagami_Box_Reverse.png", 2);
 
-  //IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 2);
-  //reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  //reverseChangImage->Save("..\\ContentsResource\\Chang Koehan_Box_Reverse.png", 2);
+  // IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
+  // changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
+
+  // IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 2);
+  // reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  // reverseChangImage->Save("..\\ContentsResource\\Chang Koehan_Box_Reverse.png", 2);
 
   //!!!!!!!!!!!! ¡÷¿«!!!!!!!!!
-  //const std::string& filePath("..\\ContentsResource\\Iori.csv");
-  const std::string& filePath("..\\ContentsResource\\Chang.csv");
+  const std::string& filePath("..\\ContentsResource\\Iori.csv");
+  // const std::string& filePath("..\\ContentsResource\\Chang.csv");
   //!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   UI* ViewPortUI = SpawnActor<UI>();
@@ -56,8 +62,8 @@ ToolLevel::ToolLevel() {
   ViewPortUI->SetOriginColor(Color8Bit::Magenta);
   ViewPortUI->ChangeClearColor_(false);
 
-  ToolActor* toolActor = SpawnActor<ToolActor>();
-  if (false == toolActor->Initialize(ViewPortUI)) {
+  toolActor_ = SpawnActor<ToolActor>();
+  if (false == toolActor_->Initialize(ViewPortUI)) {
     return;
   }
 
@@ -65,21 +71,21 @@ ToolLevel::ToolLevel() {
   crossHair->EnableCollision(false);
 
   ImageController* imageControlBox = ViewPortUI->CreateUIComponent<ImageController>();
-  if (false == imageControlBox->Initialize(toolActor)) {
+  if (false == imageControlBox->Initialize(toolActor_)) {
     return;
   }
 
   // ViewPortImage* viewPortImage = ViewPortUI->CreateUIComponent<ViewPortImage>();
   CollisionBox* hitBoxTop = ViewPortUI->CreateUIComponent<CollisionBox>();
-  hitBoxTop->Initialize(toolActor, imageControlBox, CollisionBoxType::CBT_HitBoxTop);
+  hitBoxTop->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_HitBoxTop);
   CollisionBox* hitBoxBottom = ViewPortUI->CreateUIComponent<CollisionBox>();
-  hitBoxBottom->Initialize(toolActor, imageControlBox, CollisionBoxType::CBT_HitBoxBottom);
+  hitBoxBottom->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_HitBoxBottom);
   CollisionBox* attackBox = ViewPortUI->CreateUIComponent<CollisionBox>();
-  attackBox->Initialize(toolActor, imageControlBox, CollisionBoxType::CBT_AttackBox);
+  attackBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_AttackBox);
   CollisionBox* pushBox = ViewPortUI->CreateUIComponent<CollisionBox>();
-  pushBox->Initialize(toolActor, imageControlBox, CollisionBoxType::CBT_PushBox);
+  pushBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_PushBox);
   CollisionBox* grabBox = ViewPortUI->CreateUIComponent<CollisionBox>();
-  grabBox->Initialize(toolActor, imageControlBox, CollisionBoxType::CBT_GrabBox);
+  grabBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_GrabBox);
 
   // CREATE COLLISION BUTTON
   UI* createHitBoxTopUI = SpawnActor<UI>();
@@ -89,7 +95,7 @@ ToolLevel::ToolLevel() {
   createHitBoxTopUI->MakeCollision();
   createHitBoxTopUI->SetOriginColor({0, 0, 255, 255});
   CreateCollisionButton* createHitBoxTopButton = createHitBoxTopUI->CreateUIComponent<CreateCollisionButton>();
-  createHitBoxTopButton->Initialize(toolActor, hitBoxTop, CollisionBoxType::CBT_HitBoxTop);
+  createHitBoxTopButton->Initialize(toolActor_, hitBoxTop, CollisionBoxType::CBT_HitBoxTop);
   createHitBoxTopButton->SetScale({200.0f, 50.0f});
   createHitBoxTopButton->SetPosition({createHitBoxTopUI->GetScale().HalfX(), createHitBoxTopUI->GetScale().HalfY()});
 
@@ -100,7 +106,7 @@ ToolLevel::ToolLevel() {
   deleteHitBoxTopUI->MakeCollision();
   deleteHitBoxTopUI->SetOriginColor({0, 0, 255, 255});
   DeleteCollisionButton* deleteHitBoxTopButton = deleteHitBoxTopUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteHitBoxTopButton->Initialize(toolActor, hitBoxTop, CollisionBoxType::CBT_HitBoxTop);
+  deleteHitBoxTopButton->Initialize(toolActor_, hitBoxTop, CollisionBoxType::CBT_HitBoxTop);
   deleteHitBoxTopButton->SetScale({200.0f, 50.0f});
   deleteHitBoxTopButton->SetPosition({deleteHitBoxTopUI->GetScale().HalfX(), deleteHitBoxTopUI->GetScale().HalfY()});
 
@@ -111,7 +117,7 @@ ToolLevel::ToolLevel() {
   createHitBoxBottomUI->MakeCollision();
   createHitBoxBottomUI->SetOriginColor({150, 100, 255, 255});
   CreateCollisionButton* createHitBoxBottomButton = createHitBoxBottomUI->CreateUIComponent<CreateCollisionButton>();
-  createHitBoxBottomButton->Initialize(toolActor, hitBoxBottom, CollisionBoxType::CBT_HitBoxBottom);
+  createHitBoxBottomButton->Initialize(toolActor_, hitBoxBottom, CollisionBoxType::CBT_HitBoxBottom);
   createHitBoxBottomButton->SetScale({200.0f, 50.0f});
   createHitBoxBottomButton->SetPosition({createHitBoxBottomUI->GetScale().HalfX(), createHitBoxBottomUI->GetScale().HalfY()});
 
@@ -122,7 +128,7 @@ ToolLevel::ToolLevel() {
   deleteHitBoxBottomUI->MakeCollision();
   deleteHitBoxBottomUI->SetOriginColor({150, 100, 255, 255});
   DeleteCollisionButton* deleteHitBoxBottomButton = deleteHitBoxBottomUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteHitBoxBottomButton->Initialize(toolActor, hitBoxBottom, CollisionBoxType::CBT_HitBoxBottom);
+  deleteHitBoxBottomButton->Initialize(toolActor_, hitBoxBottom, CollisionBoxType::CBT_HitBoxBottom);
   deleteHitBoxBottomButton->SetScale({200.0f, 50.0f});
   deleteHitBoxBottomButton->SetPosition({deleteHitBoxBottomUI->GetScale().HalfX(), deleteHitBoxBottomUI->GetScale().HalfY()});
 
@@ -133,7 +139,7 @@ ToolLevel::ToolLevel() {
   createAttackBoxUI->MakeCollision();
   createAttackBoxUI->SetOriginColor({255, 0, 0, 255});
   CreateCollisionButton* createAttackBoxButton = createAttackBoxUI->CreateUIComponent<CreateCollisionButton>();
-  createAttackBoxButton->Initialize(toolActor, attackBox, CollisionBoxType::CBT_AttackBox);
+  createAttackBoxButton->Initialize(toolActor_, attackBox, CollisionBoxType::CBT_AttackBox);
   createAttackBoxButton->SetScale({200.0f, 50.0f});
   createAttackBoxButton->SetPosition({createAttackBoxUI->GetScale().HalfX(), createAttackBoxUI->GetScale().HalfY()});
 
@@ -144,7 +150,7 @@ ToolLevel::ToolLevel() {
   deleteAttackBoxUI->MakeCollision();
   deleteAttackBoxUI->SetOriginColor({255, 0, 0, 255});
   DeleteCollisionButton* deleteAttackBoxButton = deleteAttackBoxUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteAttackBoxButton->Initialize(toolActor, attackBox, CollisionBoxType::CBT_AttackBox);
+  deleteAttackBoxButton->Initialize(toolActor_, attackBox, CollisionBoxType::CBT_AttackBox);
   deleteAttackBoxButton->SetScale({200.0f, 50.0f});
   deleteAttackBoxButton->SetPosition({deleteAttackBoxUI->GetScale().HalfX(), deleteAttackBoxUI->GetScale().HalfY()});
 
@@ -155,7 +161,7 @@ ToolLevel::ToolLevel() {
   createPushBoxUI->MakeCollision();
   createPushBoxUI->SetOriginColor({255, 255, 255, 255});
   CreateCollisionButton* createPushBoxButton = createPushBoxUI->CreateUIComponent<CreateCollisionButton>();
-  createPushBoxButton->Initialize(toolActor, pushBox, CollisionBoxType::CBT_PushBox);
+  createPushBoxButton->Initialize(toolActor_, pushBox, CollisionBoxType::CBT_PushBox);
   createPushBoxButton->SetScale({200.0f, 50.0f});
   createPushBoxButton->SetPosition({createPushBoxUI->GetScale().HalfX(), createPushBoxUI->GetScale().HalfY()});
 
@@ -166,7 +172,7 @@ ToolLevel::ToolLevel() {
   deletePushBoxUI->MakeCollision();
   deletePushBoxUI->SetOriginColor({255, 255, 255, 255});
   DeleteCollisionButton* deletePushBoxButton = deletePushBoxUI->CreateUIComponent<DeleteCollisionButton>();
-  deletePushBoxButton->Initialize(toolActor, pushBox, CollisionBoxType::CBT_PushBox);
+  deletePushBoxButton->Initialize(toolActor_, pushBox, CollisionBoxType::CBT_PushBox);
   deletePushBoxButton->SetScale({200.0f, 50.0f});
   deletePushBoxButton->SetPosition({deletePushBoxUI->GetScale().HalfX(), deletePushBoxUI->GetScale().HalfY()});
 
@@ -177,7 +183,7 @@ ToolLevel::ToolLevel() {
   createGrabBoxUI->MakeCollision();
   createGrabBoxUI->SetOriginColor({255, 255, 0, 255});
   CreateCollisionButton* createGrabBoxButton = createGrabBoxUI->CreateUIComponent<CreateCollisionButton>();
-  createGrabBoxButton->Initialize(toolActor, grabBox, CollisionBoxType::CBT_GrabBox);
+  createGrabBoxButton->Initialize(toolActor_, grabBox, CollisionBoxType::CBT_GrabBox);
   createGrabBoxButton->SetScale({200.0f, 50.0f});
   createGrabBoxButton->SetPosition({createGrabBoxUI->GetScale().HalfX(), createGrabBoxUI->GetScale().HalfY()});
 
@@ -188,7 +194,7 @@ ToolLevel::ToolLevel() {
   deleteGrabBoxUI->MakeCollision();
   deleteGrabBoxUI->SetOriginColor({255, 255, 0, 255});
   DeleteCollisionButton* deleteGrabBoxButton = deleteGrabBoxUI->CreateUIComponent<DeleteCollisionButton>();
-  deleteGrabBoxButton->Initialize(toolActor, grabBox, CollisionBoxType::CBT_GrabBox);
+  deleteGrabBoxButton->Initialize(toolActor_, grabBox, CollisionBoxType::CBT_GrabBox);
   deleteGrabBoxButton->SetScale({200.0f, 50.0f});
   deleteGrabBoxButton->SetPosition({deleteGrabBoxUI->GetScale().HalfX(), deleteGrabBoxUI->GetScale().HalfY()});
 
@@ -204,7 +210,7 @@ ToolLevel::ToolLevel() {
   crossHairButtonPlusRow->SetScale({200.0f, 50.0f});
   crossHairButtonPlusRow->SetPosition({crossHairPlusRowUI->GetScale().HalfX(), crossHairPlusRowUI->GetScale().HalfY()});
   TextComponent* plusRowTextComponent = crossHairPlusRowUI->CreateUIComponent<TextComponent>();
-  plusRowTextComponent->SetText(L"Row++", 20, Color8Bit::Red);
+  plusRowTextComponent->SetText(L"Row++", 20, Color8Bit::Color8Bit::Black);
   plusRowTextComponent->SetFont(L"CONSOLELAS");
   plusRowTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -219,7 +225,7 @@ ToolLevel::ToolLevel() {
   crossHairButtonMinusRow->SetScale({200.0f, 50.0f});
   crossHairButtonMinusRow->SetPosition({crossHairMinusRowUI->GetScale().HalfX(), crossHairMinusRowUI->GetScale().HalfY()});
   TextComponent* minusRowTextComponent = crossHairMinusRowUI->CreateUIComponent<TextComponent>();
-  minusRowTextComponent->SetText(L"Row--", 20, Color8Bit::Red);
+  minusRowTextComponent->SetText(L"Row--", 20, Color8Bit::Color8Bit::Black);
   minusRowTextComponent->SetFont(L"CONSOLELAS");
   minusRowTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -234,7 +240,7 @@ ToolLevel::ToolLevel() {
   crossHairButtonPlusCol->SetScale({200.0f, 50.0f});
   crossHairButtonPlusCol->SetPosition({crossHairPlusColUI->GetScale().HalfX(), crossHairPlusColUI->GetScale().HalfY()});
   TextComponent* plusColTextComponent = crossHairPlusColUI->CreateUIComponent<TextComponent>();
-  plusColTextComponent->SetText(L"Col++", 20, Color8Bit::Red);
+  plusColTextComponent->SetText(L"Col++", 20, Color8Bit::Color8Bit::Black);
   plusColTextComponent->SetFont(L"CONSOLELAS");
   plusColTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -249,7 +255,7 @@ ToolLevel::ToolLevel() {
   crossHairButtonMinusCol->SetScale({200.0f, 50.0f});
   crossHairButtonMinusCol->SetPosition({crossHairMinusColUI->GetScale().HalfX(), crossHairMinusColUI->GetScale().HalfY()});
   TextComponent* minusColTextComponent = crossHairMinusColUI->CreateUIComponent<TextComponent>();
-  minusColTextComponent->SetText(L"Col--", 20, Color8Bit::Red);
+  minusColTextComponent->SetText(L"Col--", 20, Color8Bit::Color8Bit::Black);
   minusColTextComponent->SetFont(L"CONSOLELAS");
   minusColTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -264,7 +270,7 @@ ToolLevel::ToolLevel() {
   crossHairButtonReset->SetScale({400.0f, 50.0f});
   crossHairButtonReset->SetPosition({crossHairResetUI->GetScale().HalfX(), crossHairResetUI->GetScale().HalfY()});
   TextComponent* resetTextComponent = crossHairResetUI->CreateUIComponent<TextComponent>();
-  resetTextComponent->SetText(L"RESET", 20, Color8Bit::Red);
+  resetTextComponent->SetText(L"RESET", 20, Color8Bit::Color8Bit::Black);
   resetTextComponent->SetFont(L"CONSOLELAS");
   resetTextComponent->SetPosition({200.0f, 20.0f});
 
@@ -275,12 +281,12 @@ ToolLevel::ToolLevel() {
   writeToCSVUI->SetScale({400.0f, 50.0f});
   writeToCSVUI->MakeCollision();
   WriteButton* writeToCSVButton = writeToCSVUI->CreateUIComponent<WriteButton>();
-  writeToCSVButton->BindObject(toolActor);
+  writeToCSVButton->BindObject(toolActor_);
   writeToCSVButton->SetFilePath(filePath);
   writeToCSVButton->SetScale({400.0f, 50.0f});
   writeToCSVButton->SetPosition({writeToCSVUI->GetScale().HalfX(), writeToCSVUI->GetScale().HalfY()});
   TextComponent* writeTextComponent = writeToCSVUI->CreateUIComponent<TextComponent>();
-  writeTextComponent->SetText(L"WriteToCSV", 20, Color8Bit::Red);
+  writeTextComponent->SetText(L"WriteToCSV", 20, Color8Bit::Color8Bit::Black);
   writeTextComponent->SetFont(L"CONSOLELAS");
   writeTextComponent->SetPosition({200.0f, 20.0f});
 
@@ -291,12 +297,12 @@ ToolLevel::ToolLevel() {
   readFromCSVUI->SetScale({400.0f, 50.0f});
   readFromCSVUI->MakeCollision();
   ReadButton* readFromCSVButton = readFromCSVUI->CreateUIComponent<ReadButton>();
-  readFromCSVButton->BindObject(toolActor);
+  readFromCSVButton->BindObject(toolActor_);
   readFromCSVButton->SetFilePath(filePath);
   readFromCSVButton->SetScale({400.0f, 50.0f});
   readFromCSVButton->SetPosition({readFromCSVUI->GetScale().HalfX(), readFromCSVUI->GetScale().HalfY()});
   TextComponent* readTextComponent = readFromCSVUI->CreateUIComponent<TextComponent>();
-  readTextComponent->SetText(L"ReadFromCSV", 20, Color8Bit::Red);
+  readTextComponent->SetText(L"ReadFromCSV", 20, Color8Bit::Color8Bit::Black);
   readTextComponent->SetFont(L"CONSOLELAS");
   readTextComponent->SetPosition({200.0f, 20.0f});
 
@@ -307,12 +313,12 @@ ToolLevel::ToolLevel() {
   moveImagePlusRowUI->SetScale({200.0f, 50.0f});
   moveImagePlusRowUI->MakeCollision();
   ImageMoveButton* moveImagePlusRowButton = moveImagePlusRowUI->CreateUIComponent<ImageMoveButton>();
-  moveImagePlusRowButton->BindObject(toolActor);
+  moveImagePlusRowButton->BindObject(toolActor_);
   moveImagePlusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusRow);
   moveImagePlusRowButton->SetScale({200.0f, 50.0f});
   moveImagePlusRowButton->SetPosition({moveImagePlusRowUI->GetScale().HalfX(), moveImagePlusRowUI->GetScale().HalfY()});
   TextComponent* movePlusRowTextComponent = moveImagePlusRowUI->CreateUIComponent<TextComponent>();
-  movePlusRowTextComponent->SetText(L"MoveRow++", 20, Color8Bit::Red);
+  movePlusRowTextComponent->SetText(L"MoveRow++", 20, Color8Bit::Color8Bit::Black);
   movePlusRowTextComponent->SetFont(L"CONSOLELAS");
   movePlusRowTextComponent->SetPosition({100.0f, 20.0f});
 
@@ -322,12 +328,12 @@ ToolLevel::ToolLevel() {
   moveImageMinusRowUI->SetScale({200.0f, 50.0f});
   moveImageMinusRowUI->MakeCollision();
   ImageMoveButton* moveImageMinusRowButton = moveImageMinusRowUI->CreateUIComponent<ImageMoveButton>();
-  moveImageMinusRowButton->BindObject(toolActor);
+  moveImageMinusRowButton->BindObject(toolActor_);
   moveImageMinusRowButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusRow);
   moveImageMinusRowButton->SetScale({200.0f, 50.0f});
   moveImageMinusRowButton->SetPosition({moveImageMinusRowUI->GetScale().HalfX(), moveImageMinusRowUI->GetScale().HalfY()});
   TextComponent* moveMinusRowTextComponent = moveImageMinusRowUI->CreateUIComponent<TextComponent>();
-  moveMinusRowTextComponent->SetText(L"MoveRow--", 20, Color8Bit::Red);
+  moveMinusRowTextComponent->SetText(L"MoveRow--", 20, Color8Bit::Color8Bit::Black);
   moveMinusRowTextComponent->SetFont(L"CONSOLELAS");
   moveMinusRowTextComponent->SetPosition({100.0f, 20.0f});
 
@@ -337,12 +343,12 @@ ToolLevel::ToolLevel() {
   moveImagePlusColUI->SetScale({200.0f, 50.0f});
   moveImagePlusColUI->MakeCollision();
   ImageMoveButton* moveImagePlusColButton = moveImagePlusColUI->CreateUIComponent<ImageMoveButton>();
-  moveImagePlusColButton->BindObject(toolActor);
+  moveImagePlusColButton->BindObject(toolActor_);
   moveImagePlusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_PlusCol);
   moveImagePlusColButton->SetScale({200.0f, 50.0f});
   moveImagePlusColButton->SetPosition({moveImagePlusColUI->GetScale().HalfX(), moveImagePlusColUI->GetScale().HalfY()});
   TextComponent* movePlusColTextComponent = moveImagePlusColUI->CreateUIComponent<TextComponent>();
-  movePlusColTextComponent->SetText(L"MoveCol++", 20, Color8Bit::Red);
+  movePlusColTextComponent->SetText(L"MoveCol++", 20, Color8Bit::Color8Bit::Black);
   movePlusColTextComponent->SetFont(L"CONSOLELAS");
   movePlusColTextComponent->SetPosition({100.0f, 20.0f});
 
@@ -352,12 +358,12 @@ ToolLevel::ToolLevel() {
   moveImageMinusColUI->SetScale({200.0f, 50.0f});
   moveImageMinusColUI->MakeCollision();
   ImageMoveButton* moveImageMinusColButton = moveImageMinusColUI->CreateUIComponent<ImageMoveButton>();
-  moveImageMinusColButton->BindObject(toolActor);
+  moveImageMinusColButton->BindObject(toolActor_);
   moveImageMinusColButton->SetImageMoveDirType(ImageMoveDirType::IMD_MinusCol);
   moveImageMinusColButton->SetScale({200.0f, 50.0f});
   moveImageMinusColButton->SetPosition({moveImageMinusColUI->GetScale().HalfX(), moveImageMinusColUI->GetScale().HalfY()});
   TextComponent* moveMinusColTextComponent = moveImageMinusColUI->CreateUIComponent<TextComponent>();
-  moveMinusColTextComponent->SetText(L"MoveCol--", 20, Color8Bit::Red);
+  moveMinusColTextComponent->SetText(L"MoveCol--", 20, Color8Bit::Color8Bit::Black);
   moveMinusColTextComponent->SetFont(L"CONSOLELAS");
   moveMinusColTextComponent->SetPosition({100.0f, 20.0f});
 
@@ -367,12 +373,12 @@ ToolLevel::ToolLevel() {
   moveImageResetUI->SetScale({400.0f, 50.0f});
   moveImageResetUI->MakeCollision();
   ImageMoveButton* moveImageResetButton = moveImageResetUI->CreateUIComponent<ImageMoveButton>();
-  moveImageResetButton->BindObject(toolActor);
+  moveImageResetButton->BindObject(toolActor_);
   moveImageResetButton->SetImageMoveDirType(ImageMoveDirType::IMD_Reset);
   moveImageResetButton->SetScale({400.0f, 50.0f});
   moveImageResetButton->SetPosition({moveImageResetUI->GetScale().HalfX(), moveImageResetUI->GetScale().HalfY()});
   TextComponent* moveResetTextComponent = moveImageResetUI->CreateUIComponent<TextComponent>();
-  moveResetTextComponent->SetText(L"MoveReset", 20, Color8Bit::Red);
+  moveResetTextComponent->SetText(L"MoveReset", 20, Color8Bit::Color8Bit::Black);
   moveResetTextComponent->SetFont(L"CONSOLELAS");
   moveResetTextComponent->SetPosition({200, 20.0f});
 
@@ -383,12 +389,12 @@ ToolLevel::ToolLevel() {
   nextImageUI->SetScale({100.0f, 50.0f});
   nextImageUI->MakeCollision();
   NextImageButton* nextImageButton = nextImageUI->CreateUIComponent<NextImageButton>();
-  nextImageButton->BindObject(toolActor);
+  nextImageButton->BindObject(toolActor_);
   nextImageButton->SetNextImageType(NextImageType::NextImage_Next);
   nextImageButton->SetScale({100.0f, 50.0f});
   nextImageButton->SetPosition({nextImageUI->GetScale().HalfX(), nextImageUI->GetScale().HalfY()});
   TextComponent* nextImageTextComponent = nextImageUI->CreateUIComponent<TextComponent>();
-  nextImageTextComponent->SetText(L"NEXT", 20, Color8Bit::Red);
+  nextImageTextComponent->SetText(L"NEXT", 20, Color8Bit::Color8Bit::Black);
   nextImageTextComponent->SetFont(L"CONSOLELAS");
   nextImageTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -398,12 +404,12 @@ ToolLevel::ToolLevel() {
   prevImageUI->SetScale({100.0f, 50.0f});
   prevImageUI->MakeCollision();
   NextImageButton* prevImageButton = prevImageUI->CreateUIComponent<NextImageButton>();
-  prevImageButton->BindObject(toolActor);
+  prevImageButton->BindObject(toolActor_);
   prevImageButton->SetNextImageType(NextImageType::NextImage_Prev);
   prevImageButton->SetScale({100.0f, 50.0f});
   prevImageButton->SetPosition({prevImageUI->GetScale().HalfX(), prevImageUI->GetScale().HalfY()});
   TextComponent* prevImageTextComponent = prevImageUI->CreateUIComponent<TextComponent>();
-  prevImageTextComponent->SetText(L"PREV", 20, Color8Bit::Red);
+  prevImageTextComponent->SetText(L"PREV", 20, Color8Bit::Color8Bit::Black);
   prevImageTextComponent->SetFont(L"CONSOLELAS");
   prevImageTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -413,12 +419,12 @@ ToolLevel::ToolLevel() {
   superNextImageUI->SetScale({100.0f, 50.0f});
   superNextImageUI->MakeCollision();
   NextImageButton* superNextImageButton = superNextImageUI->CreateUIComponent<NextImageButton>();
-  superNextImageButton->BindObject(toolActor);
+  superNextImageButton->BindObject(toolActor_);
   superNextImageButton->SetNextImageType(NextImageType::NextImage_SuperNext);
   superNextImageButton->SetScale({100.0f, 50.0f});
   superNextImageButton->SetPosition({superNextImageUI->GetScale().HalfX(), superNextImageUI->GetScale().HalfY()});
   TextComponent* superNextImageTextComponent = superNextImageUI->CreateUIComponent<TextComponent>();
-  superNextImageTextComponent->SetText(L"SNEXT", 20, Color8Bit::Red);
+  superNextImageTextComponent->SetText(L"SNEXT", 20, Color8Bit::Color8Bit::Black);
   superNextImageTextComponent->SetFont(L"CONSOLELAS");
   superNextImageTextComponent->SetPosition({50.0f, 20.0f});
 
@@ -428,21 +434,34 @@ ToolLevel::ToolLevel() {
   superPrevImageUI->SetScale({100.0f, 50.0f});
   superPrevImageUI->MakeCollision();
   NextImageButton* superPrevImageButton = superPrevImageUI->CreateUIComponent<NextImageButton>();
-  superPrevImageButton->BindObject(toolActor);
+  superPrevImageButton->BindObject(toolActor_);
   superPrevImageButton->SetNextImageType(NextImageType::NextImage_SuperPrev);
   superPrevImageButton->SetScale({100.0f, 50.0f});
   superPrevImageButton->SetPosition({superPrevImageUI->GetScale().HalfX(), superPrevImageUI->GetScale().HalfY()});
   TextComponent* superPrevImageTextComponent = superPrevImageUI->CreateUIComponent<TextComponent>();
-  superPrevImageTextComponent->SetText(L"SPREV", 20, Color8Bit::Red);
+  superPrevImageTextComponent->SetText(L"SPREV", 20, Color8Bit::Color8Bit::Black);
   superPrevImageTextComponent->SetFont(L"CONSOLELAS");
   superPrevImageTextComponent->SetPosition({50.0f, 20.0f});
 
-  // LINE
+  UI* imageIndexViewUI = SpawnActor<UI>();
+  imageIndexViewUI->SetOriginColor(Color8Bit::YellowAlpha);
+  imageIndexViewUI->SetPosition(Vector(980.0f, 50.0f));
+  imageIndexViewUI->SetScale({200.0f, 50.0f});
+  imageIndexTextComponent_ = imageIndexViewUI->CreateUIComponent<TextComponent>();
+
+  imageIndexTextBuffer_ = new wchar_t[32];
+  imageIndexTextComponent_->SetText(L" ", 30, Color8Bit::Black);
+  imageIndexTextComponent_->SetFont(L"CONSOLELAS");
+  imageIndexTextComponent_->SetPosition({100.0f, 25.0f});
 
   // TOOLS
 }
 
 ToolLevel::~ToolLevel() {
+  if (nullptr != imageIndexTextBuffer_) {
+    delete[] imageIndexTextBuffer_;
+    imageIndexTextBuffer_ = nullptr;
+  }
 }
 
 void ToolLevel::BeginPlay() {
@@ -460,4 +479,8 @@ void ToolLevel::Tick(unsigned long long deltaTick) {
   if (InputManager::Instance()->IsDown(VK_F2)) {
     SetCollisionRender(!GetCollisionRender());
   }
+
+  unsigned int imageIndex = toolActor_->GetImageIndex();
+  swprintf(imageIndexTextBuffer_, 32, L"%u", imageIndex);
+  imageIndexTextComponent_->SetText(imageIndexTextBuffer_, 40, Color8Bit::Black);
 }

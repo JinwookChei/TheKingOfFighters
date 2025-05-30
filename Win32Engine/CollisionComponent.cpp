@@ -111,7 +111,7 @@ CollisionComponent::CollisionComponent()
       searchHandle_(nullptr),
       collisionActorLink_({nullptr, nullptr, this}),
       collisionLevelLink_({nullptr, nullptr, this}),
-      isHit_(false) {
+      isCollided_(false) {
 }
 
 CollisionComponent::~CollisionComponent() {
@@ -228,15 +228,15 @@ bool CollisionComponent::CollisionPointToRect(const CollisionInfo& left, const C
 }
 
 bool CollisionComponent::IsHit() {
-  return isHit_;
+  return isCollided_;
 }
 
-void CollisionComponent::OnHit() {
-  isHit_ = true;
+void CollisionComponent::OnCollision() {
+  isCollided_ = true;
 }
 
-void CollisionComponent::OffHit() {
-  isHit_ = false;
+void CollisionComponent::OffCollision() {
+  isCollided_ = false;
 }
 
 

@@ -67,7 +67,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
-  pCommandComponent_->SetTimeOutThreshold(100, 400);
+  pCommandComponent_->SetTimeOutThreshold(150, 400);
 
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();
@@ -91,6 +91,12 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
+void KOFPlayer::ChangeAnimation(unsigned long long animationTag, int startFrame, unsigned long long time) {
+  pRender_->ChangeAnimation(animationTag * FacingRightFlag(), startFrame, time);
+
+  CollisionReset();
+}
+
 const HealthComponent* KOFPlayer::GetHealthComponent() const {
   return pHealthComponent_;
 }
@@ -101,7 +107,7 @@ void KOFPlayer::HitEvent(float damage, const Vector& knockBackForce) {
 void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
 }
 
-void KOFPlayer::CommendUpdate() {
+void KOFPlayer::CommandUpdate() {
 }
 
 void KOFPlayer::CollisionBoundUpdate() {
@@ -179,6 +185,7 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                   },
                   &pTargetCollision_Top)) {
     *outTargetCollision = pTargetCollision_Top;
+    pAttackBox_->OnCollision();
     return true;
   }
 
@@ -191,6 +198,7 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                   },
                   &pTargetCollision_Bottom)) {
     *outTargetCollision = pTargetCollision_Bottom;
+    pAttackBox_->OnCollision();
     return true;
   }
 
@@ -207,7 +215,7 @@ bool KOFPlayer::CollisionPushUpdate() {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetPushCollision)) {
-    pPushBox_->OnHit();
+    pPushBox_->OnCollision();
 
     Actor* pTarget = pTargetPushCollision->GetOwner();
     if (nullptr == pTarget) {
@@ -244,11 +252,11 @@ bool KOFPlayer::CollisionPushUpdate() {
 }
 
 void KOFPlayer::CollisionReset() {
-  pHitBoxTop_->OffHit();
-  pHitBoxBottom_->OffHit();
-  pAttackBox_->OffHit();
-  pPushBox_->OffHit();
-  pGrabBox_->OffHit();
+  pHitBoxTop_->OffCollision();
+  pHitBoxBottom_->OffCollision();
+  pAttackBox_->OffCollision();
+  pPushBox_->OffCollision();
+  pGrabBox_->OffCollision();
 }
 
 void KOFPlayer::TriggerEventAtAnimationIndex() {
