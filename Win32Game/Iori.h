@@ -1,10 +1,10 @@
 #pragma once
 
+
 enum IoriAnimState {
   IOAS_MONGTAN_1 = PAS_MAX + 1,
   IOAS_MONGTAN_2,
 };
-
 
 class CommandComponent;
 class ProjectileComponent;
@@ -27,7 +27,6 @@ class Iori
   void CommandUpdate() override;
 
   virtual void TriggerEventAtAnimationIndex() override;
-
 
   // Command Skills
   void CommandSkill_1();

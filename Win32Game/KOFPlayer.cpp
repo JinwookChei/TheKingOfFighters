@@ -2,6 +2,7 @@
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
+#include "StateComponent.h"
 #include "HealthComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
@@ -22,6 +23,7 @@ KOFPlayer::KOFPlayer()
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
       animState_(0),
+      reservedAnimState_(-1),
       isFacingRight_(true),
       isAtMapEdge_(false) {
 }
@@ -58,6 +60,13 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
     return;
   }
 
+  // STATE
+  pStateComponent_ = CreateComponent<StateComponent>();
+  if (false == pStateComponent_->Initialize())
+  {
+    return;
+  }
+
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
   pHitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
@@ -91,8 +100,9 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::ChangeAnimation(unsigned long long animationTag, int startFrame, unsigned long long time) {
+void KOFPlayer::ChangeAnimState(bool canMove, unsigned long long animationTag, int startFrame, unsigned long long time) {
   pRender_->ChangeAnimation(animationTag * FacingRightFlag(), startFrame, time);
+  curState_.canMove_ = canMove;
 
   CollisionReset();
 }
@@ -110,7 +120,7 @@ void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
 void KOFPlayer::CommandUpdate() {
 }
 
-void KOFPlayer::CollisionBoundUpdate() {
+void KOFPlayer::CollisionBoundScaleUpdate() {
   if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
     return;
   }
@@ -185,6 +195,7 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                   },
                   &pTargetCollision_Top)) {
     *outTargetCollision = pTargetCollision_Top;
+    pTargetCollision_Top->OnCollision();
     pAttackBox_->OnCollision();
     return true;
   }
@@ -198,6 +209,7 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                   },
                   &pTargetCollision_Bottom)) {
     *outTargetCollision = pTargetCollision_Bottom;
+    pTargetCollision_Bottom->OnCollision();
     pAttackBox_->OnCollision();
     return true;
   }

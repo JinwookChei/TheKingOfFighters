@@ -75,12 +75,12 @@ void Chang::Tick(unsigned long long deltaTick) {
 
   CollisionPushUpdate();
 
-  CollisionBoundUpdate();
+  CollisionBoundScaleUpdate();
 
   if (true == pRender_->IsPlayingLoopAnimation()) {
-    //InputUpdate(deltaTick);
+    InputUpdate(deltaTick);
 
-    //CommendUpdate();
+    CommandUpdate();
 
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   }
@@ -113,13 +113,13 @@ void Chang::Tick(unsigned long long deltaTick) {
 void Chang::HitEvent(float damage, const Vector& knockBackForce) {
   pHealthComponent_->TakeDamage(damage);
 
-  if (pHitBoxTop_->IsHit()) {
+  if (pHitBoxTop_->IsCollided()) {
     animState_ = PAS_HitStrong;
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
     pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
   }
 
-  if (pHitBoxBottom_->IsHit()) {
+  if (pHitBoxBottom_->IsCollided()) {
     animState_ = PAS_HitStrong;
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
     pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
@@ -141,27 +141,27 @@ void Chang::InputUpdate(unsigned long long curTick) {
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
     if (FacingRight()) {
       animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+      pMovementComponent_->Move(curTick, false, pPushBox_->IsCollided());
     } else {
       if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
+        pMovementComponent_->Run(curTick, false, pPushBox_->IsCollided());
       } else {
         animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+        pMovementComponent_->Move(curTick, false, pPushBox_->IsCollided());
       }
     }
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
     if (FacingRight()) {
       if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
+        pMovementComponent_->Run(curTick, true, pPushBox_->IsCollided());
       } else {
         animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+        pMovementComponent_->Move(curTick, true, pPushBox_->IsCollided());
       }
     } else {
       animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+      pMovementComponent_->Move(curTick, true, pPushBox_->IsCollided());
     }
   }
   if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {

@@ -168,6 +168,9 @@
     <ClCompile Include="GhostEffect.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
+    <ClCompile Include="StateComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -279,6 +282,9 @@
       <Filter>Contents\KOF\Common</Filter>
     </ClInclude>
     <ClInclude Include="GhostEffect.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="StateComponent.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>

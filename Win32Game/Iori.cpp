@@ -4,6 +4,7 @@
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "HealthComponent.h"
+#include "StateComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
 
@@ -42,7 +43,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);   // 발차기
   pRender_->CreateAnimation(PAS_Skill1, 3, 223, 230, 50, false, 223);      // 커맨드 테스트.
   pRender_->CreateAnimation(IOAS_MONGTAN_1, 3, 99, 107, 50, false, 99);    // 커맨드 테스트.
-  pRender_->CreateAnimation(IOAS_MONGTAN_2, 3, 159, 164, 50, false, 159);  // 커맨드 테스트.
+  pRender_->CreateAnimation(IOAS_MONGTAN_2, 3, 160, 164, 50, false, 159);  // 커맨드 테스트.
 
   pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);             // 아이들
   pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);       // 앉기.
@@ -56,8 +57,23 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 
   pRender_->SetTransparentColor(ioriTransparentColor);
 
-  //pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
-  ChangeAnimation(PAS_Idle * FacingRightFlag());
+  // pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  ChangeAnimState(true, PAS_Idle * FacingRightFlag());
+
+  // STATE
+  pStateComponent_->RegistState(PAS_Idle, false);
+  pStateComponent_->RegistState(PAS_SeatDown, false);
+  pStateComponent_->RegistState(PAS_SeatUp, false);
+  pStateComponent_->RegistState(PAS_FrontWalk, true);
+  pStateComponent_->RegistState(PAS_BackWalk, true);
+  pStateComponent_->RegistState(PAS_BackStep, true);
+  pStateComponent_->RegistState(PAS_Run, true);
+  pStateComponent_->RegistState(PAS_RunEnd, false);
+  pStateComponent_->RegistState(PAS_Jump, true);
+  pStateComponent_->RegistState(PAS_HeavyKick, false);
+  pStateComponent_->RegistState(PAS_Skill1, false);
+  pStateComponent_->RegistState(IOAS_MONGTAN_1, false);
+  pStateComponent_->RegistState(IOAS_MONGTAN_2, false);
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
@@ -82,30 +98,15 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
+  CollisionBoundScaleUpdate();
+
   CollisionPushUpdate();
 
-  CollisionBoundUpdate();
+  InputUpdate(deltaTick);
 
   CommandUpdate();
 
-  if (-1 != forcedReservedAnim_)
-  {
-    //pRender_->ChangeAnimation(forcedReservedAnim_ * FacingRightFlag());
-    ChangeAnimation(forcedReservedAnim_ * FacingRightFlag());
-    forcedReservedAnim_ = -1;
-      return;
-  }
-
-  if (true == pRender_->IsPlayingLoopAnimation()) {
-    InputUpdate(deltaTick);
-
-    if (true == pCommandComponent_->isWaitingTask()) {
-      pCommandComponent_->ExcuteTask();
-    }
-
-    //pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-    ChangeAnimation(animState_ * FacingRightFlag());
-  }
+  TriggerEventAtAnimationIndex();
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
@@ -118,9 +119,11 @@ void Iori::Tick(unsigned long long deltaTick) {
       if (nullptr == pTargetPlayer) {
         return;
       }
-      pTargetCollision->OnCollision();
-      pTargetPlayer->HitEvent(50.0f, {50.0f, 80.0f});
-      TimeManager::Instance()->OnFrameFreeze(200);
+      // pTargetCollision->OnCollision();
+      if (animState_ == IOAS_MONGTAN_1) {
+        pTargetPlayer->HitEvent(0.0f, {15.0f, 0.0f});
+        TimeManager::Instance()->OnFrameFreeze(200);
+      }
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {
@@ -142,11 +145,27 @@ void Iori::Tick(unsigned long long deltaTick) {
     }
   }
 
-  TriggerEventAtAnimationIndex();
+  // if (-1 != reservedAnimState_) {
+  //   if (IOAS_MONGTAN_2 == reservedAnimState_ && 104 <= pRender_->GetImageIndex()) {
 
-  CollisionPushUpdate();
+  //    ChangeAnimation(reservedAnimState_ * FacingRightFlag());
+  //    reservedAnimState_ = -1;
+  //    return;
+  //  }
+  //}
 
-  //CollisionReset();
+  // if (true == pRender_->IsPlayingLoopAnimation()) {
+  //   InputUpdate(deltaTick);
+
+  //  if (true == pCommandComponent_->isWaitingTask()) {
+  //    pCommandComponent_->ExcuteTask();
+  //  }
+
+  //  // pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  //  ChangeAnimation(animState_ * FacingRightFlag());
+  //}
+
+  // CollisionReset();
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {
@@ -172,14 +191,20 @@ void Iori::InputUpdate(unsigned long long curTick) {
 
   if (InputManager::Instance()->IsPress(VK_LEFT) || InputManager::Instance()->IsPress(VK_LEFT)) {
     if (FacingRight()) {
-      animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+      if (curState_.canMove_) {
+        animState_ = PAS_BackWalk;
+        pMovementComponent_->MoveBack(curTick, true, pPushBox_->IsCollided());
+      }
     } else {
       if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
+        if (curState_.canMove_) {
+          pMovementComponent_->Run(curTick, false, pPushBox_->IsCollided());
+        }
       } else {
-        animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
+        if (curState_.canMove_) {
+          animState_ = PAS_FrontWalk;
+          pMovementComponent_->Move(curTick, false, pPushBox_->IsCollided());
+        }
       }
     }
   }
@@ -192,14 +217,20 @@ void Iori::InputUpdate(unsigned long long curTick) {
   if (InputManager::Instance()->IsPress(VK_RIGHT) || InputManager::Instance()->IsPress(VK_RIGHT)) {
     if (FacingRight()) {
       if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
+        if (curState_.canMove_) {
+          pMovementComponent_->Run(curTick, true, pPushBox_->IsCollided());
+        }
       } else {
-        animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+        if (curState_.canMove_) {
+          animState_ = PAS_FrontWalk;
+          pMovementComponent_->Move(curTick, true, pPushBox_->IsCollided());
+        }
       }
     } else {
-      animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
+      if (curState_.canMove_) {
+        animState_ = PAS_BackWalk;
+        pMovementComponent_->MoveBack(curTick, false, pPushBox_->IsCollided());
+      }
     }
   }
 
@@ -212,19 +243,21 @@ void Iori::InputUpdate(unsigned long long curTick) {
   }
 
   if (InputManager::Instance()->IsPress(VK_UP) || InputManager::Instance()->IsPress(VK_UP)) {
-    if (PAS_FrontWalk == animState_) {
-      pMovementComponent_->JumpForward(FacingRight(), false);
-      animState_ = PAS_Jump;
-    } else if (PAS_Run == animState_) {
-      pMovementComponent_->JumpForward(FacingRight(), true);
-      animState_ = PAS_Jump;
-      pGhostEffect_->On();
-    } else if (PAS_BackWalk == animState_) {
-      pMovementComponent_->JumpForward(!FacingRight(), false);
-      animState_ = PAS_Jump;
-    } else {
-      pMovementComponent_->Jump();
-      animState_ = PAS_Jump;
+    if (curState_.canMove_) {
+      if (PAS_FrontWalk == animState_) {
+        pMovementComponent_->JumpForward(FacingRight(), false);
+        animState_ = PAS_Jump;
+      } else if (PAS_Run == animState_) {
+        pMovementComponent_->JumpForward(FacingRight(), true);
+        animState_ = PAS_Jump;
+        pGhostEffect_->On();
+      } else if (PAS_BackWalk == animState_) {
+        pMovementComponent_->JumpForward(!FacingRight(), false);
+        animState_ = PAS_Jump;
+      } else {
+        pMovementComponent_->Jump();
+        animState_ = PAS_Jump;
+      }
     }
   }
   if (InputManager::Instance()->IsPress(VK_DOWN) || InputManager::Instance()->IsPress(VK_DOWN)) {
@@ -248,9 +281,8 @@ void Iori::InputUpdate(unsigned long long curTick) {
       animState_ = IOAS_MONGTAN_1;
     }
 
-    if (animState_ == IOAS_MONGTAN_1)
-    {
-      forcedReservedAnim_ = IOAS_MONGTAN_2;
+    if (animState_ == IOAS_MONGTAN_1 && pAttackBox_->IsCollided()) {
+      reservedAnimState_ = IOAS_MONGTAN_2;
     }
   }
 }

@@ -7,9 +7,9 @@ CommandComponent::CommandComponent()
       pCurNode_(pRootNode_),
       inputTimeout_(0),
       inputTimeThreshold_(0),
-      waitingTaskTimeout_(0),
-      waitingTaskTimeThreshold_(0),
-      waitingTask_(nullptr) {
+      reservedTaskTimeout_(0),
+      reservedTaskTimeThreshold_(0),
+      reservedTask_(nullptr) {
   for (int i = 0; i < CommandKey::CK_MAX; ++i) {
     pRootNode_->pSubNodes[i] = new CommandNode();
   }
@@ -30,12 +30,12 @@ void CommandComponent::Tick(unsigned long long curTick) {
     ResetNode();
   }
 
-  if (nullptr == waitingTask_) {
-    waitingTaskTimeout_ = 0;
+  if (nullptr == reservedTask_) {
+    reservedTaskTimeout_ = 0;
   } else {
-    waitingTaskTimeout_ += curTick;
-    if (waitingTaskTimeout_ > waitingTaskTimeThreshold_) {
-      waitingTask_ = nullptr;
+    reservedTaskTimeout_ += curTick;
+    if (reservedTaskTimeout_ > reservedTaskTimeThreshold_) {
+      reservedTask_ = nullptr;
     }
   }
 }
@@ -61,16 +61,16 @@ bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, 
 }
 
 bool CommandComponent::isWaitingTask() const {
-  if (nullptr != waitingTask_) {
+  if (nullptr != reservedTask_) {
     return true;
   }
   return false;
 }
 
 void CommandComponent::ExcuteTask() {
-  if (nullptr != waitingTask_) {
-    waitingTask_();
-    waitingTask_ = nullptr;
+  if (nullptr != reservedTask_) {
+    reservedTask_();
+    reservedTask_ = nullptr;
   }
 }
 
@@ -94,15 +94,15 @@ void CommandComponent::JumpNode(CommandKey key) {
       return;
     }
 
-    waitingTask_ = pCurNode_->Task_;
+    reservedTask_ = pCurNode_->Task_;
 
     ResetNode();
   }
 }
 
-void CommandComponent::SetTimeOutThreshold(unsigned long long threshold, unsigned long long waitingTaskTimeThreshold) {
+void CommandComponent::SetTimeOutThreshold(unsigned long long threshold, unsigned long long reservedTaskTimeThreshold) {
   inputTimeThreshold_ = threshold;
-  waitingTaskTimeThreshold_ = waitingTaskTimeThreshold;
+  reservedTaskTimeThreshold_ = reservedTaskTimeThreshold;
 }
 
 void CommandComponent::ResetNode() {

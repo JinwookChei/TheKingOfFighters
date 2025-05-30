@@ -17,6 +17,8 @@ class MovementComponent final
 
   void Move(unsigned long long curTick, bool isRightDirection, bool isPushing);
 
+  void MoveBack(unsigned long long curTick, bool isRightDirection, bool isPushing);
+
   void Run(unsigned long long curTick, bool isRightDirection, bool isPushing);
 
   void Jump();
@@ -34,6 +36,10 @@ class MovementComponent final
   Vector moveDir_;
   const float moveVelocity_ = 0.5f;
   const float runVelocity_ = 1.5f;
+
+  // MOVE BACK
+  const float moveBackVelocity_ = 0.3f;
+
 
   // BACK STEP
   bool onBackStep_;

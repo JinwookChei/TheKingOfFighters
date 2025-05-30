@@ -227,7 +227,7 @@ bool CollisionComponent::CollisionPointToRect(const CollisionInfo& left, const C
   return ::CollisionPointToRect(left, right);
 }
 
-bool CollisionComponent::IsHit() {
+bool CollisionComponent::IsCollided() {
   return isCollided_;
 }
 

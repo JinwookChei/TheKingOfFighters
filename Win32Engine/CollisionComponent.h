@@ -48,7 +48,7 @@ class CollisionComponent final
 
   static bool CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right);
 
-  JO_API bool IsHit();
+  JO_API bool IsCollided();
 
   JO_API void OnCollision();
 

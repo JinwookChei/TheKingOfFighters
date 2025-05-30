@@ -147,6 +147,23 @@ void MovementComponent::Move(unsigned long long curTick, bool isRightDirection, 
   }
 }
 
+void MovementComponent::MoveBack(unsigned long long curTick, bool isRightDirection, bool isPushing) {
+  if (false == isGrounded_) {
+    return;
+  }
+
+  /*float weight = 1.0f;
+  if (true == isPushing) {
+    weight = 0.8f;
+  }*/
+
+  if (isRightDirection) {
+    moveDir_ = Vector::Left * moveBackVelocity_ * curTick; /** weight;*/
+  } else {
+    moveDir_ = Vector::Right * moveBackVelocity_ * curTick; /** weight;*/
+  }
+}
+
 void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, bool isPushing) {
   if (false == isGrounded_) {
     return;

@@ -5,6 +5,7 @@ class MovementComponent;
 class CommandComponent;
 class ProjectileComponent;
 class HealthComponent;
+class StateComponent;
 class HitHandlerComponent;
 class GhostEffect;
 
@@ -44,7 +45,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
-  void ChangeAnimation(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
+  void ChangeAnimState(bool canMove, unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
 
@@ -54,7 +55,7 @@ class KOFPlayer
 
   virtual void CommandUpdate();
 
-  void CollisionBoundUpdate();
+  void CollisionBoundScaleUpdate();
 
   virtual bool CheckAttackCollision(CollisionComponent** outTargetCollision);
 
@@ -86,6 +87,8 @@ class KOFPlayer
   MovementComponent* pMovementComponent_;
 
   HealthComponent* pHealthComponent_;
+  
+  StateComponent* pStateComponent_;
 
   CollisionComponent* pHitBoxTop_;
 
@@ -105,12 +108,14 @@ class KOFPlayer
 
   Vector characterScale_;
 
-public:
-  int forcedReservedAnim_ = -1;
-
+protected:
   int animState_;
+
+  int reservedAnimState_;
 
   bool isFacingRight_;
 
   bool isAtMapEdge_;
+
+  StateMachine curState_;
 };

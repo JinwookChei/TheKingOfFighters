@@ -58,7 +58,7 @@ class CommandComponent
 
   void JumpNode(CommandKey key);
 
-  void SetTimeOutThreshold(unsigned long long inputTimeThreshold, unsigned long long waitingTaskTimeThreshold);
+  void SetTimeOutThreshold(unsigned long long inputTimeThreshold, unsigned long long reservedTaskTimeThreshold);
 
   void ResetNode();
 
@@ -71,9 +71,9 @@ class CommandComponent
 
   unsigned long long inputTimeThreshold_;
 
-  unsigned long long waitingTaskTimeout_;
+  unsigned long long reservedTaskTimeout_;
 
-  unsigned long long waitingTaskTimeThreshold_;
+  unsigned long long reservedTaskTimeThreshold_;
 
-  std::function<void()> waitingTask_;
+  std::function<void()> reservedTask_;
 };
