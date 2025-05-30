@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <bitset>
 
 class MovementComponent;
 class CommandComponent;
@@ -8,6 +9,8 @@ class HealthComponent;
 class StateComponent;
 class HitHandlerComponent;
 class GhostEffect;
+
+
 
 enum PlayerAnimState {
   PAS_Start = 0,
@@ -45,7 +48,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
-  void ChangeAnimState(bool canMove, unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
+  void ChangeAnimState(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
 
@@ -80,6 +83,14 @@ class KOFPlayer
   void SetIsAtMapEdge(bool isAtEdge);
 
   bool IsAtMapEdge() const;
+
+  virtual void CompareInputBitset(unsigned long long curTick);
+  
+  void ResetInputBitSet();
+
+  bool IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
+
+  bool IsSetInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
  protected:
   ImageRenderer* pRender_;
@@ -117,5 +128,7 @@ protected:
 
   bool isAtMapEdge_;
 
-  StateMachine curState_;
+  std::bitset<8> inputPressBitSet_;
+
+  std::bitset<8> inputUpBitSet_;
 };

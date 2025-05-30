@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Health.h"
 #include "KOFPlayer.h"
-#include "HealthComponent.h";
+#include "HealthComponent.h"
+
 
 Health::Health()
     : pPlayer_(nullptr),

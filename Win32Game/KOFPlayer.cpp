@@ -9,6 +9,8 @@
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
 
+
+
 KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
@@ -25,7 +27,7 @@ KOFPlayer::KOFPlayer()
       animState_(0),
       reservedAnimState_(-1),
       isFacingRight_(true),
-      isAtMapEdge_(false) {
+      isAtMapEdge_(false){
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -90,6 +92,9 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
     return;
   }
 
+  // INPUT BIT SET
+  ResetInputBitSet();
+  
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
   pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
@@ -100,9 +105,10 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::ChangeAnimState(bool canMove, unsigned long long animationTag, int startFrame, unsigned long long time) {
+void KOFPlayer::ChangeAnimState(unsigned long long animationTag, int startFrame, unsigned long long time) {
   pRender_->ChangeAnimation(animationTag * FacingRightFlag(), startFrame, time);
-  curState_.canMove_ = canMove;
+
+  pStateComponent_->ChangeState(animationTag);
 
   CollisionReset();
 }
@@ -307,4 +313,20 @@ void KOFPlayer::SetIsAtMapEdge(bool isAtEdge) {
 
 bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
+}
+
+void KOFPlayer::CompareInputBitset(unsigned long long curTick) {
+}
+
+void KOFPlayer::ResetInputBitSet() {
+  inputPressBitSet_.reset();
+  inputUpBitSet_.reset();
+}
+
+bool KOFPlayer::IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
+  return myBitSet == compareTarget;
+}
+
+bool KOFPlayer::IsSetInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
+  return (myBitSet & compareTarget) == compareTarget;
 }

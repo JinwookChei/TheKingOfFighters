@@ -1,6 +1,5 @@
 #pragma once
 
-
 enum IoriAnimState {
   IOAS_MONGTAN_1 = PAS_MAX + 1,
   IOAS_MONGTAN_2,
@@ -23,6 +22,8 @@ class Iori
   void Tick(unsigned long long curTick) override;
 
   void InputUpdate(unsigned long long curTick) override;
+
+  void CompareInputBitset(unsigned long long curTick) override;
 
   void CommandUpdate() override;
 

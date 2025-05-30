@@ -55,3 +55,7 @@ void StateComponent::ChangeState(unsigned long long stateTag) {
 State StateComponent::GetCurState() const {
   return curState_;
 }
+
+bool StateComponent::CanMove() const {
+  return curState_.canMove_;
+}

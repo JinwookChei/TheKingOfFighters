@@ -29,6 +29,8 @@ class StateComponent
 
   State GetCurState() const;
 
+  bool CanMove() const;
+
  private:
   State curState_;
 
