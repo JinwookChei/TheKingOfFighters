@@ -77,13 +77,13 @@ void Chang::Tick(unsigned long long deltaTick) {
 
   CollisionBoundScaleUpdate();
 
-  if (true == pRender_->IsPlayingLoopAnimation()) {
-    InputUpdate(deltaTick);
+  //if (true == pRender_->IsPlayingLoopAnimation()) {
+  //  InputUpdate(deltaTick);
 
-    CommandUpdate();
+  //  CommandUpdate();
 
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-  }
+  //  pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  //}
 
   
 

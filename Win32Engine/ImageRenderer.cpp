@@ -299,7 +299,7 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFr
     return false;
   }
 
-  if (nullptr != pCurAnimation_ && pCurAnimation_->animationTag_ == pFind->animationTag_) {
+  if (nullptr != pCurAnimation_ && pCurAnimation_->loop_ && pCurAnimation_->animationTag_ == pFind->animationTag_) {
     return false;
   }
 
@@ -316,13 +316,21 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFr
   return true;
 }
 
-bool ImageRenderer::IsPlayingLoopAnimation() {
-  if (nullptr != pCurAnimation_ && false == pCurAnimation_->isEnd_ && false == pCurAnimation_->loop_) {
+bool ImageRenderer::IsAnimationEnd(){
+  if (nullptr == pCurAnimation_) {
     return false;
   }
 
-  return true;
+  return pCurAnimation_->isEnd_;
 }
+
+// bool ImageRenderer::IsPlayingLoopAnimation() {
+//   if (nullptr != pCurAnimation_ && false == pCurAnimation_->isEnd_ && false == pCurAnimation_->loop_) {
+//     return false;
+//   }
+//
+//   return true;
+// }
 
 void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
   if (!parameter_.on_ || nullptr == renderTexture) {

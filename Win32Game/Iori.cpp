@@ -56,23 +56,23 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 
   pRender_->SetTransparentColor(ioriTransparentColor);
 
-  //pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  // pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
   ChangeAnimState(PAS_Idle);
 
   // STATE
-  pStateComponent_->RegistState(PAS_Idle, true);
-  pStateComponent_->RegistState(PAS_SeatDown, true);
-  pStateComponent_->RegistState(PAS_SeatUp, true);
-  pStateComponent_->RegistState(PAS_FrontWalk, true);
-  pStateComponent_->RegistState(PAS_BackWalk, true);
-  pStateComponent_->RegistState(PAS_BackStep, true);
-  pStateComponent_->RegistState(PAS_Run, true);
-  pStateComponent_->RegistState(PAS_RunEnd, true);
-  pStateComponent_->RegistState(PAS_Jump, true);
-  pStateComponent_->RegistState(PAS_HeavyKick, true);
-  pStateComponent_->RegistState(PAS_Skill1, true);
-  pStateComponent_->RegistState(IOAS_MONGTAN_1, true);
-  pStateComponent_->RegistState(IOAS_MONGTAN_2, true);
+  pStateComponent_->RegistState(PAS_Idle, true, true);
+  pStateComponent_->RegistState(PAS_SeatDown, true, true);
+  pStateComponent_->RegistState(PAS_SeatUp, false, false);
+  pStateComponent_->RegistState(PAS_FrontWalk, true, true);
+  pStateComponent_->RegistState(PAS_BackWalk, true, true);
+  pStateComponent_->RegistState(PAS_BackStep, true, false);
+  pStateComponent_->RegistState(PAS_Run, true, true);
+  pStateComponent_->RegistState(PAS_RunEnd, false, false);
+  pStateComponent_->RegistState(PAS_Jump, false, false);
+  pStateComponent_->RegistState(PAS_HeavyKick, false, false);
+  pStateComponent_->RegistState(PAS_Skill1, false, false);
+  pStateComponent_->RegistState(IOAS_MONGTAN_1, false, false);
+  pStateComponent_->RegistState(IOAS_MONGTAN_2, false, false);
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
@@ -105,13 +105,11 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   InputUpdate(deltaTick);
 
-  CompareInputBitset(deltaTick);
-
   CommandUpdate();
 
-  TriggerEventAtAnimationIndex();
+  CompareInputBitset(deltaTick);
 
-  ChangeAnimState(animState_);
+  TriggerEventAtAnimationIndex();
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
@@ -150,27 +148,16 @@ void Iori::Tick(unsigned long long deltaTick) {
     }
   }
 
-  // if (-1 != reservedAnimState_) {
-  //   if (IOAS_MONGTAN_2 == reservedAnimState_ && 104 <= pRender_->GetImageIndex()) {
+  if (true == pStateComponent_->CanChangeAnimState()) {
+    if (true == pCommandComponent_->isWaitingTask()) {
+      pCommandComponent_->ExcuteTask();
+    }
+    ChangeAnimState(animState_);
+  }
 
-  //    ChangeAnimation(reservedAnimState_ * FacingRightFlag());
-  //    reservedAnimState_ = -1;
-  //    return;
-  //  }
-  //}
-
-  // if (true == pRender_->IsPlayingLoopAnimation()) {
-  //   InputUpdate(deltaTick);
-
-  //  if (true == pCommandComponent_->isWaitingTask()) {
-  //    pCommandComponent_->ExcuteTask();
-  //  }
-
-  //  // pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-  //  ChangeAnimation(animState_ * FacingRightFlag());
-  //}
-
-  // CollisionReset();
+  if (true == pRender_->IsAnimationEnd()) {
+    pStateComponent_->ResetState();
+  }
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {
@@ -200,7 +187,6 @@ void Iori::InputUpdate(unsigned long long curTick) {
       false == InputManager::Instance()->IsUp('Z') && false == InputManager::Instance()->IsUp('z') &&
       false == InputManager::Instance()->IsPress('X') && false == InputManager::Instance()->IsPress('x') &&
       false == InputManager::Instance()->IsUp('X') && false == InputManager::Instance()->IsUp('x')) {
-    animState_ = PAS_Idle;
     return;
   }
 
@@ -269,136 +255,177 @@ void Iori::InputUpdate(unsigned long long curTick) {
 }
 
 void Iori::CompareInputBitset(unsigned long long curTick) {
-  // LEFT PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
-    if (FacingRight()) {
-      if (pStateComponent_->CanMove()) {
-        animState_ = PAS_BackWalk;
-        pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
-      }
-    } else {
-      if (animState_ == PAS_Run) {
+  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
+      true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
+  } else {
+    // LEFT UP PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
+      if (FacingRight()) {
         if (pStateComponent_->CanMove()) {
-          pMovementComponent_->Run(curTick, FacingRight(), pPushBox_->IsCollided());
+          animState_ = PAS_Jump;
+          pMovementComponent_->JumpForward(false, false);
+          return;
         }
       } else {
+        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
+          animState_ = PAS_Jump;
+          pMovementComponent_->JumpForward(false, true);
+          pGhostEffect_->On();
+          return;
+        }
+
+        if (pStateComponent_->CanMove()) {
+          animState_ = PAS_Jump;
+          pMovementComponent_->JumpForward(false, false);
+          return;
+        }
+      }
+    }
+
+    // RIGHT UP PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
+      if (FacingRight()) {
+        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
+          animState_ = PAS_Jump;
+          pMovementComponent_->JumpForward(true, true);
+          pGhostEffect_->On();
+          return;
+        }
+
+        if (pStateComponent_->CanMove()) {
+          animState_ = PAS_Jump;
+          pMovementComponent_->JumpForward(true, false);
+          return;
+        }
+      } else {
+        if (pStateComponent_->CanMove()) {
+          animState_ = PAS_Jump;
+          pMovementComponent_->JumpForward(true, false);
+          return;
+        }
+      }
+    }
+
+    // LEFT PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
+      if (FacingRight()) {
+        if (pStateComponent_->CanMove()) {
+          animState_ = PAS_BackWalk;
+          pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
+          return;
+        }
+      } else {
+        if (PAS_Run == animState_) {
+          pMovementComponent_->Run(curTick, false, pPushBox_->IsCollided());
+          return;
+        }
         if (pStateComponent_->CanMove()) {
           animState_ = PAS_FrontWalk;
           pMovementComponent_->Move(curTick, FacingRight(), pPushBox_->IsCollided());
+          return;
         }
       }
     }
-  }
-  // LEFT UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("10000000"))) {
-
-  }
-
-  // DOWN PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
-    animState_ = PAS_SeatDown;
-  }
-
-  // DOWN UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("01000000"))) {
-    if (PAS_SeatDown == animState_) {
-      animState_ = PAS_SeatUp;
+    // LEFT UP
+    if (true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("10000000"))) {
     }
-  }
 
-  // RIGHT PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
-    if (FacingRight()) {
-      if (animState_ == PAS_Run) {
-        if (pStateComponent_->CanMove()) {
-          pMovementComponent_->Run(curTick, FacingRight(), pPushBox_->IsCollided());
+    // DOWN PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
+      animState_ = PAS_SeatDown;
+    }
+
+    // DOWN UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("01000000"))) {
+      if (PAS_SeatDown == pStateComponent_->GetCurAnimState()) {
+        animState_ = PAS_SeatUp;
+        return;
+      }
+    }
+
+    // RIGHT PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
+      if (FacingRight()) {
+        if (PAS_Run == animState_) {
+          pMovementComponent_->Run(curTick, true, pPushBox_->IsCollided());
+          return;
         }
-      } else {
         if (pStateComponent_->CanMove()) {
           animState_ = PAS_FrontWalk;
           pMovementComponent_->Move(curTick, FacingRight(), pPushBox_->IsCollided());
+          return;
+        }
+      } else {
+        if (pStateComponent_->CanMove()) {
+          animState_ = PAS_BackWalk;
+          pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
+          return;
         }
       }
-    } else {
+    }
+
+    // RIGHT UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00100000"))) {
+      if (FacingRight()) {
+
+      }
+    }
+
+    // UP PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
       if (pStateComponent_->CanMove()) {
-        animState_ = PAS_BackWalk;
-        pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
-      }
-    }
-  }
-
-  // RIGHT UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("00100000"))) {
-    if (FacingRight()) {
-      if (PAS_Run == animState_) {
-        animState_ = PAS_RunEnd;
-      }
-    }
-  }
-
-  // UP PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
-    if (pStateComponent_->CanMove()) {
-      if (PAS_FrontWalk == animState_) {
-        pMovementComponent_->JumpForward(FacingRight(), false);
         animState_ = PAS_Jump;
-      } else if (PAS_Run == animState_) {
-        pMovementComponent_->JumpForward(FacingRight(), true);
-        animState_ = PAS_Jump;
-        pGhostEffect_->On();
-      } else if (PAS_BackWalk == animState_) {
-        pMovementComponent_->JumpForward(!FacingRight(), false);
-        animState_ = PAS_Jump;
-      } else {
         pMovementComponent_->Jump();
-        animState_ = PAS_Jump;
+        return;
       }
     }
-  }
 
-  // UP UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("00010000"))) {
-  }
-
-  // A PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
-    if (animState_ == PAS_FrontWalk) {
-      animState_ = IOAS_MONGTAN_1;
+    // UP UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00010000"))) {
     }
 
-    if (animState_ == IOAS_MONGTAN_1 && pAttackBox_->IsCollided()) {
-      reservedAnimState_ = IOAS_MONGTAN_2;
+    // A PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+    }
+
+    // A UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00001000"))) {
+    }
+
+    // B PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+    }
+
+    // B UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000100"))) {
+    }
+
+    // C PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+    }
+
+    // C UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000010"))) {
+    }
+
+    // D PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+    }
+
+    // D UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000001"))) {
+      animState_ = PAS_HeavyKick;
+      return;
     }
   }
 
-  // A UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("00001000"))) {
+  ///////////////////////////// Else
+  if (PAS_Run == pStateComponent_->GetCurAnimState()) {
+    animState_ = PAS_RunEnd;
+    return;
   }
-
-  // B PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
-  }
-
-  // B UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("00000100"))) {
-  }
-
-  // C PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
-  }
-
-  // C UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("00000010"))) {
-  }
-
-  // D PRESS
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
-  }
-
-  // D UP
-  if (true == IsSetInputBitSet(inputUpBitSet_, std::bitset<8>("00000001"))) {
-    animState_ = PAS_HeavyKick;
-  }
+  animState_ = PAS_Idle;
+  return;
 }
 
 void Iori::CommandUpdate() {

@@ -90,7 +90,7 @@ class KOFPlayer
 
   bool IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
-  bool IsSetInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
+  bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
  protected:
   ImageRenderer* pRender_;

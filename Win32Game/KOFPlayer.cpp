@@ -107,9 +107,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
 void KOFPlayer::ChangeAnimState(unsigned long long animationTag, int startFrame, unsigned long long time) {
   pRender_->ChangeAnimation(animationTag * FacingRightFlag(), startFrame, time);
-
   pStateComponent_->ChangeState(animationTag);
-
   CollisionReset();
 }
 
@@ -327,6 +325,6 @@ bool KOFPlayer::IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bi
   return myBitSet == compareTarget;
 }
 
-bool KOFPlayer::IsSetInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
+bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
   return (myBitSet & compareTarget) == compareTarget;
 }
