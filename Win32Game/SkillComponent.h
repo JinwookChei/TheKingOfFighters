@@ -46,11 +46,16 @@ class SkillComponent
 
   void UpdateActiveSkill() const;
 
+  bool GetMiscTemp() const;
+
+  void SetMiscTemp(bool temp);
+
  private:
   HashTable skillTable_;
 
   bool isSkillActive_;
 
-  SkillInfo* activeSkillInfo_;
+  bool miscTemp_;
 
+  SkillInfo* activeSkillInfo_;
 };

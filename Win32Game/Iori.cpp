@@ -10,8 +10,7 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
-Iori::Iori()
-    : prevImageIndex_(0) {
+Iori::Iori() {
 }
 
 Iori::~Iori() {
@@ -31,29 +30,29 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // RENDERER
-  pRender_->CreateAnimation(PAS_Idle, 3, 7, 15, 50, true, 7);              // 아이들
-  pRender_->CreateAnimation(PAS_SeatDown, 3, 16, 23, 50, true, 18);        // 앉기. Down
-  pRender_->CreateAnimation(PAS_SeatUp, 3, 24, 25, 50, false, 24);         // 앉기. Up
-  pRender_->CreateAnimation(PAS_FrontWalk, 3, 27, 34, 50, true, 27);       // -> 걷기
-  pRender_->CreateAnimation(PAS_BackWalk, 3, 35, 44, 50, true, 35);        // <- 뒤로가기
-  pRender_->CreateAnimation(PAS_BackStep, 3, 45, 48, 50, false, 45);       // <- <- 백스탭
-  pRender_->CreateAnimation(PAS_Run, 3, 49, 57, 50, true, 51);             // ->-> 뛰기 Start
-  pRender_->CreateAnimation(PAS_RunEnd, 3, 58, 60, 50, false, 59);         // ->-> 뛰기 Stop
-  pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);           // 점프
-  pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);   // 발차기
-  pRender_->CreateAnimation(PAS_Skill1, 3, 223, 230, 50, false, 223);      // 커맨드 테스트.
-  pRender_->CreateAnimation(IOAS_MONGTAN_1, 3, 99, 107, 50, false, 99);    // 커맨드 테스트.
-  pRender_->CreateAnimation(IOAS_MONGTAN_2, 3, 160, 164, 50, false, 159);  // 커맨드 테스트.
+  pRender_->CreateAnimation(PAS_Idle, 3, 7, 15, 50, true, 7);                      // 아이들
+  pRender_->CreateAnimation(PAS_SeatDown, 3, 16, 23, 50, true, 18);                // 앉기. Down
+  pRender_->CreateAnimation(PAS_SeatUp, 3, 24, 25, 50, false, 24);                 // 앉기. Up
+  pRender_->CreateAnimation(PAS_FrontWalk, 3, 27, 34, 50, true, 27);               // -> 걷기
+  pRender_->CreateAnimation(PAS_BackWalk, 3, 35, 44, 50, true, 35);                // <- 뒤로가기
+  pRender_->CreateAnimation(PAS_BackStep, 3, 45, 48, 50, false, 45);               // <- <- 백스탭
+  pRender_->CreateAnimation(PAS_Run, 3, 49, 57, 50, true, 51);                     // ->-> 뛰기 Start
+  pRender_->CreateAnimation(PAS_RunEnd, 3, 58, 60, 50, false, 59);                 // ->-> 뛰기 Stop
+  pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);                   // 점프
+  pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);           // 발차기
+  pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, 3, 223, 230, 50, false, 223);  // 커맨드 테스트.
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_1, 3, 99, 107, 50, false, 99);      // 커맨드 테스트.
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 159);    // 커맨드 테스트.
 
-  pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);             // 아이들
-  pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);       // 앉기.
-  pRender_->CreateAnimation(-PAS_FrontWalk, -3, 27, 34, 50, true, 27);      // -> 걷기
-  pRender_->CreateAnimation(-PAS_BackWalk, -3, 35, 44, 50, true, 35);       // <- 뒤로가기
-  pRender_->CreateAnimation(-PAS_BackStep, -3, 45, 48, 50, false, 45);      // <- <- 백스탭
-  pRender_->CreateAnimation(-PAS_Run, -3, 49, 58, 50, true, 51);            // ->-> 뛰기
-  pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false, 61);          // 점프
-  pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false, 108);  // 발차기
-  pRender_->CreateAnimation(-PAS_Skill1, -3, 223, 230, 50, false, 223);     // 커맨드 테스트.
+  pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);                      // 아이들
+  pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);                // 앉기.
+  pRender_->CreateAnimation(-PAS_FrontWalk, -3, 27, 34, 50, true, 27);               // -> 걷기
+  pRender_->CreateAnimation(-PAS_BackWalk, -3, 35, 44, 50, true, 35);                // <- 뒤로가기
+  pRender_->CreateAnimation(-PAS_BackStep, -3, 45, 48, 50, false, 45);               // <- <- 백스탭
+  pRender_->CreateAnimation(-PAS_Run, -3, 49, 58, 50, true, 51);                     // ->-> 뛰기
+  pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false, 61);                   // 점프
+  pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false, 108);           // 발차기
+  pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -3, 223, 230, 50, false, 223);  // 커맨드 테스트.
 
   pRender_->SetTransparentColor(ioriTransparentColor);
 
@@ -70,27 +69,28 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pStateComponent_->RegistState(PAS_RunEnd, false, false);
   pStateComponent_->RegistState(PAS_Jump, false, false);
   pStateComponent_->RegistState(PAS_HeavyKick, false, false);
-  pStateComponent_->RegistState(PAS_Skill1, false, false);
-  pStateComponent_->RegistState(IOAS_MONGTAN_1, false, false);
-  pStateComponent_->RegistState(IOAS_MONGTAN_2, false, false);
-
+  pStateComponent_->RegistState(IOAS_108ShikiYamiBarai, false, false);
+  pStateComponent_->RegistState(IOAS_GaishikiMutan_1, false, false);
+  pStateComponent_->RegistState(IOAS_GaishikiMutan_2, false, false);
 
   // SKILL
-  if (false == pSkillComponent_->RegistSkill(IOSK_MONGTAN, &Iori::MongTan, this))
-  {
+  if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) {
     return;
   }
-  
+  if (false == pSkillComponent_->RegistSkill(IOSK_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this)) {
+    return;
+  }
+
   // COMMAND
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::Command_1, this))) {
     return;
   }
 
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, std::bind(&Iori::CommandSkill_2, this))) {
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
     return;
   }
 
-  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Right}, std::bind(&Iori::CommandSkill_3, this))) {
+  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) {
     return;
   }
 
@@ -112,13 +112,20 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   InputUpdate(deltaTick);
 
-  CommandUpdate();
-
   CompareInputBitset(deltaTick);
+
+  CommandUpdate();
 
   pSkillComponent_->UpdateActiveSkill();
 
-  TriggerEventAtAnimationIndex();
+  // TEMP : 수정사항
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+  if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
+    pGhostEffect_->Off();
+  }
+  // TEMP END
+
+  UpdatePrevAnimationIndex();
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
@@ -132,7 +139,7 @@ void Iori::Tick(unsigned long long deltaTick) {
         return;
       }
       // pTargetCollision->OnCollision();
-      if (animState_ == IOAS_MONGTAN_1) {
+      if (animState_ == IOAS_GaishikiMutan_1) {
         pTargetPlayer->HitEvent(0.0f, {15.0f, 0.0f});
         TimeManager::Instance()->OnFrameFreeze(200);
       }
@@ -318,9 +325,7 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     // RIGHT A - PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
       if (FacingRight()) {
-        pSkillComponent_->ActivateSkill(IOSK_MONGTAN);
-        //pSkillComponent_->IsActive();
-        //mongtan_ = true;
+        pSkillComponent_->ActivateSkill(IOSK_GaishikiMutan);
         return;
       }
     }
@@ -490,8 +495,52 @@ void Iori::CommandUpdate() {
   }
 }
 
-void Iori::TriggerEventAtAnimationIndex() {
+void Iori::Command_1() {
+  animState_ = IOAS_108ShikiYamiBarai;
+  pSkillComponent_->ActivateSkill(IOSK_108ShikiYamiBarai);
+}
+
+void Iori::Command_2() {
+  animState_ = PAS_BackStep;
+  pMovementComponent_->BackStep((FacingRight()));
+}
+
+void Iori::Command_3() {
+  animState_ = PAS_Run;
+}
+
+void Iori::GaishikiMutan() {
+  animState_ = IOAS_GaishikiMutan_1;
+
+  if (true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
+    return;
+  }
+
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+
+  if (IOAS_GaishikiMutan_1 == pStateComponent_->GetCurAnimState() && 100 <= curImageIndex && 104 >= curImageIndex) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+      pSkillComponent_->SetMiscTemp(true);
+    }
+
+    if (pAttackBox_->IsCollided() && pSkillComponent_->GetMiscTemp() == true) {
+      reservedAnimState_ = IOAS_GaishikiMutan_2;
+    }
+  }
+
+  if (curImageIndex == 105 && reservedAnimState_ == IOAS_GaishikiMutan_2) {
+    ChangeAnimState();
+  }
+}
+
+void Iori::ShikiYamiBarai108() {
   if (nullptr == pRender_) {
+    return;
+  }
+
+  if (true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
     return;
   }
 
@@ -501,55 +550,7 @@ void Iori::TriggerEventAtAnimationIndex() {
     return;
   }
 
-  switch (curImageIndex) {
-    case (69):
-      pGhostEffect_->Off();
-      break;
-    case (226):
-      pProjectileComponent_->FireProjectile(1);
-      break;
-    default:
-      break;
-  }
-
-  prevImageIndex_ = curImageIndex;
-}
-
-void Iori::CommandSkill_1() {
-  animState_ = PAS_Skill1;
-}
-
-void Iori::CommandSkill_2() {
-  animState_ = PAS_BackStep;
-  pMovementComponent_->BackStep((FacingRight()));
-}
-
-void Iori::CommandSkill_3() {
-  animState_ = PAS_Run;
-}
-
-void Iori::MongTan() {
-  animState_ = IOAS_MONGTAN_1;
-
-  if (true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    mongtanTemp_ = false;
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-
-  if (IOAS_MONGTAN_1 == pStateComponent_->GetCurAnimState() && 100 <= curImageIndex && 104 >= curImageIndex) {
-    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
-      mongtanTemp_ = true;
-    }
-
-    if (pAttackBox_->IsCollided() && mongtanTemp_ == true) {
-      reservedAnimState_ = IOAS_MONGTAN_2;
-    }
-  }
-
-  if (curImageIndex == 105 && reservedAnimState_ == IOAS_MONGTAN_2) {
-    ChangeAnimState();
+  if (226 == curImageIndex) {
+    pProjectileComponent_->FireProjectile(1);
   }
 }

@@ -116,8 +116,8 @@ unsigned int ImageRenderer::GetImageIndex() const {
   return imageIndex_;
 }
 
-void ImageRenderer::SetImageIndex(unsigned int imageIndex) {
-  imageIndex_ = imageIndex;
+void ImageRenderer::SetImageIndex(unsigned int iamgeIndex) {
+  imageIndex_ = iamgeIndex;
 }
 
 void ImageRenderer::SetAngle(float angle) {

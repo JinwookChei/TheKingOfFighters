@@ -3,6 +3,7 @@
 
 SkillComponent::SkillComponent()
     : isSkillActive_(false),
+      miscTemp_(false),
       activeSkillInfo_(nullptr) {
 }
 
@@ -39,10 +40,19 @@ void SkillComponent::ActivateSkill(unsigned long long skillTag) {
 
 void SkillComponent::DeactivateSkill() {
   isSkillActive_ = false;
+  miscTemp_ = false;
 }
 
 void SkillComponent::UpdateActiveSkill() const {
   if (true == isSkillActive_ && nullptr != activeSkillInfo_->skill_) {
     activeSkillInfo_->skill_();
   }
+}
+
+bool SkillComponent::GetMiscTemp() const {
+  return miscTemp_;
+}
+
+void SkillComponent::SetMiscTemp(bool temp) {
+  miscTemp_ = temp;
 }

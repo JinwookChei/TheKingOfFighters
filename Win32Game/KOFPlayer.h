@@ -13,7 +13,7 @@ class GhostEffect;
 
 
 
-enum PlayerAnimState {
+enum PLAYER_ANIM_STATE {
   PAS_None = -1,
   PAS_Start = 0,
   PAS_Idle,
@@ -33,7 +33,6 @@ enum PlayerAnimState {
   PAS_HitBottom,
   PAS_HitStrong,
   PAS_HitWhileJumping,
-  PAS_Skill1,
   PAS_MAX
 };
 
@@ -69,7 +68,7 @@ class KOFPlayer
 
   void CollisionReset();
 
-  virtual void TriggerEventAtAnimationIndex();
+  void UpdatePrevAnimationIndex();
 
   virtual Vector CharacterScale() const;
 
@@ -130,6 +129,8 @@ protected:
 
   int reservedAnimState_;
 
+  unsigned int prevImageIndex_;
+
   bool isFacingRight_;
 
   bool isAtMapEdge_;
@@ -137,4 +138,6 @@ protected:
   std::bitset<8> inputPressBitSet_;
 
   std::bitset<8> inputUpBitSet_;
+
+  
 };

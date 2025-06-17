@@ -42,8 +42,8 @@ void Effect::Tick(unsigned long long curTick) {
   }
 
   if (true == isFirstTick_) {
-    unsigned int imageIndex = pEffectInfo_->indices_[0];
-    pRender_->SetImageIndex(imageIndex);
+    unsigned int animIndex = pEffectInfo_->indices_[0];
+    pRender_->SetImageIndex(animIndex);
     curTime_ = pEffectInfo_->intervals_[0];
     isFirstTick_ = false;
   }
@@ -60,13 +60,13 @@ void Effect::Tick(unsigned long long curTick) {
         SetDestroy();
       }
     } else {
-      unsigned int imageIndex = pEffectInfo_->indices_[curFrame_];
-      pRender_->SetImageIndex(imageIndex);
+      unsigned int animIndex = pEffectInfo_->indices_[curFrame_];
+      pRender_->SetImageIndex(animIndex);
       IImage* pImage = pRender_->GetImage();
       if (nullptr == pImage) {
         return;
       }
-      pRender_->SetScale(pImage->GetScale(imageIndex));
+      pRender_->SetScale(pImage->GetScale(animIndex));
 
       curTime_ = pEffectInfo_->intervals_[curFrame_];
     }

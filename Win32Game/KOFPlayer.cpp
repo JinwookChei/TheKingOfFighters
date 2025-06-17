@@ -26,6 +26,7 @@ KOFPlayer::KOFPlayer()
       characterScale_({0.0f, 0.0f}),
       animState_(PAS_Idle),
       reservedAnimState_(PAS_None),
+      prevImageIndex_(0),
       isFacingRight_(true),
       isAtMapEdge_(false) {
 }
@@ -287,7 +288,15 @@ void KOFPlayer::CollisionReset() {
   pGrabBox_->OffCollision();
 }
 
-void KOFPlayer::TriggerEventAtAnimationIndex() {
+void KOFPlayer::UpdatePrevAnimationIndex() {
+  if (nullptr == pRender_) {
+    return;
+  }
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+
+  if (curImageIndex != prevImageIndex_) {
+    prevImageIndex_ = curImageIndex;
+  }
 }
 
 Vector KOFPlayer::CharacterScale() const {
