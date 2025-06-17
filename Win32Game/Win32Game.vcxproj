@@ -187,6 +187,7 @@
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ReadButton.cpp" />
     <ClCompile Include="GhostEffect.cpp" />
+    <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -229,6 +230,7 @@
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="ReadButton.h" />
     <ClInclude Include="GhostEffect.h" />
+    <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="StateComponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />

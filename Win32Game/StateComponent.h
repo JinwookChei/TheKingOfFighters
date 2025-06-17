@@ -1,6 +1,5 @@
 #pragma once
 
-
 struct State {
   unsigned long long stateTag_ = 0;
 

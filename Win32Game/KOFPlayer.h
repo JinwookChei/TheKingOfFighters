@@ -4,6 +4,7 @@
 
 class MovementComponent;
 class CommandComponent;
+class SkillComponent;
 class ProjectileComponent;
 class HealthComponent;
 class StateComponent;
@@ -13,6 +14,7 @@ class GhostEffect;
 
 
 enum PlayerAnimState {
+  PAS_None = -1,
   PAS_Start = 0,
   PAS_Idle,
   PAS_SeatDown,
@@ -35,6 +37,7 @@ enum PlayerAnimState {
   PAS_MAX
 };
 
+
 class KOFPlayer
     : public Player {
  public:
@@ -48,7 +51,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
-  void ChangeAnimState(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
+  void ChangeAnimState(/*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
 
   const HealthComponent* GetHealthComponent() const;
 
@@ -111,11 +114,14 @@ class KOFPlayer
 
   CollisionComponent* pGrabBox_;
 
+  SkillComponent* pSkillComponent_;
+
   CommandComponent* pCommandComponent_;
 
   ProjectileComponent* pProjectileComponent_;
 
   GhostEffect* pGhostEffect_;
+
 
   Vector characterScale_;
 

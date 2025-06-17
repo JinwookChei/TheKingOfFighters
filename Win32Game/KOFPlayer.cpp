@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CommandComponent.h"
+#include "SkillComponent.h"
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "StateComponent.h"
@@ -8,8 +9,6 @@
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
-
-
 
 KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
@@ -20,14 +19,15 @@ KOFPlayer::KOFPlayer()
       pAttackBox_(nullptr),
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
+      pSkillComponent_(nullptr),
       pCommandComponent_(nullptr),
       pProjectileComponent_(nullptr),
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
-      animState_(0),
-      reservedAnimState_(-1),
+      animState_(PAS_Idle),
+      reservedAnimState_(PAS_None),
       isFacingRight_(true),
-      isAtMapEdge_(false){
+      isAtMapEdge_(false) {
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -64,8 +64,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
   // STATE
   pStateComponent_ = CreateComponent<StateComponent>();
-  if (false == pStateComponent_->Initialize())
-  {
+  if (false == pStateComponent_->Initialize()) {
     return;
   }
 
@@ -75,6 +74,12 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pAttackBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_AttackBox);
   pPushBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_PushBox);
   pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
+
+  // SKILL
+  pSkillComponent_ = CreateComponent<SkillComponent>();
+  if (false == pSkillComponent_->Initialize()) {
+    return;
+  }
 
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
@@ -94,7 +99,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
   // INPUT BIT SET
   ResetInputBitSet();
-  
+
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
   pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
@@ -105,9 +110,16 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::ChangeAnimState(unsigned long long animationTag, int startFrame, unsigned long long time) {
-  pRender_->ChangeAnimation(animationTag * FacingRightFlag(), startFrame, time);
-  pStateComponent_->ChangeState(animationTag);
+void KOFPlayer::ChangeAnimState() {
+  if (reservedAnimState_ != PAS_None) {
+    pRender_->ChangeAnimation(reservedAnimState_ * FacingRightFlag());
+    pStateComponent_->ChangeState(reservedAnimState_);
+    reservedAnimState_ = PAS_None;
+  } else {
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    pStateComponent_->ChangeState(animState_);
+  }
+
   CollisionReset();
 }
 

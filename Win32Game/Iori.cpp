@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "KOFPlayer.h"
 #include "MovementComponent.h"
+#include "SkillComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "HealthComponent.h"
@@ -10,7 +11,7 @@
 #include "Iori.h"
 
 Iori::Iori()
-    : prevImageIndex(0) {
+    : prevImageIndex_(0) {
 }
 
 Iori::~Iori() {
@@ -56,8 +57,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 
   pRender_->SetTransparentColor(ioriTransparentColor);
 
-  // pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
-  ChangeAnimState(PAS_Idle);
+  ChangeAnimState();
 
   // STATE
   pStateComponent_->RegistState(PAS_Idle, true, true);
@@ -74,6 +74,13 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pStateComponent_->RegistState(IOAS_MONGTAN_1, false, false);
   pStateComponent_->RegistState(IOAS_MONGTAN_2, false, false);
 
+
+  // SKILL
+  if (false == pSkillComponent_->RegistSkill(IOSK_MONGTAN, &Iori::MongTan, this))
+  {
+    return;
+  }
+  
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::CommandSkill_1, this))) {
     return;
@@ -108,6 +115,8 @@ void Iori::Tick(unsigned long long deltaTick) {
   CommandUpdate();
 
   CompareInputBitset(deltaTick);
+
+  pSkillComponent_->UpdateActiveSkill();
 
   TriggerEventAtAnimationIndex();
 
@@ -152,7 +161,7 @@ void Iori::Tick(unsigned long long deltaTick) {
     if (true == pCommandComponent_->isWaitingTask()) {
       pCommandComponent_->ExcuteTask();
     }
-    ChangeAnimState(animState_);
+    ChangeAnimState();
   }
 
   if (true == pRender_->IsAnimationEnd()) {
@@ -306,6 +315,16 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
       }
     }
 
+    // RIGHT A - PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
+      if (FacingRight()) {
+        pSkillComponent_->ActivateSkill(IOSK_MONGTAN);
+        //pSkillComponent_->IsActive();
+        //mongtan_ = true;
+        return;
+      }
+    }
+
     // LEFT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
@@ -331,16 +350,13 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     }
 
     // DOWN PRESS
-    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
       animState_ = PAS_SeatDown;
+      return;
     }
 
     // DOWN UP
     if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("01000000"))) {
-      if (PAS_SeatDown == pStateComponent_->GetCurAnimState()) {
-        animState_ = PAS_SeatUp;
-        return;
-      }
     }
 
     // RIGHT PRESS
@@ -367,12 +383,11 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     // RIGHT UP
     if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00100000"))) {
       if (FacingRight()) {
-
       }
     }
 
     // UP PRESS
-    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
       if (pStateComponent_->CanMove()) {
         animState_ = PAS_Jump;
         pMovementComponent_->Jump();
@@ -393,7 +408,7 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     }
 
     // B PRESS
-    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
     }
 
     // B UP
@@ -401,7 +416,7 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     }
 
     // C PRESS
-    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
     }
 
     // C UP
@@ -409,7 +424,7 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     }
 
     // D PRESS
-    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
     }
 
     // D UP
@@ -420,6 +435,11 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
   }
 
   ///////////////////////////// Else
+  if (PAS_SeatDown == pStateComponent_->GetCurAnimState()) {
+    animState_ = PAS_SeatUp;
+    return;
+  }
+
   if (PAS_Run == pStateComponent_->GetCurAnimState()) {
     animState_ = PAS_RunEnd;
     return;
@@ -477,7 +497,7 @@ void Iori::TriggerEventAtAnimationIndex() {
 
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
-  if (prevImageIndex == curImageIndex) {
+  if (prevImageIndex_ == curImageIndex) {
     return;
   }
 
@@ -492,7 +512,7 @@ void Iori::TriggerEventAtAnimationIndex() {
       break;
   }
 
-  prevImageIndex = curImageIndex;
+  prevImageIndex_ = curImageIndex;
 }
 
 void Iori::CommandSkill_1() {
@@ -508,123 +528,28 @@ void Iori::CommandSkill_3() {
   animState_ = PAS_Run;
 }
 
-// TEMP INPUT UPDATE
+void Iori::MongTan() {
+  animState_ = IOAS_MONGTAN_1;
 
-// if (false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') &&
-//     false == InputManager::Instance()->IsUp('A') && false == InputManager::Instance()->IsUp('a') &&
-//     false == InputManager::Instance()->IsPress('D') && false == InputManager::Instance()->IsPress('d') &&
-//     false == InputManager::Instance()->IsUp('D') && false == InputManager::Instance()->IsUp('d') &&
-//     false == InputManager::Instance()->IsPress('W') && false == InputManager::Instance()->IsPress('w') &&
-//     false == InputManager::Instance()->IsUp('W') && false == InputManager::Instance()->IsUp('w') &&
-//     false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') &&
-//     false == InputManager::Instance()->IsUp('S') && false == InputManager::Instance()->IsUp('s') &&
-//     false == InputManager::Instance()->IsPress('F') && false == InputManager::Instance()->IsPress('f') &&
-//     false == InputManager::Instance()->IsUp('F') && false == InputManager::Instance()->IsUp('f') &&
-//     false == InputManager::Instance()->IsPress('Q') && false == InputManager::Instance()->IsPress('q') &&
-//     false == InputManager::Instance()->IsUp('Q') && false == InputManager::Instance()->IsUp('q') &&
-//     false == InputManager::Instance()->IsPress('E') && false == InputManager::Instance()->IsPress('e') &&
-//     false == InputManager::Instance()->IsUp('E') && false == InputManager::Instance()->IsUp('e')) {
-//   animState_ = PAS_Idle;
-//   return;
-// }
+  if (true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
+    mongtanTemp_ = false;
+    return;
+  }
 
-// if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-//   if (FacingRight()) {
-//     animState_ = PAS_BackWalk;
-//     pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
-//   } else {
-//     if (animState_ == PAS_Run) {
-//       pMovementComponent_->Run(curTick, false, pPushBox_->IsHit());
-//     } else {
-//       animState_ = PAS_FrontWalk;
-//       pMovementComponent_->Move(curTick, false, pPushBox_->IsHit());
-//     }
-//   }
-// }
+  unsigned int curImageIndex = pRender_->GetImageIndex();
 
-// if (InputManager::Instance()->IsUp('A') || InputManager::Instance()->IsUp('a')) {
-//   if (FacingRight()) {
-//   }
-// }
+  if (IOAS_MONGTAN_1 == pStateComponent_->GetCurAnimState() && 100 <= curImageIndex && 104 >= curImageIndex) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+      mongtanTemp_ = true;
+    }
 
-// if (InputManager::Instance()->IsPress('D') || InputManager::Instance()->IsPress('d')) {
-//   if (FacingRight()) {
-//     if (animState_ == PAS_Run) {
-//       pMovementComponent_->Run(curTick, true, pPushBox_->IsHit());
-//     } else {
-//       animState_ = PAS_FrontWalk;
-//       pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
-//     }
-//   } else {
-//     animState_ = PAS_BackWalk;
-//     pMovementComponent_->Move(curTick, true, pPushBox_->IsHit());
-//   }
-// }
+    if (pAttackBox_->IsCollided() && mongtanTemp_ == true) {
+      reservedAnimState_ = IOAS_MONGTAN_2;
+    }
+  }
 
-// if (InputManager::Instance()->IsUp('D') || InputManager::Instance()->IsUp('d')) {
-//   if (FacingRight()) {
-//     if (PAS_Run == animState_) {
-//       animState_ = PAS_RunEnd;
-//     }
-//   }
-// }
-
-// if (InputManager::Instance()->IsPress('W') || InputManager::Instance()->IsPress('w')) {
-//   if (PAS_FrontWalk == animState_) {
-//     pMovementComponent_->JumpForward(FacingRight(), false);
-//     animState_ = PAS_Jump;
-//   } else if (PAS_Run == animState_) {
-//     pMovementComponent_->JumpForward(FacingRight(), true);
-//     animState_ = PAS_Jump;
-//     pGhostEffect_->On();
-//   } else if (PAS_BackWalk == animState_) {
-//     pMovementComponent_->JumpForward(!FacingRight(), false);
-//     animState_ = PAS_Jump;
-//   } else {
-//     pMovementComponent_->Jump();
-//     animState_ = PAS_Jump;
-//   }
-// }
-// if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-//   animState_ = PAS_SeatDown;
-// }
-
-// if (InputManager::Instance()->IsUp('S') || InputManager::Instance()->IsUp('s')) {
-//   if (PAS_SeatDown == animState_) {
-//     animState_ = PAS_SeatUp;
-//   }
-// }
-// if (InputManager::Instance()->IsPress('F') || InputManager::Instance()->IsPress('f')) {
-//   animState_ = PAS_HeavyKick;
-// }
-// if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-// }
-// if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-// }
-
-// COMMENT TEMP
-// void Iori::CommendUpdate() {
-//  if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
-//    if (FacingRight()) {
-//      pCommandComponent_->JumpNode(CK_Left);
-//    } else {
-//      pCommandComponent_->JumpNode(CK_Right);
-//    }
-//  }
-//
-//  if (InputManager::Instance()->IsDown('D') || InputManager::Instance()->IsDown('d')) {
-//    if (FacingRight()) {
-//      pCommandComponent_->JumpNode(CK_Right);
-//    } else {
-//      pCommandComponent_->JumpNode(CK_Left);
-//    }
-//  }
-//
-//  if (InputManager::Instance()->IsDown('W') || InputManager::Instance()->IsDown('w')) {
-//    pCommandComponent_->JumpNode(CK_Up);
-//  }
-//
-//  if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
-//    pCommandComponent_->JumpNode(CK_Down);
-//  }
-//}
+  if (curImageIndex == 105 && reservedAnimState_ == IOAS_MONGTAN_2) {
+    ChangeAnimState();
+  }
+}

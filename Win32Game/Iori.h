@@ -5,6 +5,12 @@ enum IoriAnimState {
   IOAS_MONGTAN_2,
 };
 
+enum IoriSkill {
+  IOSK_NONE = -1,
+  IOSK_MONGTAN = 0,
+  IOSK_MAX
+};
+
 class CommandComponent;
 class ProjectileComponent;
 
@@ -36,10 +42,16 @@ class Iori
 
   void CommandSkill_3();
 
+  void MongTan();
+
   // Sprite
   ImageRenderer* spriteRenderer_[10];
 
  private:
-  unsigned int prevImageIndex;
+  unsigned int prevImageIndex_;
+
+  //bool mongtan_ = false;
+
+  bool mongtanTemp_ = false;
 
 };
