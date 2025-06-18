@@ -10,6 +10,13 @@ MovementComponent::MovementComponent()
     : startPosition_({0.0f, 0.0f}),
       // MOVE
       moveDir_({0.0f, 0.0f}),
+      // DASH
+      onDash_(false),
+      dashTimer_(0.0f),
+      dashDuration_(0.0f),
+      dashDistance_(0.0f),
+      dashStartPos_({0.0f, 0.0f}),
+      dashEndPos_({0.0f, 0.0f}),
       // BACK STEP
       onBackStep_(false),
       backstepTimer_(0.0f),
@@ -49,6 +56,26 @@ void MovementComponent::Tick(unsigned long long curTick) {
     isGrounded_ = false;
   }
   // UPDATE END
+
+
+  // DASH
+  if (onDash_) {
+    dashTimer_ += curTick;
+    float t = dashTimer_ / dashDuration_;
+
+    if (t >= 1.0f) {
+      t = 1.0f;
+      onDash_ = false;
+    }
+
+    Vector newPostion;
+    newPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
+    newPostion.Y = startPosition_.Y;
+
+    owner->SetPosition(newPostion);
+  }
+  // DASH END
+  
 
   // BACKSTEP
   if (onBackStep_) {
@@ -231,6 +258,32 @@ void MovementComponent::BackStep(bool isRightDirection) {
   }
 
   onBackStep_ = true;
+}
+
+void MovementComponent::Dash(bool isRightDirection, float dashDuration, float dashDistance) {
+  if (false == isGrounded_) {
+    return;
+  }
+
+  Actor* owner = GetOwner();
+  if (nullptr == owner) {
+    return;
+  }
+
+  onDash_ = true;
+  dashTimer_ = 0.0f;
+  dashDuration_ = dashDuration;
+  dashDistance_ = dashDistance;
+
+  if (isRightDirection) {
+    dashStartPos_ = owner->GetPosition();
+    dashEndPos_ = owner->GetPosition();
+    dashEndPos_.X += dashDistance_;
+  } else {
+    dashStartPos_ = owner->GetPosition();
+    dashEndPos_ = owner->GetPosition();
+    dashEndPos_.X -= dashDistance_;
+  }
 }
 
 void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {

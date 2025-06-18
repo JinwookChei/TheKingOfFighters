@@ -4,12 +4,17 @@ enum IORI_ANIM_STATE {
   IOAS_108ShikiYamiBarai = PAS_MAX + 1,
   IOAS_GaishikiMutan_1,
   IOAS_GaishikiMutan_2,
+  IOAS_Shinigami,
+  IOAS_HyakushikiOniyaki
+
 };
 
 enum IORI_SKILL {
   IOSK_NONE = -1,
   IOSK_108ShikiYamiBarai = 0,
   IOSK_GaishikiMutan,
+  IOSK_Shinigami,
+  IOSK_HyakushikiOniyaki,
   IOSK_MAX
 };
 
@@ -42,10 +47,17 @@ class Iori
 
   void Command_3();
 
+  void Command_4();
+
+
   // Skills  
   void GaishikiMutan();
 
   void ShikiYamiBarai108();
+
+  void Shinigami();
+
+  void HyakushikiOniyaki();
 
   // Sprite
   ImageRenderer* spriteRenderer_[10];

@@ -27,6 +27,8 @@ class MovementComponent final
 
   void BackStep(bool isRightDirection);
 
+  void Dash(bool isRightDirection, float dashDuration, float dashDistance);
+
   void KnockBack(bool isRightDirection, const Vector& knockBackForce);
 
  private:
@@ -40,6 +42,13 @@ class MovementComponent final
   // MOVE BACK
   const float moveBackVelocity_ = 0.3f;
 
+  // DASH
+  bool onDash_;
+  float dashTimer_;
+  float dashDuration_;
+  float dashDistance_;
+  Vector dashStartPos_;
+  Vector dashEndPos_;
 
   // BACK STEP
   bool onBackStep_;

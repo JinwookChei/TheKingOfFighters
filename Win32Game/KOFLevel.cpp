@@ -49,8 +49,6 @@ void KOFLevel::BeginPlay() {
   IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\effect01.png", 7);
   effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
   
- 
-
 
   // TODO : 
   // 반전된 Health는 logic으로, 원본 이미지는 여러 포인터가 가르킥로있고, 이미지를 어떻게 그릴지만 각자 알아서 그림.

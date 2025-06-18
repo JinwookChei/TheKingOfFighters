@@ -64,28 +64,32 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
 
 
-
-
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(changTransparentColor);
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
 
-
   CollisionPushUpdate();
 
   CollisionBoundScaleUpdate();
 
+  
+  if (pRender_->GetImageIndex() == 314 || pRender_->GetImageIndex() == 319)
+  {
+    pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  }
+
+  //pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+
   //if (true == pRender_->IsPlayingLoopAnimation()) {
-  //  InputUpdate(deltaTick);
+    //InputUpdate(deltaTick);
 
-  //  CommandUpdate();
+    //CommandUpdate();
 
-  //  pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  //pRender_->ChangeAnimation(animState_ * FacingRightFlag());
   //}
 
-  
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
@@ -105,8 +109,6 @@ void Chang::Tick(unsigned long long deltaTick) {
 
   SkillUpdate();
 
-  CollisionPushUpdate();
-
   CollisionReset();
 }
 
@@ -114,13 +116,13 @@ void Chang::HitEvent(float damage, const Vector& knockBackForce) {
   pHealthComponent_->TakeDamage(damage);
 
   if (pHitBoxTop_->IsCollided()) {
-    animState_ = PAS_HitStrong;
+    animState_ = PAS_HitTop;
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
     pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
   }
 
   if (pHitBoxBottom_->IsCollided()) {
-    animState_ = PAS_HitStrong;
+    animState_ = PAS_HitBottom;
     pRender_->ChangeAnimation(animState_ * FacingRightFlag());
     pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
   }

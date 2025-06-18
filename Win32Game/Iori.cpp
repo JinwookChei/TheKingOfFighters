@@ -41,8 +41,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);                   // 점프
   pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);           // 발차기
   pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, 3, 223, 230, 50, false, 223);  // 커맨드 테스트.
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_1, 3, 99, 107, 50, false, 99);      // 커맨드 테스트.
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 159);    // 커맨드 테스트.
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_1, 3, 99, 107, 50, false, 99);      // 외식 몽탄_1
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 159);    // 외식 몽탄_2
+  pRender_->CreateAnimation(IOAS_Shinigami, 3, 136, 144, 50, false, 136);          // 외식 광부 음 "사신"
+  pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, 3, 276, 291, 40, false, 276);  // 백식 귀신 태우기
 
   pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);                      // 아이들
   pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);                // 앉기.
@@ -72,6 +74,8 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pStateComponent_->RegistState(IOAS_108ShikiYamiBarai, false, false);
   pStateComponent_->RegistState(IOAS_GaishikiMutan_1, false, false);
   pStateComponent_->RegistState(IOAS_GaishikiMutan_2, false, false);
+  pStateComponent_->RegistState(IOAS_Shinigami, false, false);
+  pStateComponent_->RegistState(IOAS_HyakushikiOniyaki, false, false);
 
   // SKILL
   if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) {
@@ -80,17 +84,27 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   if (false == pSkillComponent_->RegistSkill(IOSK_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this)) {
     return;
   }
+  if (false == pSkillComponent_->RegistSkill(IOSK_Shinigami, &Iori::Shinigami, this)) {
+    return;
+  }
+  if (false == pSkillComponent_->RegistSkill(IOSK_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this)) {
+    return;
+  }
 
   // COMMAND
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::Command_1, this))) {
     return;
   }
-
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
     return;
   }
-
   if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) {
     return;
   }
 
@@ -98,6 +112,17 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
     return;
   }
+  if (false == pProjectileComponent_->RegistProjectileInfo(2, 3, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -5.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
+    return;
+  }
+
+  if (false == pProjectileComponent_->RegistProjectileInfo(3, 3, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -5.0f}, {-50.0f, -200.0f}, {0.0f, 0.0f})) {
+    return;
+  }
+
+  // if (false == pProjectileComponent_->RegistProjectileInfo(2, 3, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, 20.0f}, {50.0f, 250.0f}, {0.0f, 0.0f})) {
+  //   return;
+  // }
 
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(ioriTransparentColor);
@@ -126,43 +151,6 @@ void Iori::Tick(unsigned long long deltaTick) {
   // TEMP END
 
   UpdatePrevAnimationIndex();
-
-  CollisionComponent* pTargetCollision = nullptr;
-  if (CheckAttackCollision(&pTargetCollision)) {
-    if (nullptr != pTargetCollision) {
-      Actor* pTargetOwner = pTargetCollision->GetOwner();
-      if (nullptr == pTargetOwner) {
-        return;
-      }
-      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
-      if (nullptr == pTargetPlayer) {
-        return;
-      }
-      // pTargetCollision->OnCollision();
-      if (animState_ == IOAS_GaishikiMutan_1) {
-        pTargetPlayer->HitEvent(0.0f, {15.0f, 0.0f});
-        TimeManager::Instance()->OnFrameFreeze(200);
-      }
-
-      // Calculate Effect Position.
-      Vector collisionSectionLeftTop = {
-          pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
-          pAttackBox_->GetCollisionInfo().Top() > pTargetCollision->GetCollisionInfo().Top() ? pAttackBox_->GetCollisionInfo().Top() : pTargetCollision->GetCollisionInfo().Top(),
-      };
-
-      Vector collisionSectionRightBottom = {
-          pAttackBox_->GetCollisionInfo().Right() < pTargetCollision->GetCollisionInfo().Right() ? pAttackBox_->GetCollisionInfo().Right() : pTargetCollision->GetCollisionInfo().Right(),
-          pAttackBox_->GetCollisionInfo().Bottom() < pTargetCollision->GetCollisionInfo().Bottom() ? pAttackBox_->GetCollisionInfo().Bottom() : pTargetCollision->GetCollisionInfo().Bottom(),
-      };
-
-      Vector effectPosition = {
-          (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
-          (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
-
-      // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
-    }
-  }
 
   if (true == pStateComponent_->CanChangeAnimState()) {
     if (true == pCommandComponent_->isWaitingTask()) {
@@ -325,7 +313,17 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     // RIGHT A - PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
       if (FacingRight()) {
+        animState_ = IOAS_GaishikiMutan_1;
         pSkillComponent_->ActivateSkill(IOSK_GaishikiMutan);
+        return;
+      }
+    }
+
+    // RIGHT B - PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100100"))) {
+      if (FacingRight()) {
+        animState_ = IOAS_Shinigami;
+        pSkillComponent_->ActivateSkill(IOSK_Shinigami);
         return;
       }
     }
@@ -509,9 +507,12 @@ void Iori::Command_3() {
   animState_ = PAS_Run;
 }
 
-void Iori::GaishikiMutan() {
-  animState_ = IOAS_GaishikiMutan_1;
+void Iori::Command_4() {
+  animState_ = IOAS_HyakushikiOniyaki;
+  pSkillComponent_->ActivateSkill(IOSK_HyakushikiOniyaki);
+}
 
+void Iori::GaishikiMutan() {
   if (true == pRender_->IsAnimationEnd()) {
     pSkillComponent_->DeactivateSkill();
     return;
@@ -532,9 +533,76 @@ void Iori::GaishikiMutan() {
   if (curImageIndex == 105 && reservedAnimState_ == IOAS_GaishikiMutan_2) {
     ChangeAnimState();
   }
+
+  CollisionComponent* pTargetCollision = nullptr;
+  if (CheckAttackCollision(&pTargetCollision)) {
+    if (nullptr != pTargetCollision) {
+      Actor* pTargetOwner = pTargetCollision->GetOwner();
+      if (nullptr == pTargetOwner) {
+        return;
+      }
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
+      if (nullptr == pTargetPlayer) {
+        return;
+      }
+
+      pTargetPlayer->HitEvent(5.0f, {15.0f, 10.0f});
+      TimeManager::Instance()->OnFrameFreeze(200);
+
+      // Calculate Effect Position.
+      Vector collisionSectionLeftTop = {
+          pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
+          pAttackBox_->GetCollisionInfo().Top() > pTargetCollision->GetCollisionInfo().Top() ? pAttackBox_->GetCollisionInfo().Top() : pTargetCollision->GetCollisionInfo().Top(),
+      };
+
+      Vector collisionSectionRightBottom = {
+          pAttackBox_->GetCollisionInfo().Right() < pTargetCollision->GetCollisionInfo().Right() ? pAttackBox_->GetCollisionInfo().Right() : pTargetCollision->GetCollisionInfo().Right(),
+          pAttackBox_->GetCollisionInfo().Bottom() < pTargetCollision->GetCollisionInfo().Bottom() ? pAttackBox_->GetCollisionInfo().Bottom() : pTargetCollision->GetCollisionInfo().Bottom(),
+      };
+
+      Vector effectPosition = {
+          (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
+          (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
+
+      // 이펙트도 여기서 스폰.
+      EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
+    }
+  }
 }
 
 void Iori::ShikiYamiBarai108() {
+  if (nullptr == pRender_) {
+    return;
+  }
+
+  if (nullptr != pRender_ && true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
+    return;
+  }
+
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+
+  if (prevImageIndex_ == curImageIndex) {
+    return;
+  }
+
+  if (226 == curImageIndex) {
+    pProjectileComponent_->FireProjectile(1);
+  }
+}
+
+void Iori::Shinigami() {
+  if (nullptr == pRender_) {
+    return;
+  }
+
+  if (true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
+    return;
+  }
+}
+
+void Iori::HyakushikiOniyaki() {
   if (nullptr == pRender_) {
     return;
   }
@@ -550,7 +618,18 @@ void Iori::ShikiYamiBarai108() {
     return;
   }
 
-  if (226 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(1);
+  if (276 == curImageIndex)
+  {
+    pMovementComponent_->Dash(FacingRight(), 150.0f, 150.0f);
   }
+
+  if (281 == curImageIndex) {
+    pMovementComponent_->Jump();
+    pProjectileComponent_->FireProjectile(2);
+  }
+
+  if (285 == curImageIndex) {
+    pProjectileComponent_->FireProjectile(3);
+  }
+
 }
