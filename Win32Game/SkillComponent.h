@@ -53,7 +53,7 @@ class SkillComponent
  private:
   HashTable skillTable_;
 
-  bool isSkillActive_;
+  bool onSkillActive_;
 
   bool miscTemp_;
 

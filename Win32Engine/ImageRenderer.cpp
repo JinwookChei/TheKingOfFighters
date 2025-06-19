@@ -5,8 +5,13 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
   if (false == loop_ && true == isEnd_) {
     return indices_[curFrame_];
   }
-
   isEnd_ = false;
+  if (loop_ == true)
+  {
+    isEnd_ = true;
+  }
+
+
   curTime_ -= curTick;
   if (curTime_ <= 0) {
     curTime_ = times_[curFrame_];
@@ -316,7 +321,7 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFr
   return true;
 }
 
-bool ImageRenderer::IsAnimationEnd(){
+bool ImageRenderer::IsAnimationEnd() {
   if (nullptr == pCurAnimation_) {
     return false;
   }

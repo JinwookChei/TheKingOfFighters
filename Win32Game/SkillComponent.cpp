@@ -2,7 +2,7 @@
 #include "SkillComponent.h"
 
 SkillComponent::SkillComponent()
-    : isSkillActive_(false),
+    : onSkillActive_(false),
       miscTemp_(false),
       activeSkillInfo_(nullptr) {
 }
@@ -33,18 +33,18 @@ void SkillComponent::ActivateSkill(unsigned long long skillTag) {
   if (0 == skillTable_.Select((void**)&pInfo, 1, &skillTag, 8)) {
     return;
   }
-
-  isSkillActive_ = true;
-  activeSkillInfo_ = pInfo;
+  
+    onSkillActive_ = true;
+    activeSkillInfo_ = pInfo;
 }
 
 void SkillComponent::DeactivateSkill() {
-  isSkillActive_ = false;
+  onSkillActive_ = false;
   miscTemp_ = false;
 }
 
 void SkillComponent::UpdateActiveSkill() const {
-  if (true == isSkillActive_ && nullptr != activeSkillInfo_->skill_) {
+  if (true == onSkillActive_ && nullptr != activeSkillInfo_->skill_) {
     activeSkillInfo_->skill_();
   }
 }

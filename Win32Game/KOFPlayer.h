@@ -50,7 +50,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
-  void ChangeAnimState(/*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
+  void UpdateAnimState(/*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
 
   const HealthComponent* GetHealthComponent() const;
 

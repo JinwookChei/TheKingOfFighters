@@ -111,7 +111,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::ChangeAnimState() {
+void KOFPlayer::UpdateAnimState() {
   if (reservedAnimState_ != PAS_None) {
     pRender_->ChangeAnimation(reservedAnimState_ * FacingRightFlag());
     pStateComponent_->ChangeState(reservedAnimState_);

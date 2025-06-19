@@ -3,7 +3,7 @@
 struct State {
   unsigned long long stateTag_ = 0;
 
-  bool canMove_ = true;
+  bool canInput_ = true;
 
   bool canChangeAnimState_ = true;
 
@@ -24,7 +24,7 @@ class StateComponent
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool RegistState(unsigned long long stateTag, bool canMove, bool canChangeAnimState);
+  bool RegistState(unsigned long long stateTag, bool canInput, bool canChangeAnimState);
 
   void ChangeState(unsigned long long stateTag);
 
@@ -34,7 +34,7 @@ class StateComponent
 
   unsigned long long GetCurAnimState() const;
 
-  bool CanMove() const;
+  bool CanInput() const;
 
   bool CanChangeAnimState() const;
 

@@ -208,9 +208,9 @@ void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, b
   }
 }
 
-void MovementComponent::Jump() {
+void MovementComponent::Jump(Vector normalJumpForce /*= {0.0f, 75.0f}*/) {
   if (isGrounded_) {
-    curJumpVelocity_ = normalJumpForce_;
+    curJumpVelocity_ = normalJumpForce;
     onJump_ = true;
   }
 }

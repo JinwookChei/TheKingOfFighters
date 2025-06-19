@@ -58,15 +58,15 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 
   pRender_->SetTransparentColor(ioriTransparentColor);
 
-  ChangeAnimState();
+  UpdateAnimState();
 
   // STATE
   pStateComponent_->RegistState(PAS_Idle, true, true);
   pStateComponent_->RegistState(PAS_SeatDown, true, true);
-  pStateComponent_->RegistState(PAS_SeatUp, false, false);
+  pStateComponent_->RegistState(PAS_SeatUp, true, true);
   pStateComponent_->RegistState(PAS_FrontWalk, true, true);
   pStateComponent_->RegistState(PAS_BackWalk, true, true);
-  pStateComponent_->RegistState(PAS_BackStep, true, false);
+  pStateComponent_->RegistState(PAS_BackStep, false, false);
   pStateComponent_->RegistState(PAS_Run, true, true);
   pStateComponent_->RegistState(PAS_RunEnd, false, false);
   pStateComponent_->RegistState(PAS_Jump, false, false);
@@ -112,11 +112,11 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
     return;
   }
-  if (false == pProjectileComponent_->RegistProjectileInfo(2, 3, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -5.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
+  if (false == pProjectileComponent_->RegistProjectileInfo(2, 3, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
     return;
   }
 
-  if (false == pProjectileComponent_->RegistProjectileInfo(3, 3, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -5.0f}, {-50.0f, -200.0f}, {0.0f, 0.0f})) {
+  if (false == pProjectileComponent_->RegistProjectileInfo(3, 3, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f})) {
     return;
   }
 
@@ -135,11 +135,13 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   ResetInputBitSet();
 
+  CommandUpdate();
+
   InputUpdate(deltaTick);
 
-  CompareInputBitset(deltaTick);
-
-  CommandUpdate();
+  if (true != pCommandComponent_->isWaitingTask()) {
+    CompareInputBitset(deltaTick);
+  }
 
   pSkillComponent_->UpdateActiveSkill();
 
@@ -150,18 +152,16 @@ void Iori::Tick(unsigned long long deltaTick) {
   }
   // TEMP END
 
-  UpdatePrevAnimationIndex();
-
-  if (true == pStateComponent_->CanChangeAnimState()) {
-    if (true == pCommandComponent_->isWaitingTask()) {
-      pCommandComponent_->ExcuteTask();
-    }
-    ChangeAnimState();
-  }
-
   if (true == pRender_->IsAnimationEnd()) {
+    pCommandComponent_->ExcuteTask();
     pStateComponent_->ResetState();
   }
+
+  if (true == pStateComponent_->CanChangeAnimState()) {
+    UpdateAnimState();
+  }
+
+  UpdatePrevAnimationIndex();
 }
 
 void Iori::InputUpdate(unsigned long long curTick) {
@@ -259,17 +259,16 @@ void Iori::InputUpdate(unsigned long long curTick) {
 }
 
 void Iori::CompareInputBitset(unsigned long long curTick) {
-  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
-      true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
+  if (pStateComponent_->CanInput() == false ||
+      true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
+          true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
   } else {
     // LEFT UP PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
       if (FacingRight()) {
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_Jump;
-          pMovementComponent_->JumpForward(false, false);
-          return;
-        }
+        animState_ = PAS_Jump;
+        pMovementComponent_->JumpForward(false, false);
+        return;
       } else {
         if (PAS_Run == pStateComponent_->GetCurAnimState()) {
           animState_ = PAS_Jump;
@@ -277,12 +276,9 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
           pGhostEffect_->On();
           return;
         }
-
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_Jump;
-          pMovementComponent_->JumpForward(false, false);
-          return;
-        }
+        animState_ = PAS_Jump;
+        pMovementComponent_->JumpForward(false, false);
+        return;
       }
     }
 
@@ -295,18 +291,13 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
           pGhostEffect_->On();
           return;
         }
-
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_Jump;
-          pMovementComponent_->JumpForward(true, false);
-          return;
-        }
+        animState_ = PAS_Jump;
+        pMovementComponent_->JumpForward(true, false);
+        return;
       } else {
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_Jump;
-          pMovementComponent_->JumpForward(true, false);
-          return;
-        }
+        animState_ = PAS_Jump;
+        pMovementComponent_->JumpForward(true, false);
+        return;
       }
     }
 
@@ -331,21 +322,17 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     // LEFT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_BackWalk;
-          pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
-          return;
-        }
+        animState_ = PAS_BackWalk;
+        pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
+        return;
       } else {
         if (PAS_Run == animState_) {
           pMovementComponent_->Run(curTick, false, pPushBox_->IsCollided());
           return;
         }
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_FrontWalk;
-          pMovementComponent_->Move(curTick, FacingRight(), pPushBox_->IsCollided());
-          return;
-        }
+        animState_ = PAS_FrontWalk;
+        pMovementComponent_->Move(curTick, FacingRight(), pPushBox_->IsCollided());
+        return;
       }
     }
     // LEFT UP
@@ -369,17 +356,13 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
           pMovementComponent_->Run(curTick, true, pPushBox_->IsCollided());
           return;
         }
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_FrontWalk;
-          pMovementComponent_->Move(curTick, FacingRight(), pPushBox_->IsCollided());
-          return;
-        }
+        animState_ = PAS_FrontWalk;
+        pMovementComponent_->Move(curTick, FacingRight(), pPushBox_->IsCollided());
+        return;
       } else {
-        if (pStateComponent_->CanMove()) {
-          animState_ = PAS_BackWalk;
-          pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
-          return;
-        }
+        animState_ = PAS_BackWalk;
+        pMovementComponent_->MoveBack(curTick, FacingRight(), pPushBox_->IsCollided());
+        return;
       }
     }
 
@@ -391,11 +374,9 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
 
     // UP PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
-      if (pStateComponent_->CanMove()) {
-        animState_ = PAS_Jump;
-        pMovementComponent_->Jump();
-        return;
-      }
+      animState_ = PAS_Jump;
+      pMovementComponent_->Jump();
+      return;
     }
 
     // UP UP
@@ -447,6 +428,7 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
     animState_ = PAS_RunEnd;
     return;
   }
+
   animState_ = PAS_Idle;
   return;
 }
@@ -531,7 +513,7 @@ void Iori::GaishikiMutan() {
   }
 
   if (curImageIndex == 105 && reservedAnimState_ == IOAS_GaishikiMutan_2) {
-    ChangeAnimState();
+    UpdateAnimState();
   }
 
   CollisionComponent* pTargetCollision = nullptr;
@@ -618,18 +600,16 @@ void Iori::HyakushikiOniyaki() {
     return;
   }
 
-  if (276 == curImageIndex)
-  {
+  if (276 == curImageIndex) {
     pMovementComponent_->Dash(FacingRight(), 150.0f, 150.0f);
   }
 
   if (281 == curImageIndex) {
-    pMovementComponent_->Jump();
+    pMovementComponent_->Jump({0.3f, 60.0f});
     pProjectileComponent_->FireProjectile(2);
   }
 
-  if (285 == curImageIndex) {
+  if (284 == curImageIndex) {
     pProjectileComponent_->FireProjectile(3);
   }
-
 }

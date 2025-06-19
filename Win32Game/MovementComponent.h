@@ -21,7 +21,7 @@ class MovementComponent final
 
   void Run(unsigned long long curTick, bool isRightDirection, bool isPushing);
 
-  void Jump();
+  void Jump(Vector normalJumpForce = {0.0f, 75.0f});
 
   void JumpForward(bool isRightDirection, bool isRunning);
 
@@ -66,7 +66,6 @@ class MovementComponent final
   const float airResistance_ = 0.06f;
 
   Vector curJumpVelocity_;
-  const Vector normalJumpForce_ = {0.0f, 75.0f};
   const Vector fowardJumpForceInWalking_ = {0.7f, 75.0f};
   const Vector fowardJumpForceInRunning_ = {1.1f, 75.0f};
 
