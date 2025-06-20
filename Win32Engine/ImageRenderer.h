@@ -48,6 +48,8 @@ class ImageRenderer
 
   JO_API unsigned int GetImageIndex() const;
 
+  JO_API AnimationInfo* GetCurAnimation() const;
+
   JO_API void SetImageIndex(unsigned int imageIndex);
 
   JO_API void SetAngle(float angle);
@@ -98,6 +100,9 @@ class ImageRenderer
   JO_API bool ChangeAnimation(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
 
   JO_API bool IsAnimationEnd();
+
+  
+  
 
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;

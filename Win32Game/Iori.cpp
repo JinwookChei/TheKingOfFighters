@@ -42,7 +42,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);           // ¹ßÂ÷±â
   pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, 3, 223, 230, 50, false, 223);  // Ä¿¸Çµå Å×½ºÆ®.
   pRender_->CreateAnimation(IOAS_GaishikiMutan_1, 3, 99, 107, 50, false, 99);      // ¿Ü½Ä ¸ùÅº_1
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 159);    // ¿Ü½Ä ¸ùÅº_2
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 160);    // ¿Ü½Ä ¸ùÅº_2
   pRender_->CreateAnimation(IOAS_Shinigami, 3, 136, 144, 50, false, 136);          // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
   pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, 3, 276, 291, 40, false, 276);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
 
@@ -120,10 +120,6 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
     return;
   }
 
-  // if (false == pProjectileComponent_->RegistProjectileInfo(2, 3, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, 20.0f}, {50.0f, 250.0f}, {0.0f, 0.0f})) {
-  //   return;
-  // }
-
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(ioriTransparentColor);
 }
@@ -143,14 +139,12 @@ void Iori::Tick(unsigned long long deltaTick) {
     CompareInputBitset(deltaTick);
   }
 
-  pSkillComponent_->UpdateActiveSkill();
-
-  // TEMP : ¼öÁ¤»çÇ×
+  // TODO : ¼öÁ¤»çÇ×
   unsigned int curImageIndex = pRender_->GetImageIndex();
   if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
     pGhostEffect_->Off();
   }
-  // TEMP END
+  // TODO END
 
   if (true == pRender_->IsAnimationEnd()) {
     pCommandComponent_->ExcuteTask();
@@ -160,6 +154,8 @@ void Iori::Tick(unsigned long long deltaTick) {
   if (true == pStateComponent_->CanChangeAnimState()) {
     UpdateAnimState();
   }
+
+  pSkillComponent_->UpdateActiveSkill();
 
   UpdatePrevAnimationIndex();
 }
@@ -499,6 +495,7 @@ void Iori::GaishikiMutan() {
     pSkillComponent_->DeactivateSkill();
     return;
   }
+
 
   unsigned int curImageIndex = pRender_->GetImageIndex();
 

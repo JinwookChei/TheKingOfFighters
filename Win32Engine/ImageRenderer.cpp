@@ -5,10 +5,12 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
   if (false == loop_ && true == isEnd_) {
     return indices_[curFrame_];
   }
-  isEnd_ = false;
+
   if (loop_ == true)
   {
     isEnd_ = true;
+  } else {
+    isEnd_ = false;
   }
 
 
@@ -119,6 +121,10 @@ IImage* ImageRenderer::GetImage() const {
 
 unsigned int ImageRenderer::GetImageIndex() const {
   return imageIndex_;
+}
+
+AnimationInfo* ImageRenderer::GetCurAnimation() const {
+    return pCurAnimation_;
 }
 
 void ImageRenderer::SetImageIndex(unsigned int iamgeIndex) {
