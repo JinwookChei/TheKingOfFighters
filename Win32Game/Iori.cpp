@@ -92,7 +92,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   }
 
   // COMMAND
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right}, std::bind(&Iori::Command_1, this))) {
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this))) {
     return;
   }
   if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
