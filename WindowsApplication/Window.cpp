@@ -17,7 +17,7 @@ bool Window::Initialize() {
   hWnd_ = CreateWindowEx(
       0,                              // Optional window styles.
       GApplication->GetClassNameW(),  // Window class
-      L"The King Of Fighters - 2003",                          // Window text
+      L"The King Of Fighters 2003",                          // Window text
       WS_OVERLAPPEDWINDOW,            // Window style
 
       // Size and position

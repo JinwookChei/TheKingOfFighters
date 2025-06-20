@@ -5,6 +5,7 @@
 #include "Iori.h"
 #include "Chang.h"
 #include "BackGround.h"
+#include "BlackBoard.h"
 #include "HealthBar.h"
 #include "Portrait.h"
 #include "Health.h"
@@ -32,8 +33,7 @@ void KOFLevel::BeginPlay() {
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", IMGKEY_MouseImage);
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", IMGKEY_BackGoundImage);
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
-  IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", IMGKEY_BlackBoardImage);
-  //blackBoardImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
+  IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\BlackBoard.png", IMGKEY_BlackBoardImage);
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", IMGKEY_IoriImage);
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
   IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -IMGKEY_IoriImage);
@@ -71,19 +71,21 @@ void KOFLevel::BeginPlay() {
   pMouse_->ShowCursor(false);
   pMouse_->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
+
+  // BLACKBOARD
+  pBlackBoard_ = SpawnActor<BlackBoard>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
+  // pBlackBoard_->SetPosition({backGroundImageScale_.X / 2, backGroundImageScale_.Y / 2});
+  pBlackBoard_->SetPosition({0.0f, 0.0f});
+
+
   // BACKGROUND
   pBackGround_ = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
-  Vector imageScale = backGoundImage->GetScale(1);
+  Vector imageScale = backGoundImage->GetScale(IMGKEY_BackGoundImage);
   backGroundImageScale_ = imageScale * levelLocalScale_;
   pBackGround_->SetPosition({backGroundImageScale_.X / 2, backGroundImageScale_.Y / 2});
   pBackGround_->SetUseCameraposition(true);
 
-  // BACKGROUND
-  //pBackGround_ = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
-  //Vector imageScale = backGoundImage->GetScale(1);
-  //backGroundImageScale_ = imageScale * levelLocalScale_;
-  //pBackGround_->SetPosition({backGroundImageScale_.X / 2, backGroundImageScale_.Y / 2});
-  //pBackGround_->SetUseCameraposition(true);
+
 
   // CAMERA SPAWN
   pCamera_ = SpawnActor<CameraTarget>();

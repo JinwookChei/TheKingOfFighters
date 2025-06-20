@@ -104,6 +104,13 @@ void __stdcall WindowsApplication::WinPumpMessage() {
   }
 }
 
+void __stdcall WindowsApplication::UpdateWindowTitle(unsigned int fps) {
+  std::wstringstream title;
+  title << L"The King Of Fighters 2003 - FPS: " << fps;
+
+  SetWindowText(mainWindow_->GetHwnd(), title.str().c_str());
+}
+
 bool __stdcall WindowsApplication::ApplicationQuit() {
   return applicationQuit_;
 }

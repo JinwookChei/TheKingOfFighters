@@ -143,6 +143,8 @@ struct IApplication : public IUnknown {
 
   virtual void __stdcall WinPumpMessage() = 0;
 
+  virtual void __stdcall UpdateWindowTitle(unsigned int fps) = 0;
+
   virtual bool __stdcall ApplicationQuit() = 0;
 
   virtual void __stdcall SetShowCursor(bool show) = 0;

@@ -9,13 +9,13 @@ BlackBoard::~BlackBoard() {
 }
 
 void BlackBoard::BeginPlay() {
-  //pRender_ = CreateImageRenderFIFO();
-  //pRender_->CreateAnimation(1, IMGKEY_BackGoundImage, 0, 7, 500, true, 0);
-
-  //pRender_->SetImageRenderType(ImageRenderType::Center);
-  //pRender_->ChangeAnimation(1);
-  //pRender_->SetLocalScale({4.5f, 4.5f});
+  pRender_ = CreateImageRenderFIFO();
+  pRender_->SetImage(ImgManager::GetIntance()->GetImg(IMGKEY_BlackBoardImage));
+  pRender_->SetImageRenderType(ImageRenderType::LeftTop);
+  pRender_->SetLocalScale({2.4f, 3.7f});
+  SetActive(false);
 }
 
 void BlackBoard::Tick(unsigned long long curTick) {
 }
+

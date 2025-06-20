@@ -135,6 +135,9 @@ void EngineCore::EngineLoop() {
     if (curTick - prevFrameCheckTick_ > 1000) {
       prevFrameCheckTick_ = curTick;
 
+      unsigned int fps = frameCount_;
+      application_->UpdateWindowTitle(fps);
+
       frameCount_ = 0;
     }
   }

@@ -1,6 +1,5 @@
 #pragma once
 
-
 class BackGround
     : public Actor {
  public:

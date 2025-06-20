@@ -20,6 +20,8 @@ class WindowsApplication final : public IApplication {
 
   void __stdcall WinPumpMessage() override;
 
+  void __stdcall UpdateWindowTitle(unsigned int fps) override;
+
   bool __stdcall ApplicationQuit() override;
 
   void __stdcall SetShowCursor(bool show) override;
