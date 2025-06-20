@@ -28,37 +28,37 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   }
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  pRender_->CreateAnimation(PAS_Idle, 4, 8, 13, 50, true, 8);           // ¾ÆÀÌµé
-  pRender_->CreateAnimation(PAS_SeatDown, 4, 14, 20, 50, true, 16);     // ¾É±â.
-  pRender_->CreateAnimation(PAS_FrontWalk, 4, 23, 32, 50, true, 23);    // -> °È±â
-  pRender_->CreateAnimation(PAS_BackWalk, 4, 32, 23, 50, true, 32);     // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation(PAS_BackStep, 4, 33, 35, 50, false, 0);     // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(PAS_Run, 4, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
-  pRender_->CreateAnimation(PAS_Jump, 4, 36, 42, 50, false, 0);         // Á¡ÇÁ
-  pRender_->CreateAnimation(PAS_HeavyKick, 4, 82, 89, 50, false, 0);    // ¹ßÂ÷±â
-  pRender_->CreateAnimation(PAS_HitTop, 4, 310, 314, 50, false, 0);     //
-  pRender_->CreateAnimation(PAS_HitBottom, 4, 315, 319, 50, false, 0);  //
-  pRender_->CreateAnimation(PAS_HitStrong, 4,
+  pRender_->CreateAnimation(PAS_Idle, IMGKEY_ChangImage, 8, 13, 50, true, 8);  // ¾ÆÀÌµé
+  pRender_->CreateAnimation(PAS_SeatDown, IMGKEY_ChangImage, 14, 20, 50, true, 16);  // ¾É±â.
+  pRender_->CreateAnimation(PAS_FrontWalk, IMGKEY_ChangImage, 23, 32, 50, true, 23);  // -> °È±â
+  pRender_->CreateAnimation(PAS_BackWalk, IMGKEY_ChangImage, 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation(PAS_BackStep, IMGKEY_ChangImage, 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation(PAS_Run, IMGKEY_ChangImage, 23, 32, 20, true, 23);        // ->-> ¶Ù±â
+  pRender_->CreateAnimation(PAS_Jump, IMGKEY_ChangImage, 36, 42, 50, false, 0);       // Á¡ÇÁ
+  pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_ChangImage, 82, 89, 50, false, 0);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation(PAS_HitTop, IMGKEY_ChangImage, 310, 314, 50, false, 0);   //
+  pRender_->CreateAnimation(PAS_HitBottom, IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
+  pRender_->CreateAnimation(PAS_HitStrong, IMGKEY_ChangImage,
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
   pRender_->CreateAnimation(PAS_HitWhileJumping, 4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
-  pRender_->CreateAnimation(-PAS_Idle, -4, 8, 13, 50, true, 8);           // ¾ÆÀÌµé
-  pRender_->CreateAnimation(-PAS_SeatDown, -4, 14, 20, 50, true, 16);         // ¾É±â.
-  pRender_->CreateAnimation(-PAS_FrontWalk, -4, 23, 32, 50, true, 23);    // -> °È±â
-  pRender_->CreateAnimation(-PAS_BackWalk, -4, 32, 23, 50, true, 32);     // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation(-PAS_BackStep, -4, 33, 35, 50, false, 0);     // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(-PAS_Run, -4, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
-  pRender_->CreateAnimation(-PAS_Jump, -4, 36, 42, 50, false, 0);         // Á¡ÇÁ
-  pRender_->CreateAnimation(-PAS_HeavyKick, -4, 82, 89, 50, false, 0);    // ¹ßÂ÷±â
-  pRender_->CreateAnimation(-PAS_HitTop, -4, 310, 314, 50, false, 0);     //
-  pRender_->CreateAnimation(-PAS_HitBottom, -4, 315, 319, 50, false, 0);  //
-  pRender_->CreateAnimation(-PAS_HitStrong, -4,
+  pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_ChangImage, 8, 13, 50, true, 8);  // ¾ÆÀÌµé
+  pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_ChangImage, 14, 20, 50, true, 16);  // ¾É±â.
+  pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_ChangImage, 23, 32, 50, true, 23);  // -> °È±â
+  pRender_->CreateAnimation(-PAS_BackWalk, -IMGKEY_ChangImage, 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_ChangImage, 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation(-PAS_Run, -IMGKEY_ChangImage, 23, 32, 20, true, 23);        // ->-> ¶Ù±â
+  pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_ChangImage, 36, 42, 50, false, 0);       // Á¡ÇÁ
+  pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_ChangImage, 82, 89, 50, false, 0);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation(-PAS_HitTop, -IMGKEY_ChangImage, 310, 314, 50, false, 0);   //
+  pRender_->CreateAnimation(-PAS_HitBottom, -IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
+  pRender_->CreateAnimation(-PAS_HitStrong, -IMGKEY_ChangImage,
                             {339, 335, 336, 337, 338, /*335, 336, 337, 338,*/ 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {80, 80, 80, 80, 80, 80, /*50, 50, 50, 50,*/ 80, 80, 80, 80, 80, 80, 80, 80, 80},
                             false, 0);
-  pRender_->CreateAnimation(-PAS_HitWhileJumping, -4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+  pRender_->CreateAnimation(-PAS_HitWhileJumping, -IMGKEY_ChangImage, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   pRender_->SetTransparentColor(changTransparentColor);
   pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());

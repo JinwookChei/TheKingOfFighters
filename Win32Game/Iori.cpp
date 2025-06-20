@@ -30,34 +30,34 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // RENDERER
-  pRender_->CreateAnimation(PAS_Idle, 3, 7, 15, 50, true, 7);                      // ¾ÆÀÌµé
-  pRender_->CreateAnimation(PAS_SeatDown, 3, 16, 23, 50, true, 18);                // ¾É±â. Down
-  pRender_->CreateAnimation(PAS_SeatUp, 3, 24, 25, 50, false, 24);                 // ¾É±â. Up
-  pRender_->CreateAnimation(PAS_FrontWalk, 3, 27, 34, 50, true, 27);               // -> °È±â
-  pRender_->CreateAnimation(PAS_BackWalk, 3, 35, 44, 50, true, 35);                // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation(PAS_BackStep, 3, 45, 48, 50, false, 45);               // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(PAS_Run, 3, 49, 57, 50, true, 51);                     // ->-> ¶Ù±â Start
-  pRender_->CreateAnimation(PAS_RunEnd, 3, 58, 60, 50, false, 59);                 // ->-> ¶Ù±â Stop
-  pRender_->CreateAnimation(PAS_Jump, 3, 61, 69, 50, false, 61);                   // Á¡ÇÁ
-  pRender_->CreateAnimation(PAS_HeavyKick, 3, 108, 117, 50, false, 108);           // ¹ßÂ÷±â
-  pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, 3, 223, 230, 50, false, 223);  // Ä¿¸Çµå Å×½ºÆ®.
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_1, 3, 99, 107, 50, false, 99);      // ¿Ü½Ä ¸ùÅº_1
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 160);    // ¿Ü½Ä ¸ùÅº_2
-  pRender_->CreateAnimation(IOAS_Shinigami, 3, 136, 144, 50, false, 136);          // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
-  pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, 3, 276, 291, 50, false, 276);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, 3, 255, 261, 50, false, 255);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, 3, 262, 268, 50, false, 262);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, 3, 269, 275, 50, false, 269);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(PAS_Idle, IMGKEY_IoriImage, 7, 15, 50, true, 7);                      // ¾ÆÀÌµé
+  pRender_->CreateAnimation(PAS_SeatDown, IMGKEY_IoriImage, 16, 23, 50, true, 18);  // ¾É±â. Down
+  pRender_->CreateAnimation(PAS_SeatUp, IMGKEY_IoriImage, 24, 25, 50, false, 24);                 // ¾É±â. Up
+  pRender_->CreateAnimation(PAS_FrontWalk, IMGKEY_IoriImage, 27, 34, 50, true, 27);  // -> °È±â
+  pRender_->CreateAnimation(PAS_BackWalk, IMGKEY_IoriImage, 35, 44, 50, true, 35);                // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation(PAS_BackStep, IMGKEY_IoriImage, 45, 48, 50, false, 45);  // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation(PAS_Run, IMGKEY_IoriImage, 49, 57, 50, true, 51);                     // ->-> ¶Ù±â Start
+  pRender_->CreateAnimation(PAS_RunEnd, IMGKEY_IoriImage, 58, 60, 50, false, 59);    // ->-> ¶Ù±â Stop
+  pRender_->CreateAnimation(PAS_Jump, IMGKEY_IoriImage, 61, 69, 50, false, 61);                   // Á¡ÇÁ
+  pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_IoriImage, 108, 117, 50, false, 108);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, IMGKEY_IoriImage, 223, 230, 50, false, 223);  // Ä¿¸Çµå Å×½ºÆ®.
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_1, IMGKEY_IoriImage, 99, 107, 50, false, 99);      // ¿Ü½Ä ¸ùÅº_1
+  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, IMGKEY_IoriImage, 160, 164, 50, false, 160);    // ¿Ü½Ä ¸ùÅº_2
+  pRender_->CreateAnimation(IOAS_Shinigami, IMGKEY_IoriImage, 136, 144, 50, false, 136);          // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
+  pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, IMGKEY_IoriImage, 276, 291, 50, false, 276);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, IMGKEY_IoriImage, 255, 261, 50, false, 255);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, IMGKEY_IoriImage, 262, 268, 50, false, 262);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
 
-  pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);                      // ¾ÆÀÌµé
-  pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);                // ¾É±â.
-  pRender_->CreateAnimation(-PAS_FrontWalk, -3, 27, 34, 50, true, 27);               // -> °È±â
-  pRender_->CreateAnimation(-PAS_BackWalk, -3, 35, 44, 50, true, 35);                // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation(-PAS_BackStep, -3, 45, 48, 50, false, 45);               // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(-PAS_Run, -3, 49, 58, 50, true, 51);                     // ->-> ¶Ù±â
-  pRender_->CreateAnimation(-PAS_Jump, -3, 61, 69, 50, false, 61);                   // Á¡ÇÁ
-  pRender_->CreateAnimation(-PAS_HeavyKick, -3, 108, 117, 50, false, 108);           // ¹ßÂ÷±â
-  pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -3, 223, 230, 50, false, 223);  // Ä¿¸Çµå Å×½ºÆ®.
+  pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7);       // ¾ÆÀÌµé
+  pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18);  // ¾É±â.
+  pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_IoriImage, 27, 34, 50, true, 27);  // -> °È±â
+  pRender_->CreateAnimation(-PAS_BackWalk, -IMGKEY_IoriImage, 35, 44, 50, true, 35);   // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_IoriImage, 45, 48, 50, false, 45);  // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation(-PAS_Run, -IMGKEY_IoriImage, 49, 58, 50, true, 51);        // ->-> ¶Ù±â
+  pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_IoriImage, 61, 69, 50, false, 61);      // Á¡ÇÁ
+  pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_IoriImage, 108, 117, 50, false, 108);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -IMGKEY_IoriImage, 223, 230, 50, false, 223);  // Ä¿¸Çµå Å×½ºÆ®.
 
   pRender_->SetTransparentColor(ioriTransparentColor);
 
@@ -125,16 +125,22 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) {
     return;
   }
+  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this))) {
+    return;
+  }
 
   // PROJECTILE
-  if (false == pProjectileComponent_->RegistProjectileInfo(1, 3, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
+  if (false == pProjectileComponent_->RegistProjectileInfo(1, IMGKEY_IoriImage, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
     return;
   }
-  if (false == pProjectileComponent_->RegistProjectileInfo(2, 3, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
+  if (false == pProjectileComponent_->RegistProjectileInfo(2, IMGKEY_IoriImage, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
     return;
   }
 
-  if (false == pProjectileComponent_->RegistProjectileInfo(3, 3, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f})) {
+  if (false == pProjectileComponent_->RegistProjectileInfo(3, IMGKEY_IoriImage, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f})) {
     return;
   }
 
@@ -513,6 +519,10 @@ void Iori::Command_5() {
   pSkillComponent_->ActivateSkill(IOSK_127ShikiAoiHana);
 }
 
+void Iori::Command_6() {
+
+}
+
 void Iori::GaishikiMutan() {
   if (true == pRender_->IsAnimationEnd()) {
     pSkillComponent_->DeactivateSkill();
@@ -692,8 +702,6 @@ void Iori::ShikiAoiHana127() {
   if (curImageIndex == 267 && reservedAnimState_ == IOAS_127ShikiAoiHana_3) {
     UpdateAnimState();
   }
-
-
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {

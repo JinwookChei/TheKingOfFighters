@@ -9,6 +9,7 @@ enum IORI_ANIM_STATE {
   IOAS_127ShikiAoiHana_1,
   IOAS_127ShikiAoiHana_2,
   IOAS_127ShikiAoiHana_3,
+  IOAS_1211ShikiYaOtome,
 
 };
 
@@ -19,6 +20,7 @@ enum IORI_SKILL {
   IOSK_Shinigami,
   IOSK_HyakushikiOniyaki,
   IOSK_127ShikiAoiHana,
+  IOSK_1211ShikiYaOtome,
   IOSK_MAX
 };
 
@@ -54,6 +56,8 @@ class Iori
   void Command_4();
 
   void Command_5();
+
+  void Command_6();
 
 
   // Skills  
