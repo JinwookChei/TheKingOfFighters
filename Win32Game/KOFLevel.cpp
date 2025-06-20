@@ -130,9 +130,9 @@ void KOFLevel::BeginPlay() {
   CameraManager::Instance()->SetTarget(pCamera_);
 
   // EFFECT
-  EffectManager::Instance()->RegistEffect(1, 7, 0, 10, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(2, 7, 11, 22, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(3, 7, 23, 34, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(1, 7, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(2, 7, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(3, 7, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
 
   /*EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
   EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});*/

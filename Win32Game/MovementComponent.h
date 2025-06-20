@@ -21,7 +21,7 @@ class MovementComponent final
 
   void Run(unsigned long long curTick, bool isRightDirection, bool isPushing);
 
-  void Jump(Vector normalJumpForce = {0.0f, 75.0f});
+  void Jump(bool isRightDirection = true, Vector normalJumpForce = {0.0f, 75.0f});
 
   void JumpForward(bool isRightDirection, bool isRunning);
 

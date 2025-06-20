@@ -44,7 +44,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pRender_->CreateAnimation(IOAS_GaishikiMutan_1, 3, 99, 107, 50, false, 99);      // ¿Ü½Ä ¸ùÅº_1
   pRender_->CreateAnimation(IOAS_GaishikiMutan_2, 3, 160, 164, 50, false, 160);    // ¿Ü½Ä ¸ùÅº_2
   pRender_->CreateAnimation(IOAS_Shinigami, 3, 136, 144, 50, false, 136);          // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
-  pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, 3, 276, 291, 40, false, 276);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, 3, 276, 291, 50, false, 276);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, 3, 255, 261, 50, false, 255);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, 3, 262, 268, 50, false, 262);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, 3, 269, 275, 50, false, 269);  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
 
   pRender_->CreateAnimation(-PAS_Idle, -3, 7, 15, 50, true, 7);                      // ¾ÆÀÌµé
   pRender_->CreateAnimation(-PAS_SeatDown, -3, 16, 23, 50, true, 18);                // ¾É±â.
@@ -76,6 +79,9 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pStateComponent_->RegistState(IOAS_GaishikiMutan_2, false, false);
   pStateComponent_->RegistState(IOAS_Shinigami, false, false);
   pStateComponent_->RegistState(IOAS_HyakushikiOniyaki, false, false);
+  pStateComponent_->RegistState(IOAS_127ShikiAoiHana_1, false, false);
+  pStateComponent_->RegistState(IOAS_127ShikiAoiHana_2, false, false);
+  pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, false, false);
 
   // SKILL
   if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) {
@@ -88,6 +94,9 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
     return;
   }
   if (false == pSkillComponent_->RegistSkill(IOSK_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this)) {
+    return;
+  }
+  if (false == pSkillComponent_->RegistSkill(IOSK_127ShikiAoiHana, &Iori::ShikiAoiHana127, this)) {
     return;
   }
 
@@ -108,6 +117,12 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
     return;
   }
   if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) {
     return;
   }
 
@@ -493,12 +508,16 @@ void Iori::Command_4() {
   pSkillComponent_->ActivateSkill(IOSK_HyakushikiOniyaki);
 }
 
+void Iori::Command_5() {
+  animState_ = IOAS_127ShikiAoiHana_1;
+  pSkillComponent_->ActivateSkill(IOSK_127ShikiAoiHana);
+}
+
 void Iori::GaishikiMutan() {
   if (true == pRender_->IsAnimationEnd()) {
     pSkillComponent_->DeactivateSkill();
     return;
   }
-
 
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
@@ -605,11 +624,109 @@ void Iori::HyakushikiOniyaki() {
   }
 
   if (281 == curImageIndex) {
-    pMovementComponent_->Jump({0.3f, 60.0f});
+    pMovementComponent_->Jump(FacingRight(), {0.3f, 60.0f});
     pProjectileComponent_->FireProjectile(2);
   }
 
   if (284 == curImageIndex) {
     pProjectileComponent_->FireProjectile(3);
+  }
+}
+
+void Iori::ShikiAoiHana127() {
+  if (nullptr == pRender_) {
+    return;
+  }
+
+  if (true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
+    return;
+  }
+
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+  if (prevImageIndex_ == curImageIndex) {
+    return;
+  }
+
+  if (curImageIndex == 257)
+  {
+    pMovementComponent_->Dash(FacingRight(), 150.0f, 80.0f);
+  }
+
+  if (curImageIndex == 262) {
+    pMovementComponent_->Dash(FacingRight(), 150.0f, 80.0f);
+  }
+
+    if (curImageIndex == 269) {
+    pMovementComponent_->Jump(FacingRight(), {0.6f, 60.0f});
+  }
+  
+
+  if (IOAS_127ShikiAoiHana_1 == pStateComponent_->GetCurAnimState() && 257 <= curImageIndex && 260 >= curImageIndex) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000")) ||
+        true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+      pSkillComponent_->SetMiscTemp(true);
+    }
+
+    if (pAttackBox_->IsCollided() && pSkillComponent_->GetMiscTemp() == true) {
+      reservedAnimState_ = IOAS_127ShikiAoiHana_2;
+      pSkillComponent_->SetMiscTemp(false);
+    }
+  }
+
+  if (curImageIndex == 260 && reservedAnimState_ == IOAS_127ShikiAoiHana_2) {
+    UpdateAnimState();
+  }
+
+  if (IOAS_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState() && 264 <= curImageIndex && 267 >= curImageIndex) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000")) ||
+        true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+      pSkillComponent_->SetMiscTemp(true);
+    }
+
+    if (pAttackBox_->IsCollided() && pSkillComponent_->GetMiscTemp() == true) {
+      reservedAnimState_ = IOAS_127ShikiAoiHana_3;
+    }
+  }
+
+  if (curImageIndex == 267 && reservedAnimState_ == IOAS_127ShikiAoiHana_3) {
+    UpdateAnimState();
+  }
+
+
+
+  CollisionComponent* pTargetCollision = nullptr;
+  if (CheckAttackCollision(&pTargetCollision)) {
+    if (nullptr != pTargetCollision) {
+      Actor* pTargetOwner = pTargetCollision->GetOwner();
+      if (nullptr == pTargetOwner) {
+        return;
+      }
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
+      if (nullptr == pTargetPlayer) {
+        return;
+      }
+
+      pTargetPlayer->HitEvent(5.0f, {15.0f, 10.0f});
+      TimeManager::Instance()->OnFrameFreeze(200);
+
+      // Calculate Effect Position.
+      Vector collisionSectionLeftTop = {
+          pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
+          pAttackBox_->GetCollisionInfo().Top() > pTargetCollision->GetCollisionInfo().Top() ? pAttackBox_->GetCollisionInfo().Top() : pTargetCollision->GetCollisionInfo().Top(),
+      };
+
+      Vector collisionSectionRightBottom = {
+          pAttackBox_->GetCollisionInfo().Right() < pTargetCollision->GetCollisionInfo().Right() ? pAttackBox_->GetCollisionInfo().Right() : pTargetCollision->GetCollisionInfo().Right(),
+          pAttackBox_->GetCollisionInfo().Bottom() < pTargetCollision->GetCollisionInfo().Bottom() ? pAttackBox_->GetCollisionInfo().Bottom() : pTargetCollision->GetCollisionInfo().Bottom(),
+      };
+
+      Vector effectPosition = {
+          (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
+          (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
+
+      // ÀÌÆåÆ®µµ ¿©±â¼­ ½ºÆù.
+      EffectManager::Instance()->SpawnEffect(GetLevel(), 1, effectPosition);
+    }
   }
 }
