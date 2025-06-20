@@ -16,6 +16,7 @@ KOFLevel::KOFLevel()
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
+      pBlackBoard_(nullptr),
       pPlayer1_(nullptr),
       pPlayer2_(nullptr),
       HUD_(nullptr),
@@ -71,12 +72,9 @@ void KOFLevel::BeginPlay() {
   pMouse_->ShowCursor(false);
   pMouse_->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
-
   // BLACKBOARD
   pBlackBoard_ = SpawnActor<BlackBoard>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
-  // pBlackBoard_->SetPosition({backGroundImageScale_.X / 2, backGroundImageScale_.Y / 2});
   pBlackBoard_->SetPosition({0.0f, 0.0f});
-
 
   // BACKGROUND
   pBackGround_ = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
@@ -84,8 +82,6 @@ void KOFLevel::BeginPlay() {
   backGroundImageScale_ = imageScale * levelLocalScale_;
   pBackGround_->SetPosition({backGroundImageScale_.X / 2, backGroundImageScale_.Y / 2});
   pBackGround_->SetUseCameraposition(true);
-
-
 
   // CAMERA SPAWN
   pCamera_ = SpawnActor<CameraTarget>();
@@ -252,4 +248,8 @@ void KOFLevel::SwapPosition() {
 
 Vector KOFLevel::GetBackGroundImageScale() const {
   return backGroundImageScale_;
+}
+
+BlackBoard* KOFLevel::GetBlackBoard() const {
+  return pBlackBoard_;
 }

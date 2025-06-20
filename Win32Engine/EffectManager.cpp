@@ -3,7 +3,7 @@
 #include "Effect.h"
 #include "EffectManager.h"
 
-EffectManager::EffectManager() {
+EffectManager::EffectManager(){
 }
 
 EffectManager::~EffectManager() {
@@ -23,6 +23,7 @@ EffectManager* EffectManager::Instance() {
 }
 
 bool EffectManager::Initialize() {
+
   return effectTable_.Initialize(8, 8);
 }
 

@@ -22,8 +22,9 @@ class KOFLevel final
 
   Vector GetBackGroundImageScale() const;
 
+  BlackBoard* GetBlackBoard() const; 
+
  private:
- public:
   const Vector levelLocalScale_{4.5f, 4.5f};
   
   Vector backGroundImageScale_;

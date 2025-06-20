@@ -19,6 +19,7 @@ struct EffectInfo {
 
 class Effect;
 class Level;
+
 class EffectManager final {
  public:
   JO_API EffectManager();
@@ -38,8 +39,4 @@ class EffectManager final {
 
  private:
   HashTable effectTable_;
-
-  // TODO
-  //LINK_ITEM* effectHead_;
-  //LINK_ITEM* effectTail_;
 };

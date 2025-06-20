@@ -7,11 +7,8 @@ enum IMAGE_KEY
   IMGKEY_BackGoundImage,
   IMGKEY_BlackBoardImage,
   IMGKEY_IoriImage,
-  //IMGKEY_ReverseIoriImage,
   IMGKEY_ChangImage,
-  //IMGKEY_ReverseChangImage,
   IMGKEY_HealthBarImage,
-  //IMGKEY_ReverseHealthBarImage,
   IMGKEY_HealthImage,
   IMGKEY_EffectImage
 };

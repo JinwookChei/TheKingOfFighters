@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "KOFPlayer.h"
+#include "KOFLevel.h"
+#include "BlackBoard.h"
 #include "MovementComponent.h"
 #include "SkillComponent.h"
 #include "CommandComponent.h"
@@ -488,10 +490,40 @@ void Iori::CommandUpdate() {
 
   if (InputManager::Instance()->IsDown('Z') || InputManager::Instance()->IsDown('z')) {
     pCommandComponent_->JumpNode(CK_B);
+    Level* pLevel = GetLevel();
+    if (nullptr == pLevel) {
+      return;
+    }
+
+    KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+    if (nullptr == pKOFLevel) {
+      return;
+    }
+
+    BlackBoard* pBlackBoard = pKOFLevel->GetBlackBoard();
+    if (nullptr == pBlackBoard) {
+      return;
+    }
+    pBlackBoard->FadeOut(5000.0f);
   }
 
   if (InputManager::Instance()->IsDown('X') || InputManager::Instance()->IsDown('x')) {
     pCommandComponent_->JumpNode(CK_A);
+    Level* pLevel = GetLevel();
+    if (nullptr == pLevel) {
+      return;
+    }
+
+    KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+    if (nullptr == pKOFLevel) {
+      return;
+    }
+
+    BlackBoard* pBlackBoard = pKOFLevel->GetBlackBoard();
+    if (nullptr == pBlackBoard) {
+      return;
+    }
+    pBlackBoard->FadeIn(5000.0f);
   }
 }
 
@@ -520,7 +552,24 @@ void Iori::Command_5() {
 }
 
 void Iori::Command_6() {
+  Level* pLevel = GetLevel();
+  if (nullptr == pLevel)
+  {
+    return;
+  }
 
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel)
+  {
+    return;
+  }
+
+  BlackBoard* pBlackBoard = pKOFLevel->GetBlackBoard();
+  if (nullptr == pBlackBoard)
+  {
+    return;
+  }
+  pBlackBoard->FadeOut(1000.0f);
 }
 
 void Iori::GaishikiMutan() {
