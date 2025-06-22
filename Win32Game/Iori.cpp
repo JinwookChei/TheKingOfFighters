@@ -3,6 +3,7 @@
 #include "KOFLevel.h"
 #include "BlackBoard.h"
 #include "MovementComponent.h"
+#include "DamageSystem.h"
 #include "SkillComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
@@ -86,57 +87,49 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, PS_Attack, false, false);
   pStateComponent_->RegistState(IOAS_UltimateCasting, PS_Attack, false, false);
 
+
   // SKILL
-  if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) {
+  if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) return;
+  if (false == pSkillComponent_->RegistSkill(IOSK_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this)) return;
+  if (false == pSkillComponent_->RegistSkill(IOSK_Shinigami, &Iori::Shinigami, this)) return;
+  if (false == pSkillComponent_->RegistSkill(IOSK_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this)) return;
+  if (false == pSkillComponent_->RegistSkill(IOSK_127ShikiAoiHana, &Iori::ShikiAoiHana127, this)) return;
+  if (false == pSkillComponent_->RegistSkill(IOSK_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this)) return;
+  
+
+  // COMMAND
+  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
     return;
   }
-  if (false == pSkillComponent_->RegistSkill(IOSK_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this)) {
+  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) {
     return;
   }
-  if (false == pSkillComponent_->RegistSkill(IOSK_Shinigami, &Iori::Shinigami, this)) {
+  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this))) {
     return;
   }
-  if (false == pSkillComponent_->RegistSkill(IOSK_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this)) {
+  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) {
     return;
   }
-  if (false == pSkillComponent_->RegistSkill(IOSK_127ShikiAoiHana, &Iori::ShikiAoiHana127, this)) {
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this))) {
     return;
   }
-  if (false == pSkillComponent_->RegistSkill(IOSK_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this)) {
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this))) {
+    return;
+  }
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this))) {
     return;
   }
 
-  // COMMAND
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this))) {
+  // DAMAGE
+  if (false == pDamageSystem_->RegistDamageInfo(PAS_HeavyKick, 5.0f, {20.0f, 60.0f})) {
     return;
   }
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommend({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this))) {
-    return;
-  }
+
 
   // PROJECTILE
   if (false == pProjectileComponent_->RegistProjectileInfo(1, IMGKEY_IoriImage, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
@@ -159,40 +152,8 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   UpdateCollisionPush();
 
-  CollisionComponent* pTargetCollision = nullptr;
-  if (CheckAttackCollision(&pTargetCollision)) {
-    if (nullptr != pTargetCollision) {
-      Actor* pTargetOwner = pTargetCollision->GetOwner();
-      if (nullptr == pTargetOwner) {
-        return;
-      }
-      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
-      if (nullptr == pTargetPlayer) {
-        return;
-      }
-
-      pTargetPlayer->HitEvent(5.0f, {15.0f, 10.0f});
-      TimeManager::Instance()->OnFrameFreeze(200);
-
-      // Calculate Effect Position.
-      Vector collisionSectionLeftTop = {
-          pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
-          pAttackBox_->GetCollisionInfo().Top() > pTargetCollision->GetCollisionInfo().Top() ? pAttackBox_->GetCollisionInfo().Top() : pTargetCollision->GetCollisionInfo().Top(),
-      };
-
-      Vector collisionSectionRightBottom = {
-          pAttackBox_->GetCollisionInfo().Right() < pTargetCollision->GetCollisionInfo().Right() ? pAttackBox_->GetCollisionInfo().Right() : pTargetCollision->GetCollisionInfo().Right(),
-          pAttackBox_->GetCollisionInfo().Bottom() < pTargetCollision->GetCollisionInfo().Bottom() ? pAttackBox_->GetCollisionInfo().Bottom() : pTargetCollision->GetCollisionInfo().Bottom(),
-      };
-
-      Vector effectPosition = {
-          (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
-          (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
-
-      // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
-    }
-  }
+  // TODO : 공격 상태일때만 업데이트.
+  UpdateAttack();
 
   ResetInputBitSet();
 

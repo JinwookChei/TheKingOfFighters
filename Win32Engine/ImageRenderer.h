@@ -48,7 +48,7 @@ class ImageRenderer
 
   JO_API unsigned int GetImageIndex() const;
 
-  JO_API AnimationInfo* GetCurAnimation() const;
+  JO_API AnimationInfo* GetCurAnimationInfo() const;
 
   JO_API void SetImageIndex(unsigned int imageIndex);
 
@@ -127,5 +127,5 @@ class ImageRenderer
 
   HashTable animations_;
 
-  AnimationInfo* pCurAnimation_;
+  AnimationInfo* pCurAnimInfo_;
 };

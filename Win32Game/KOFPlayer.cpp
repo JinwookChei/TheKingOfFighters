@@ -4,6 +4,7 @@
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "StateComponent.h"
+#include "DamageSystem.h"
 #include "HealthComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
@@ -13,7 +14,9 @@
 KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
+      pDamageSystem_(nullptr),
       pHealthComponent_(nullptr),
+      pStateComponent_(nullptr),
       pHitBoxTop_(nullptr),
       pHitBoxBottom_(nullptr),
       pAttackBox_(nullptr),
@@ -53,6 +56,12 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   // MOVEMENT
   pMovementComponent_ = CreateComponent<MovementComponent>();
   if (false == pMovementComponent_->Initialize(position)) {
+    return;
+  }
+
+  // DAMAGE
+  pDamageSystem_ = CreateComponent<DamageSystem>();
+  if (false == pDamageSystem_->Initailize()) {
     return;
   }
 
@@ -192,6 +201,49 @@ void KOFPlayer::UpdateCollisionBoundScale() {
       pGrabBox_->SetScale(pCollisionInfo->scale_);
     } else {
       pGrabBox_->SetActive(false);
+    }
+  }
+}
+
+void KOFPlayer::UpdateAttack() {
+  CollisionComponent* pTargetCollision = nullptr;
+  if (CheckAttackCollision(&pTargetCollision)) {
+    if (nullptr != pTargetCollision) {
+      Actor* pTargetOwner = pTargetCollision->GetOwner();
+      if (nullptr == pTargetOwner) {
+        return;
+      }
+      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
+      if (nullptr == pTargetPlayer) {
+        return;
+      }
+
+      DamageInfo* pDamageInfo;
+      if (false == pDamageSystem_->SearchDamageInfo(animState_, &pDamageInfo)) {
+        return;
+      }
+
+      pRender_;
+      pTargetPlayer->HitEvent(pDamageInfo->damage_, pDamageInfo->knockBackForce_);
+      TimeManager::Instance()->OnFrameFreeze(200);
+
+      // Calculate Effect Position.
+      Vector collisionSectionLeftTop = {
+          pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),
+          pAttackBox_->GetCollisionInfo().Top() > pTargetCollision->GetCollisionInfo().Top() ? pAttackBox_->GetCollisionInfo().Top() : pTargetCollision->GetCollisionInfo().Top(),
+      };
+
+      Vector collisionSectionRightBottom = {
+          pAttackBox_->GetCollisionInfo().Right() < pTargetCollision->GetCollisionInfo().Right() ? pAttackBox_->GetCollisionInfo().Right() : pTargetCollision->GetCollisionInfo().Right(),
+          pAttackBox_->GetCollisionInfo().Bottom() < pTargetCollision->GetCollisionInfo().Bottom() ? pAttackBox_->GetCollisionInfo().Bottom() : pTargetCollision->GetCollisionInfo().Bottom(),
+      };
+
+      Vector effectPosition = {
+          (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
+          (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
+
+      // 이펙트도 여기서 스폰.
+      EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
     }
   }
 }

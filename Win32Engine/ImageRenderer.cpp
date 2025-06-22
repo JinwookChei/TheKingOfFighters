@@ -54,7 +54,7 @@ ImageRenderer::ImageRenderer()
       angle_(0.0f),
       transparentColor_(Color8Bit::White),
       isAlpha_(false),
-      pCurAnimation_(nullptr) {
+      pCurAnimInfo_(nullptr) {
   animations_.Initialize(8, 8);
 }
 
@@ -82,14 +82,14 @@ void ImageRenderer::BeginPlay() {
 }
 
 void ImageRenderer::Tick(unsigned long long curTick) {
-  if (nullptr != pCurAnimation_) {
+  if (nullptr != pCurAnimInfo_) {
     if (nullptr != image_) {
       image_->Release();
       image_ = nullptr;
     }
 
-    image_ = pCurAnimation_->image_;
-    imageIndex_ = pCurAnimation_->Update(curTick);
+    image_ = pCurAnimInfo_->image_;
+    imageIndex_ = pCurAnimInfo_->Update(curTick);
 
     if (nullptr != image_) {
       image_->AddRef();
@@ -122,8 +122,8 @@ unsigned int ImageRenderer::GetImageIndex() const {
   return imageIndex_;
 }
 
-AnimationInfo* ImageRenderer::GetCurAnimation() const {
-    return pCurAnimation_;
+AnimationInfo* ImageRenderer::GetCurAnimationInfo() const {
+  return pCurAnimInfo_;
 }
 
 void ImageRenderer::SetImageIndex(unsigned int iamgeIndex) {
@@ -309,29 +309,29 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFr
     return false;
   }
 
-  if (nullptr != pCurAnimation_ && pCurAnimation_->loop_ && pCurAnimation_->animationTag_ == pFind->animationTag_) {
+  if (nullptr != pCurAnimInfo_ && pCurAnimInfo_->loop_ && pCurAnimInfo_->animationTag_ == pFind->animationTag_) {
     return false;
   }
 
-  pCurAnimation_ = pFind;
-  pCurAnimation_->curFrame_ = startFrame;
-  if (pCurAnimation_->curFrame_ < pCurAnimation_->times_.size()) {
-    pCurAnimation_->curTime_ = pCurAnimation_->times_[startFrame];
+  pCurAnimInfo_ = pFind;
+  pCurAnimInfo_->curFrame_ = startFrame;
+  if (pCurAnimInfo_->curFrame_ < pCurAnimInfo_->times_.size()) {
+    pCurAnimInfo_->curTime_ = pCurAnimInfo_->times_[startFrame];
   }
   if (0 < time) {
-    pCurAnimation_->curTime_ = time;
+    pCurAnimInfo_->curTime_ = time;
   }
-  pCurAnimation_->isEnd_ = false;
+  pCurAnimInfo_->isEnd_ = false;
 
   return true;
 }
 
 bool ImageRenderer::IsAnimationEnd() {
-  if (nullptr == pCurAnimation_) {
+  if (nullptr == pCurAnimInfo_) {
     return false;
   }
 
-  return pCurAnimation_->isEnd_;
+  return pCurAnimInfo_->isEnd_;
 }
 
 // bool ImageRenderer::IsPlayingLoopAnimation() {

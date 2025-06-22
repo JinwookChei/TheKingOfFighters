@@ -168,9 +168,9 @@ void MovementComponent::Move(unsigned long long curTick, bool isRightDirection, 
   }
 
   if (isRightDirection) {
-    moveDir_ = Vector::Right * moveVelocity_ * curTick * weight;
+    moveDir_ = Vector::Right * moveVelocity_ * (float)curTick * weight;
   } else {
-    moveDir_ = Vector::Left * moveVelocity_ * curTick * weight;
+    moveDir_ = Vector::Left * moveVelocity_ * (float)curTick * weight;
   }
 }
 
@@ -185,9 +185,9 @@ void MovementComponent::MoveBack(unsigned long long curTick, bool isRightDirecti
   }*/
 
   if (isRightDirection) {
-    moveDir_ = Vector::Left * moveBackVelocity_ * curTick; /** weight;*/
+    moveDir_ = Vector::Left * moveBackVelocity_ * (float)curTick; /** weight;*/
   } else {
-    moveDir_ = Vector::Right * moveBackVelocity_ * curTick; /** weight;*/
+    moveDir_ = Vector::Right * moveBackVelocity_ * (float)curTick; /** weight;*/
   }
 }
 
@@ -202,9 +202,9 @@ void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, b
   }
 
   if (isRightDirection) {
-    moveDir_ = Vector::Right * runVelocity_ * curTick * weight;
+    moveDir_ = Vector::Right * runVelocity_ * (float)curTick * weight;
   } else {
-    moveDir_ = Vector::Left * runVelocity_ * curTick * weight;
+    moveDir_ = Vector::Left * runVelocity_ * (float)curTick * weight;
   }
 }
 

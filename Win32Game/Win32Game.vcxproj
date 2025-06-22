@@ -169,6 +169,7 @@
     <ClCompile Include="CreateCollisionButton.cpp" />
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="CrossHairControlButton.cpp" />
+    <ClCompile Include="DamageSystem.cpp" />
     <ClCompile Include="DeleteCollisionButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Health.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="CreateCollisionButton.h" />
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="CrossHairControlButton.h" />
+    <ClInclude Include="DamageSystem.h" />
     <ClInclude Include="DeleteCollisionButton.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Health.h" />

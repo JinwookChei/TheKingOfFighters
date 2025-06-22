@@ -50,7 +50,7 @@ class CommandComponent
 
   void Tick(unsigned long long curTick) override;
 
-  bool RegistCommend(std::initializer_list<CommandKey> command, std::function<void()> func);
+  bool RegistCommand(std::initializer_list<CommandKey> command, std::function<void()> func);
 
   bool isWaitingTask() const;
 

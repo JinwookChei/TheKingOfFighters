@@ -177,6 +177,9 @@
     <ClCompile Include="BlackBoard.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="DamageSystem.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="BlackBoard.h">
       <Filter>Contents\KOF\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageSystem.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ void CommandComponent::Tick(unsigned long long curTick) {
   }
 }
 
-bool CommandComponent::RegistCommend(std::initializer_list<CommandKey> command, std::function<void()> func) {
+bool CommandComponent::RegistCommand(std::initializer_list<CommandKey> command, std::function<void()> func) {
   if (nullptr == pRootNode_) {
     return false;
   }

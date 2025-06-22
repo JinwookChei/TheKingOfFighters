@@ -6,12 +6,11 @@ class MovementComponent;
 class CommandComponent;
 class SkillComponent;
 class ProjectileComponent;
+class DamageSystem;
 class HealthComponent;
 class StateComponent;
 class HitHandlerComponent;
 class GhostEffect;
-
-
 
 enum PLAYER_ANIM_STATE {
   PAS_None = -1,
@@ -36,7 +35,6 @@ enum PLAYER_ANIM_STATE {
   PAS_MAX
 };
 
-
 class KOFPlayer
     : public Player {
  public:
@@ -45,7 +43,7 @@ class KOFPlayer
   ~KOFPlayer();
 
   virtual void BeginPlay() override;
-  
+
   void Tick(unsigned long long deltaTick) override;
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
@@ -61,6 +59,8 @@ class KOFPlayer
   virtual void UpdateCommand();
 
   void UpdateCollisionBoundScale();
+
+  void UpdateAttack();
 
   virtual bool CheckAttackCollision(CollisionComponent** outTargetCollision);
 
@@ -87,7 +87,7 @@ class KOFPlayer
   bool IsAtMapEdge() const;
 
   virtual void CompareInputBitset(unsigned long long curTick);
-  
+
   void ResetInputBitSet();
 
   bool IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
@@ -99,8 +99,10 @@ class KOFPlayer
 
   MovementComponent* pMovementComponent_;
 
+  DamageSystem* pDamageSystem_;
+
   HealthComponent* pHealthComponent_;
-  
+
   StateComponent* pStateComponent_;
 
   CollisionComponent* pHitBoxTop_;
@@ -121,11 +123,10 @@ class KOFPlayer
 
   GhostEffect* pGhostEffect_;
 
-
   Vector characterScale_;
 
-protected:
-  int animState_;
+ protected:
+  unsigned long long animState_;
 
   unsigned int prevImageIndex_;
 
@@ -136,6 +137,4 @@ protected:
   std::bitset<8> inputPressBitSet_;
 
   std::bitset<8> inputUpBitSet_;
-
-  
 };
