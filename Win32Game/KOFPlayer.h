@@ -50,7 +50,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
 
-  void UpdateAnimState(/*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
+  void UpdateAnimState(int animState /*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
 
   const HealthComponent* GetHealthComponent() const;
 
@@ -126,8 +126,6 @@ class KOFPlayer
 
 protected:
   int animState_;
-
-  int reservedAnimState_;
 
   unsigned int prevImageIndex_;
 

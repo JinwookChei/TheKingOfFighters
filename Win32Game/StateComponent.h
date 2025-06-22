@@ -1,7 +1,19 @@
 #pragma once
+enum PLAYERSTATE {
+  PS_None = -1,
+  PS_Idle = 0,
+  PS_Move,
+  PS_Jump,
+  PS_Seat,
+  PS_Attack,
+  PS_Guard,
+  PS_Max
+};
 
 struct State {
   unsigned long long stateTag_ = 0;
+
+  PLAYERSTATE playerState_ = PS_None;
 
   bool canInput_ = true;
 
@@ -11,8 +23,7 @@ struct State {
 };
 
 class StateComponent
-    : public ActorComponent
-{
+    : public ActorComponent {
  public:
   StateComponent();
 
@@ -24,7 +35,7 @@ class StateComponent
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool RegistState(unsigned long long stateTag, bool canInput, bool canChangeAnimState);
+  bool RegistState(unsigned long long stateTag, PLAYERSTATE playerState, bool canInput, bool canChangeAnimState);
 
   void ChangeState(unsigned long long stateTag);
 

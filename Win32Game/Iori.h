@@ -9,6 +9,7 @@ enum IORI_ANIM_STATE {
   IOAS_127ShikiAoiHana_1,
   IOAS_127ShikiAoiHana_2,
   IOAS_127ShikiAoiHana_3,
+  IOAS_UltimateCasting,
   IOAS_1211ShikiYaOtome,
 
 };
@@ -70,6 +71,8 @@ class Iori
   void HyakushikiOniyaki();
 
   void ShikiAoiHana127();
+
+  void ShikiYaOtome1211();
 
   // Sprite
   ImageRenderer* spriteRenderer_[10];

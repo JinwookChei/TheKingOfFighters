@@ -25,7 +25,6 @@ KOFPlayer::KOFPlayer()
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
       animState_(PAS_Idle),
-      reservedAnimState_(PAS_None),
       prevImageIndex_(0),
       isFacingRight_(true),
       isAtMapEdge_(false) {
@@ -111,15 +110,10 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::UpdateAnimState() {
-  if (reservedAnimState_ != PAS_None) {
-    pRender_->ChangeAnimation(reservedAnimState_ * FacingRightFlag());
-    pStateComponent_->ChangeState(reservedAnimState_);
-    reservedAnimState_ = PAS_None;
-  } else {
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-    pStateComponent_->ChangeState(animState_);
-  }
+void KOFPlayer::UpdateAnimState(int animState) {
+  animState_ = animState;
+  pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  pStateComponent_->ChangeState(animState_);
 
   CollisionReset();
 }

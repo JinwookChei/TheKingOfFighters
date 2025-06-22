@@ -89,12 +89,12 @@ void KOFLevel::BeginPlay() {
   // IORI
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f - 300, backGroundImageScale_.Y * 0.5f + 210.0f);
-  pPlayer1_->Initialize(player1SpawnPostion_, true, false);
+  pPlayer1_->Initialize(player1SpawnPostion_, true, true);
 
   // CHANG
   pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f + 200, backGroundImageScale_.Y * 0.5f + 130.0f);
-  pPlayer2_->Initialize(player2SpawnPostion_, true, true);
+  pPlayer2_->Initialize(player2SpawnPostion_, true, false);
 
   // HUD
   HUD_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);

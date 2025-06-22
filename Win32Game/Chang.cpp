@@ -107,7 +107,7 @@ void Chang::Tick(unsigned long long deltaTick) {
     }
   }
 
-  SkillUpdate();
+  //SkillUpdate();
 
   CollisionReset();
 }

@@ -101,9 +101,6 @@ class ImageRenderer
 
   JO_API bool IsAnimationEnd();
 
-  
-  
-
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 

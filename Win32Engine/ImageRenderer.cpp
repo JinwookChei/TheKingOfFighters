@@ -13,7 +13,6 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
     isEnd_ = false;
   }
 
-
   curTime_ -= curTick;
   if (curTime_ <= 0) {
     curTime_ = times_[curFrame_];
