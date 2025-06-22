@@ -125,13 +125,13 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
 void KOFPlayer::HitEvent(float damage, const Vector& knockBackForce) {
 }
 
-void KOFPlayer::InputUpdate(unsigned long long deltaTick) {
+void KOFPlayer::UpdateInput(unsigned long long deltaTick) {
 }
 
-void KOFPlayer::CommandUpdate() {
+void KOFPlayer::UpdateCommand() {
 }
 
-void KOFPlayer::CollisionBoundScaleUpdate() {
+void KOFPlayer::UpdateCollisionBoundScale() {
   if (nullptr == pHitBoxTop_ || nullptr == pHitBoxBottom_ || nullptr == pAttackBox_ || nullptr == pPushBox_ || nullptr == pGrabBox_) {
     return;
   }
@@ -229,7 +229,7 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
   return false;
 }
 
-bool KOFPlayer::CollisionPushUpdate() {
+bool KOFPlayer::UpdateCollisionPush() {
   CollisionComponent* pTargetPushCollision = nullptr;
   if (true == pPushBox_->Collision(
                   {

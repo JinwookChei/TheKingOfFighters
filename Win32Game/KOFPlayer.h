@@ -56,15 +56,15 @@ class KOFPlayer
 
   virtual void HitEvent(float damage, const Vector& knockBackForce);
 
-  virtual void InputUpdate(unsigned long long deltaTick);
+  virtual void UpdateInput(unsigned long long deltaTick);
 
-  virtual void CommandUpdate();
+  virtual void UpdateCommand();
 
-  void CollisionBoundScaleUpdate();
+  void UpdateCollisionBoundScale();
 
   virtual bool CheckAttackCollision(CollisionComponent** outTargetCollision);
 
-  virtual bool CollisionPushUpdate();
+  virtual bool UpdateCollisionPush();
 
   void CollisionReset();
 

@@ -70,9 +70,9 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 
 void Chang::Tick(unsigned long long deltaTick) {
 
-  CollisionPushUpdate();
+  UpdateCollisionPush();
 
-  CollisionBoundScaleUpdate();
+  UpdateCollisionBoundScale();
 
   
   if (pRender_->GetImageIndex() == 314 || pRender_->GetImageIndex() == 319)
@@ -128,7 +128,7 @@ void Chang::HitEvent(float damage, const Vector& knockBackForce) {
   }
 }
 
-void Chang::InputUpdate(unsigned long long curTick) {
+void Chang::UpdateInput(unsigned long long curTick) {
   if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') &&
       false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') &&
       false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') &&
@@ -194,7 +194,7 @@ void Chang::InputUpdate(unsigned long long curTick) {
   }
 }
 
-void Chang::CommandUpdate() {
+void Chang::UpdateCommand() {
 }
 
 void Chang::SkillUpdate() {

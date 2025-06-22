@@ -155,9 +155,9 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
-  CollisionBoundScaleUpdate();
+  UpdateCollisionBoundScale();
 
-  CollisionPushUpdate();
+  UpdateCollisionPush();
 
   CollisionComponent* pTargetCollision = nullptr;
   if (CheckAttackCollision(&pTargetCollision)) {
@@ -196,9 +196,9 @@ void Iori::Tick(unsigned long long deltaTick) {
 
   ResetInputBitSet();
 
-  CommandUpdate();
+  UpdateCommand();
 
-  InputUpdate(deltaTick);
+  UpdateInput(deltaTick);
 
   if (true == pRender_->IsAnimationEnd()) {
     pCommandComponent_->ExcuteTask();
@@ -255,7 +255,7 @@ void Iori::Tick(unsigned long long deltaTick) {
   // UpdatePrevAnimationIndex();
 }
 
-void Iori::InputUpdate(unsigned long long curTick) {
+void Iori::UpdateInput(unsigned long long curTick) {
   // InputBitSet :
   // Left : 10000000
   // Down : 01000000
@@ -527,7 +527,7 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
   return;
 }
 
-void Iori::CommandUpdate() {
+void Iori::UpdateCommand() {
   if (InputManager::Instance()->IsDown(VK_LEFT) || InputManager::Instance()->IsDown(VK_LEFT)) {
     if (FacingRight()) {
       pCommandComponent_->JumpNode(CK_Left);

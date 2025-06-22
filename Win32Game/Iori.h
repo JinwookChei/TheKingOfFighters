@@ -41,11 +41,11 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
-  void InputUpdate(unsigned long long curTick) override;
+  void UpdateInput(unsigned long long curTick) override;
 
   void CompareInputBitset(unsigned long long curTick) override;
 
-  void CommandUpdate() override;
+  void UpdateCommand() override;
 
   // Command Skills
   void Command_1();
