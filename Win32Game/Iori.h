@@ -10,7 +10,10 @@ enum IORI_ANIM_STATE {
   IOAS_127ShikiAoiHana_2,
   IOAS_127ShikiAoiHana_3,
   IOAS_UltimateCasting,
-  IOAS_1211ShikiYaOtome,
+  IOAS_1211ShikiYaOtome_1,
+  IOAS_1211ShikiYaOtome_2,
+  IOAS_1211ShikiYaOtome_3,
+  IOAS_1211ShikiYaOtome_4,
 
 };
 

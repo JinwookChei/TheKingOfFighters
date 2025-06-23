@@ -52,6 +52,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, IMGKEY_IoriImage, 262, 268, 50, false, 262)) return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
   if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269)) return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
   if(false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 50, false, 344)) return;    // ±Ã±Ø±â Ä³½ºÆÃ
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_1, IMGKEY_IoriImage, 70, 77, 50, false, 70)) return;    // ±Ã±Ø±â ´ë½¬  // ÀÌ°Å ´Ù¸¥ ±â¼úÀÌ¶û °ãÄ¡³ª? °ãÄ¡¸é ÀÌ¸§ Á¶Á¤.
 
   if (false == pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7)) return;                      // ¾ÆÀÌµé
   if (false == pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18)) return;                // ¾É±â.
@@ -84,7 +85,8 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_1, PS_Attack, false, false)) return;
   if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_2, PS_Attack, false, false)) return;
   if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, PS_Attack, false, false)) return;
-  if (false == pStateComponent_->RegistState(IOAS_UltimateCasting, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_UltimateCasting, PS_None, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_1, PS_None, false, false)) return;
 
   // DAMAGE
   if (false == pDamageSystem_->RegistDamageInfo(PAS_HeavyKick, 10.0f, {20.0f, 0.0f})) return;
@@ -519,6 +521,7 @@ void Iori::Command_6() {
 
   UpdateAnimState(IOAS_UltimateCasting);
   pSkillComponent_->ActivateSkill(IOSK_1211ShikiYaOtome);
+  pKOFLevel->FreezeActors({opponentPlayer_}, true);
   pBlackBoard->FadeOut(1000.0f);
 }
 
@@ -662,5 +665,54 @@ void Iori::ShikiAoiHana127() {
 
 
 void Iori::ShikiYaOtome1211() {
-  //pRender_->SetEnableTick(false);
+
+  if (nullptr == pRender_) {
+    return;
+  }
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+
+
+  switch (pStateComponent_->GetCurAnimState()) {
+    case IOAS_UltimateCasting: {
+      if (347 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_1);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_1: {
+      if (70 == curImageIndex) {
+        Level* pLevel = GetLevel();
+        if (nullptr == pLevel) {
+          return;
+        }
+
+        KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+        if (nullptr == pKOFLevel) {
+          return;
+        }
+
+        BlackBoard* pBlackBoard = pKOFLevel->GetBlackBoard();
+        if (nullptr == pBlackBoard) {
+          return;
+        }
+
+        pKOFLevel->DefreezeActors();
+        pBlackBoard->FadeIn(1000);
+      }
+      if (72 == curImageIndex) {
+        pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
+      }
+
+      break;
+    }
+    
+    default:
+      break;
+  }
+
+  /*if (IOAS_UltimateCasting == pStateComponent_->GetCurAnimState()) {
+  }
+  if (IOAS_1211ShikiYaOtome_1 == pStateComponent_->GetCurAnimState()) {
+   }*/
+  
 }

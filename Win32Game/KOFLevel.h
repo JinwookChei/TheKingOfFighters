@@ -24,7 +24,7 @@ class KOFLevel final
 
   BlackBoard* GetBlackBoard() const; 
 
-  void FreezeActors(std::vector<Actor*> actors, unsigned long long freezeDuration);
+  void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);
 
   void DefreezeActors();
 
@@ -58,6 +58,8 @@ class KOFLevel final
   bool OnFreezeTimer_;
 
   std::vector<Actor*> freezedActors_;
+
+  bool isFreezeInfinite_;
 
   unsigned long long freezeDuration_;
 

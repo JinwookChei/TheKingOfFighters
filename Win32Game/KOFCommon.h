@@ -10,7 +10,8 @@ enum IMAGE_KEY
   IMGKEY_ChangImage,
   IMGKEY_HealthBarImage,
   IMGKEY_HealthImage,
-  IMGKEY_EffectImage
+  IMGKEY_HitEffectImage,
+  IMGKEY_CastingEffectImage
 };
 
 

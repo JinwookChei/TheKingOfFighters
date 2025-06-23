@@ -230,8 +230,8 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      
       pTargetPlayer->HitEvent(pDamageInfo->damage_, pDamageInfo->knockBackForce_);
+
       Level* pLevel = GetLevel();
       if (nullptr == pLevel) {
         return;
@@ -240,8 +240,7 @@ void KOFPlayer::UpdateAttack() {
       if (nullptr == pKOFLevel) {
         return;
       }
-
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, 150);
+      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 150);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

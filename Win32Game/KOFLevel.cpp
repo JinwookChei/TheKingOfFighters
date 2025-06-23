@@ -23,6 +23,7 @@ KOFLevel::KOFLevel()
       player1SpawnPostion_({0.0f, 0.0f}),
       player2SpawnPostion_({0.0f, 0.0f}),
       OnFreezeTimer_(false),
+      isFreezeInfinite_(false),
       freezedActors_({}),
       freezeDuration_(0),
       freezeTiemr_(0){
@@ -53,8 +54,11 @@ void KOFLevel::BeginPlay() {
   reverseHealthBarImage->ReverseCalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", IMGKEY_HealthImage);
   healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\effect01.png", IMGKEY_EffectImage);
+  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\effect01.png", IMGKEY_HitEffectImage);
   effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
+  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\CastingEffectImage.png", IMGKEY_CastingEffectImage);
+  effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
+  
   
 
   // TODO : 
@@ -141,9 +145,9 @@ void KOFLevel::BeginPlay() {
   CameraManager::Instance()->SetTarget(pCamera_);
 
   // EFFECT
-  EffectManager::Instance()->RegistEffect(1, IMGKEY_EffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(2, IMGKEY_EffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(3, IMGKEY_EffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(1, IMGKEY_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(2, IMGKEY_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(3, IMGKEY_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
 
   /*EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
   EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});*/
@@ -260,7 +264,7 @@ BlackBoard* KOFLevel::GetBlackBoard() const {
   return pBlackBoard_;
 }
 
-void KOFLevel::FreezeActors(std::vector<Actor*> actors, unsigned long long freezeDuration) {
+void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
   for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
     if (nullptr == *iter) {
       continue;
@@ -271,6 +275,7 @@ void KOFLevel::FreezeActors(std::vector<Actor*> actors, unsigned long long freez
   }
 
   OnFreezeTimer_ = true;
+  isFreezeInfinite_ = isInfinite;
   freezedActors_ = actors;
   freezeDuration_ = freezeDuration;
   freezeTiemr_ = 0;
@@ -287,6 +292,7 @@ void KOFLevel::DefreezeActors() {
   }
     
   OnFreezeTimer_ = false;
+  isFreezeInfinite_ = false;
   freezeDuration_ = 0;
   freezeTiemr_ = 0;
 }
@@ -294,7 +300,7 @@ void KOFLevel::DefreezeActors() {
 void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
   if (true == OnFreezeTimer_) {
     freezeTiemr_ += deltaTick;
-    if (freezeTiemr_ >= freezeDuration_) {
+    if (freezeTiemr_ >= freezeDuration_ && false == isFreezeInfinite_) {
       DefreezeActors();
     }
   }
