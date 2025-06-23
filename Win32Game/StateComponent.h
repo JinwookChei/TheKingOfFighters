@@ -39,11 +39,11 @@ class StateComponent
 
   void ChangeState(unsigned long long stateTag);
 
-  void ResetState();
-
   State GetCurState() const;
 
   unsigned long long GetCurAnimState() const;
+
+  PLAYERSTATE GetPlayerState() const; 
 
   bool CanInput() const;
 

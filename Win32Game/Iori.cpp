@@ -33,60 +33,70 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // RENDERER
-  pRender_->CreateAnimation(PAS_Idle, IMGKEY_IoriImage, 7, 15, 50, true, 7);                      // 아이들
-  pRender_->CreateAnimation(PAS_SeatDown, IMGKEY_IoriImage, 16, 23, 50, true, 18);                // 앉기. Down
-  pRender_->CreateAnimation(PAS_SeatUp, IMGKEY_IoriImage, 24, 25, 50, false, 24);                 // 앉기. Up
-  pRender_->CreateAnimation(PAS_FrontWalk, IMGKEY_IoriImage, 27, 34, 50, true, 27);               // -> 걷기
-  pRender_->CreateAnimation(PAS_BackWalk, IMGKEY_IoriImage, 35, 44, 50, true, 35);                // <- 뒤로가기
-  pRender_->CreateAnimation(PAS_BackStep, IMGKEY_IoriImage, 45, 48, 50, false, 45);               // <- <- 백스탭
-  pRender_->CreateAnimation(PAS_Run, IMGKEY_IoriImage, 49, 57, 50, true, 51);                     // ->-> 뛰기 Start
-  pRender_->CreateAnimation(PAS_RunEnd, IMGKEY_IoriImage, 58, 60, 50, false, 59);                 // ->-> 뛰기 Stop
-  pRender_->CreateAnimation(PAS_Jump, IMGKEY_IoriImage, 61, 69, 50, false, 61);                   // 점프
-  pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_IoriImage, 108, 117, 50, false, 108);           // 발차기
-  pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, IMGKEY_IoriImage, 223, 230, 50, false, 223);  // 커맨드 테스트.
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_1, IMGKEY_IoriImage, 99, 107, 50, false, 99);      // 외식 몽탄_1
-  pRender_->CreateAnimation(IOAS_GaishikiMutan_2, IMGKEY_IoriImage, 160, 164, 50, false, 160);    // 외식 몽탄_2
-  pRender_->CreateAnimation(IOAS_Shinigami, IMGKEY_IoriImage, 136, 144, 50, false, 136);          // 외식 광부 음 "사신"
-  pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, IMGKEY_IoriImage, 276, 291, 50, false, 276);  // 백식 귀신 태우기
-  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, IMGKEY_IoriImage, 255, 261, 50, false, 255);  // 백식 귀신 태우기
-  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, IMGKEY_IoriImage, 262, 268, 50, false, 262);  // 백식 귀신 태우기
-  pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269);  // 백식 귀신 태우기
-  pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 50, false, 344);    // 궁극기 캐스팅
+  if(false == pRender_->CreateAnimation(PAS_Idle, IMGKEY_IoriImage, 7, 15, 50, true, 7)) return;                      // 아이들
+  if(false == pRender_->CreateAnimation(PAS_SeatDown, IMGKEY_IoriImage, 16, 23, 50, true, 18)) return;                // 앉기. Down
+  if(false == pRender_->CreateAnimation(PAS_SeatUp, IMGKEY_IoriImage, 24, 25, 50, false, 24)) return;                 // 앉기. Up
+  if(false == pRender_->CreateAnimation(PAS_FrontWalk, IMGKEY_IoriImage, 27, 34, 50, true, 27)) return;               // -> 걷기
+  if(false == pRender_->CreateAnimation(PAS_BackWalk, IMGKEY_IoriImage, 35, 44, 50, true, 35)) return;                // <- 뒤로가기
+  if(false == pRender_->CreateAnimation(PAS_BackStep, IMGKEY_IoriImage, 45, 48, 50, false, 45)) return;               // <- <- 백스탭
+  if(false == pRender_->CreateAnimation(PAS_Run, IMGKEY_IoriImage, 49, 57, 50, true, 51)) return;                     // ->-> 뛰기 Start
+  if(false == pRender_->CreateAnimation(PAS_RunEnd, IMGKEY_IoriImage, 58, 60, 50, false, 59)) return;                 // ->-> 뛰기 Stop
+  if(false == pRender_->CreateAnimation(PAS_Jump, IMGKEY_IoriImage, 61, 69, 50, false, 61)) return;                   // 점프
+  if(false == pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_IoriImage, 108, 117, 50, false, 108)) return;           // 발차기
+  if(false == pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, IMGKEY_IoriImage, 223, 230, 50, false, 223)) return;  // 커맨드 테스트.
+  if(false == pRender_->CreateAnimation(IOAS_GaishikiMutan_1, IMGKEY_IoriImage, 99, 107, 50, false, 99)) return;      // 외식 몽탄_1
+  if(false == pRender_->CreateAnimation(IOAS_GaishikiMutan_2, IMGKEY_IoriImage, 160, 164, 50, false, 160)) return;    // 외식 몽탄_2
+  if(false == pRender_->CreateAnimation(IOAS_Shinigami, IMGKEY_IoriImage, 136, 144, 50, false, 136)) return;          // 외식 광부 음 "사신"
+  if(false == pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, IMGKEY_IoriImage, 276, 291, 50, false, 276)) return;  // 백식 귀신 태우기
+  if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, IMGKEY_IoriImage, 255, 261, 50, false, 255)) return;  // 백식 귀신 태우기
+  if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, IMGKEY_IoriImage, 262, 268, 50, false, 262)) return;  // 백식 귀신 태우기
+  if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269)) return;  // 백식 귀신 태우기
+  if(false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 50, false, 344)) return;    // 궁극기 캐스팅
 
-  pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7);                      // 아이들
-  pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18);                // 앉기.
-  pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_IoriImage, 27, 34, 50, true, 27);               // -> 걷기
-  pRender_->CreateAnimation(-PAS_BackWalk, -IMGKEY_IoriImage, 35, 44, 50, true, 35);                // <- 뒤로가기
-  pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_IoriImage, 45, 48, 50, false, 45);               // <- <- 백스탭
-  pRender_->CreateAnimation(-PAS_Run, -IMGKEY_IoriImage, 49, 58, 50, true, 51);                     // ->-> 뛰기
-  pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_IoriImage, 61, 69, 50, false, 61);                   // 점프
-  pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_IoriImage, 108, 117, 50, false, 108);           // 발차기
-  pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -IMGKEY_IoriImage, 223, 230, 50, false, 223);  // 커맨드 테스트.
+  if (false == pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7)) return;                      // 아이들
+  if (false == pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18)) return;                // 앉기.
+  if (false == pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_IoriImage, 27, 34, 50, true, 27)) return;               // -> 걷기
+  if (false == pRender_->CreateAnimation(-PAS_BackWalk, -IMGKEY_IoriImage, 35, 44, 50, true, 35)) return;                // <- 뒤로가기
+  if (false == pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_IoriImage, 45, 48, 50, false, 45)) return;               // <- <- 백스탭
+  if (false == pRender_->CreateAnimation(-PAS_Run, -IMGKEY_IoriImage, 49, 58, 50, true, 51)) return;                     // ->-> 뛰기
+  if (false == pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_IoriImage, 61, 69, 50, false, 61)) return;                   // 점프
+  if (false == pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_IoriImage, 108, 117, 50, false, 108)) return;           // 발차기
+  if (false == pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -IMGKEY_IoriImage, 223, 230, 50, false, 223)) return;  // 커맨드 테스트.
 
   pRender_->SetTransparentColor(ioriTransparentColor);
   UpdateAnimState(PAS_Idle);
 
   // STATE
-  pStateComponent_->RegistState(PAS_Idle, PS_Idle, true, true);
-  pStateComponent_->RegistState(PAS_SeatDown, PS_Seat, true, true);
-  pStateComponent_->RegistState(PAS_SeatUp, PS_Seat, true, true);
-  pStateComponent_->RegistState(PAS_FrontWalk, PS_Move, true, true);
-  pStateComponent_->RegistState(PAS_BackWalk, PS_Move, true, true);
-  pStateComponent_->RegistState(PAS_BackStep, PS_Move, false, false);
-  pStateComponent_->RegistState(PAS_Run, PS_Move, true, true);
-  pStateComponent_->RegistState(PAS_RunEnd, PS_Move, false, false);
-  pStateComponent_->RegistState(PAS_Jump, PS_Jump, false, false);
-  pStateComponent_->RegistState(PAS_HeavyKick, PS_Jump, false, false);
-  pStateComponent_->RegistState(IOAS_108ShikiYamiBarai, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_GaishikiMutan_1, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_GaishikiMutan_2, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_Shinigami, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_HyakushikiOniyaki, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_127ShikiAoiHana_1, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_127ShikiAoiHana_2, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, PS_Attack, false, false);
-  pStateComponent_->RegistState(IOAS_UltimateCasting, PS_Attack, false, false);
+  if (false == pStateComponent_->RegistState(PAS_Idle, PS_Idle, true, true)) return;
+  if (false == pStateComponent_->RegistState(PAS_SeatDown, PS_Seat, true, true)) return;
+  if (false == pStateComponent_->RegistState(PAS_SeatUp, PS_Seat, true, true)) return;
+  if (false == pStateComponent_->RegistState(PAS_FrontWalk, PS_Move, true, true)) return;
+  if (false == pStateComponent_->RegistState(PAS_BackWalk, PS_Move, true, true)) return;
+  if (false == pStateComponent_->RegistState(PAS_BackStep, PS_Move, false, false)) return;
+  if (false == pStateComponent_->RegistState(PAS_Run, PS_Move, true, true)) return;
+  if (false == pStateComponent_->RegistState(PAS_RunEnd, PS_Move, false, false)) return;
+  if (false == pStateComponent_->RegistState(PAS_Jump, PS_Jump, false, false)) return;
+  if (false == pStateComponent_->RegistState(PAS_HeavyKick, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_108ShikiYamiBarai, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_GaishikiMutan_1, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_GaishikiMutan_2, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_Shinigami, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_HyakushikiOniyaki, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_1, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_2, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_UltimateCasting, PS_Attack, false, false)) return;
 
+  // DAMAGE
+  if (false == pDamageSystem_->RegistDamageInfo(PAS_HeavyKick, 10.0f, {20.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_108ShikiYamiBarai, 5.0f, {20.0f, 60.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_GaishikiMutan_1, 5.0f, {5.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_GaishikiMutan_2, 5.0f, {20.0f, 40.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_Shinigami, 15.0f, {20.0f, 80.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_HyakushikiOniyaki, 20.0f, {40.0f, 80.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_1, 5.0f, {10.0f, 00.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_2, 5.0f, {10.0f, 00.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_3, 5.0f, {20.0f, 80.0f})) return;
 
   // SKILL
   if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) return;
@@ -100,48 +110,20 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip)
   // COMMAND
   if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this))) return;
   if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this))) return;
-  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this))) {
-    return;
-  }
-
-  // DAMAGE
-  if (false == pDamageSystem_->RegistDamageInfo(PAS_HeavyKick, 5.0f, {20.0f, 60.0f})) {
-    return;
-  }
+  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this))) return;
+  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this))) return;
 
 
   // PROJECTILE
-  if (false == pProjectileComponent_->RegistProjectileInfo(1, IMGKEY_IoriImage, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
-    return;
-  }
-  if (false == pProjectileComponent_->RegistProjectileInfo(2, IMGKEY_IoriImage, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
-    return;
-  }
-
-  if (false == pProjectileComponent_->RegistProjectileInfo(3, IMGKEY_IoriImage, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f})) {
-    return;
-  }
+  if (false == pProjectileComponent_->RegistProjectileInfo(1, IMGKEY_IoriImage, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) return;
+  if (false == pProjectileComponent_->RegistProjectileInfo(2, IMGKEY_IoriImage, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) return;
+  if (false == pProjectileComponent_->RegistProjectileInfo(3, IMGKEY_IoriImage, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f})) return;
 
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(ioriTransparentColor);
@@ -153,7 +135,9 @@ void Iori::Tick(unsigned long long deltaTick) {
   UpdateCollisionPush();
 
   // TODO : 공격 상태일때만 업데이트.
-  UpdateAttack();
+  if (PS_Attack == pStateComponent_->GetPlayerState()) {
+    UpdateAttack();
+  }
 
   ResetInputBitSet();
 
@@ -175,45 +159,8 @@ void Iori::Tick(unsigned long long deltaTick) {
      pGhostEffect_->Off();
    }
   //  TODO END
+
   UpdatePrevAnimationIndex();
-
-
-  // RAGACY
-  // pStateComponent_->ResetState();
-
-  // CollisionBoundScaleUpdate();
-
-  // CollisionPushUpdate();
-
-  // ResetInputBitSet();
-
-  // CommandUpdate();
-
-  // InputUpdate(deltaTick);
-
-  // if (false == pCommandComponent_->isWaitingTask()) {
-  //   CompareInputBitset(deltaTick);
-  // }
-
-  // if (true == pRender_->IsAnimationEnd()) {
-  //   pCommandComponent_->ExcuteTask();
-  //   //pStateComponent_->ResetState();
-  // }
-
-  // if (true == pStateComponent_->CanChangeAnimState()) {
-  //   UpdateAnimState();
-  // }
-
-  // pSkillComponent_->UpdateActiveSkill();
-
-  //  // TODO : 수정사항
-  // unsigned int curImageIndex = pRender_->GetImageIndex();
-  // if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
-  //  pGhostEffect_->Off();
-  //}
-  //// TODO END
-
-  // UpdatePrevAnimationIndex();
 }
 
 void Iori::UpdateInput(unsigned long long curTick) {
@@ -464,12 +411,12 @@ void Iori::CompareInputBitset(unsigned long long curTick) {
 
     // D PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+      UpdateAnimState(PAS_HeavyKick);
+      return;
     }
 
     // D UP
     if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000001"))) {
-      UpdateAnimState(PAS_HeavyKick);
-      return;
     }
   }
 

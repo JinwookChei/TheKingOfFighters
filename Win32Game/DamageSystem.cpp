@@ -50,6 +50,7 @@ bool DamageSystem::SearchDamageInfo(unsigned long long damageInfoTag, DamageInfo
     return false;
   }
 
+  *outSearchResult = pInfo;
   return true;
 }
 

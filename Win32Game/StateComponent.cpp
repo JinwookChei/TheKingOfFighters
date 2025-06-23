@@ -56,23 +56,16 @@ void StateComponent::ChangeState(unsigned long long stateTag) {
   curState_.searchHandle_ = pState->searchHandle_;
 }
 
-void StateComponent::ResetState() {
-  State* pState = nullptr;
-  if (0 == stateTable_.Select((void**)&pState, 1, &curState_.stateTag_, 8)) {
-    return;
-  }
-
-  //curState_.
-  curState_.canChangeAnimState_ = pState->canChangeAnimState_;
-  curState_.canInput_ = pState->canInput_;
-}
-
 State StateComponent::GetCurState() const {
   return curState_;
 }
 
 unsigned long long StateComponent::GetCurAnimState() const {
   return curState_.stateTag_;
+}
+
+PLAYERSTATE StateComponent::GetPlayerState() const {
+  return curState_.playerState_;
 }
 
 bool StateComponent::CanInput() const {

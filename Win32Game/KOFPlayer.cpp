@@ -223,7 +223,7 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      pRender_;
+      
       pTargetPlayer->HitEvent(pDamageInfo->damage_, pDamageInfo->knockBackForce_);
       TimeManager::Instance()->OnFrameFreeze(200);
 
