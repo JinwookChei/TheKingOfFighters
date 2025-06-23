@@ -45,7 +45,7 @@ void WriteButton::WriteData() {
   pFileImage->ExportImageInfoToCSV(filePath_);
 
 
-  MessageBox(NULL, L"안녕하세요! 이것은 간단한 메시지 창입니다.", L"알림", MB_OK);
+  MessageBox(NULL, L"!!!주의!!! 정말로 저장하시겠습니까 ????", L"!!!주의!!!", MB_OK);
 }
 
 void WriteButton::Render(IRenderTexture* renderTexture) {

@@ -53,6 +53,13 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269)) return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
   if(false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 100, false, 344)) return;    // ±Ã±Ø±â Ä³½ºÆÃ
   if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_1, IMGKEY_IoriImage, 70, 77, 50, false, 70)) return;    // ±Ã±Ø±â ´ë½¬  // ÀÌ°Å ´Ù¸¥ ±â¼úÀÌ¶û °ãÄ¡³ª? °ãÄ¡¸é ÀÌ¸§ Á¶Á¤.
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_2, IMGKEY_IoriImage, 118, 122, 20, false, 118)) return;    //
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_3, IMGKEY_IoriImage, 88, 92, 20, false, 88)) return;    //
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_4, IMGKEY_IoriImage, 128, 135, 20, false, 128)) return;    //
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_5, IMGKEY_IoriImage, 223, 229, 20, false, 223)) return;    //
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_6, IMGKEY_IoriImage, 99, 106, 20, false, 99)) return;    //
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_7, IMGKEY_IoriImage, 159, 163, 20, false, 159)) return;    //
+  if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_8, IMGKEY_IoriImage, 99, 106, 20, false, 99)) return;    //
 
   if (false == pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7)) return;                      // ¾ÆÀÌµé
   if (false == pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18)) return;                // ¾É±â.
@@ -86,7 +93,14 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_2, PS_Attack, false, false)) return;
   if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, PS_Attack, false, false)) return;
   if (false == pStateComponent_->RegistState(IOAS_UltimateCasting, PS_None, false, false)) return;
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_1, PS_None, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_1, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_2, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_3, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_4, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_5, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_6, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_7, PS_Attack, false, false)) return;
+  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_8, PS_Attack, false, false)) return;
 
   // DAMAGE
   if (false == pDamageSystem_->RegistDamageInfo(PAS_HeavyKick, 10.0f, {20.0f, 0.0f})) return;
@@ -98,6 +112,14 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_1, 5.0f, {10.0f, 00.0f})) return;
   if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_2, 5.0f, {10.0f, 00.0f})) return;
   if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_3, 5.0f, {20.0f, 80.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_1, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_2, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_3, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_4, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_5, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_6, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_7, 5.0f, {0.0f, 0.0f})) return;
+  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_8, 5.0f, {0.0f, 0.0f})) return;
 
   // SKILL
   if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) return;
@@ -672,8 +694,12 @@ void Iori::ShikiYaOtome1211() {
   if (nullptr == pRender_) {
     return;
   }
-  unsigned int curImageIndex = pRender_->GetImageIndex();
+  if (true == pRender_->IsAnimationEnd()) {
+    pSkillComponent_->DeactivateSkill();
+    return;
+  }
 
+  unsigned int curImageIndex = pRender_->GetImageIndex();
 
   switch (pStateComponent_->GetCurAnimState()) {
     case IOAS_UltimateCasting: {
@@ -702,13 +728,58 @@ void Iori::ShikiYaOtome1211() {
         pKOFLevel->DefreezeActors();
         pBlackBoard->FadeIn(1000);
       }
+
       if (72 == curImageIndex) {
         pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
       }
 
+      if (pAttackBox_->IsCollided()) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_2);
+      }
       break;
     }
-    
+    case IOAS_1211ShikiYaOtome_2: {
+      if (122 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_3);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_3: {
+      if (92 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_4);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_4: {
+      if (135 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_5);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_5: {
+      if (229 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_6);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_6: {
+      if (106 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_7);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_7: {
+      if (163 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_8);
+      }
+      break;
+    }
+    case IOAS_1211ShikiYaOtome_8: {
+      /*if (122 == curImageIndex) {
+        UpdateAnimState(IOAS_1211ShikiYaOtome_3);
+      }*/
+      break;
+    }
     default:
       break;
   }

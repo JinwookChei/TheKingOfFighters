@@ -49,7 +49,7 @@ void ReadButton::ReadData() {
   unsigned int imageIndex = bindToolActor_->GetImageIndex();
   //bindToolActor_->SetImageIndex(imageIndex);
 
-  MessageBox(NULL, L"안녕하세요! 이것은 간단한 메시지 창입니다.", L"알림", MB_OK);
+  MessageBox(NULL, L"정보를 불러왔습니다.", L"READ", MB_OK);
 }
 
 void ReadButton::Render(IRenderTexture* renderTexture) {

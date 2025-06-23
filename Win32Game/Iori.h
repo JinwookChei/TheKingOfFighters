@@ -14,6 +14,10 @@ enum IORI_ANIM_STATE {
   IOAS_1211ShikiYaOtome_2,
   IOAS_1211ShikiYaOtome_3,
   IOAS_1211ShikiYaOtome_4,
+  IOAS_1211ShikiYaOtome_5,
+  IOAS_1211ShikiYaOtome_6,
+  IOAS_1211ShikiYaOtome_7,
+  IOAS_1211ShikiYaOtome_8,
 
 };
 
