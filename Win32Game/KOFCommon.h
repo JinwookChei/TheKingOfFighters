@@ -14,6 +14,19 @@ enum IMAGE_KEY
   IMGKEY_CastingEffectImage
 };
 
+enum EFFECT_KEY
+{
+	EFKEY_Hit_1 = 1,
+	EFKEY_Hit_2,
+	EFKEY_Hit_3,
+	EFKEY_Casting_1,
+	EFKEY_Casting_2,
+	EFKEY_Casting_3,
+	EFKEY_Casting_4,
+	EFKEY_Casting_5,
+	EFKEY_Casting_6
+};
+
 
 static Color8Bit ioriTransparentColor = Color8Bit{169, 139, 150, 0};
 static Color8Bit changTransparentColor = Color8Bit{17, 91, 124, 0};

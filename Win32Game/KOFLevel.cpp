@@ -54,10 +54,10 @@ void KOFLevel::BeginPlay() {
   reverseHealthBarImage->ReverseCalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", IMGKEY_HealthImage);
   healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\effect01.png", IMGKEY_HitEffectImage);
-  effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
-  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\CastingEffectImage.png", IMGKEY_CastingEffectImage);
-  effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
+  IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\effect01.png", IMGKEY_HitEffectImage);
+  hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
+  IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\CastingEffectImage_Box.png", IMGKEY_CastingEffectImage);
+  castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
   
   
 
@@ -145,13 +145,16 @@ void KOFLevel::BeginPlay() {
   CameraManager::Instance()->SetTarget(pCamera_);
 
   // EFFECT
-  EffectManager::Instance()->RegistEffect(1, IMGKEY_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(2, IMGKEY_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(3, IMGKEY_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
-
-  /*EffectManager::Instance()->RegistEffect(1, 3, 239, 244, 50, false, Color8Bit{169, 139, 150, 0});
-  EffectManager::Instance()->SpawnEffect(this, 1, {500.0f, 500.0f});*/
-
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_1, IMGKEY_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_2, IMGKEY_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_3, IMGKEY_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_1, IMGKEY_CastingEffectImage, 0, 15, 20, false, Color8Bit{108, 156, 114, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_2, IMGKEY_CastingEffectImage, 16, 31, 20, false, Color8Bit{108, 156, 114, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_3, IMGKEY_CastingEffectImage, 32, 47, 20, false, Color8Bit{108, 156, 114, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_4, IMGKEY_CastingEffectImage, 48, 63, 20, false, Color8Bit{108, 156, 114, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_5, IMGKEY_CastingEffectImage, 64, 79, 20, false, Color8Bit{108, 156, 114, 0})) return;
+  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_6, IMGKEY_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0})) return;
+  
   // SOUND
   /*Path soundPath;
   soundPath.MoveParent();

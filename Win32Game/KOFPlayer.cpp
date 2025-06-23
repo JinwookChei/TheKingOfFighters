@@ -258,7 +258,7 @@ void KOFPlayer::UpdateAttack() {
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
       // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), 2, effectPosition);
+      EffectManager::Instance()->SpawnEffect(GetLevel(), EFKEY_Hit_2, effectPosition);
     }
   }
 }

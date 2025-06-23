@@ -51,7 +51,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, IMGKEY_IoriImage, 255, 261, 50, false, 255)) return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
   if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, IMGKEY_IoriImage, 262, 268, 50, false, 262)) return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
   if(false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269)) return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  if(false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 50, false, 344)) return;    // ±Ã±Ø±â Ä³½ºÆÃ
+  if(false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 100, false, 344)) return;    // ±Ã±Ø±â Ä³½ºÆÃ
   if(false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_1, IMGKEY_IoriImage, 70, 77, 50, false, 70)) return;    // ±Ã±Ø±â ´ë½¬  // ÀÌ°Å ´Ù¸¥ ±â¼úÀÌ¶û °ãÄ¡³ª? °ãÄ¡¸é ÀÌ¸§ Á¶Á¤.
 
   if (false == pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7)) return;                      // ¾ÆÀÌµé
@@ -521,6 +521,9 @@ void Iori::Command_6() {
 
   UpdateAnimState(IOAS_UltimateCasting);
   pSkillComponent_->ActivateSkill(IOSK_1211ShikiYaOtome);
+  
+  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
+  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
   pKOFLevel->FreezeActors({opponentPlayer_}, true);
   pBlackBoard->FadeOut(1000.0f);
 }
