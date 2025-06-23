@@ -21,7 +21,11 @@ KOFLevel::KOFLevel()
       pPlayer2_(nullptr),
       HUD_(nullptr),
       player1SpawnPostion_({0.0f, 0.0f}),
-      player2SpawnPostion_({0.0f, 0.0f}) {
+      player2SpawnPostion_({0.0f, 0.0f}),
+      OnFreezeTimer_(false),
+      freezedActors_({}),
+      freezeDuration_(0),
+      freezeTiemr_(0){
 }
 
 KOFLevel::~KOFLevel() {
@@ -86,15 +90,15 @@ void KOFLevel::BeginPlay() {
   // CAMERA SPAWN
   pCamera_ = SpawnActor<CameraTarget>();
 
-  // IORI
+  
+  // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f - 300, backGroundImageScale_.Y * 0.5f + 210.0f);
-  pPlayer1_->Initialize(player1SpawnPostion_, true, true);
-
-  // CHANG
   pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f + 200, backGroundImageScale_.Y * 0.5f + 130.0f);
-  pPlayer2_->Initialize(player2SpawnPostion_, true, false);
+
+  pPlayer1_->Initialize(player1SpawnPostion_, true, true, pPlayer2_);
+  pPlayer2_->Initialize(player2SpawnPostion_, true, false, pPlayer1_);
 
   // HUD
   HUD_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);
@@ -153,7 +157,9 @@ void KOFLevel::BeginPlay() {
   channel_ = SoundManager::Instance()->SoundPlay(0);*/
 }
 
-void KOFLevel::Tick(unsigned long long dletaTick) {
+void KOFLevel::Tick(unsigned long long deltaTick) {
+  CalculateFreeze(deltaTick);
+
   SwapPosition();
 
   if (true == InputManager::Instance()->IsAnyKeyPress()) {
@@ -253,3 +259,44 @@ Vector KOFLevel::GetBackGroundImageScale() const {
 BlackBoard* KOFLevel::GetBlackBoard() const {
   return pBlackBoard_;
 }
+
+void KOFLevel::FreezeActors(std::vector<Actor*> actors, unsigned long long freezeDuration) {
+  for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
+    if (nullptr == *iter) {
+      continue;
+    }
+
+    Actor* pActor = *iter;
+    pActor->SetEnableTick(false);
+  }
+
+  OnFreezeTimer_ = true;
+  freezedActors_ = actors;
+  freezeDuration_ = freezeDuration;
+  freezeTiemr_ = 0;
+}
+
+void KOFLevel::DefreezeActors() {
+  for (auto iter = freezedActors_.begin(); iter != freezedActors_.end(); ++iter) {
+    if (nullptr == *iter) {
+      continue;
+    }
+
+    Actor* pActor = *iter;
+    pActor->SetEnableTick(true);
+  }
+    
+  OnFreezeTimer_ = false;
+  freezeDuration_ = 0;
+  freezeTiemr_ = 0;
+}
+
+void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
+  if (true == OnFreezeTimer_) {
+    freezeTiemr_ += deltaTick;
+    if (freezeTiemr_ >= freezeDuration_) {
+      DefreezeActors();
+    }
+  }
+}
+

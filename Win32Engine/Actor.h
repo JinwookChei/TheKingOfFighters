@@ -53,6 +53,10 @@ class Actor {
 
   JO_API bool IsActive() const;
 
+  JO_API void SetEnableTick(bool enable);
+
+  JO_API bool EnableTick() const;
+
   JO_API void SetDestroy();
 
   JO_API bool IsDestroy() const;
@@ -125,7 +129,9 @@ class Actor {
 
   LINK_ITEM link_;
 
-  bool isActive_;
+  bool isActive_;       // 랜더도 안보이게 됨.
+   
+  bool enableTick_;     // 틱만 설정.
 
   bool isDestroy_;
 

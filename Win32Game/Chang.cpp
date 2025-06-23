@@ -18,8 +18,8 @@ Chang::~Chang() {
 void Chang::BeginPlay() {
 }
 
-void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip) {
-  KOFPlayer::Initialize(position, useCameraPosition, flip);
+void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip, KOFPlayer* opponentPlayer) {
+  KOFPlayer::Initialize(position, useCameraPosition, flip, opponentPlayer);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(4);

@@ -24,9 +24,13 @@ class ActorComponent {
 
   JO_API virtual void Tick(unsigned long long deltaTick);
 
-  JO_API virtual bool IsActive() const;
+  JO_API bool IsActive() const;
 
   JO_API void SetActive(bool active);
+
+  JO_API void SetEnableTick(bool enable);
+
+  JO_API bool EnableTick() const;
 
   JO_API void SetDebugParameter(const ActorComponentSetDebugParameter& parameter);
 
@@ -49,6 +53,8 @@ class ActorComponent {
   JO_API LINK_ITEM* GetActorLink();
 
   bool isActive_;
+
+  bool enableTick_;
 
   Actor* owner_;
 

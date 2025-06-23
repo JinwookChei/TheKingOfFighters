@@ -3,6 +3,7 @@
 
 ActorComponent::ActorComponent()
     : isActive_(false),
+      enableTick_(true),
       owner_(nullptr),
       actorLink_({nullptr, nullptr, this}) {
 }
@@ -26,6 +27,14 @@ bool ActorComponent::IsActive() const {
 
 void ActorComponent::SetActive(bool active) {
   isActive_ = active;
+}
+
+void ActorComponent::SetEnableTick(bool enable) {
+  enableTick_ = enable;
+}
+
+bool ActorComponent::EnableTick() const {
+  return enableTick_;
 }
 
 void ActorComponent::SetDebugParameter(const ActorComponentSetDebugParameter& parameter) {

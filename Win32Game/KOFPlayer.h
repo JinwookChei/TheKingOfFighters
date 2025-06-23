@@ -46,7 +46,7 @@ class KOFPlayer
 
   void Tick(unsigned long long deltaTick) override;
 
-  virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight);
+  virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight, KOFPlayer* opponentPlayer);
 
   void UpdateAnimState(int animState /*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
 
@@ -94,6 +94,8 @@ class KOFPlayer
 
   bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
+  KOFPlayer* GetOpponentPlayer_() const;
+
  protected:
   ImageRenderer* pRender_;
 
@@ -137,4 +139,6 @@ class KOFPlayer
   std::bitset<8> inputPressBitSet_;
 
   std::bitset<8> inputUpBitSet_;
+
+  KOFPlayer* opponentPlayer_;
 };

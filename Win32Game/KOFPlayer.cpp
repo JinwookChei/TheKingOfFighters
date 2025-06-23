@@ -30,7 +30,8 @@ KOFPlayer::KOFPlayer()
       animState_(PAS_Idle),
       prevImageIndex_(0),
       isFacingRight_(true),
-      isAtMapEdge_(false) {
+      isAtMapEdge_(false),
+      opponentPlayer_ (nullptr){
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -42,7 +43,7 @@ void KOFPlayer::BeginPlay() {
 void KOFPlayer::Tick(unsigned long long deltaTick) {
 }
 
-void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight) {
+void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight, KOFPlayer* opponentPlayer) {
   SetPosition(position);
 
   SetUseCameraposition(useCameraPosition);
@@ -108,6 +109,12 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
   // INPUT BIT SET
   ResetInputBitSet();
+
+  // OPPONENT PLAYER
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+  opponentPlayer_ = opponentPlayer;
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -225,7 +232,16 @@ void KOFPlayer::UpdateAttack() {
 
       
       pTargetPlayer->HitEvent(pDamageInfo->damage_, pDamageInfo->knockBackForce_);
-      TimeManager::Instance()->OnFrameFreeze(200);
+      Level* pLevel = GetLevel();
+      if (nullptr == pLevel) {
+        return;
+      }
+      KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+      if (nullptr == pKOFLevel) {
+        return;
+      }
+
+      pKOFLevel->FreezeActors({this, pTargetPlayer}, 150);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {
@@ -394,4 +410,8 @@ bool KOFPlayer::IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bi
 
 bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
   return (myBitSet & compareTarget) == compareTarget;
+}
+
+KOFPlayer* KOFPlayer::GetOpponentPlayer_() const {
+  return opponentPlayer_;
 }

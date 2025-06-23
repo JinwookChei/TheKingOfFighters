@@ -18,6 +18,7 @@ Actor::Actor()
       isPlayer_(false),
       useCameraPosition_(false),
       isActive_(false),
+      enableTick_(true),
       isDestroy_(false),
       collisionTag_(0),
       actorGroup_(ActorGroupEngineType::ActorGroupEngineType_Invalid) {
@@ -76,6 +77,12 @@ void Actor::SetActive(bool isActive) {
 }
 bool Actor::IsActive() const {
   return isActive_ && false == isDestroy_;
+}
+void Actor::SetEnableTick(bool enable) {
+  enableTick_ = enable;
+}
+bool Actor::EnableTick() const {
+  return enableTick_;
 }
 void Actor::SetDestroy() {
   isDestroy_ = true;
@@ -137,6 +144,10 @@ void Actor::OnTick(unsigned long long curTick) {
     pCur = pCur->next_;
 
     if (false == pCom->IsActive()) {
+      continue;
+    }
+
+    if (false == pCom->EnableTick()) {
       continue;
     }
 
