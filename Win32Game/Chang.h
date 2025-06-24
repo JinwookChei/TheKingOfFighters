@@ -1,16 +1,12 @@
 #pragma once
 
-//enum ChangAnimState {
-//  CHAS_None = 0,
-//  CHAS_Idle,
-//  CHAS_HitTop,
-//  CHAS_HitBottom,
-//  CHAS_MAX
-//};
-
-class CommandComponent;
-class ProjectileComponent;
-class KOFPlayer;
+// enum ChangAnimState {
+//   CHAS_None = 0,
+//   CHAS_Idle,
+//   CHAS_HitTop,
+//   CHAS_HitBottom,
+//   CHAS_MAX
+// };
 
 class Chang
     : public KOFPlayer {
@@ -24,10 +20,6 @@ class Chang
   void Initialize(const Vector& position, bool useCameraPosition, bool flip, KOFPlayer* opponentPlayer) override;
 
   void Tick(unsigned long long curTick) override;
-
-  //void HitEvent(float damage, const Vector& knockBackForce);
-
-  void SkillUpdate();
 
  private:
 };

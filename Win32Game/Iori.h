@@ -34,8 +34,6 @@ enum IORI_SKILL {
   IOSK_MAX
 };
 
-class CommandComponent;
-class ProjectileComponent;
 
 class Iori
     : public KOFPlayer {
@@ -77,10 +75,4 @@ class Iori
   void ShikiAoiHana127();
 
   void ShikiYaOtome1211();
-
-  // Sprite
-  ImageRenderer* spriteRenderer_[10];
-
- private:
-  // bool mongtanTemp_ = false;
 };

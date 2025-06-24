@@ -54,8 +54,6 @@ class KOFPlayer
 
   const HealthComponent* GetHealthComponent() const;
 
-  //virtual void HitEvent(float damage, const Vector& knockBackForce);
-
   void UpdateInput();
 
   void UpdateCommand();
