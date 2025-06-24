@@ -160,27 +160,22 @@ const Vector& EngineCore::GetMousePosition() const {
 
 void EngineCore::GameLoop(unsigned long long curTick) {
   unsigned long long deltaTick = curTick - prevUpdateTick_;
+  prevUpdateTick_ = curTick;
+
   if (deltaTick < 16) {
     return;
   } else if (20 <= deltaTick) {
     deltaTick = 16;
   }
 
-  // TODO 
-  if (GTimeManager->onFrameFreeze_ == true) {
-    GTimeManager->curFreezeTime_ += deltaTick;
-
-    if (GTimeManager->curFreezeTime_ >= GTimeManager->freezeDuration_) {
-      GTimeManager->curFreezeTime_ = 0;
-      GTimeManager->onFrameFreeze_ = false;
-    } else {
-      return;
-    }
+  if (true == GTimeManager->FrameFreeze(deltaTick)) {
+    return;
   }
 
-  GInputManager->Tick(deltaTick);
+  GTimeManager->TickTimeEffects(deltaTick);
+  deltaTick = static_cast<unsigned long long>(deltaTick * GTimeManager->GetTimeScale());
 
-  prevUpdateTick_ = curTick;
+  GInputManager->Tick(deltaTick);
 
   if (nullptr != nextLevel_) {
     nextLevel_->OnBeginPlay();
