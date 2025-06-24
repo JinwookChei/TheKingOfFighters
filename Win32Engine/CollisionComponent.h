@@ -48,11 +48,11 @@ class CollisionComponent final
 
   static bool CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right);
 
-  JO_API bool IsCollided();
+  JO_API bool HasHit();
 
-  JO_API void OnCollision();
+  JO_API void MarkAsHit();
 
-  JO_API void OffCollision();
+  JO_API void ResetHit();
 
  protected:
 
@@ -74,5 +74,5 @@ class CollisionComponent final
   LINK_ITEM collisionActorLink_;
   LINK_ITEM collisionLevelLink_;
 
-  bool isCollided_;
+  bool hasHit_;
 };

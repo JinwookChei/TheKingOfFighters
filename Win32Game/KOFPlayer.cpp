@@ -31,7 +31,7 @@ KOFPlayer::KOFPlayer()
       prevImageIndex_(0),
       isFacingRight_(true),
       isAtMapEdge_(false),
-      opponentPlayer_ (nullptr){
+      opponentPlayer_(nullptr) {
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -138,8 +138,21 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
   return pHealthComponent_;
 }
 
-//void KOFPlayer::HitEvent(AttackInfo damageInfo) {
-//}
+void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
+  pHealthComponent_->TakeDamage(damageInfo->damage_);
+
+  if (pHitBoxTop_->HasHit()) {
+    animState_ = PAS_HitTop;
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+  }
+
+  if (pHitBoxBottom_->HasHit()) {
+    animState_ = PAS_HitBottom;
+    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+    pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+  }
+}
 
 void KOFPlayer::UpdateInput() {
 }
@@ -230,7 +243,7 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      //pTargetPlayer->HitEvent(pAttackInfo->damage_, pAttackInfo->knockBackForce_);
+      pTargetPlayer->HitEvent(pAttackInfo);
 
       Level* pLevel = GetLevel();
       if (nullptr == pLevel) {
@@ -264,6 +277,9 @@ void KOFPlayer::UpdateAttack() {
 }
 
 bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
+  if (true == pAttackBox_->HasHit()) {
+    return false;
+  }
   CollisionComponent* pTargetCollision_Top = nullptr;
   if (true == pAttackBox_->Collision(
                   {
@@ -273,8 +289,8 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                   },
                   &pTargetCollision_Top)) {
     *outTargetCollision = pTargetCollision_Top;
-    pTargetCollision_Top->OnCollision();
-    pAttackBox_->OnCollision();
+    pTargetCollision_Top->MarkAsHit();
+    pAttackBox_->MarkAsHit();
     return true;
   }
 
@@ -287,8 +303,8 @@ bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                   },
                   &pTargetCollision_Bottom)) {
     *outTargetCollision = pTargetCollision_Bottom;
-    pTargetCollision_Bottom->OnCollision();
-    pAttackBox_->OnCollision();
+    pTargetCollision_Bottom->MarkAsHit();
+    pAttackBox_->MarkAsHit();
     return true;
   }
 
@@ -305,7 +321,7 @@ bool KOFPlayer::UpdateCollisionPush() {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetPushCollision)) {
-    pPushBox_->OnCollision();
+    pPushBox_->MarkAsHit();
 
     Actor* pTarget = pTargetPushCollision->GetOwner();
     if (nullptr == pTarget) {
@@ -342,11 +358,11 @@ bool KOFPlayer::UpdateCollisionPush() {
 }
 
 void KOFPlayer::CollisionReset() {
-  pHitBoxTop_->OffCollision();
-  pHitBoxBottom_->OffCollision();
-  pAttackBox_->OffCollision();
-  pPushBox_->OffCollision();
-  pGrabBox_->OffCollision();
+  pHitBoxTop_->ResetHit();
+  pHitBoxBottom_->ResetHit();
+  pAttackBox_->ResetHit();
+  pPushBox_->ResetHit();
+  pGrabBox_->ResetHit();
 }
 
 void KOFPlayer::UpdatePrevAnimationIndex() {

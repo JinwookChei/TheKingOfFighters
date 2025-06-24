@@ -36,24 +36,20 @@ ToolLevel::ToolLevel()
   mouse->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
   // VIEWPORT
-  IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
-  ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-
-  // IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 2);
-  // reverseIoriImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-  // reverseIoriImage->Save("..\\ContentsResource\\IoriYagami_Box_Reverse.png", 2);
-
-  // IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
-  // changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
-
-  // IFileImage* reverseChangImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 2);
-  // reverseChangImage->ReverseCalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-  // reverseChangImage->Save("..\\ContentsResource\\Chang Koehan_Box_Reverse.png", 2);
-
+   
   //!!!!!!!!!!!! ÁÖÀÇ!!!!!!!!!
-  const std::string& filePath("..\\ContentsResource\\Iori.csv");
-  // const std::string& filePath("..\\ContentsResource\\Chang.csv");
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
+  //ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  // const std::string& filePath("..\\ContentsResource\\Iori.csv");
+
+   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
+   changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
+   const std::string& filePath("..\\ContentsResource\\Chang.csv");
+   //!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  
+   
+  
 
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));

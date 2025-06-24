@@ -39,17 +39,18 @@ void ReadButton::ReadData() {
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
+  
+  int result = MessageBox(NULL, L"정보를 불러올까요?.", L"READ", MB_YESNO | MB_ICONQUESTION);
+  if (result == IDYES) {
+    IFileImage* pFileImage = (IFileImage*)pImage;
+    pFileImage->CalculateTransformFromCSV(filePath_);  
+  } else if (result == IDNO) {
+    return;
+  }
+  
 
-  IFileImage* pFileImage = (IFileImage*)pImage;
-
- 
-  pFileImage->CalculateTransformFromCSV(filePath_);
-
-
-  unsigned int imageIndex = bindToolActor_->GetImageIndex();
-  //bindToolActor_->SetImageIndex(imageIndex);
-
-  MessageBox(NULL, L"정보를 불러왔습니다.", L"READ", MB_OK);
+  // unsigned int imageIndex = bindToolActor_->GetImageIndex();
+  // bindToolActor_->SetImageIndex(imageIndex);
 }
 
 void ReadButton::Render(IRenderTexture* renderTexture) {

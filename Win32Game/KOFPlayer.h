@@ -7,6 +7,7 @@ class CommandComponent;
 class SkillComponent;
 class ProjectileComponent;
 class AttackTable;
+class AttackInfo;
 class HealthComponent;
 class StateComponent;
 class HitHandlerComponent;
@@ -64,7 +65,7 @@ class KOFPlayer
 
   bool CheckAttackCollision(CollisionComponent** outTargetCollision);
 
-  //void HitEvent(float damage, const Vector& knockBackForce);
+  void HitEvent(const AttackInfo* damageInfo);
 
   virtual bool UpdateCollisionPush();
 

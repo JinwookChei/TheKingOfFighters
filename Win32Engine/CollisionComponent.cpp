@@ -111,7 +111,7 @@ CollisionComponent::CollisionComponent()
       searchHandle_(nullptr),
       collisionActorLink_({nullptr, nullptr, this}),
       collisionLevelLink_({nullptr, nullptr, this}),
-      isCollided_(false) {
+      hasHit_(false) {
 }
 
 CollisionComponent::~CollisionComponent() {
@@ -227,17 +227,26 @@ bool CollisionComponent::CollisionPointToRect(const CollisionInfo& left, const C
   return ::CollisionPointToRect(left, right);
 }
 
-bool CollisionComponent::IsCollided() {
-  return isCollided_;
+bool CollisionComponent::HasHit() {
+  return hasHit_;
 }
 
-void CollisionComponent::OnCollision() {
-  isCollided_ = true;
+void CollisionComponent::MarkAsHit() {
+  hasHit_ = true;
 }
 
-void CollisionComponent::OffCollision() {
-  isCollided_ = false;
+void CollisionComponent::ResetHit() {
+  hasHit_ = false;
 }
+
+
+//void CollisionComponent::OnCollision() {
+//  isCollided_ = true;
+//}
+//
+//void CollisionComponent::OffCollision() {
+//  isCollided_ = false;
+//}
 
 
 void CollisionComponent::CollisionRender(IRenderTexture* renderTexture) {

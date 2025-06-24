@@ -41,11 +41,13 @@ void WriteButton::WriteData() {
     return;
   }
 
-  IFileImage* pFileImage = (IFileImage*)pImage;
-  pFileImage->ExportImageInfoToCSV(filePath_);
-
-
-  MessageBox(NULL, L"!!!주의!!! 정말로 저장하시겠습니까 ????", L"!!!주의!!!", MB_OK);
+  int result = MessageBox(NULL, L"!!!주의!!! 정말로 저장하시겠습니까 ????", L"!!!주의!!!", MB_YESNO | MB_ICONQUESTION);
+  if (result == IDYES) {
+    IFileImage* pFileImage = (IFileImage*)pImage;
+    pFileImage->ExportImageInfoToCSV(filePath_);  
+  } else if (result == IDNO) {
+    return;    
+  }
 }
 
 void WriteButton::Render(IRenderTexture* renderTexture) {

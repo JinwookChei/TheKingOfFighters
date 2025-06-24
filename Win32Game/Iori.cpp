@@ -550,15 +550,15 @@ void Iori::CompareInputBitset() {
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
         UpdateAnimState(PAS_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight(), pPushBox_->IsCollided());
+        pMovementComponent_->MoveBack(FacingRight(), pPushBox_->HasHit());
         return;
       } else {
         if (PAS_Run == animState_) {
-          pMovementComponent_->Run(false, pPushBox_->IsCollided());
+          pMovementComponent_->Run(false, pPushBox_->HasHit());
           return;
         }
         UpdateAnimState(PAS_FrontWalk);
-        pMovementComponent_->Move(FacingRight(), pPushBox_->IsCollided());
+        pMovementComponent_->Move(FacingRight(), pPushBox_->HasHit());
         return;
       }
     }
@@ -580,15 +580,15 @@ void Iori::CompareInputBitset() {
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
       if (FacingRight()) {
         if (PAS_Run == animState_) {
-          pMovementComponent_->Run(true, pPushBox_->IsCollided());
+          pMovementComponent_->Run(true, pPushBox_->HasHit());
           return;
         }
         UpdateAnimState(PAS_FrontWalk);
-        pMovementComponent_->Move(FacingRight(), pPushBox_->IsCollided());
+        pMovementComponent_->Move(FacingRight(), pPushBox_->HasHit());
         return;
       } else {
         UpdateAnimState(PAS_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight(), pPushBox_->IsCollided());
+        pMovementComponent_->MoveBack(FacingRight(), pPushBox_->HasHit());
         return;
       }
     }
@@ -766,7 +766,7 @@ void Iori::GaishikiMutan() {
       }
     }
 
-    if (true == pAttackBox_->IsCollided() && 105 == curImageIndex && true == pSkillComponent_->GetMiscTemp()) {
+    if (true == pAttackBox_->HasHit() && 105 == curImageIndex && true == pSkillComponent_->GetMiscTemp()) {
       UpdateAnimState(IOAS_GaishikiMutan_2);
     }
   }
@@ -868,7 +868,7 @@ void Iori::ShikiAoiHana127() {
         pSkillComponent_->SetMiscTemp(true);
       }
 
-      if (pAttackBox_->IsCollided() && pSkillComponent_->GetMiscTemp() == true) {
+      if (pAttackBox_->HasHit() && pSkillComponent_->GetMiscTemp() == true) {
         UpdateAnimState(IOAS_127ShikiAoiHana_2);
         pSkillComponent_->SetMiscTemp(false);
       }
@@ -882,7 +882,7 @@ void Iori::ShikiAoiHana127() {
         pSkillComponent_->SetMiscTemp(true);
       }
 
-      if (pAttackBox_->IsCollided() && true == pSkillComponent_->GetMiscTemp()) {
+      if (pAttackBox_->HasHit() && true == pSkillComponent_->GetMiscTemp()) {
         UpdateAnimState(IOAS_127ShikiAoiHana_3);
       }
     }
@@ -935,7 +935,7 @@ void Iori::ShikiYaOtome1211() {
         break;
       }
 
-      if (pAttackBox_->IsCollided()) {
+      if (pAttackBox_->HasHit()) {
         UpdateAnimState(IOAS_1211ShikiYaOtome_2);
         pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
         break;
