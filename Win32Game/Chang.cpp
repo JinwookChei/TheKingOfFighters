@@ -112,21 +112,21 @@ void Chang::Tick(unsigned long long deltaTick) {
   CollisionReset();
 }
 
-void Chang::HitEvent(float damage, const Vector& knockBackForce) {
-  pHealthComponent_->TakeDamage(damage);
-
-  if (pHitBoxTop_->IsCollided()) {
-    animState_ = PAS_HitTop;
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
-  }
-
-  if (pHitBoxBottom_->IsCollided()) {
-    animState_ = PAS_HitBottom;
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
-  }
-}
+//void Chang::HitEvent(float damage, const Vector& knockBackForce) {
+//  pHealthComponent_->TakeDamage(damage);
+//
+//  if (pHitBoxTop_->IsCollided()) {
+//    animState_ = PAS_HitTop;
+//    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+//    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
+//  }
+//
+//  if (pHitBoxBottom_->IsCollided()) {
+//    animState_ = PAS_HitBottom;
+//    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+//    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
+//  }
+//}
 
 void Chang::UpdateInput() {
   if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') &&

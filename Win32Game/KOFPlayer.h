@@ -6,7 +6,7 @@ class MovementComponent;
 class CommandComponent;
 class SkillComponent;
 class ProjectileComponent;
-class DamageSystem;
+class AttackTable;
 class HealthComponent;
 class StateComponent;
 class HitHandlerComponent;
@@ -52,7 +52,7 @@ class KOFPlayer
 
   const HealthComponent* GetHealthComponent() const;
 
-  virtual void HitEvent(float damage, const Vector& knockBackForce);
+  //virtual void HitEvent(float damage, const Vector& knockBackForce);
 
   virtual void UpdateInput();
 
@@ -62,7 +62,9 @@ class KOFPlayer
 
   void UpdateAttack();
 
-  virtual bool CheckAttackCollision(CollisionComponent** outTargetCollision);
+  bool CheckAttackCollision(CollisionComponent** outTargetCollision);
+
+  //void HitEvent(float damage, const Vector& knockBackForce);
 
   virtual bool UpdateCollisionPush();
 
@@ -101,7 +103,7 @@ class KOFPlayer
 
   MovementComponent* pMovementComponent_;
 
-  DamageSystem* pDamageSystem_;
+  AttackTable* pAttackTable_;
 
   HealthComponent* pHealthComponent_;
 

@@ -11,7 +11,7 @@ enum ATTACK_TYPE {
   ATTYPE_Max
 };
 
-enum ELEMENT_TYPE {
+enum ATTACK_ELEMENT_TYPE {
   ELMTTYPE_None = -1,
   ELMTTYPE_Normal = 0,
   ELMTTYPE_Fire,
@@ -20,20 +20,20 @@ enum ELEMENT_TYPE {
   ELMTTYPE_Max
 };
 
-struct DamageInfo {
-  unsigned long long damageInfoTag_ = 0;
+struct AttackInfo {
+  unsigned long long attackTableKey_ = 0;
   ATTACK_TYPE attackType_ = ATTYPE_None;
-  ELEMENT_TYPE elementType_ = ELMTTYPE_None;
+  ATTACK_ELEMENT_TYPE elementType_ = ELMTTYPE_None;
   float damage_ = 0.0f;
   Vector knockBackForce_ = {0.0f, 0.0f};
   void* searchHandle_ = nullptr;
 };
 
-class DamageSystem
+class AttackTable
     : public ActorComponent {
  public:
-  DamageSystem();
-  ~DamageSystem();
+  AttackTable();
+  ~AttackTable();
 
   void BeginPlay() override;
 
@@ -41,12 +41,12 @@ class DamageSystem
 
   bool Initailize();
 
-  bool RegistDamageInfo(unsigned long long damageInfoTag, ATTACK_TYPE attackType, ELEMENT_TYPE elementType, float damage, Vector knockBackForce);
+  bool RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYPE attackType, ATTACK_ELEMENT_TYPE elementType, float damage, Vector knockBackForce);
 
-  bool SearchDamageInfo(unsigned long long damageInfoTag, DamageInfo** outSearchResult);
+  bool SearchAttackInfo(unsigned long long attackTableKey, AttackInfo** outSearchResult);
 
   void CalculateDamage();
 
  private:
-  HashTable damageTable_;
+  HashTable attackTable_;
 };

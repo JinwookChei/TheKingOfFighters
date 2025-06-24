@@ -4,7 +4,7 @@
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "StateComponent.h"
-#include "DamageSystem.h"
+#include "AttackTable.h"
 #include "HealthComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
@@ -14,7 +14,7 @@
 KOFPlayer::KOFPlayer()
     : pRender_(nullptr),
       pMovementComponent_(nullptr),
-      pDamageSystem_(nullptr),
+      pAttackTable_(nullptr),
       pHealthComponent_(nullptr),
       pStateComponent_(nullptr),
       pHitBoxTop_(nullptr),
@@ -61,8 +61,8 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   }
 
   // DAMAGE
-  pDamageSystem_ = CreateComponent<DamageSystem>();
-  if (false == pDamageSystem_->Initailize()) {
+  pAttackTable_ = CreateComponent<AttackTable>();
+  if (false == pAttackTable_->Initailize()) {
     return;
   }
 
@@ -138,8 +138,8 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
   return pHealthComponent_;
 }
 
-void KOFPlayer::HitEvent(float damage, const Vector& knockBackForce) {
-}
+//void KOFPlayer::HitEvent(AttackInfo damageInfo) {
+//}
 
 void KOFPlayer::UpdateInput() {
 }
@@ -225,12 +225,12 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      DamageInfo* pDamageInfo;
-      if (false == pDamageSystem_->SearchDamageInfo(animState_, &pDamageInfo)) {
+      AttackInfo* pAttackInfo;
+      if (false == pAttackTable_->SearchAttackInfo(animState_, &pAttackInfo)) {
         return;
       }
 
-      pTargetPlayer->HitEvent(pDamageInfo->damage_, pDamageInfo->knockBackForce_);
+      //pTargetPlayer->HitEvent(pAttackInfo->damage_, pAttackInfo->knockBackForce_);
 
       Level* pLevel = GetLevel();
       if (nullptr == pLevel) {

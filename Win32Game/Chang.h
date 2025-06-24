@@ -25,7 +25,7 @@ class Chang
 
   void Tick(unsigned long long curTick) override;
 
-  void HitEvent(float damage, const Vector& knockBackForce);
+  //void HitEvent(float damage, const Vector& knockBackForce);
 
   void UpdateInput() override;
 

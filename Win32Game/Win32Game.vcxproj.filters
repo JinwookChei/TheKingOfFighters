@@ -177,7 +177,7 @@
     <ClCompile Include="BackGroundMask.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="DamageSystem.cpp">
+    <ClCompile Include="AttackTable.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -302,7 +302,7 @@
     <ClInclude Include="BackGroundMask.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="DamageSystem.h">
+    <ClInclude Include="AttackTable.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 #include "KOFLevel.h"
 #include "BackGroundMask.h"
 #include "MovementComponent.h"
-#include "DamageSystem.h"
+#include "AttackTable.h"
 #include "SkillComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
@@ -235,58 +235,58 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   }
 
   // DAMAGE
-  if (false == pDamageSystem_->RegistDamageInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, 10.0f, {20.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, 10.0f, {20.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_108ShikiYamiBarai, 5.0f, {20.0f, 60.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, 5.0f, {20.0f, 60.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_GaishikiMutan_1, 5.0f, {5.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {5.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_GaishikiMutan_2, 5.0f, {20.0f, 40.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {20.0f, 40.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_Shinigami, 15.0f, {20.0f, 80.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, 15.0f, {20.0f, 80.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_HyakushikiOniyaki, 20.0f, {40.0f, 80.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, 20.0f, {40.0f, 80.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_1, 5.0f, {10.0f, 00.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {10.0f, 00.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_2, 5.0f, {10.0f, 00.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {10.0f, 00.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_127ShikiAoiHana_3, 5.0f, {20.0f, 80.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {20.0f, 80.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_1, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_1, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_2, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_2, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_3, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_3, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_4, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_4, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_5, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_5, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_6, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_6, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_7, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_7, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_8, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_8, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pDamageSystem_->RegistDamageInfo(IOAS_1211ShikiYaOtome_9, 10.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_9, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 10.0f, {0.0f, 0.0f})) {
     return;
   }
 
