@@ -39,8 +39,10 @@ void ReadButton::ReadData() {
   if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
-  
-  int result = MessageBox(NULL, L"정보를 불러올까요?.", L"READ", MB_YESNO | MB_ICONQUESTION);
+  std::wstringstream wss;
+  wss << L"!!!주의!!! 정보를 불러올까요? ????\n FilePath : " << std::wstring(filePath_.begin(), filePath_.end());
+
+  int result = MessageBox(NULL, wss.str().c_str(), L"READ", MB_YESNO | MB_ICONQUESTION);
   if (result == IDYES) {
     IFileImage* pFileImage = (IFileImage*)pImage;
     pFileImage->CalculateTransformFromCSV(filePath_);  

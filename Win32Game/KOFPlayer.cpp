@@ -155,9 +155,133 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
 }
 
 void KOFPlayer::UpdateInput() {
+  // InputBitSet :
+  // Left : 10000000
+  // Down : 01000000
+  // Right: 00100000
+  // Up :   00010000
+  // A  :   00001000
+  // B  :   00000100
+  // C  :   00000010
+  // D  :   00000001
+
+  bool anyKeyActive = false;
+  for (int key : playerKeySet_) {
+    if (InputManager::Instance()->IsPress(key) ||
+        InputManager::Instance()->IsUp(key)) {
+      anyKeyActive = true;
+      break;
+    }
+  }
+
+  if (false == anyKeyActive) {
+    return;
+  }
+
+  if (InputManager::Instance()->IsPress(playerKeySet_[7])) {
+    inputPressBitSet_.set(7);
+  }
+
+  if (InputManager::Instance()->IsUp(playerKeySet_[7])) {
+    inputUpBitSet_.set(7);
+  }
+
+  if (InputManager::Instance()->IsPress(playerKeySet_[6])) {
+    inputPressBitSet_.set(6);
+  }
+
+  if (InputManager::Instance()->IsUp(playerKeySet_[6])) {
+    inputUpBitSet_.set(6);
+  }
+
+  if (InputManager::Instance()->IsPress(playerKeySet_[5])) {
+    inputPressBitSet_.set(5);
+  }
+
+  if (InputManager::Instance()->IsUp(playerKeySet_[5])) {
+    inputUpBitSet_.set(5);
+  }
+
+  if (InputManager::Instance()->IsPress(playerKeySet_[4])) {
+    inputPressBitSet_.set(4);
+  }
+  if (InputManager::Instance()->IsUp(playerKeySet_[4])) {
+    inputUpBitSet_.set(4);
+  }
+
+  // A
+  if (InputManager::Instance()->IsPress(playerKeySet_[3])) {
+    inputPressBitSet_.set(3);
+  }
+  if (InputManager::Instance()->IsUp(playerKeySet_[3])) {
+    inputUpBitSet_.set(3);
+  }
+
+  // B
+  if (InputManager::Instance()->IsPress(playerKeySet_[2])) {
+    inputPressBitSet_.set(2);
+  }
+  if (InputManager::Instance()->IsUp(playerKeySet_[2])) {
+    inputUpBitSet_.set(2);
+  }
+
+  // C
+  if (InputManager::Instance()->IsPress(playerKeySet_[1])) {
+    inputPressBitSet_.set(1);
+  }
+  if (InputManager::Instance()->IsUp(playerKeySet_[1])) {
+    inputUpBitSet_.set(1);
+  }
+
+  // D
+  if (InputManager::Instance()->IsPress(playerKeySet_[0])) {
+    inputPressBitSet_.set(0);
+  }
+  if (InputManager::Instance()->IsUp(playerKeySet_[0])) {
+    inputUpBitSet_.set(0);
+  }
 }
 
 void KOFPlayer::UpdateCommand() {
+  if (InputManager::Instance()->IsDown(playerKeySet_[7])) {
+    if (FacingRight()) {
+      pCommandComponent_->JumpNode(CK_Left);
+    } else {
+      pCommandComponent_->JumpNode(CK_Right);
+    }
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[6])) {
+    pCommandComponent_->JumpNode(CK_Down);
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[5])) {
+    if (FacingRight()) {
+      pCommandComponent_->JumpNode(CK_Right);
+    } else {
+      pCommandComponent_->JumpNode(CK_Left);
+    }
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[4])) {
+    pCommandComponent_->JumpNode(CK_Up);
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[3])) {
+    pCommandComponent_->JumpNode(CK_A);
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[2])) {
+    pCommandComponent_->JumpNode(CK_B);
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[1])) {
+    pCommandComponent_->JumpNode(CK_C);
+  }
+
+  if (InputManager::Instance()->IsDown(playerKeySet_[0])) {
+    pCommandComponent_->JumpNode(CK_D);
+  }
 }
 
 void KOFPlayer::UpdateCollisionBoundScale() {
@@ -253,7 +377,7 @@ void KOFPlayer::UpdateAttack() {
       if (nullptr == pKOFLevel) {
         return;
       }
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 150);
+      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 80);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

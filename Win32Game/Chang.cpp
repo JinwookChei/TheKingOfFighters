@@ -1,15 +1,20 @@
 #include "stdafx.h"
 #include "KOFPlayer.h"
-#include "Chang.h"
+#include "KOFLevel.h"
+#include "BackGroundMask.h"
 #include "MovementComponent.h"
-#include "HealthComponent.h"
+#include "AttackTable.h"
+#include "SkillComponent.h"
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
+#include "HealthComponent.h"
+#include "StateComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
+#include "Chang.h"
 
-Chang::Chang()
-    : prevImageIndex(0) {
+Chang::Chang(){
+  playerKeySet_ = {4, 3, 2, 1, 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
 }
 
 Chang::~Chang() {
@@ -69,47 +74,87 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 }
 
 void Chang::Tick(unsigned long long deltaTick) {
+  UpdateCollisionBoundScale();
 
   UpdateCollisionPush();
 
-  UpdateCollisionBoundScale();
-
-  
-  if (pRender_->GetImageIndex() == 314 || pRender_->GetImageIndex() == 319)
-  {
-    pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  if (PS_Attack == pStateComponent_->GetPlayerState()) {
+    UpdateAttack();
   }
 
-  //pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  UpdateCommand();
 
-  //if (true == pRender_->IsPlayingLoopAnimation()) {
-    //InputUpdate(deltaTick);
+  if (true == pRender_->IsAnimationEnd()) {
+    pCommandComponent_->ExcuteTask();
+  }
 
-    //CommandUpdate();
+  ResetInputBitSet();
 
-  //pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  UpdateInput();
+
+  if (true == pStateComponent_->CanInput() || true == pRender_->IsAnimationEnd()) {
+    CompareInputBitset();
+  }
+
+  pSkillComponent_->UpdateActiveSkill();
+
+  //  TODO : 수정사항
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+  if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
+    pGhostEffect_->Off();
+  }
+  //  TODO END
+
+  UpdatePrevAnimationIndex();
+
+
+
+
+
+
+
+
+    // REGACY
+  //UpdateCollisionPush();
+
+  //UpdateCollisionBoundScale();
+
+  //
+  //if (pRender_->GetImageIndex() == 314 || pRender_->GetImageIndex() == 319)
+  //{
+  //  pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
   //}
 
+  ////pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
 
-  CollisionComponent* pTargetCollision = nullptr;
-  if (CheckAttackCollision(&pTargetCollision)) {
-    if (nullptr != pTargetCollision) {
-      Actor* pTargetOwner = pTargetCollision->GetOwner();
-      if (nullptr == pTargetOwner) {
-        return;
-      }
-      KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
-      if (nullptr == pTargetPlayer) {
-        return;
-      }
-      
-      //
-    }
-  }
+  ////if (true == pRender_->IsPlayingLoopAnimation()) {
+  //  //InputUpdate(deltaTick);
 
-  //SkillUpdate();
+  //  //CommandUpdate();
 
-  CollisionReset();
+  ////pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  ////}
+
+
+  //CollisionComponent* pTargetCollision = nullptr;
+  //if (CheckAttackCollision(&pTargetCollision)) {
+  //  if (nullptr != pTargetCollision) {
+  //    Actor* pTargetOwner = pTargetCollision->GetOwner();
+  //    if (nullptr == pTargetOwner) {
+  //      return;
+  //    }
+  //    KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
+  //    if (nullptr == pTargetPlayer) {
+  //      return;
+  //    }
+  //    
+  //    //
+  //  }
+  //}
+
+  ////SkillUpdate();
+
+  //CollisionReset();
 }
 
 //void Chang::HitEvent(float damage, const Vector& knockBackForce) {
@@ -127,75 +172,6 @@ void Chang::Tick(unsigned long long deltaTick) {
 //    pMovementComponent_->KnockBack(FacingRight(), knockBackForce);
 //  }
 //}
-
-void Chang::UpdateInput() {
-  if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') &&
-      false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') &&
-      false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') &&
-      false == InputManager::Instance()->IsPress('K') && false == InputManager::Instance()->IsPress('k') &&
-      false == InputManager::Instance()->IsPress('H') && false == InputManager::Instance()->IsPress('h') &&
-      false == InputManager::Instance()->IsPress('U') && false == InputManager::Instance()->IsPress('u') &&
-      false == InputManager::Instance()->IsPress('O') && false == InputManager::Instance()->IsPress('o')) {
-    animState_ = PAS_Idle;
-    return;
-  }
-
-  if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
-    if (FacingRight()) {
-      animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(false, pPushBox_->HasHit());
-    } else {
-      if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(false, pPushBox_->HasHit());
-      } else {
-        animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(false, pPushBox_->HasHit());
-      }
-    }
-  }
-  if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
-    if (FacingRight()) {
-      if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(true, pPushBox_->HasHit());
-      } else {
-        animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(true, pPushBox_->HasHit());
-      }
-    } else {
-      animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(true, pPushBox_->HasHit());
-    }
-  }
-  if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {
-    if (PAS_FrontWalk == animState_) {
-      pMovementComponent_->JumpForward(FacingRight(), false);
-      animState_ = PAS_Jump;
-    } else if (PAS_Run == animState_) {
-      pMovementComponent_->JumpForward(FacingRight(), true);
-      animState_ = PAS_Jump;
-    } else if (PAS_BackWalk == animState_) {
-      pMovementComponent_->JumpForward(!FacingRight(), false);
-      animState_ = PAS_Jump;
-    } else {
-      pMovementComponent_->Jump();
-      animState_ = PAS_Jump;
-    }
-  }
-  if (InputManager::Instance()->IsPress('K') || InputManager::Instance()->IsPress('k')) {
-    animState_ = PAS_SeatDown;
-  }
-
-  if (InputManager::Instance()->IsPress('H') || InputManager::Instance()->IsPress('h')) {
-    animState_ = PAS_HeavyKick;
-  }
-  if (InputManager::Instance()->IsPress('Q') || InputManager::Instance()->IsPress('q')) {
-  }
-  if (InputManager::Instance()->IsPress('E') || InputManager::Instance()->IsPress('e')) {
-  }
-}
-
-void Chang::UpdateCommand() {
-}
 
 void Chang::SkillUpdate() {
 }

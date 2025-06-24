@@ -14,6 +14,7 @@
 #include "Iori.h"
 
 Iori::Iori() {
+  playerKeySet_ = { 'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
 }
 
 Iori::~Iori() {
@@ -392,99 +393,6 @@ void Iori::Tick(unsigned long long deltaTick) {
   UpdatePrevAnimationIndex();
 }
 
-void Iori::UpdateInput() {
-  // InputBitSet :
-  // Left : 10000000
-  // Down : 01000000
-  // Right: 00100000
-  // Up :   00010000
-  // A  :   00001000
-  // B  :   00000100
-  // C  :   00000010
-  // D  :   00000001
-
-  if (false == InputManager::Instance()->IsPress(VK_LEFT) &&
-      false == InputManager::Instance()->IsUp(VK_LEFT) &&
-      false == InputManager::Instance()->IsPress(VK_DOWN) &&
-      false == InputManager::Instance()->IsUp(VK_DOWN) &&
-      false == InputManager::Instance()->IsPress(VK_RIGHT) &&
-      false == InputManager::Instance()->IsUp(VK_RIGHT) &&
-      false == InputManager::Instance()->IsPress(VK_UP) &&
-      false == InputManager::Instance()->IsUp(VK_UP) &&
-      false == InputManager::Instance()->IsPress('A') && false == InputManager::Instance()->IsPress('a') &&
-      false == InputManager::Instance()->IsUp('A') && false == InputManager::Instance()->IsUp('a') &&
-      false == InputManager::Instance()->IsPress('S') && false == InputManager::Instance()->IsPress('s') &&
-      false == InputManager::Instance()->IsUp('S') && false == InputManager::Instance()->IsUp('s') &&
-      false == InputManager::Instance()->IsPress('Z') && false == InputManager::Instance()->IsPress('z') &&
-      false == InputManager::Instance()->IsUp('Z') && false == InputManager::Instance()->IsUp('z') &&
-      false == InputManager::Instance()->IsPress('X') && false == InputManager::Instance()->IsPress('x') &&
-      false == InputManager::Instance()->IsUp('X') && false == InputManager::Instance()->IsUp('x')) {
-    return;
-  }
-
-  if (InputManager::Instance()->IsPress(VK_LEFT) || InputManager::Instance()->IsPress(VK_LEFT)) {
-    inputPressBitSet_.set(7);
-  }
-
-  if (InputManager::Instance()->IsUp(VK_LEFT) || InputManager::Instance()->IsUp(VK_LEFT)) {
-    inputUpBitSet_.set(7);
-  }
-
-  if (InputManager::Instance()->IsPress(VK_DOWN) || InputManager::Instance()->IsPress(VK_DOWN)) {
-    inputPressBitSet_.set(6);
-  }
-
-  if (InputManager::Instance()->IsUp(VK_DOWN) || InputManager::Instance()->IsUp(VK_DOWN)) {
-    inputUpBitSet_.set(6);
-  }
-
-  if (InputManager::Instance()->IsPress(VK_RIGHT) || InputManager::Instance()->IsPress(VK_RIGHT)) {
-    inputPressBitSet_.set(5);
-  }
-
-  if (InputManager::Instance()->IsUp(VK_RIGHT) || InputManager::Instance()->IsUp(VK_RIGHT)) {
-    inputUpBitSet_.set(5);
-  }
-
-  if (InputManager::Instance()->IsPress(VK_UP) || InputManager::Instance()->IsPress(VK_UP)) {
-    inputPressBitSet_.set(4);
-  }
-  if (InputManager::Instance()->IsUp(VK_UP) || InputManager::Instance()->IsUp(VK_UP)) {
-    inputUpBitSet_.set(4);
-  }
-
-  // A
-  if (InputManager::Instance()->IsPress('X') || InputManager::Instance()->IsPress('x')) {
-    inputPressBitSet_.set(3);
-  }
-  if (InputManager::Instance()->IsUp('X') || InputManager::Instance()->IsUp('x')) {
-    inputUpBitSet_.set(3);
-  }
-
-  // B
-  if (InputManager::Instance()->IsPress('Z') || InputManager::Instance()->IsPress('z')) {
-    inputPressBitSet_.set(2);
-  }
-  if (InputManager::Instance()->IsUp('Z') || InputManager::Instance()->IsUp('z')) {
-    inputUpBitSet_.set(2);
-  }
-
-  // C
-  if (InputManager::Instance()->IsPress('S') || InputManager::Instance()->IsPress('s')) {
-    inputPressBitSet_.set(1);
-  }
-  if (InputManager::Instance()->IsUp('S') || InputManager::Instance()->IsUp('s')) {
-    inputUpBitSet_.set(1);
-  }
-
-  // D
-  if (InputManager::Instance()->IsPress('A') || InputManager::Instance()->IsPress('a')) {
-    inputPressBitSet_.set(0);
-  }
-  if (InputManager::Instance()->IsUp('A') || InputManager::Instance()->IsUp('a')) {
-    inputUpBitSet_.set(0);
-  }
-}
 
 void Iori::CompareInputBitset() {
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
@@ -658,48 +566,6 @@ void Iori::CompareInputBitset() {
 
   UpdateAnimState(PAS_Idle);
   return;
-}
-
-void Iori::UpdateCommand() {
-  if (InputManager::Instance()->IsDown(VK_LEFT) || InputManager::Instance()->IsDown(VK_LEFT)) {
-    if (FacingRight()) {
-      pCommandComponent_->JumpNode(CK_Left);
-    } else {
-      pCommandComponent_->JumpNode(CK_Right);
-    }
-  }
-
-  if (InputManager::Instance()->IsDown(VK_RIGHT) || InputManager::Instance()->IsDown(VK_RIGHT)) {
-    if (FacingRight()) {
-      pCommandComponent_->JumpNode(CK_Right);
-    } else {
-      pCommandComponent_->JumpNode(CK_Left);
-    }
-  }
-
-  if (InputManager::Instance()->IsDown(VK_UP) || InputManager::Instance()->IsDown(VK_UP)) {
-    pCommandComponent_->JumpNode(CK_Up);
-  }
-
-  if (InputManager::Instance()->IsDown(VK_DOWN) || InputManager::Instance()->IsDown(VK_DOWN)) {
-    pCommandComponent_->JumpNode(CK_Down);
-  }
-
-  if (InputManager::Instance()->IsDown('A') || InputManager::Instance()->IsDown('a')) {
-    pCommandComponent_->JumpNode(CK_D);
-  }
-
-  if (InputManager::Instance()->IsDown('S') || InputManager::Instance()->IsDown('s')) {
-    pCommandComponent_->JumpNode(CK_C);
-  }
-
-  if (InputManager::Instance()->IsDown('Z') || InputManager::Instance()->IsDown('z')) {
-    pCommandComponent_->JumpNode(CK_B);
-  }
-
-  if (InputManager::Instance()->IsDown('X') || InputManager::Instance()->IsDown('x')) {
-    pCommandComponent_->JumpNode(CK_A);
-  }
 }
 
 void Iori::Command_1() {
@@ -1028,7 +894,7 @@ void Iori::ShikiYaOtome1211() {
     }
     case IOAS_1211ShikiYaOtome_9: {
       const Vector& ioriPosition = GetPosition();
-      opponentPlayer_->SetPosition(ioriPosition + Vector{150.0f, -100.0f}* FacingRightFlag());
+      opponentPlayer_->SetPosition(ioriPosition + Vector{150.0f, -100.0f} * FacingRightFlag());
 
       if (351 == curImageIndex) {
         opponentPlayer_->UpdateAnimState(PAS_HitTop);

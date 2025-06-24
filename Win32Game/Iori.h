@@ -1,5 +1,6 @@
 #pragma once
 
+
 enum IORI_ANIM_STATE {
   IOAS_108ShikiYamiBarai = PAS_MAX + 1,
   IOAS_GaishikiMutan_1,
@@ -49,11 +50,7 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
-  void UpdateInput() override;
-
   void CompareInputBitset() override;
-
-  void UpdateCommand() override;
 
   // Command Skills
   void Command_1();
@@ -68,8 +65,7 @@ class Iori
 
   void Command_6();
 
-
-  // Skills  
+  // Skills
   void GaishikiMutan();
 
   void ShikiYamiBarai108();
@@ -86,5 +82,5 @@ class Iori
   ImageRenderer* spriteRenderer_[10];
 
  private:
-  //bool mongtanTemp_ = false;
+  // bool mongtanTemp_ = false;
 };

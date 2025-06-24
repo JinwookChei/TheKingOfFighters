@@ -27,12 +27,7 @@ class Chang
 
   //void HitEvent(float damage, const Vector& knockBackForce);
 
-  void UpdateInput() override;
-
-  void UpdateCommand() override;
-
   void SkillUpdate();
 
  private:
-  unsigned int prevImageIndex;
 };

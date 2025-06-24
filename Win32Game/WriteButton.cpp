@@ -41,7 +41,9 @@ void WriteButton::WriteData() {
     return;
   }
 
-  int result = MessageBox(NULL, L"!!!주의!!! 정말로 저장하시겠습니까 ????", L"!!!주의!!!", MB_YESNO | MB_ICONQUESTION);
+  std::wstringstream wss;
+  wss << L"!!!주의!!! 정말로 저장하시겠습니까 ????\n FilePath : " << std::wstring(filePath_.begin(), filePath_.end());
+  int result = MessageBox(NULL, wss.str().c_str(), L"!!!주의!!!", MB_YESNO | MB_ICONQUESTION);
   if (result == IDYES) {
     IFileImage* pFileImage = (IFileImage*)pImage;
     pFileImage->ExportImageInfoToCSV(filePath_);  

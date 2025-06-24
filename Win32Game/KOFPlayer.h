@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <array>
 #include <bitset>
 
 class MovementComponent;
@@ -55,9 +56,9 @@ class KOFPlayer
 
   //virtual void HitEvent(float damage, const Vector& knockBackForce);
 
-  virtual void UpdateInput();
+  void UpdateInput();
 
-  virtual void UpdateCommand();
+  void UpdateCommand();
 
   void UpdateCollisionBoundScale();
 
@@ -100,6 +101,8 @@ class KOFPlayer
   KOFPlayer* GetOpponentPlayer_() const;
 
  protected:
+  std::array<int, 8> playerKeySet_;
+
   ImageRenderer* pRender_;
 
   MovementComponent* pMovementComponent_;
