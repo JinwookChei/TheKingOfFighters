@@ -15,11 +15,13 @@ class MovementComponent final
 
   Vector GetMoveDir() const;
 
-  void Move(unsigned long long curTick, bool isRightDirection, bool isPushing);
+  void Move(bool isRightDirection, bool isPushing);
 
-  void MoveBack(unsigned long long curTick, bool isRightDirection, bool isPushing);
+  void MoveBack(bool isRightDirection, bool isPushing);
 
-  void Run(unsigned long long curTick, bool isRightDirection, bool isPushing);
+  void MoveToTarget(unsigned long long duration, const Vector& targetPosition);
+
+  void Run(bool isRightDirection, bool isPushing);
 
   void Jump(bool isRightDirection = true, Vector normalJumpForce = {0.0f, 75.0f});
 
@@ -28,6 +30,8 @@ class MovementComponent final
   void BackStep(bool isRightDirection);
 
   void Dash(bool isRightDirection, float dashDuration, float dashDistance);
+
+  void StopDash();
 
   void KnockBack(bool isRightDirection, const Vector& knockBackForce);
 

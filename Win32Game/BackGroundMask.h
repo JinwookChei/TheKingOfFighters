@@ -1,11 +1,11 @@
 #pragma once
 
-class BlackBoard
+class BackGroundMask
     : public Actor {
  public:
-  BlackBoard();
+  BackGroundMask();
 
-  ~BlackBoard();
+  ~BackGroundMask();
 
   void BeginPlay() override;
 
@@ -13,7 +13,9 @@ class BlackBoard
 
   void FadeIn(float fadeDuration);
 
-  void FadeOut(float fadeDuration);
+  void FadeOut(IMAGE_KEY image, float fadeDuration);
+
+  void FadeInOut(IMAGE_KEY image, float fadeInOutDuration);
 
  private:
   ImageRenderer* pRender_;
@@ -27,4 +29,6 @@ class BlackBoard
   bool onFadeIn_;
 
   bool onFadeOut_;
+
+  bool onFadeInOut_;
 };

@@ -18,6 +18,7 @@ enum IORI_ANIM_STATE {
   IOAS_1211ShikiYaOtome_6,
   IOAS_1211ShikiYaOtome_7,
   IOAS_1211ShikiYaOtome_8,
+  IOAS_1211ShikiYaOtome_9,
 
 };
 
@@ -48,9 +49,9 @@ class Iori
 
   void Tick(unsigned long long curTick) override;
 
-  void UpdateInput(unsigned long long curTick) override;
+  void UpdateInput() override;
 
-  void CompareInputBitset(unsigned long long curTick) override;
+  void CompareInputBitset() override;
 
   void UpdateCommand() override;
 

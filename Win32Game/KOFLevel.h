@@ -2,7 +2,7 @@
 
 class Mouse;
 class BackGround;
-class BlackBoard;
+class BackGroundMask;
 class CameraTarget;
 class KOFPlayer;
 class UI;
@@ -22,7 +22,7 @@ class KOFLevel final
 
   Vector GetBackGroundImageScale() const;
 
-  BlackBoard* GetBlackBoard() const; 
+  BackGroundMask* GetBackGroundMask() const; 
 
   void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);
 
@@ -43,7 +43,7 @@ class KOFLevel final
 
   BackGround* pBackGround_;
 
-  BlackBoard* pBlackBoard_;
+  BackGroundMask* pBackGroundMask_;
 
   KOFPlayer* pPlayer1_;
 

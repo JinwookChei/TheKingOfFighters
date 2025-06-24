@@ -141,7 +141,7 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
 void KOFPlayer::HitEvent(float damage, const Vector& knockBackForce) {
 }
 
-void KOFPlayer::UpdateInput(unsigned long long deltaTick) {
+void KOFPlayer::UpdateInput() {
 }
 
 void KOFPlayer::UpdateCommand() {
@@ -395,7 +395,7 @@ bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
 }
 
-void KOFPlayer::CompareInputBitset(unsigned long long curTick) {
+void KOFPlayer::CompareInputBitset() {
 }
 
 void KOFPlayer::ResetInputBitSet() {

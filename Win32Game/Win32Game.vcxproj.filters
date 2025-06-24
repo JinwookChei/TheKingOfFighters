@@ -174,7 +174,7 @@
     <ClCompile Include="SkillComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
-    <ClCompile Include="BlackBoard.cpp">
+    <ClCompile Include="BackGroundMask.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
     <ClCompile Include="DamageSystem.cpp">
@@ -299,7 +299,7 @@
     <ClInclude Include="SkillComponent.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
-    <ClInclude Include="BlackBoard.h">
+    <ClInclude Include="BackGroundMask.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
     <ClInclude Include="DamageSystem.h">

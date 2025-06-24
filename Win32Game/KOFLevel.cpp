@@ -5,7 +5,7 @@
 #include "Iori.h"
 #include "Chang.h"
 #include "BackGround.h"
-#include "BlackBoard.h"
+#include "BackGroundMask.h"
 #include "HealthBar.h"
 #include "Portrait.h"
 #include "Health.h"
@@ -16,7 +16,7 @@ KOFLevel::KOFLevel()
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
-      pBlackBoard_(nullptr),
+      pBackGroundMask_(nullptr),
       pPlayer1_(nullptr),
       pPlayer2_(nullptr),
       HUD_(nullptr),
@@ -40,6 +40,7 @@ void KOFLevel::BeginPlay() {
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", IMGKEY_BackGoundImage);
   backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\BlackBoard.png", IMGKEY_BlackBoardImage);
+  IFileImage* whiteBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\WhiteBoard.png", IMGKEY_WhiteBoardImage);
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", IMGKEY_IoriImage);
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
   IFileImage* reverseIoriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", -IMGKEY_IoriImage);
@@ -81,8 +82,8 @@ void KOFLevel::BeginPlay() {
   pMouse_->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
   // BLACKBOARD
-  pBlackBoard_ = SpawnActor<BlackBoard>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
-  pBlackBoard_->SetPosition({0.0f, 0.0f});
+  pBackGroundMask_ = SpawnActor<BackGroundMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
+  pBackGroundMask_->SetPosition({0.0f, 0.0f});
 
   // BACKGROUND
   pBackGround_ = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
@@ -263,8 +264,8 @@ Vector KOFLevel::GetBackGroundImageScale() const {
   return backGroundImageScale_;
 }
 
-BlackBoard* KOFLevel::GetBlackBoard() const {
-  return pBlackBoard_;
+BackGroundMask* KOFLevel::GetBackGroundMask() const {
+  return pBackGroundMask_;
 }
 
 void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {

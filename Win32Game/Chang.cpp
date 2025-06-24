@@ -128,7 +128,7 @@ void Chang::HitEvent(float damage, const Vector& knockBackForce) {
   }
 }
 
-void Chang::UpdateInput(unsigned long long curTick) {
+void Chang::UpdateInput() {
   if (false == InputManager::Instance()->IsPress('J') && false == InputManager::Instance()->IsPress('j') &&
       false == InputManager::Instance()->IsPress('L') && false == InputManager::Instance()->IsPress('l') &&
       false == InputManager::Instance()->IsPress('I') && false == InputManager::Instance()->IsPress('i') &&
@@ -143,27 +143,27 @@ void Chang::UpdateInput(unsigned long long curTick) {
   if (InputManager::Instance()->IsPress('J') || InputManager::Instance()->IsPress('j')) {
     if (FacingRight()) {
       animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, false, pPushBox_->IsCollided());
+      pMovementComponent_->Move(false, pPushBox_->IsCollided());
     } else {
       if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(curTick, false, pPushBox_->IsCollided());
+        pMovementComponent_->Run(false, pPushBox_->IsCollided());
       } else {
         animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(curTick, false, pPushBox_->IsCollided());
+        pMovementComponent_->Move(false, pPushBox_->IsCollided());
       }
     }
   }
   if (InputManager::Instance()->IsPress('L') || InputManager::Instance()->IsPress('l')) {
     if (FacingRight()) {
       if (animState_ == PAS_Run) {
-        pMovementComponent_->Run(curTick, true, pPushBox_->IsCollided());
+        pMovementComponent_->Run(true, pPushBox_->IsCollided());
       } else {
         animState_ = PAS_FrontWalk;
-        pMovementComponent_->Move(curTick, true, pPushBox_->IsCollided());
+        pMovementComponent_->Move(true, pPushBox_->IsCollided());
       }
     } else {
       animState_ = PAS_BackWalk;
-      pMovementComponent_->Move(curTick, true, pPushBox_->IsCollided());
+      pMovementComponent_->Move(true, pPushBox_->IsCollided());
     }
   }
   if (InputManager::Instance()->IsPress('I') || InputManager::Instance()->IsPress('i')) {

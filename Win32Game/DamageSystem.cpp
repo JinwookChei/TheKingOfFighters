@@ -25,17 +25,19 @@ bool DamageSystem::Initailize() {
   return damageTable_.Initialize(8, 8);
 }
 
-bool DamageSystem::RegistDamageInfo(unsigned long long damageInfoTag, float damage, Vector knockBackForce) {
+bool DamageSystem::RegistDamageInfo(unsigned long long damageInfoTag, ATTACK_TYPE attackType, ELEMENT_TYPE elementType, float damage, Vector knockBackForce) {
   DamageInfo* pFind;
   if (0 != damageTable_.Select((void**)&pFind, 1, &damageInfoTag, 8)) {
     return false;
   }
 
   DamageInfo* pInfo = new DamageInfo;
-  pInfo->damageInfoTag = damageInfoTag;
+  pInfo->damageInfoTag_ = damageInfoTag;
+  pInfo->attackType_ = attackType;
+  pInfo->elementType_ = elementType;
   pInfo->damage_ = damage;
   pInfo->knockBackForce_ = knockBackForce;
-  pInfo->searchHandle_ = damageTable_.Insert(pInfo, &pInfo->damageInfoTag, 8);
+  pInfo->searchHandle_ = damageTable_.Insert(pInfo, &pInfo->damageInfoTag_, 8);
 
   return nullptr != pInfo->searchHandle_;
 }

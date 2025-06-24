@@ -6,6 +6,7 @@ enum IMAGE_KEY
   IMGKEY_MouseImage = 1,
   IMGKEY_BackGoundImage,
   IMGKEY_BlackBoardImage,
+  IMGKEY_WhiteBoardImage,
   IMGKEY_IoriImage,
   IMGKEY_ChangImage,
   IMGKEY_HealthBarImage,

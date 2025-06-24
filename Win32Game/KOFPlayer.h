@@ -54,7 +54,7 @@ class KOFPlayer
 
   virtual void HitEvent(float damage, const Vector& knockBackForce);
 
-  virtual void UpdateInput(unsigned long long deltaTick);
+  virtual void UpdateInput();
 
   virtual void UpdateCommand();
 
@@ -86,7 +86,7 @@ class KOFPlayer
 
   bool IsAtMapEdge() const;
 
-  virtual void CompareInputBitset(unsigned long long curTick);
+  virtual void CompareInputBitset();
 
   void ResetInputBitSet();
 

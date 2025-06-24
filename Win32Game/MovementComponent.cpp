@@ -45,7 +45,7 @@ void MovementComponent::Tick(unsigned long long curTick) {
 
   // MOVEDIR
   const Vector& curPosition = owner->GetPosition();
-  const Vector& newPosition = curPosition + moveDir_;
+  const Vector& newPosition = curPosition + moveDir_ * (float)curTick;
   owner->SetPosition(newPosition);
   // MOVEDIR END
 
@@ -157,7 +157,7 @@ Vector MovementComponent::GetMoveDir() const {
   return moveDir_;
 }
 
-void MovementComponent::Move(unsigned long long curTick, bool isRightDirection, bool isPushing) {
+void MovementComponent::Move(bool isRightDirection, bool isPushing) {
   if (false == isGrounded_) {
     return;
   }
@@ -168,13 +168,13 @@ void MovementComponent::Move(unsigned long long curTick, bool isRightDirection, 
   }
 
   if (isRightDirection) {
-    moveDir_ = Vector::Right * moveVelocity_ * (float)curTick * weight;
+    moveDir_ = Vector::Right * moveVelocity_ * weight;
   } else {
-    moveDir_ = Vector::Left * moveVelocity_ * (float)curTick * weight;
+    moveDir_ = Vector::Left * moveVelocity_ * weight;
   }
 }
 
-void MovementComponent::MoveBack(unsigned long long curTick, bool isRightDirection, bool isPushing) {
+void MovementComponent::MoveBack(bool isRightDirection, bool isPushing) {
   if (false == isGrounded_) {
     return;
   }
@@ -185,13 +185,18 @@ void MovementComponent::MoveBack(unsigned long long curTick, bool isRightDirecti
   }*/
 
   if (isRightDirection) {
-    moveDir_ = Vector::Left * moveBackVelocity_ * (float)curTick; /** weight;*/
+    moveDir_ = Vector::Left * moveBackVelocity_; /** weight;*/
   } else {
-    moveDir_ = Vector::Right * moveBackVelocity_ * (float)curTick; /** weight;*/
+    moveDir_ = Vector::Right * moveBackVelocity_; /** weight;*/
   }
 }
 
-void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, bool isPushing) {
+void MovementComponent::MoveToTarget(unsigned long long duration, const Vector& targetPosition) {
+
+
+}
+
+void MovementComponent::Run(bool isRightDirection, bool isPushing) {
   if (false == isGrounded_) {
     return;
   }
@@ -202,9 +207,9 @@ void MovementComponent::Run(unsigned long long curTick, bool isRightDirection, b
   }
 
   if (isRightDirection) {
-    moveDir_ = Vector::Right * runVelocity_ * (float)curTick * weight;
+    moveDir_ = Vector::Right * runVelocity_ * weight;
   } else {
-    moveDir_ = Vector::Left * runVelocity_ * (float)curTick * weight;
+    moveDir_ = Vector::Left * runVelocity_ * weight;
   }
 }
 
@@ -290,6 +295,10 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
     dashEndPos_ = owner->GetPosition();
     dashEndPos_.X -= dashDistance_;
   }
+}
+
+void MovementComponent::StopDash() {
+  onDash_ = false;
 }
 
 void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
