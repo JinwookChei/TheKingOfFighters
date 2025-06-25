@@ -47,10 +47,6 @@ ToolLevel::ToolLevel()
    const std::string& filePath("..\\ContentsResource\\Chang.csv");
    //!!!!!!!!!!!!!!!!!!!!!!!!!!
   
-  
-   
-  
-
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
   ViewPortUI->SetScale({800.0f, 800.0f});

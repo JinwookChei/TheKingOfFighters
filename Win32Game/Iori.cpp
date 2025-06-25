@@ -359,6 +359,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
 }
 
 void Iori::Tick(unsigned long long deltaTick) {
+
   UpdateCollisionBoundScale();
 
   CheckPushCollision();

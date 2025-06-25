@@ -460,38 +460,16 @@ bool KOFPlayer::CheckPushCollision() {
     Vector TargetPostion = pTargetPlayer->GetPosition();
     Vector myPosition = GetPosition();
 
-    // TODO : Push 충돌시 최소 거리보장해야함. 앞으로 가기 버튼에서 press가 아니면 보간해서 조금씩 Position 조정.
-    // TODO : 벽에서 서로 밀고있는 상황. 한쪽캐릭터가 대쉬 이동 중이면, 뒤로 밀려나는 현상 해결.
-    // TODO : 우측 캐릭터는 뒤로 가고 있는데, 좌측 캐릭터가 대쉬 이동으로 밀고 있는 상황 -> 뭔가 뒤로 밀림.
-    /*if (std::abs(TargetPostion.X - myPosition.X) < 400.0f) {
-      const Vector& moveDir = pMovementComponent_->GetMoveDir();
-      if (moveDir.X > 0 && FacingRight() == true) {
-        pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
-      } else if (moveDir.X < 0 && FacingRight() == false) {
-        pTargetPlayer->SetPosition({TargetPostion.X + moveDir.X, TargetPostion.Y});
-      }
-      if (pTargetPlayer->IsAtMapEdge()) {
-        SetPosition({myPosition.X - moveDir.X, myPosition.Y});
-      }
-    }*/
-
-    float pushTriggerDistance = pMovementComponent_->GetPushTriggerDistance();
     float absPlayerDistance = std::abs(TargetPostion.X - myPosition.X);
+    float pushTriggerDistance = pMovementComponent_->GetPushTriggerDistance();
     if (absPlayerDistance <= pushTriggerDistance) {
-      Vector pushForce = {absPlayerDistance - pushTriggerDistance, 0.0f};
-      Vector pushForce2 = {pushForce.X / 10.0f, pushForce.Y/10.0f};
-      pTargetPlayer->ReceivePush(pushForce * -FacingRightFlag());
-      this->ReceivePush(pushForce2 * -FacingRightFlag());
+      pMovementComponent_->ApplyPushWeight(0.3f);
+      pTargetPlayer->SetPosition({(myPosition.X + pushTriggerDistance * FacingRightFlag()), TargetPostion.Y});
     }
-    return true;
   }
 
   pPushBox_->ResetHit();
   return false;
-}
-
-void KOFPlayer::ReceivePush(const Vector& pushForce) {
-  pMovementComponent_->Push(pushForce);
 }
 
 void KOFPlayer::CollisionReset() {
@@ -564,6 +542,6 @@ bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::
   return (myBitSet & compareTarget) == compareTarget;
 }
 
-KOFPlayer* KOFPlayer::GetOpponentPlayer_() const {
+KOFPlayer* KOFPlayer::GetOpponentPlayer() const {
   return opponentPlayer_;
 }

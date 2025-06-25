@@ -68,8 +68,6 @@ class KOFPlayer
 
   bool CheckPushCollision();
 
-  void ReceivePush(const Vector& pushForce);
-
   void CollisionReset();
 
   void UpdatePrevAnimationIndex();
@@ -98,7 +96,7 @@ class KOFPlayer
 
   bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
-  KOFPlayer* GetOpponentPlayer_() const;
+  KOFPlayer* GetOpponentPlayer() const;
 
  protected:
   std::array<int, 8> playerKeySet_;

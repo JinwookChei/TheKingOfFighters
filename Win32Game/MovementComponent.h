@@ -8,7 +8,6 @@ enum MOVEMENT_STATE {
   MOVSTATE_BackStep,
   MOVSTATE_Jump,
   MOVSTATE_KnockBack,
-  MOVSTATE_Push,
   MOVSTATE_Max
 };
 
@@ -28,13 +27,13 @@ class MovementComponent final
   
   bool ContainMovementState(std::initializer_list<MOVEMENT_STATE> movStateList);
 
-  Vector GetMoveDir() const;
+  Vector GetVelocity() const; 
 
-  void Move(bool isRightDirection /*, bool isPushing*/);
+  void Move(bool isRightDirection);
 
-  void MoveBack(bool isRightDirection /*, bool isPushing*/);
+  void MoveBack(bool isRightDirection);
 
-  void Run(bool isRightDirection /*, bool isPushing*/);
+  void Run(bool isRightDirection);
 
   void Jump(bool isRightDirection = true, Vector normalJumpForce = {0.0f, 75.0f});
 
@@ -48,15 +47,18 @@ class MovementComponent final
 
   void KnockBack(bool isRightDirection, const Vector& knockBackForce);
 
-  void Push(const Vector& pushForce);
-
   float GetPushTriggerDistance() const;
+
+  void ApplyPushWeight(float pushWeight);
 
  private:
   Vector startPosition_;
 
   std::bitset<MOVSTATE_Max> movementStateBitset_;
   
+  Vector velocity_;
+
+  Vector preFramePosition_;
 
   // MOVE
   Vector moveDir_;
@@ -95,6 +97,7 @@ class MovementComponent final
   const float knockBackMinVelocity_ = 15.0f;
 
   // PUSH
-  Vector pushDir_;
-  const float pushTriggerDistance_ = 400.0f;
+  float pushWeight_;
+  
+  const float pushTriggerDistance_ = 150.0f;
 };
