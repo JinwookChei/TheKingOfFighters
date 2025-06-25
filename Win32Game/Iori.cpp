@@ -144,7 +144,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
     return;  // 발차기
   }
   if (false == pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -IMGKEY_IoriImage, 223, 230, 50, false, 223)) {
-    return;  // 커맨드 테스트.
+    return;  // 
   }
   pRender_->SetTransparentColor(ioriTransparentColor);
   UpdateAnimState(PAS_Idle);
@@ -361,7 +361,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
 void Iori::Tick(unsigned long long deltaTick) {
   UpdateCollisionBoundScale();
 
-  UpdateCollisionPush();
+  CheckPushCollision();
 
   if (PS_Attack == pStateComponent_->GetPlayerState()) {
     UpdateAttack();
@@ -458,15 +458,15 @@ void Iori::CompareInputBitset() {
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
         UpdateAnimState(PAS_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight(), pPushBox_->HasHit());
+        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       } else {
         if (PAS_Run == animState_) {
-          pMovementComponent_->Run(false, pPushBox_->HasHit());
+          pMovementComponent_->Run(false/*, pPushBox_->HasHit()*/);
           return;
         }
         UpdateAnimState(PAS_FrontWalk);
-        pMovementComponent_->Move(FacingRight(), pPushBox_->HasHit());
+        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       }
     }
@@ -488,15 +488,15 @@ void Iori::CompareInputBitset() {
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
       if (FacingRight()) {
         if (PAS_Run == animState_) {
-          pMovementComponent_->Run(true, pPushBox_->HasHit());
+          pMovementComponent_->Run(true/*, pPushBox_->HasHit()*/);
           return;
         }
         UpdateAnimState(PAS_FrontWalk);
-        pMovementComponent_->Move(FacingRight(), pPushBox_->HasHit());
+        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       } else {
         UpdateAnimState(PAS_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight(), pPushBox_->HasHit());
+        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       }
     }

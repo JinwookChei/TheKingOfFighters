@@ -9,6 +9,7 @@
 #include "HealthBar.h"
 #include "Portrait.h"
 #include "Health.h"
+#include <thread>
 
 KOFLevel::KOFLevel()
     : backGroundImageScale_({0.0f, 0.0f}),
@@ -38,7 +39,7 @@ void KOFLevel::BeginPlay() {
   // IMAGES
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", IMGKEY_MouseImage);
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", IMGKEY_BackGoundImage);
-  backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
+  backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}}); 
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\BlackBoard.png", IMGKEY_BlackBoardImage);
   IFileImage* whiteBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\WhiteBoard.png", IMGKEY_WhiteBoardImage);
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", IMGKEY_IoriImage);
@@ -56,11 +57,9 @@ void KOFLevel::BeginPlay() {
   IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", IMGKEY_HealthImage);
   healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HitEffect01.png", IMGKEY_HitEffectImage);
-  hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
+  hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta); 
   IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\CastingEffectImage_Box.png", IMGKEY_CastingEffectImage);
-  castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
-  
-  
+  castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta); 
 
   // TODO : 
   // 반전된 Health는 logic으로, 원본 이미지는 여러 포인터가 가르킥로있고, 이미지를 어떻게 그릴지만 각자 알아서 그림.
@@ -98,9 +97,9 @@ void KOFLevel::BeginPlay() {
   
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player1SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f - 300, backGroundImageScale_.Y * 0.5f + 210.0f);
+  player1SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f - 300, backGroundImageScale_.Y * 0.5f + 250.0f);
   pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f + 200, backGroundImageScale_.Y * 0.5f + 130.0f);
+  player2SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f + 300, backGroundImageScale_.Y * 0.5f + 170.0f);
 
   pPlayer1_->Initialize(player1SpawnPostion_, true, true, pPlayer2_);
   pPlayer2_->Initialize(player2SpawnPostion_, true, false, pPlayer1_);

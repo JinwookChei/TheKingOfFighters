@@ -17,7 +17,7 @@ CollisionBoxCorner::~CollisionBoxCorner() {
 }
 
 void CollisionBoxCorner::BeginPlay() {
-  SetScale({15.0f, 15.0f});
+  SetScale({18.0f, 18.0f});
   EnableCollision(false);
 }
 
@@ -48,10 +48,10 @@ void CollisionBoxCorner::Tick(unsigned long long curTick) {
   const Vector& ownerScale = ownerUI->GetScale();
 
   if (CollisionBoxCornerType::CBCT_Start == cornerType_) {
-    Vector newPosition = {collisionPosition.X + ownerScale.HalfX() - collisionScale.HalfX(), collisionPosition.Y + ownerScale.HalfY() - collisionScale.HalfY()};
+    Vector newPosition = {ownerScale.HalfX() + collisionPosition.X - collisionScale.HalfX(), ownerScale.HalfY() + collisionPosition.Y - collisionScale.HalfY()};
     SetPosition(newPosition);
   } else {
-    Vector newPosition = {collisionPosition.X + ownerScale.HalfX() + collisionScale.HalfX(), collisionPosition.Y + ownerScale.HalfY() + collisionScale.HalfY()};
+    Vector newPosition = {ownerScale.HalfX() + collisionPosition.X + collisionScale.HalfX(), ownerScale.HalfY() + collisionPosition.Y + collisionScale.HalfY()};
     SetPosition(newPosition);
   }
 

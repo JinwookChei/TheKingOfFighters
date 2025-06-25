@@ -14,5 +14,5 @@ class CameraTarget final
 
  private:
 
-  const float cameraHeight_ = 600.0f;
+  const float cameraHeight_ = 620.0f;
 };

@@ -49,16 +49,16 @@ void CreateCollisionButton::ClickDownEvent() {
 
   IFileImage* pFileImage = (IFileImage*)pImage;
   unsigned int imageIndex = bindToolActor_->GetImageIndex();
-
+  Vector localScale = bindToolActor_->GetImageRenderer()->GetLocalScale();
+  
   CollisionInfo* pCollisionInfo;
   if (false == pFileImage->GetCollisionBoxInfo(imageIndex, collisionBoxType_, &pCollisionInfo)) {
     return;
   }
 
   pCollisionInfo->hasCollision_ = true;
-  pCollisionInfo->position_ = {100.0f, 100.0f};
-  pCollisionInfo->scale_ = {100.0f, 100.0f};
-
+  pCollisionInfo->position_ = {0.0f, 0.0f};
+  pCollisionInfo->scale_ = pFileImage->GetScale(imageIndex) * localScale;
 }
 
 void CreateCollisionButton::Render(IRenderTexture* renderTexture) {

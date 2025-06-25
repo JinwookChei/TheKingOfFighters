@@ -26,7 +26,7 @@ void ToolActor::BeginPlay() {
   pRender_->SetImageRenderType(ImageRenderType::Center);
 
   pRender_->SetTransparentColor(transColor);  //
-  pRender_->SetLocalScale({4.0f, 4.0f});
+  pRender_->SetLocalScale({4.2f, 4.2f});
   unsigned int imageIndex = pRender_->GetImageIndex();
   if (nullptr != pImage) {
     pRender_->SetImage(pImage, imageIndex);

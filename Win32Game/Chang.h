@@ -21,5 +21,7 @@ class Chang
 
   void Tick(unsigned long long curTick) override;
 
+  void CompareInputBitset() override;
+
  private:
 };

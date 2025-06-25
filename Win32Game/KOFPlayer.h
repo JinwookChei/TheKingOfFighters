@@ -66,7 +66,9 @@ class KOFPlayer
 
   void HitEvent(const AttackInfo* damageInfo);
 
-  virtual bool UpdateCollisionPush();
+  bool CheckPushCollision();
+
+  void ReceivePush(const Vector& pushForce);
 
   void CollisionReset();
 

@@ -15,7 +15,8 @@
 
 
 Chang::Chang() {
-  playerKeySet_ = {4, 3, 2, 1, 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
+  //playerKeySet_ = {'4', '3', '2', '1', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
+  playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
 }
 
 Chang::~Chang() {
@@ -67,7 +68,44 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(-PAS_HitWhileJumping, -IMGKEY_ChangImage, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   pRender_->SetTransparentColor(changTransparentColor);
-  pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+  UpdateAnimState(PAS_Idle);
+
+  // STATE
+  if (false == pStateComponent_->RegistState(PAS_Idle, PS_Idle, true, true)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_SeatDown, PS_Seat, true, true)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_SeatUp, PS_Seat, true, true)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_FrontWalk, PS_Move, true, true)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_BackWalk, PS_Move, true, true)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_BackStep, PS_Move, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_Run, PS_Move, true, true)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_RunEnd, PS_Move, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_Jump, PS_Jump, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_HeavyKick, PS_Attack, false, false)) {
+    return;
+  }
+
+  // DAMAGE
+  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, 10.0f, {20.0f, 0.0f})) {
+    return;
+  }
 
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(changTransparentColor);
@@ -76,7 +114,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
 void Chang::Tick(unsigned long long deltaTick) {
   UpdateCollisionBoundScale();
 
-  UpdateCollisionPush();
+  CheckPushCollision();
 
   if (PS_Attack == pStateComponent_->GetPlayerState()) {
     UpdateAttack();
@@ -106,45 +144,170 @@ void Chang::Tick(unsigned long long deltaTick) {
   //  TODO END
 
   UpdatePrevAnimationIndex();
+}
 
-  // REGACY
-  // UpdateCollisionPush();
+void Chang::CompareInputBitset() {
+  if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
+      true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
+  } else {
+    // LEFT UP PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
+      if (FacingRight()) {
+        UpdateAnimState(PAS_Jump);
+        pMovementComponent_->JumpForward(false, false);
+        return;
+      } else {
+        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
+          UpdateAnimState(PAS_Jump);
+          pMovementComponent_->JumpForward(false, true);
+          pGhostEffect_->On();
+          return;
+        }
+        UpdateAnimState(PAS_Jump);
+        pMovementComponent_->JumpForward(false, false);
+        return;
+      }
+    }
 
-  // UpdateCollisionBoundScale();
+    // RIGHT UP PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
+      if (FacingRight()) {
+        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
+          UpdateAnimState(PAS_Jump);
+          pMovementComponent_->JumpForward(true, true);
+          pGhostEffect_->On();
+          return;
+        }
+        UpdateAnimState(PAS_Jump);
+        pMovementComponent_->JumpForward(true, false);
+        return;
+      } else {
+        UpdateAnimState(PAS_Jump);
+        pMovementComponent_->JumpForward(true, false);
+        return;
+      }
+    }
 
-  //
-  // if (pRender_->GetImageIndex() == 314 || pRender_->GetImageIndex() == 319)
-  //{
-  //  pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
-  //}
+    // RIGHT A - PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
+    }
 
-  ////pRender_->ChangeAnimation(PAS_Idle * FacingRightFlag());
+    // RIGHT B - PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100100"))) {
 
-  ////if (true == pRender_->IsPlayingLoopAnimation()) {
-  //  //InputUpdate(deltaTick);
+    }
 
-  //  //CommandUpdate();
+    // LEFT PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
+      if (FacingRight()) {
+        UpdateAnimState(PAS_BackWalk);
+        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
+        return;
+      } else {
+        if (PAS_Run == animState_) {
+          pMovementComponent_->Run(false/*, pPushBox_->HasHit()*/);
+          return;
+        }
+        UpdateAnimState(PAS_FrontWalk);
+        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
+        return;
+      }
+    }
+    // LEFT UP
+    if (true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("10000000"))) {
+    }
 
-  ////pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-  ////}
+    // DOWN PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
+      UpdateAnimState(PAS_SeatDown);
+      return;
+    }
 
-  // CollisionComponent* pTargetCollision = nullptr;
-  // if (CheckAttackCollision(&pTargetCollision)) {
-  //   if (nullptr != pTargetCollision) {
-  //     Actor* pTargetOwner = pTargetCollision->GetOwner();
-  //     if (nullptr == pTargetOwner) {
-  //       return;
-  //     }
-  //     KOFPlayer* pTargetPlayer = dynamic_cast<KOFPlayer*>(pTargetOwner);
-  //     if (nullptr == pTargetPlayer) {
-  //       return;
-  //     }
-  //
-  //     //
-  //   }
-  // }
+    // DOWN UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("01000000"))) {
+    }
 
-  ////SkillUpdate();
+    // RIGHT PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
+      if (FacingRight()) {
+        if (PAS_Run == animState_) {
+          pMovementComponent_->Run(true/*, pPushBox_->HasHit()*/);
+          return;
+        }
+        UpdateAnimState(PAS_FrontWalk);
+        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
+        return;
+      } else {
+        UpdateAnimState(PAS_BackWalk);
+        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
+        return;
+      }
+    }
 
-  // CollisionReset();
+    // RIGHT UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00100000"))) {
+      if (FacingRight()) {
+      }
+    }
+
+    // UP PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
+      UpdateAnimState(PAS_Jump);
+      pMovementComponent_->Jump();
+      return;
+    }
+
+    // UP UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00010000"))) {
+    }
+
+    // A PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+      UpdateAnimState(PAS_HeavyKick);
+    }
+
+    // A UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00001000"))) {
+    }
+
+    // B PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+    }
+
+    // B UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000100"))) {
+    }
+
+    // C PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+    }
+
+    // C UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000010"))) {
+    }
+
+    // D PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+      UpdateAnimState(PAS_HeavyKick);
+      return;
+    }
+
+    // D UP
+    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000001"))) {
+    }
+  }
+
+  ///////////////////////////// Else
+  if (PAS_SeatDown == pStateComponent_->GetCurAnimState()) {
+    UpdateAnimState(PAS_SeatUp);
+    return;
+  }
+
+  if (PAS_Run == pStateComponent_->GetCurAnimState()) {
+    UpdateAnimState(PAS_RunEnd);
+    return;
+  }
+
+  UpdateAnimState(PAS_Idle);
+  return;
 }

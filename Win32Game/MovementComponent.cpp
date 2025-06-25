@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "MovementComponent.h"
 
-// 선형 보간 함수
 float Lerp(float a, float b, float t) {
   return a + (b - a) * t;
 }
@@ -11,43 +10,39 @@ MovementComponent::MovementComponent()
       // MOVE
       moveDir_({0.0f, 0.0f}),
       // DASH
-      onDash_(false),
       dashTimer_(0.0f),
       dashDuration_(0.0f),
       dashDistance_(0.0f),
       dashStartPos_({0.0f, 0.0f}),
       dashEndPos_({0.0f, 0.0f}),
       // BACK STEP
-      onBackStep_(false),
       backstepTimer_(0.0f),
       backstepStartPos_({0.0f, 0.0f}),
       backstepEndPos_({0.0f, 0.0f}),
       // JUMP
       isGrounded_(true),
-      onJump_(false),
       curJumpVelocity_({0.0f, 0.0f}),
       // KNOCK BACK
-      onKnockBack_(false),
-      curKnockBackVelocity_({0.0f, 0.0f}) {
+      curKnockBackVelocity_({0.0f, 0.0f}),
+      // PUSH
+      pushDir_({0.0f, 0.0f}){
 }
 
 MovementComponent::~MovementComponent() {
 }
 
 void MovementComponent::BeginPlay() {
+  movementStateBitset_.reset();
 }
 
 void MovementComponent::Tick(unsigned long long curTick) {
+  
   Actor* owner = GetOwner();
   if (nullptr == owner) {
     return;
   }
 
-  // MOVEDIR
   const Vector& curPosition = owner->GetPosition();
-  const Vector& newPosition = curPosition + moveDir_ * (float)curTick;
-  owner->SetPosition(newPosition);
-  // MOVEDIR END
 
   // UPDATE
   if (std::abs(curPosition.Y - startPosition_.Y) < 0.0001f) {
@@ -56,96 +51,117 @@ void MovementComponent::Tick(unsigned long long curTick) {
     isGrounded_ = false;
   }
   // UPDATE END
+  
+  // MOVEDIR
+  if (movementStateBitset_.test(MOVSTATE_Move)) {
+    const Vector& movePosition = curPosition + moveDir_ * (float)curTick;
+    owner->SetPosition(movePosition);
 
+    if (Vector({0.0f, 0.0f}) == moveDir_) {
+      movementStateBitset_.reset(MOVSTATE_Move);
+    }
+  }
+  moveDir_ = {0.0f, 0.0f};
+  // MOVEDIR END
 
   // DASH
-  if (onDash_) {
+  if (movementStateBitset_.test(MOVSTATE_Dash)) {
     dashTimer_ += curTick;
     float t = dashTimer_ / dashDuration_;
 
     if (t >= 1.0f) {
       t = 1.0f;
-      onDash_ = false;
+      movementStateBitset_.reset(MOVSTATE_Dash);
     }
 
-    Vector newPostion;
-    newPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
-    newPostion.Y = startPosition_.Y;
+    Vector dashPostion;
+    dashPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
+    dashPostion.Y = startPosition_.Y;
 
-    owner->SetPosition(newPostion);
+    owner->SetPosition(dashPostion);
   }
   // DASH END
   
 
   // BACKSTEP
-  if (onBackStep_) {
+  if (movementStateBitset_.test(MOVSTATE_BackStep)) {
     backstepTimer_ += curTick;
     float t = backstepTimer_ / backstepDuration_;
 
     if (t >= 1.0f) {
       t = 1.0f;
-      onBackStep_ = false;
+      movementStateBitset_.reset(MOVSTATE_BackStep);
     }
 
-    Vector newPostion;
-    newPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
+    Vector backStepPostion;
+    backStepPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
 
     float height = -4 * backstepHeight_ * (t - 0.5f) * (t - 0.5f) + backstepHeight_;
-    newPostion.Y = startPosition_.Y - height;
+    backStepPostion.Y = startPosition_.Y - height;
 
-    owner->SetPosition(newPostion);
+    owner->SetPosition(backStepPostion);
   }
   // BACKSTEP END
 
   // JUMP
-  if (onJump_) {
+  if (movementStateBitset_.test(MOVSTATE_Jump)) {
     curJumpVelocity_.Y -= gravity_ * curTick;
 
     const Vector& ownerPosition = owner->GetPosition();
 
-    Vector newPosition = {
+    Vector jumpPosition = {
         ownerPosition.X + curJumpVelocity_.X * curTick,  // X축 앞으로 이동
         ownerPosition.Y - curJumpVelocity_.Y             // Y축 점프
     };
 
     // 땅에 도착했는지 체크
-    if (newPosition.Y >= startPosition_.Y) {
-      newPosition.Y = startPosition_.Y;
+    if (jumpPosition.Y >= startPosition_.Y) {
+      jumpPosition.Y = startPosition_.Y;
       curJumpVelocity_ = {0.0f, 0.0f};
-      onJump_ = false;
+      movementStateBitset_.reset(MOVSTATE_Jump);
     }
 
-    owner->SetPosition(newPosition);
+    owner->SetPosition(jumpPosition);
   }
   // JUMP END
 
   // KNOCK BACK
-  if (onKnockBack_) {
+  if (movementStateBitset_.test(MOVSTATE_KnockBack)) {
 
     curKnockBackVelocity_.Y -= gravity_ * curTick;
     curKnockBackVelocity_.X -= airResistance_ * curTick;
     const Vector& ownerPosition = owner->GetPosition();
 
-    Vector newPosition = {
+    Vector knockBackPosition = {
         ownerPosition.X + curKnockBackVelocity_.X,  // X축 앞으로 이동
         ownerPosition.Y - curKnockBackVelocity_.Y   // Y축 점프
     };
 
-    if (newPosition.Y >= startPosition_.Y) {
-      newPosition.Y = startPosition_.Y;
+    if (knockBackPosition.Y >= startPosition_.Y) {
+      knockBackPosition.Y = startPosition_.Y;
       curKnockBackVelocity_.Y = 0.0f;
 
       if (curKnockBackVelocity_.X <= knockBackMinVelocity_) {
         curKnockBackVelocity_.X = 0;
-        onKnockBack_ = false;
+        movementStateBitset_.reset(MOVSTATE_KnockBack);
       }
     }
 
-    owner->SetPosition(newPosition);
+    owner->SetPosition(knockBackPosition);
   }
   // KNOCK BACK END
 
-  moveDir_ = {0.0f, 0.0f};
+
+  // PUSH
+  //const Vector& curPosition = owner->GetPosition();
+  /*pushDir_ = {pushDir_.X / 1000.0f, pushDir_.Y / 1000.0f};
+  const Vector& pushPosition = curPosition + pushDir_ * (float)curTick;
+  owner->SetPosition(pushPosition);
+  pushDir_ = {0.0f, 0.0f};*/
+  // PUSH END
+
+  
+  
 }
 
 bool MovementComponent::Initialize(const Vector& startPosition) {
@@ -153,19 +169,38 @@ bool MovementComponent::Initialize(const Vector& startPosition) {
   return true;
 }
 
+bool MovementComponent::EqualMovementState(std::initializer_list<MOVEMENT_STATE> movStateList) {
+  std::bitset<MOVSTATE_Max> temp;
+  for (auto state : movStateList) {
+    temp.set(state);
+  }
+  return movementStateBitset_ == temp;
+}
+
+bool MovementComponent::ContainMovementState(std::initializer_list<MOVEMENT_STATE> movStateList) {
+  for (auto state : movStateList) {
+    if (movementStateBitset_.test(state)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 Vector MovementComponent::GetMoveDir() const {
   return moveDir_;
 }
 
-void MovementComponent::Move(bool isRightDirection, bool isPushing) {
+void MovementComponent::Move(bool isRightDirection/*, bool isPushing*/) {
   if (false == isGrounded_) {
     return;
   }
 
+  movementStateBitset_.set(MOVSTATE_Move);
+
   float weight = 1.0f;
-  if (true == isPushing) {
+ /* if (true == isPushing) {
     weight = 0.8f;
-  }
+  }*/
 
   if (isRightDirection) {
     moveDir_ = Vector::Right * moveVelocity_ * weight;
@@ -174,11 +209,12 @@ void MovementComponent::Move(bool isRightDirection, bool isPushing) {
   }
 }
 
-void MovementComponent::MoveBack(bool isRightDirection, bool isPushing) {
+void MovementComponent::MoveBack(bool isRightDirection/*, bool isPushing*/) {
   if (false == isGrounded_) {
     return;
   }
 
+  movementStateBitset_.set(MOVSTATE_Move);
   /*float weight = 1.0f;
   if (true == isPushing) {
     weight = 0.8f;
@@ -191,20 +227,16 @@ void MovementComponent::MoveBack(bool isRightDirection, bool isPushing) {
   }
 }
 
-void MovementComponent::MoveToTarget(unsigned long long duration, const Vector& targetPosition) {
-
-
-}
-
-void MovementComponent::Run(bool isRightDirection, bool isPushing) {
+void MovementComponent::Run(bool isRightDirection/*, bool isPushing*/) {
   if (false == isGrounded_) {
     return;
   }
+  movementStateBitset_.set(MOVSTATE_Move);
 
   float weight = 1.0f;
-  if (true == isPushing) {
-    weight = 0.5f;
-  }
+  //if (true == isPushing) {
+  //  weight = 0.5f;
+  //}
 
   if (isRightDirection) {
     moveDir_ = Vector::Right * runVelocity_ * weight;
@@ -215,21 +247,19 @@ void MovementComponent::Run(bool isRightDirection, bool isPushing) {
 
 void MovementComponent::Jump(bool isRightDirection, Vector normalJumpForce /*= {0.0f, 75.0f}*/) {
   if (isGrounded_) {
+    movementStateBitset_.set(MOVSTATE_Jump);
     if (isRightDirection == true) {
       curJumpVelocity_ = normalJumpForce;
-      onJump_ = true;
     } else {
       curJumpVelocity_.X = -normalJumpForce.X;
       curJumpVelocity_.Y = normalJumpForce.Y;
-      onJump_ = true;
     }
   }
 }
 
 void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
   if (isGrounded_) {
-    onJump_ = true;
-
+    movementStateBitset_.set(MOVSTATE_Jump);
     if (isRightDirection) {
       if (isRunning) {
         curJumpVelocity_ = fowardJumpForceInRunning_;
@@ -256,6 +286,7 @@ void MovementComponent::BackStep(bool isRightDirection) {
     return;
   }
 
+  movementStateBitset_.set(MOVSTATE_BackStep);
   backstepTimer_ = 0.0f;
 
   if (isRightDirection) {
@@ -267,8 +298,6 @@ void MovementComponent::BackStep(bool isRightDirection) {
     backstepEndPos_ = owner->GetPosition();
     backstepEndPos_.X += backstepDistance_;
   }
-
-  onBackStep_ = true;
 }
 
 void MovementComponent::Dash(bool isRightDirection, float dashDuration, float dashDistance) {
@@ -281,7 +310,7 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
     return;
   }
 
-  onDash_ = true;
+  movementStateBitset_.set(MOVSTATE_Dash);
   dashTimer_ = 0.0f;
   dashDuration_ = dashDuration;
   dashDistance_ = dashDistance;
@@ -298,7 +327,7 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
 }
 
 void MovementComponent::StopDash() {
-  onDash_ = false;
+  movementStateBitset_.reset(MOVSTATE_Dash);
 }
 
 void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
@@ -308,9 +337,17 @@ void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBack
     curKnockBackVelocity_ = {knockBackForce.X, knockBackForce.Y};
   }
 
-  if (onJump_) {
-    onJump_ = false;
+  if (movementStateBitset_.test(MOVSTATE_Jump)) {
+    movementStateBitset_.reset(MOVSTATE_Jump);
   }
 
-  onKnockBack_ = true;
+  movementStateBitset_.set(MOVSTATE_KnockBack);
+}
+
+void MovementComponent::Push(const Vector& pushForce) {
+  pushDir_ = pushForce;
+}
+
+float MovementComponent::GetPushTriggerDistance() const {
+  return pushTriggerDistance_;
 }
