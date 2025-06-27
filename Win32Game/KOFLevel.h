@@ -22,7 +22,7 @@ class KOFLevel final
 
   Vector GetBackGroundImageScale() const;
 
-  BackGroundMask* GetBackGroundMask() const; 
+  BackGroundMask* GetBackGroundMask() const;
 
   void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);
 
@@ -30,9 +30,15 @@ class KOFLevel final
 
   void CalculateFreeze(unsigned long long deltaTick);
 
+  float GetLevelLeftBoundary() const;
+
+  float GetLevelRightBoundary() const;
+
+  float GetScreenBoundaryWidth() const;
+
  private:
   const Vector levelLocalScale_{4.5f, 4.5f};
-  
+
   Vector backGroundImageScale_;
 
   SoundChannel* channel_;
@@ -63,5 +69,13 @@ class KOFLevel final
 
   unsigned long long freezeDuration_;
 
-  unsigned long long freezeTiemr_;
+  unsigned long long freezeTiemr_;  
+
+  const float levelBoundaryMargin_ = 10.0f;
+
+  float levelLeftBoundary_;
+
+  float levelRightBoundary_;
+
+  float screenBoundaryWidth_;
 };

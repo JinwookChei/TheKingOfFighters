@@ -29,7 +29,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   KOFPlayer::Initialize(position, useCameraPosition, flip, opponentPlayer);
 
   // CHARACTER SETTING
-  IImage* pImage = ImgManager::GetIntance()->GetImg(4);
+  IImage* pImage = ImgManager::GetIntance()->GetImg(IMGKEY_ChangImage);
   if (nullptr == pImage) {
     return;
   }

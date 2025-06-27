@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "MovementComponent.h"
+#include "KOFPlayer.h"
+#include "KOFLevel.h"
 
 float Lerp(float a, float b, float t) {
   return a + (b - a) * t;
@@ -149,6 +151,38 @@ void MovementComponent::Tick(unsigned long long curTick) {
     owner->SetPosition(knockBackPosition);
   }
   // KNOCK BACK END
+
+
+  // Clamp Level Boundary
+  KOFPlayer* pKOFOwner = dynamic_cast<KOFPlayer*>(owner);
+  if (nullptr == pKOFOwner) {
+    return;
+  }
+
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(owner->GetLevel());
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  const Vector& newPosition = pKOFOwner->GetPosition();
+  float newPositionLeft = newPosition.X - pKOFOwner->CharacterScale().HalfX();
+  float newPositionRight = newPosition.X + pKOFOwner->CharacterScale().HalfX();
+  if (newPositionLeft < pKOFLevel->GetLevelLeftBoundary()) {
+    pKOFOwner->SetPosition({preFramePosition_.X, newPosition.Y});
+  } else if (newPositionRight > pKOFLevel->GetLevelRightBoundary()) {
+    pKOFOwner->SetPosition({preFramePosition_.X, newPosition.Y});
+  }
+  // Clamp Level Boundary END
+
+  // Clamp Screen Boundary
+  KOFPlayer* oppPlayer = pKOFOwner->GetOpponentPlayer();
+  float playerDistance = std::fabs(oppPlayer->GetPosition().X - newPosition.X);
+  float screenBoundaryWidth = pKOFLevel->GetScreenBoundaryWidth();
+  if (playerDistance > screenBoundaryWidth) {
+    pKOFOwner->SetPosition({preFramePosition_.X, newPosition.Y});
+  }
+  // Clamp Screen Boundary END
+
 
   pushWeight_ = 1.0f;
   velocity_ = curPosition - preFramePosition_;

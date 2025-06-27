@@ -27,7 +27,10 @@ KOFLevel::KOFLevel()
       isFreezeInfinite_(false),
       freezedActors_({}),
       freezeDuration_(0),
-      freezeTiemr_(0){
+      freezeTiemr_(0),
+      levelLeftBoundary_(0.0f),
+      levelRightBoundary_(0.0f),
+      screenBoundaryWidth_(0.0f) {
 }
 
 KOFLevel::~KOFLevel() {
@@ -39,7 +42,7 @@ void KOFLevel::BeginPlay() {
   // IMAGES
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", IMGKEY_MouseImage);
   IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", IMGKEY_BackGoundImage);
-  backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}}); 
+  backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\BlackBoard.png", IMGKEY_BlackBoardImage);
   IFileImage* whiteBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\WhiteBoard.png", IMGKEY_WhiteBoardImage);
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", IMGKEY_IoriImage);
@@ -57,11 +60,11 @@ void KOFLevel::BeginPlay() {
   IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", IMGKEY_HealthImage);
   healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
   IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HitEffect01.png", IMGKEY_HitEffectImage);
-  hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta); 
+  hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
   IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\CastingEffectImage_Box.png", IMGKEY_CastingEffectImage);
-  castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta); 
+  castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
 
-  // TODO : 
+  // TODO :
   // 반전된 Health는 logic으로, 원본 이미지는 여러 포인터가 가르킥로있고, 이미지를 어떻게 그릴지만 각자 알아서 그림.
   // UI 이미지는 래퍼로 감싸서 position하고, scale 등 정보로 Render를 그림.
   IFileImage* reverseHealthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", -IMGKEY_HealthImage);
@@ -94,7 +97,6 @@ void KOFLevel::BeginPlay() {
   // CAMERA SPAWN
   pCamera_ = SpawnActor<CameraTarget>();
 
-  
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f - 300, backGroundImageScale_.Y * 0.5f + 250.0f);
@@ -145,16 +147,34 @@ void KOFLevel::BeginPlay() {
   CameraManager::Instance()->SetTarget(pCamera_);
 
   // EFFECT
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_1, IMGKEY_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_2, IMGKEY_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_3, IMGKEY_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_1, IMGKEY_CastingEffectImage, 0, 15, 20, false, Color8Bit{108, 156, 114, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_2, IMGKEY_CastingEffectImage, 16, 31, 20, false, Color8Bit{108, 156, 114, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_3, IMGKEY_CastingEffectImage, 32, 47, 20, false, Color8Bit{108, 156, 114, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_4, IMGKEY_CastingEffectImage, 48, 63, 20, false, Color8Bit{108, 156, 114, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_5, IMGKEY_CastingEffectImage, 64, 79, 20, false, Color8Bit{108, 156, 114, 0})) return;
-  if(false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_6, IMGKEY_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0})) return;
-  
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_1, IMGKEY_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_2, IMGKEY_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_3, IMGKEY_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_1, IMGKEY_CastingEffectImage, 0, 15, 20, false, Color8Bit{108, 156, 114, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_2, IMGKEY_CastingEffectImage, 16, 31, 20, false, Color8Bit{108, 156, 114, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_3, IMGKEY_CastingEffectImage, 32, 47, 20, false, Color8Bit{108, 156, 114, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_4, IMGKEY_CastingEffectImage, 48, 63, 20, false, Color8Bit{108, 156, 114, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_5, IMGKEY_CastingEffectImage, 64, 79, 20, false, Color8Bit{108, 156, 114, 0})) {
+    return;
+  }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_6, IMGKEY_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0})) {
+    return;
+  }
+
   // SOUND
   /*Path soundPath;
   soundPath.MoveParent();
@@ -162,6 +182,10 @@ void KOFLevel::BeginPlay() {
   soundPath.Move("Kyoku-Gen.mp3");
   SoundManager::Instance()->Load(soundPath, 0);
   channel_ = SoundManager::Instance()->SoundPlay(0);*/
+
+  // LEVEL BOUNDARY SETTING
+  levelLeftBoundary_ = levelBoundaryMargin_;
+  levelRightBoundary_ = backGroundImageScale_.X - levelBoundaryMargin_;
 }
 
 void KOFLevel::Tick(unsigned long long deltaTick) {
@@ -180,16 +204,11 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
   }
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
-
+  float cameraHeight = pCamera_->GetCameraHeight();
 
   pPlayer1_->SetIsAtMapEdge(false);
   pPlayer2_->SetIsAtMapEdge(false);
-
-  float margin = 15.0f;
-  float cameraHeight = pCamera_->GetCameraHeight();
-
-  float left = pCamera_->GetPosition().X - backbufferScale.X / 2;
-  float right = pCamera_->GetPosition().X + backbufferScale.X / 2;
+  screenBoundaryWidth_ = backbufferScale.X - pPlayer1_->CharacterScale().HalfX() - pPlayer2_->CharacterScale().HalfX();
 
   Vector player1Position = pPlayer1_->GetPosition();
   Vector player2Position = pPlayer2_->GetPosition();
@@ -200,42 +219,30 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
   float player1Right = player1Position.X + pPlayer1_->CharacterScale().HalfX();
   float player2Right = player2Position.X + pPlayer2_->CharacterScale().HalfX();
 
+  float viewLeft = pCamera_->GetPosition().X - backbufferScale.X / 2;
+  float viewRight = pCamera_->GetPosition().X + backbufferScale.X / 2;
+
   // CameraPosition X
   if (player1Position.X < player2Position.X) {
-    if (player1Left < left) {
-      if (right - player2Right > 0 && left >= margin) {
+    if (player1Left < viewLeft) {
+      if (viewRight > player2Right && viewLeft > levelLeftBoundary_) {
         pCamera_->SetPosition({player1Left + backbufferScale.X / 2, cameraHeight});
-      } else {
-        pPlayer1_->SetPosition({left + pPlayer1_->CharacterScale().HalfX(), player1Position.Y});
-        pPlayer1_->SetIsAtMapEdge(true);
       }
     }
-
-    if (player2Right > right) {
-      if (player1Left - left > 0 && right <= backGroundImageScale_.X - margin) {
+    if (player2Right > viewRight) {
+      if (viewLeft < player1Left && viewRight < levelRightBoundary_) {
         pCamera_->SetPosition({player2Right - backbufferScale.X / 2, cameraHeight});
-      } else {
-        pPlayer2_->SetPosition({right - pPlayer2_->CharacterScale().HalfX(), player2Position.Y});
-        pPlayer2_->SetIsAtMapEdge(true);
       }
     }
-
   } else {
-    if (player2Left < left) {
-      if (right - player1Right > 0 && left >= margin) {
+    if (player2Left < viewLeft) {
+      if (viewRight > player1Right && viewLeft > levelLeftBoundary_) {
         pCamera_->SetPosition({player2Left + backbufferScale.X / 2, cameraHeight});
-      } else {
-        pPlayer2_->SetPosition({left + pPlayer2_->CharacterScale().HalfX(), player2Position.Y});
-        pPlayer2_->SetIsAtMapEdge(true);
       }
     }
-
-    if (player1Right > right) {
-      if (player2Left - left > 0 && right <= backGroundImageScale_.X - margin) {
+    if (player1Right > viewRight) {
+      if (viewLeft < player2Left && viewRight < levelRightBoundary_) {
         pCamera_->SetPosition({player1Right - backbufferScale.X / 2, cameraHeight});
-      } else {
-        pPlayer1_->SetPosition({right - pPlayer1_->CharacterScale().HalfX(), player1Position.Y});
-        pPlayer1_->SetIsAtMapEdge(true);
       }
     }
   }
@@ -248,6 +255,14 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     float addHeight = (player1JumpHeight > player2JumpHeight) ? player1JumpHeight : player2JumpHeight;
     const Vector& cameraPosition = pCamera_->GetPosition();
     pCamera_->SetPosition({cameraPosition.X, cameraHeight - addHeight / 5});
+  }
+
+  // CHECK PlAYER POSITION EDGE
+  if (player1Left < levelLeftBoundary_ || player1Right > levelRightBoundary_) {
+    pPlayer1_->SetIsAtMapEdge(true);
+  }
+  if (player2Left < levelLeftBoundary_ || player2Right > levelRightBoundary_) {
+    pPlayer2_->SetIsAtMapEdge(true);
   }
 }
 
@@ -293,7 +308,7 @@ void KOFLevel::DefreezeActors() {
     Actor* pActor = *iter;
     pActor->SetEnableTick(true);
   }
-    
+
   OnFreezeTimer_ = false;
   isFreezeInfinite_ = false;
   freezeDuration_ = 0;
@@ -309,3 +324,14 @@ void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
   }
 }
 
+float KOFLevel::GetLevelLeftBoundary() const {
+  return levelLeftBoundary_;
+}
+
+float KOFLevel::GetLevelRightBoundary() const {
+  return levelRightBoundary_;
+}
+
+float KOFLevel::GetScreenBoundaryWidth() const {
+  return screenBoundaryWidth_;
+}
