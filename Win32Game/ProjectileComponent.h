@@ -10,7 +10,7 @@ class ProjectileComponent
 
   bool Initialize(Level* level);
 
-  void FireProjectile(unsigned long long projectileTag);
+  void FireProjectile(unsigned long long projectileTag, bool isFacingRight);
 
   bool RegistProjectileInfo(
       unsigned long long projectileTag,

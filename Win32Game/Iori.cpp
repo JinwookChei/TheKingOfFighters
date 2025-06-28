@@ -128,11 +128,15 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
     return;  //
   }
 
+  // RENDERER
   if (false == pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7)) {
     return;  // ¾ÆÀÌµé
   }
   if (false == pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18)) {
-    return;  // ¾É±â.
+    return;  // ¾É±â. Down
+  }
+  if (false == pRender_->CreateAnimation(-PAS_SeatUp, -IMGKEY_IoriImage, 24, 25, 50, false, 24)) {
+    return;  // ¾É±â. Up
   }
   if (false == pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_IoriImage, 27, 34, 50, true, 27)) {
     return;  // -> °È±â
@@ -143,18 +147,83 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_IoriImage, 45, 48, 50, false, 45)) {
     return;  // <- <- ¹é½ºÅÇ
   }
-  if (false == pRender_->CreateAnimation(-PAS_Run, -IMGKEY_IoriImage, 49, 58, 50, true, 51)) {
-    return;  // ->-> ¶Ù±â
+  if (false == pRender_->CreateAnimation(-PAS_Run, -IMGKEY_IoriImage, 49, 57, 50, true, 51)) {
+    return;  // ->-> ¶Ù±â Start
+  }
+  if (false == pRender_->CreateAnimation(-PAS_RunEnd, -IMGKEY_IoriImage, 58, 60, 50, false, 59)) {
+    return;  // ->-> ¶Ù±â Stop
   }
   if (false == pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_IoriImage, 61, 69, 50, false, 61)) {
     return;  // Á¡ÇÁ
   }
   if (false == pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_IoriImage, 108, 117, 50, false, 108)) {
-    return;  // ¹ßÂ÷±â
+    return;  // °­ ¹ßÂ÷±â
+  }
+  if (false == pRender_->CreateAnimation(-PAS_LightKick, -IMGKEY_IoriImage, 94, 98, 50, false, 94)) {
+    return;  // ¾à ¹ßÂ÷±â
+  }
+  if (false == pRender_->CreateAnimation(-PAS_HeavyPunch, -IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
+    return;  // °­ ÆÝÄ¡
+  }
+  if (false == pRender_->CreateAnimation(-PAS_LightPunch, -IMGKEY_IoriImage, 88, 93, 50, false, 88)) {
+    return;  // ¾à ÆÝÄ¡
   }
   if (false == pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -IMGKEY_IoriImage, 223, 230, 50, false, 223)) {
-    return;  // 
+    return;  // Ä¿¸Çµå Å×½ºÆ®.
   }
+  if (false == pRender_->CreateAnimation(-IOAS_GaishikiMutan_1, -IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
+    return;  // ¿Ü½Ä ¸ùÅº_1
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_GaishikiMutan_2, -IMGKEY_IoriImage, 160, 164, 50, false, 160)) {
+    return;  // ¿Ü½Ä ¸ùÅº_2
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_Shinigami, -IMGKEY_IoriImage, 136, 144, 50, false, 136)) {
+    return;  // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_HyakushikiOniyaki, -IMGKEY_IoriImage, 276, 291, 50, false, 276)) {
+    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_127ShikiAoiHana_1, -IMGKEY_IoriImage, 255, 261, 50, false, 255)) {
+    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_127ShikiAoiHana_2, -IMGKEY_IoriImage, 262, 268, 50, false, 262)) {
+    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_127ShikiAoiHana_3, -IMGKEY_IoriImage, 269, 275, 50, false, 269)) {
+    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_UltimateCasting, -IMGKEY_IoriImage, 344, 347, 100, false, 344)) {
+    return;  // ±Ã±Ø±â Ä³½ºÆÃ
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_1, -IMGKEY_IoriImage, 70, 77, 20, false, 70)) {
+    return;  // ±Ã±Ø±â ´ë½¬  // ÀÌ°Å ´Ù¸¥ ±â¼úÀÌ¶û °ãÄ¡³ª? °ãÄ¡¸é ÀÌ¸§ Á¶Á¤.
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_2, -IMGKEY_IoriImage, 118, 122, 20, false, 118)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_3, -IMGKEY_IoriImage, 88, 92, 20, false, 88)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_4, -IMGKEY_IoriImage, 128, 135, 20, false, 128)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_5, -IMGKEY_IoriImage, 223, 229, 20, false, 223)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_6, -IMGKEY_IoriImage, 99, 106, 20, false, 99)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_7, -IMGKEY_IoriImage, 159, 163, 20, false, 159)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_8, -IMGKEY_IoriImage, 99, 107, 20, false, 99)) {
+    return;  //
+  }
+  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_9, -IMGKEY_IoriImage, 347, 352, 250, false, 347)) {
+    return;  //
+  }
+
+
   pRender_->SetTransparentColor(ioriTransparentColor);
   UpdateAnimState(PAS_Idle);
 
@@ -654,7 +723,7 @@ void Iori::ShikiYamiBarai108() {
   }
 
   if (226 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(1);
+    pProjectileComponent_->FireProjectile(1, FacingRight());
   }
 }
 
@@ -691,11 +760,11 @@ void Iori::HyakushikiOniyaki() {
 
   if (281 == curImageIndex) {
     pMovementComponent_->Jump(FacingRight(), {0.3f, 60.0f});
-    pProjectileComponent_->FireProjectile(2);
+    pProjectileComponent_->FireProjectile(2, FacingRight());
   }
 
   if (284 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(3);
+    pProjectileComponent_->FireProjectile(3, FacingRight());
   }
 }
 

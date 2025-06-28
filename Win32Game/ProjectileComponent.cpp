@@ -30,7 +30,7 @@ bool ProjectileComponent::Initialize(Level* level) {
   return projectileTable_.Initialize(8, 8);
 }
 
-void ProjectileComponent::FireProjectile(unsigned long long projectileTag) {
+void ProjectileComponent::FireProjectile(unsigned long long projectileTag, bool isFacingRight) {
   ProjectileInfo* pInfo;
   if (0 == projectileTable_.Select((void**)&pInfo, 1, &projectileTag, 8)) {
     return;
@@ -42,10 +42,29 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag) {
   }
 
   Projectile* newProjectile = level_->SpawnActor<Projectile>(ActorGroupEngineType_Effect);
+  /*pInfo->position_ = Vector({-pInfo->position_.X, pInfo->position_.Y});
+  pInfo->velocity_ = Vector({-pInfo->velocity_.X, pInfo->velocity_.Y});*/
 
+  //newProjectile->SetOwner(owner);
+  //newProjectile->SetProjectileInfo(*pInfo);
+  //newProjectile->SetUseCameraposition(true);
+
+
+  if (true == isFacingRight) {
   newProjectile->SetOwner(owner);
   newProjectile->SetProjectileInfo(*pInfo);
   newProjectile->SetUseCameraposition(true);
+  }
+  else {
+    ProjectileInfo copyInfo = *pInfo;
+    copyInfo.position_ = Vector({-pInfo->position_.X, pInfo->position_.Y});
+    copyInfo.velocity_ = Vector({-pInfo->velocity_.X, pInfo->velocity_.Y});
+
+    newProjectile->SetOwner(owner);
+    newProjectile->SetProjectileInfo(copyInfo);
+    newProjectile->SetUseCameraposition(true);
+  }
+
   if (false == newProjectile->Initialize()) {
     return;
   }
