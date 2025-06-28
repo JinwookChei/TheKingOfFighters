@@ -62,7 +62,16 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
     return;  // 점프
   }
   if (false == pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_IoriImage, 108, 117, 50, false, 108)) {
-    return;  // 발차기
+    return;  // 강 발차기
+  }
+  if (false == pRender_->CreateAnimation(PAS_LightKick, IMGKEY_IoriImage, 94, 98, 50, false, 94)) {
+    return;  // 약 발차기
+  }
+  if (false == pRender_->CreateAnimation(PAS_HeavyPunch, IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
+    return;  // 강 펀치
+  }
+  if (false == pRender_->CreateAnimation(PAS_LightPunch, IMGKEY_IoriImage, 88, 93, 50, false, 88)) {
+    return;  // 약 펀치
   }
   if (false == pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, IMGKEY_IoriImage, 223, 230, 50, false, 223)) {
     return;  // 커맨드 테스트.
@@ -91,7 +100,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 100, false, 344)) {
     return;  // 궁극기 캐스팅
   }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_1, IMGKEY_IoriImage, 70, 77, 50, false, 70)) {
+  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_1, IMGKEY_IoriImage, 70, 77, 20, false, 70)) {
     return;  // 궁극기 대쉬  // 이거 다른 기술이랑 겹치나? 겹치면 이름 조정.
   }
   if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_2, IMGKEY_IoriImage, 118, 122, 20, false, 118)) {
@@ -115,7 +124,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_8, IMGKEY_IoriImage, 99, 107, 20, false, 99)) {
     return;  //
   }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_9, IMGKEY_IoriImage, 347, 352, 200, false, 347)) {
+  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_9, IMGKEY_IoriImage, 347, 352, 250, false, 347)) {
     return;  //
   }
 
@@ -180,6 +189,16 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   if (false == pStateComponent_->RegistState(PAS_HeavyKick, PS_Attack, false, false)) {
     return;
   }
+  if (false == pStateComponent_->RegistState(PAS_LightKick, PS_Attack, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_HeavyPunch, PS_Attack, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_LightPunch, PS_Attack, false, false)) {
+    return;
+  }
+
   if (false == pStateComponent_->RegistState(IOAS_108ShikiYamiBarai, PS_Attack, false, false)) {
     return;
   }
@@ -236,58 +255,67 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   }
 
   // DAMAGE
-  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, 10.0f, {20.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, 5.0f, {20.0f, 60.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(PAS_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {5.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {20.0f, 40.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(PAS_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, 15.0f, {20.0f, 80.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 5.0f, {20.0f, 60.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, 20.0f, {40.0f, 80.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {5.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {10.0f, 00.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 40.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {10.0f, 00.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 15.0f, {20.0f, 80.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, 5.0f, {20.0f, 80.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 20.0f, {40.0f, 80.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_1, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {10.0f, 00.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_2, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2,  5.0f, {10.0f, 00.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_3, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 80.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_4, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_5, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_6, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2,  5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_7, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_8, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 5.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
     return;
   }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_9, ATTYPE_FastHighAttack, ELMTTYPE_Normal, 10.0f, {0.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
+    return;
+  }
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
+    return;
+  }
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
+    return;
+  }
+  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFKEY_Iori_Explosion, 10.0f, {45.0f, 60.0f})) {
     return;
   }
 
@@ -358,49 +386,13 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   pGhostEffect_->SetTransparentColor(ioriTransparentColor);
 }
 
-void Iori::Tick(unsigned long long deltaTick) {
-
-  UpdateCollisionBoundScale();
-
-  CheckPushCollision();
-
-  if (PS_Attack == pStateComponent_->GetPlayerState()) {
-    UpdateAttack();
-  }
-
-  UpdateCommand();
-
-  if (true == pRender_->IsAnimationEnd()) {
-    pCommandComponent_->ExcuteTask();
-  }
-
-  ResetInputBitSet();
-
-  UpdateInput();
-
-  if (true == pStateComponent_->CanInput() || true == pRender_->IsAnimationEnd()) {
-    CompareInputBitset();
-  }
-
-  pSkillComponent_->UpdateActiveSkill();
-
-  //  TODO : 수정사항
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-  if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
-    pGhostEffect_->Off();
-  }
-  //  TODO END
-
-  UpdatePrevAnimationIndex();
-}
-
 
 void Iori::CompareInputBitset() {
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
       true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
   } else {
     // LEFT UP PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
       if (FacingRight()) {
         UpdateAnimState(PAS_Jump);
         pMovementComponent_->JumpForward(false, false);
@@ -419,7 +411,7 @@ void Iori::CompareInputBitset() {
     }
 
     // RIGHT UP PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
       if (FacingRight()) {
         if (PAS_Run == pStateComponent_->GetCurAnimState()) {
           UpdateAnimState(PAS_Jump);
@@ -459,15 +451,15 @@ void Iori::CompareInputBitset() {
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
         UpdateAnimState(PAS_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
+        pMovementComponent_->MoveBack(FacingRight());
         return;
       } else {
         if (PAS_Run == animState_) {
-          pMovementComponent_->Run(false/*, pPushBox_->HasHit()*/);
+          pMovementComponent_->Run(false);
           return;
         }
         UpdateAnimState(PAS_FrontWalk);
-        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
+        pMovementComponent_->Move(FacingRight());
         return;
       }
     }
@@ -521,6 +513,8 @@ void Iori::CompareInputBitset() {
 
     // A PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+      UpdateAnimState(PAS_LightPunch);
+      return;
     }
 
     // A UP
@@ -528,7 +522,9 @@ void Iori::CompareInputBitset() {
     }
 
     // B PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+      UpdateAnimState(PAS_LightKick);
+      return;
     }
 
     // B UP
@@ -536,7 +532,9 @@ void Iori::CompareInputBitset() {
     }
 
     // C PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+      UpdateAnimState(PAS_HeavyPunch);
+      return;
     }
 
     // C UP
@@ -544,7 +542,7 @@ void Iori::CompareInputBitset() {
     }
 
     // D PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
       UpdateAnimState(PAS_HeavyKick);
       return;
     }
@@ -614,7 +612,7 @@ void Iori::Command_6() {
 
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
-  pKOFLevel->FreezeActors({opponentPlayer_}, true);
+  pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
   pBackGroundMask->FadeOut(IMGKEY_BlackBoardImage, 50.0f);
 }
 
@@ -804,13 +802,14 @@ void Iori::ShikiYaOtome1211() {
 
       if (pAttackBox_->HasHit()) {
         UpdateAnimState(IOAS_1211ShikiYaOtome_2);
+        pOpponentPlayer_->SetControlLocked(true);
         pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
         break;
       }
       break;
     }
     case IOAS_1211ShikiYaOtome_2: {
-      if (opponentPlayer_->GetPosition().X - GetPosition().X <= 300.0f * FacingRightFlag()) {
+      if (pOpponentPlayer_->GetPosition().X - GetPosition().X <= 300.0f * FacingRightFlag()) {
         pMovementComponent_->StopDash();
       }
 
@@ -894,21 +893,21 @@ void Iori::ShikiYaOtome1211() {
       break;
     }
     case IOAS_1211ShikiYaOtome_9: {
-      const Vector& ioriPosition = GetPosition();
-      opponentPlayer_->SetPosition(ioriPosition + Vector{150.0f, -100.0f} * FacingRightFlag());
-
-      if (351 == curImageIndex) {
-        opponentPlayer_->UpdateAnimState(PAS_HitTop);
+      if (349 == curImageIndex) {
+        const Vector& ioriPosition = GetPosition();
+        pOpponentPlayer_->SetPosition(ioriPosition + Vector{100.0f, -50.0f} * FacingRightFlag());
         break;
       }
-
-      /*if (353 == curImageIndex) {
-        opponentPlayer_->UpdateAnimState(PAS_HitBottom);
+      if (351 == curImageIndex) {
+        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
         break;
-      }*/
-
+      }
+      if (352 == curImageIndex) {
+        pOpponentPlayer_->SetControlLocked(false);
+        break;
+      }
       break;
-    } break;
+    }              
     default:
       break;
   }

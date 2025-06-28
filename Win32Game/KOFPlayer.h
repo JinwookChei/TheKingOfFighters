@@ -30,8 +30,8 @@ enum PLAYER_ANIM_STATE {
   PAS_LightPunch,
   PAS_HeavyKick,
   PAS_LightKick,
-  PAS_HitTop,
-  PAS_HitBottom,
+  PAS_HitHigh,
+  PAS_HitLow,
   PAS_HitStrong,
   PAS_HitWhileJumping,
   PAS_MAX
@@ -50,7 +50,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight, KOFPlayer* opponentPlayer);
 
-  void UpdateAnimState(int animState /*unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f*/);
+  void UpdateAnimState(int animState, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
 
@@ -97,6 +97,10 @@ class KOFPlayer
   bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
   KOFPlayer* GetOpponentPlayer() const;
+    
+  bool IsControlLocked() const;
+
+  void SetControlLocked(bool bLocked);
 
  protected:
   std::array<int, 8> playerKeySet_;
@@ -131,7 +135,6 @@ class KOFPlayer
 
   Vector characterScale_;
 
- protected:
   unsigned long long animState_;
 
   unsigned int prevImageIndex_;
@@ -144,5 +147,7 @@ class KOFPlayer
 
   std::bitset<8> inputUpBitSet_;
 
-  KOFPlayer* opponentPlayer_;
+  KOFPlayer* pOpponentPlayer_;
+
+  bool isControlLocked_;
 };

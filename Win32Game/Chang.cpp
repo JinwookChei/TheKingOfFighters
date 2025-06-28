@@ -43,8 +43,8 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(PAS_Run, IMGKEY_ChangImage, 23, 32, 20, true, 23);          // ->-> 뛰기
   pRender_->CreateAnimation(PAS_Jump, IMGKEY_ChangImage, 36, 42, 50, false, 0);         // 점프
   pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_ChangImage, 82, 89, 50, false, 0);    // 발차기
-  pRender_->CreateAnimation(PAS_HitTop, IMGKEY_ChangImage, 310, 314, 50, false, 0);     //
-  pRender_->CreateAnimation(PAS_HitBottom, IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
+  pRender_->CreateAnimation(PAS_HitHigh, IMGKEY_ChangImage, 310, 314, 50, false, 0);     //
+  pRender_->CreateAnimation(PAS_HitLow, IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
   pRender_->CreateAnimation(PAS_HitStrong, IMGKEY_ChangImage,
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
@@ -59,8 +59,8 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pRender_->CreateAnimation(-PAS_Run, -IMGKEY_ChangImage, 23, 32, 20, true, 23);          // ->-> 뛰기
   pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_ChangImage, 36, 42, 50, false, 0);         // 점프
   pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_ChangImage, 82, 89, 50, false, 0);    // 발차기
-  pRender_->CreateAnimation(-PAS_HitTop, -IMGKEY_ChangImage, 310, 314, 50, false, 0);     //
-  pRender_->CreateAnimation(-PAS_HitBottom, -IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
+  pRender_->CreateAnimation(-PAS_HitHigh, -IMGKEY_ChangImage, 310, 314, 50, false, 0);     //
+  pRender_->CreateAnimation(-PAS_HitLow, -IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
   pRender_->CreateAnimation(-PAS_HitStrong, -IMGKEY_ChangImage,
                             {339, 335, 336, 337, 338, /*335, 336, 337, 338,*/ 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {80, 80, 80, 80, 80, 80, /*50, 50, 50, 50,*/ 80, 80, 80, 80, 80, 80, 80, 80, 80},
@@ -101,9 +101,18 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   if (false == pStateComponent_->RegistState(PAS_HeavyKick, PS_Attack, false, false)) {
     return;
   }
+  if (false == pStateComponent_->RegistState(PAS_HitHigh, PS_Hit, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_HitLow, PS_Hit, false, false)) {
+    return;
+  }
+  if (false == pStateComponent_->RegistState(PAS_HitStrong, PS_Hit, false, false)) {
+    return;
+  }
 
   // DAMAGE
-  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, 10.0f, {20.0f, 0.0f})) {
+  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
     return;
   }
 
@@ -111,40 +120,6 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   pGhostEffect_->SetTransparentColor(changTransparentColor);
 }
 
-void Chang::Tick(unsigned long long deltaTick) {
-  UpdateCollisionBoundScale();
-
-  CheckPushCollision();
-
-  if (PS_Attack == pStateComponent_->GetPlayerState()) {
-    UpdateAttack();
-  }
-
-  UpdateCommand();
-
-  if (true == pRender_->IsAnimationEnd()) {
-    pCommandComponent_->ExcuteTask();
-  }
-
-  ResetInputBitSet();
-
-  UpdateInput();
-
-  if (true == pStateComponent_->CanInput() || true == pRender_->IsAnimationEnd()) {
-    CompareInputBitset();
-  }
-
-  pSkillComponent_->UpdateActiveSkill();
-
-  //  TODO : 수정사항
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-  if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
-    pGhostEffect_->Off();
-  }
-  //  TODO END
-
-  UpdatePrevAnimationIndex();
-}
 
 void Chang::CompareInputBitset() {
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&

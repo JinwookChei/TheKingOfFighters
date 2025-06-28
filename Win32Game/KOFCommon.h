@@ -17,6 +17,7 @@ enum IMAGE_KEY
 
 enum EFFECT_KEY
 {
+	EFKEY_None = 0,
 	EFKEY_Hit_1 = 1,
 	EFKEY_Hit_2,
 	EFKEY_Hit_3,
@@ -25,7 +26,9 @@ enum EFFECT_KEY
 	EFKEY_Casting_3,
 	EFKEY_Casting_4,
 	EFKEY_Casting_5,
-	EFKEY_Casting_6
+	EFKEY_Casting_6,
+	EFKEY_Iori_Explosion,
+	EFKEY_Max
 };
 
 

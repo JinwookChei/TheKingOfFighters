@@ -174,6 +174,9 @@ void KOFLevel::BeginPlay() {
   if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_6, IMGKEY_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0})) {
     return;
   }
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Iori_Explosion, IMGKEY_IoriImage, 387, 405, 20, false, ioriTransparentColor)) {
+    return;
+  }
 
   // SOUND
   /*Path soundPath;

@@ -31,7 +31,8 @@ KOFPlayer::KOFPlayer()
       prevImageIndex_(0),
       isFacingRight_(true),
       isAtMapEdge_(false),
-      opponentPlayer_(nullptr) {
+      pOpponentPlayer_(nullptr),
+      isControlLocked_(false) {
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -41,6 +42,40 @@ void KOFPlayer::BeginPlay() {
 }
 
 void KOFPlayer::Tick(unsigned long long deltaTick) {
+  UpdateCollisionBoundScale();
+
+  CheckPushCollision();
+
+  if (PS_Attack == pStateComponent_->GetPlayerState()) {
+    UpdateAttack();
+  }
+
+  if (false == isControlLocked_) {
+    UpdateCommand();
+
+    if (true == pRender_->IsAnimationEnd()) {
+      pCommandComponent_->ExcuteTask();
+    }
+
+    ResetInputBitSet();
+
+    UpdateInput();
+
+    if (true == pStateComponent_->CanInput() || true == pRender_->IsAnimationEnd()) {
+      CompareInputBitset();
+    }
+
+    pSkillComponent_->UpdateActiveSkill();
+  }
+
+  //  TODO : 수정사항
+  unsigned int curImageIndex = pRender_->GetImageIndex();
+  if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
+    pGhostEffect_->Off();
+  }
+  //  TODO END
+
+  UpdatePrevAnimationIndex();
 }
 
 void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight, KOFPlayer* opponentPlayer) {
@@ -114,7 +149,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   if (nullptr == opponentPlayer) {
     return;
   }
-  opponentPlayer_ = opponentPlayer;
+  pOpponentPlayer_ = opponentPlayer;
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -126,9 +161,9 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::UpdateAnimState(int animState) {
+void KOFPlayer::UpdateAnimState(int animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   animState_ = animState;
-  pRender_->ChangeAnimation(animState_ * FacingRightFlag());
+  pRender_->ChangeAnimation(animState_ * FacingRightFlag(), startFrame, time);
   pStateComponent_->ChangeState(animState_);
 
   CollisionReset();
@@ -141,16 +176,33 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   pHealthComponent_->TakeDamage(damageInfo->damage_);
 
-  if (pHitBoxTop_->HasHit()) {
-    animState_ = PAS_HitTop;
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-    pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-  }
+  switch (damageInfo->attackType_) {
+    case ATTYPE_HighAttack: {
+      UpdateAnimState(PAS_HitHigh);
+      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+    } break;
 
-  if (pHitBoxBottom_->HasHit()) {
-    animState_ = PAS_HitBottom;
-    pRender_->ChangeAnimation(animState_ * FacingRightFlag());
-    pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+    case ATTYPE_LowAttack: {
+      UpdateAnimState(PAS_HitLow);
+      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+    } break;
+    case ATTYPE_StrongAttack: {
+      UpdateAnimState(PAS_HitStrong);
+      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+    } break;
+    case ATTYPE_NormalAttack: {
+      if (pHitBoxTop_->HasHit()) {
+        UpdateAnimState(PAS_HitHigh);
+        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+      }
+
+      if (pHitBoxBottom_->HasHit()) {
+        UpdateAnimState(PAS_HitLow);
+        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+      }
+    } break;
+    default:
+      break;
   }
 }
 
@@ -395,7 +447,17 @@ void KOFPlayer::UpdateAttack() {
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
       // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), EFKEY_Hit_2, effectPosition);
+      EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, effectPosition);
+
+      // TODO EFFECT 로직
+      if (pAttackInfo->effectKey_ == EFKEY_Iori_Explosion) {
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 150.0f, effectPosition.Y + 90.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X - 50.0f, effectPosition.Y + 110.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X - 30.0f, effectPosition.Y - 170.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 170.0f, effectPosition.Y - 190.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 110.0f, effectPosition.Y + 80.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 130.0f, effectPosition.Y - 200.0f});
+      }
     }
   }
 }
@@ -543,5 +605,13 @@ bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::
 }
 
 KOFPlayer* KOFPlayer::GetOpponentPlayer() const {
-  return opponentPlayer_;
+  return pOpponentPlayer_;
+}
+
+bool KOFPlayer::IsControlLocked() const {
+  return isControlLocked_;
+}
+
+void KOFPlayer::SetControlLocked(bool bLocked) {
+  isControlLocked_ = bLocked;
 }

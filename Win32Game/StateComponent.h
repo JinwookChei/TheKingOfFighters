@@ -6,6 +6,7 @@ enum PLAYERSTATE {
   PS_Jump,
   PS_Seat,
   PS_Attack,
+  PS_Hit,
   PS_Guard,
   PS_Max
 };
