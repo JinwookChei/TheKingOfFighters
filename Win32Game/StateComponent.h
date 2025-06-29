@@ -18,7 +18,7 @@ struct State {
 
   bool canInput_ = true;
 
-  bool canChangeAnimState_ = true;
+  //bool canChangeAnimState_ = true;
 
   void* searchHandle_ = nullptr;
 };
@@ -36,7 +36,7 @@ class StateComponent
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool RegistState(unsigned long long stateTag, PLAYERSTATE playerState, bool canInput, bool canChangeAnimState);
+  bool RegistState(unsigned long long stateTag, PLAYERSTATE playerState, bool canInput/*, bool canChangeAnimState*/);
 
   void ChangeState(unsigned long long stateTag);
 
@@ -48,7 +48,7 @@ class StateComponent
 
   bool CanInput() const;
 
-  bool CanChangeAnimState() const;
+  //bool CanChangeAnimState() const;
 
  private:
   State curState_;

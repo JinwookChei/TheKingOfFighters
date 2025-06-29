@@ -26,7 +26,7 @@ void StateComponent::BeginPlay() {
 void StateComponent::Tick(unsigned long long deltaTick) {
 }
 
-bool StateComponent::RegistState(unsigned long long stateTag, PLAYERSTATE playerState, bool canInput, bool canChangeAnimState) {
+bool StateComponent::RegistState(unsigned long long stateTag, PLAYERSTATE playerState, bool canInput/*, bool canChangeAnimState*/) {
   State* pFind = nullptr;
 
   if (0 != stateTable_.Select((void**)&pFind, 1, &stateTag, 8)) {
@@ -37,7 +37,7 @@ bool StateComponent::RegistState(unsigned long long stateTag, PLAYERSTATE player
   pState->stateTag_ = stateTag;
   pState->playerState_ = playerState;
   pState->canInput_ = canInput;
-  pState->canChangeAnimState_ = canChangeAnimState;
+  //pState->canChangeAnimState_ = canChangeAnimState;
   pState->searchHandle_ = stateTable_.Insert(pState, &pState->stateTag_, 8);
 
   return nullptr != pState->searchHandle_;
@@ -52,7 +52,7 @@ void StateComponent::ChangeState(unsigned long long stateTag) {
   curState_.stateTag_ = pState->stateTag_;
   curState_.playerState_ = pState->playerState_;
   curState_.canInput_ = pState->canInput_;
-  curState_.canChangeAnimState_ = pState->canChangeAnimState_;
+  //curState_.canChangeAnimState_ = pState->canChangeAnimState_;
   curState_.searchHandle_ = pState->searchHandle_;
 }
 
@@ -72,6 +72,6 @@ bool StateComponent::CanInput() const {
   return curState_.canInput_;
 }
 
-bool StateComponent::CanChangeAnimState() const {
-  return curState_.canChangeAnimState_;
-}
+//bool StateComponent::CanChangeAnimState() const {
+//  return curState_.canChangeAnimState_;
+//}
