@@ -115,8 +115,8 @@ void KOFLevel::BeginPlay() {
   pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f + 300, backGroundImageScale_.Y * 0.5f + 170.0f);
 
-  pPlayer1_->Initialize(player1SpawnPostion_, true, true, pPlayer2_);
-  pPlayer2_->Initialize(player2SpawnPostion_, true, false, pPlayer1_);
+  pPlayer1_->Initialize(player1SpawnPostion_, true, pPlayer2_);
+  pPlayer2_->Initialize(player2SpawnPostion_, true, pPlayer1_);
 
   // HUD
   HUD_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);
@@ -285,8 +285,8 @@ void KOFLevel::SwapPosition() {
   const Vector& player1Postion = pPlayer1_->GetPosition();
   const Vector& player2Postion = pPlayer2_->GetPosition();
 
-  pPlayer1_->SetFacingRight(player1Postion.X < player2Postion.X);
-  pPlayer2_->SetFacingRight(!(player1Postion.X < player2Postion.X));
+  pPlayer1_->SetPlayerOnLeft(player1Postion.X < player2Postion.X);
+  pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
 Vector KOFLevel::GetBackGroundImageScale() const {

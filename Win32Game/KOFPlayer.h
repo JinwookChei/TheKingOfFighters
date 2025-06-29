@@ -58,7 +58,7 @@ class KOFPlayer
 
   void Tick(unsigned long long deltaTick) override;
 
-  virtual void Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight, KOFPlayer* opponentPlayer);
+  virtual void Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
 
   void UpdateAnimState(unsigned long long animState, int startFrame = 0, unsigned long long time = 0.0f);
 
@@ -87,6 +87,10 @@ class KOFPlayer
   virtual void SetCharacterScale(const Vector& scale);
 
   void PushOverlappingPlayer();
+
+  void SetPlayerOnLeft(bool isPlayerOnLeft);
+
+  bool PlayerOnLeft() const;
 
   int FacingRightFlag() const;
 
@@ -152,6 +156,8 @@ class KOFPlayer
   unsigned long long animState_;
 
   unsigned int prevImageIndex_;
+
+  bool isPlayerOnLeft_;
 
   bool isFacingRight_;
 

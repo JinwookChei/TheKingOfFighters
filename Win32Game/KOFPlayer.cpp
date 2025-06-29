@@ -29,6 +29,7 @@ KOFPlayer::KOFPlayer()
       characterScale_({0.0f, 0.0f}),
       animState_(PLAYER_ANIMTYPE_Idle),
       prevImageIndex_(0),
+      isPlayerOnLeft_(true),
       isFacingRight_(true),
       isAtMapEdge_(false),
       pOpponentPlayer_(nullptr),
@@ -78,11 +79,10 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   UpdatePrevAnimationIndex();
 }
 
-void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool isFacingRight, KOFPlayer* opponentPlayer) {
+void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
   SetPosition(position);
 
   SetUseCameraposition(useCameraPosition);
-  SetFacingRight(isFacingRight);
 
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
@@ -163,12 +163,21 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
 
 void KOFPlayer::UpdateAnimState(unsigned long long animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   animState_ = animState;
-  if (true == FacingRight()) {
+  
+  if (true == PlayerOnLeft()) {
+    isFacingRight_ = true;
     pRender_->ChangeAnimation((animState_ | ANIMMOD_NONE), startFrame, time);
-  }
-  else {
+  } else {
+    isFacingRight_ = false;
     pRender_->ChangeAnimation((animState_ | ANIMMOD_FLIPPED), startFrame, time);
   }
+
+  /*if (true == FacingRight()) {
+    
+  }
+  else {
+    
+  }*/
 
   pStateComponent_->ChangeState(animState_);
 
@@ -236,37 +245,34 @@ void KOFPlayer::UpdateInput() {
     return;
   }
 
+  // LEFT PRESS
   if (InputManager::Instance()->IsPress(playerKeySet_[7])) {
     inputPressBitSet_.set(7);
   }
-
   if (InputManager::Instance()->IsUp(playerKeySet_[7])) {
     inputUpBitSet_.set(7);
   }
-
+  // DOWN
   if (InputManager::Instance()->IsPress(playerKeySet_[6])) {
     inputPressBitSet_.set(6);
   }
-
   if (InputManager::Instance()->IsUp(playerKeySet_[6])) {
     inputUpBitSet_.set(6);
   }
-
+  // RIGHT
   if (InputManager::Instance()->IsPress(playerKeySet_[5])) {
     inputPressBitSet_.set(5);
   }
-
   if (InputManager::Instance()->IsUp(playerKeySet_[5])) {
     inputUpBitSet_.set(5);
   }
-
+  // UP
   if (InputManager::Instance()->IsPress(playerKeySet_[4])) {
     inputPressBitSet_.set(4);
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[4])) {
     inputUpBitSet_.set(4);
   }
-
   // A
   if (InputManager::Instance()->IsPress(playerKeySet_[3])) {
     inputPressBitSet_.set(3);
@@ -274,7 +280,6 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsUp(playerKeySet_[3])) {
     inputUpBitSet_.set(3);
   }
-
   // B
   if (InputManager::Instance()->IsPress(playerKeySet_[2])) {
     inputPressBitSet_.set(2);
@@ -282,7 +287,6 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsUp(playerKeySet_[2])) {
     inputUpBitSet_.set(2);
   }
-
   // C
   if (InputManager::Instance()->IsPress(playerKeySet_[1])) {
     inputPressBitSet_.set(1);
@@ -290,7 +294,6 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsUp(playerKeySet_[1])) {
     inputUpBitSet_.set(1);
   }
-
   // D
   if (InputManager::Instance()->IsPress(playerKeySet_[0])) {
     inputPressBitSet_.set(0);
@@ -302,7 +305,7 @@ void KOFPlayer::UpdateInput() {
 
 void KOFPlayer::UpdateCommand() {
   if (InputManager::Instance()->IsDown(playerKeySet_[7])) {
-    if (FacingRight()) {
+    if (PlayerOnLeft()) {
       pCommandComponent_->JumpNode(CK_Left);
     } else {
       pCommandComponent_->JumpNode(CK_Right);
@@ -314,7 +317,7 @@ void KOFPlayer::UpdateCommand() {
   }
 
   if (InputManager::Instance()->IsDown(playerKeySet_[5])) {
-    if (FacingRight()) {
+    if (PlayerOnLeft()) {
       pCommandComponent_->JumpNode(CK_Right);
     } else {
       pCommandComponent_->JumpNode(CK_Left);
@@ -568,6 +571,14 @@ void KOFPlayer::SetCharacterScale(const Vector& scale) {
 }
 
 void KOFPlayer::PushOverlappingPlayer() {
+}
+
+void KOFPlayer::SetPlayerOnLeft(bool isPlayerOnLeft) {
+  isPlayerOnLeft_ = isPlayerOnLeft;
+}
+
+bool KOFPlayer::PlayerOnLeft() const {
+  return isPlayerOnLeft_;
 }
 
 int KOFPlayer::FacingRightFlag() const {

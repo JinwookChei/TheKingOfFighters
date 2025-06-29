@@ -23,8 +23,8 @@ Iori::~Iori() {
 void Iori::BeginPlay() {
 }
 
-void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip, KOFPlayer* opponentPlayer) {
-  KOFPlayer::Initialize(position, useCameraPosition, flip, opponentPlayer);
+void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
+  KOFPlayer::Initialize(position, useCameraPosition, opponentPlayer);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(IMGTYPE_IoriImage);
