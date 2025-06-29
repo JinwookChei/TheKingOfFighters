@@ -287,6 +287,10 @@ void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
   }
 }
 
+bool MovementComponent::GetIsGround() const {
+  return isGrounded_;
+}
+
 void MovementComponent::BackStep(bool isRightDirection) {
   if (false == isGrounded_) {
     return;

@@ -39,6 +39,8 @@ class MovementComponent final
 
   void JumpForward(bool isRightDirection, bool isRunning);
 
+  bool GetIsGround() const;
+
   void BackStep(bool isRightDirection);
 
   void Dash(bool isRightDirection, float dashDuration, float dashDistance);

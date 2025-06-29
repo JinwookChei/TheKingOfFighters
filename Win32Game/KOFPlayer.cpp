@@ -69,13 +69,6 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     pSkillComponent_->UpdateActiveSkill();
   }
 
-  //  TODO : 수정사항
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-  if (prevImageIndex_ != curImageIndex && curImageIndex == 69) {
-    pGhostEffect_->Off();
-  }
-  //  TODO END
-
   UpdatePrevAnimationIndex();
 }
 

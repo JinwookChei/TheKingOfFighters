@@ -6,6 +6,8 @@ GhostEffect::GhostEffect()
     : owner_(nullptr),
       pOwnerRenderer_(nullptr),
       ppGhostRenderers_(nullptr),
+      timer_(0),
+      duration_(0),
       ghostNum_(0),
       isRenderOn_(false),
       renderOnCount_(0),
@@ -28,6 +30,11 @@ void GhostEffect::BeginPlay() {
 void GhostEffect::Tick(unsigned long long deltaTick) {
   if (nullptr == owner_ || nullptr == pOwnerRenderer_) {
     return;
+  }
+
+  timer_ += deltaTick;
+  if (timer_ >= duration_) {
+    Off();
   }
 
   accumulTime_ += deltaTick;
@@ -106,7 +113,9 @@ void GhostEffect::SetTransparentColor(const Color8Bit& transColor) {
   };
 }
 
-void GhostEffect::On() {
+void GhostEffect::On(unsigned long long duration/* = 2000*/) {
+  timer_ = 0;
+  duration_ = duration;
   renderOnCount_ = 0;
   isRenderOn_ = true;
   SetActive(true);

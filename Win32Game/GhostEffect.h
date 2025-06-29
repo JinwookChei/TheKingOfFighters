@@ -93,7 +93,7 @@ class GhostEffect final
 
   void SetTransparentColor(const Color8Bit& transColor);
 
-  void On();
+  void On(unsigned long long duration = 500);
 
   void Off();
 
@@ -105,6 +105,10 @@ class GhostEffect final
   ImageRenderer** ppGhostRenderers_;
 
   GhostBuffer ghostBuffer_;
+
+  unsigned long long timer_;
+
+  unsigned long long duration_;
 
   int ghostNum_;
 
