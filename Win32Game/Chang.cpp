@@ -13,9 +13,8 @@
 #include "CollisionBox.h"
 #include "Chang.h"
 
-
 Chang::Chang() {
-  //playerKeySet_ = {'4', '3', '2', '1', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
+  // playerKeySet_ = {'4', '3', '2', '1', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
   playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
 }
 
@@ -35,8 +34,8 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
   }
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_NONE),(IMGTYPE_ChangImage | IMGMOD_NONE), 8, 13, 50, true, 8);  // ¾ÆÀÌµé
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_NONE),(IMGTYPE_ChangImage | IMGMOD_NONE), 14, 20, 50, true, 16);  // ¾É±â.
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 8, 13, 50, true, 8);         // ¾ÆÀÌµé
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 14, 20, 50, true, 16);   // ¾É±â.
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 23, 32, 50, true, 23);  // -> °È±â
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
@@ -51,8 +50,8 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
                             false, 0);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 8, 13, 50, true, 8);        // ¾ÆÀÌµé
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 14, 20, 50, true, 16);  // ¾É±â.
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 8, 13, 50, true, 8);         // ¾ÆÀÌµé
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 14, 20, 50, true, 16);   // ¾É±â.
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 23, 32, 50, true, 23);  // -> °È±â
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
@@ -92,73 +91,43 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
   pGhostEffect_->SetTransparentColor(changTransparentColor);
 }
 
-
 void Chang::CompareInputBitset() {
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
       true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
   } else {
-    // LEFT UP PRESS
+    // LEFT UP | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
-      if (FacingRight()) {
-        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-        pMovementComponent_->JumpForward(false, false);
-        return;
-      } else {
-        if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-          pMovementComponent_->JumpForward(false, true);
-          pGhostEffect_->On();
-          return;
-        }
-        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-        pMovementComponent_->JumpForward(false, false);
-        return;
-      }
+      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+      pMovementComponent_->JumpForward(!FacingRight(), false);
+      return;
     }
 
-    // RIGHT UP PRESS
+    // RIGHT UP | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
-      if (FacingRight()) {
-        if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-          pMovementComponent_->JumpForward(true, true);
-          pGhostEffect_->On();
-          return;
-        }
+      if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
         UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-        pMovementComponent_->JumpForward(true, false);
-        return;
-      } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-        pMovementComponent_->JumpForward(true, false);
+        pMovementComponent_->JumpForward(FacingRight(), true);
+        pGhostEffect_->On();
         return;
       }
+      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+      pMovementComponent_->JumpForward(FacingRight(), false);
+      return;
     }
 
-    // RIGHT A - PRESS
+    // RIGHT A | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
     }
 
-    // RIGHT B - PRESS
+    // RIGHT B | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100100"))) {
-
     }
 
-    // LEFT PRESS
+    // LEFT | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
-      if (FacingRight()) {
-        UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
-        return;
-      } else {
-        if (PLAYER_ANIMTYPE_Run == animState_) {
-          pMovementComponent_->Run(false/*, pPushBox_->HasHit()*/);
-          return;
-        }
-        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
-        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
-        return;
-      }
+      UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
+      pMovementComponent_->MoveBack(FacingRight());
+      return;
     }
     // LEFT UP
     if (true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("10000000"))) {
@@ -176,17 +145,12 @@ void Chang::CompareInputBitset() {
 
     // RIGHT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
-      if (FacingRight()) {
-        if (PLAYER_ANIMTYPE_Run == animState_) {
-          pMovementComponent_->Run(true/*, pPushBox_->HasHit()*/);
-          return;
-        }
-        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
-        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
+      if (PLAYER_ANIMTYPE_Run == animState_) {
+        pMovementComponent_->Run(FacingRight());
         return;
       } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
+        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
+        pMovementComponent_->Move(FacingRight());
         return;
       }
     }

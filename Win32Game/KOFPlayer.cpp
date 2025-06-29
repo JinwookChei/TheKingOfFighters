@@ -247,10 +247,19 @@ void KOFPlayer::UpdateInput() {
 
   // LEFT PRESS
   if (InputManager::Instance()->IsPress(playerKeySet_[7])) {
-    inputPressBitSet_.set(7);
+    if (PlayerOnLeft()) {
+      inputPressBitSet_.set(7);
+    }
+    else {
+      inputPressBitSet_.set(5);
+    }
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[7])) {
-    inputUpBitSet_.set(7);
+    if (PlayerOnLeft()) {
+      inputUpBitSet_.set(7);
+    } else {
+      inputUpBitSet_.set(5);
+    }
   }
   // DOWN
   if (InputManager::Instance()->IsPress(playerKeySet_[6])) {
@@ -261,10 +270,18 @@ void KOFPlayer::UpdateInput() {
   }
   // RIGHT
   if (InputManager::Instance()->IsPress(playerKeySet_[5])) {
-    inputPressBitSet_.set(5);
+    if (PlayerOnLeft()) {
+      inputPressBitSet_.set(5);
+    } else {
+      inputPressBitSet_.set(7);
+    }
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[5])) {
-    inputUpBitSet_.set(5);
+    if (PlayerOnLeft()) {
+      inputUpBitSet_.set(5);
+    } else {
+      inputUpBitSet_.set(7);
+    }
   }
   // UP
   if (InputManager::Instance()->IsPress(playerKeySet_[4])) {
