@@ -417,7 +417,7 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage(Color8Bit emptyCol
   pInfo->isOwner_ = true;
 }
 
-void __stdcall Win32Image::ReverseCalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) {
+void __stdcall Win32Image::CalculateTransformFromDrawBoxImage_Flip(Color8Bit emptyColor, Color8Bit lineColor) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
@@ -591,7 +591,7 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
   pInfo->isOwner_ = true;
 }
 
-void __stdcall Win32Image::ReverseCalculateTransformFromCSV(const std::string& filePath) {
+void __stdcall Win32Image::CalculateTransformFromCSV_Flip(const std::string& filePath) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
@@ -731,7 +731,7 @@ struct Key {
   };
 };
 
-void __stdcall Win32Image::ReverseCalculateTransformFromCSV_Async(const std::string& filePath) {
+void __stdcall Win32Image::CalculateTransformFromCSV_Flip_Async(const std::string& filePath) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }

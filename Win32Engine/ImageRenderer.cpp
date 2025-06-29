@@ -334,14 +334,6 @@ bool ImageRenderer::IsAnimationEnd() {
   return pCurAnimInfo_->isEnd_;
 }
 
-// bool ImageRenderer::IsPlayingLoopAnimation() {
-//   if (nullptr != pCurAnimation_ && false == pCurAnimation_->isEnd_ && false == pCurAnimation_->loop_) {
-//     return false;
-//   }
-//
-//   return true;
-// }
-
 void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {
   if (!parameter_.on_ || nullptr == renderTexture) {
     return;

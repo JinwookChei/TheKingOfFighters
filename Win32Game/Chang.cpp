@@ -29,92 +29,64 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, bool flip
   KOFPlayer::Initialize(position, useCameraPosition, flip, opponentPlayer);
 
   // CHARACTER SETTING
-  IImage* pImage = ImgManager::GetIntance()->GetImg(IMGKEY_ChangImage);
+  IImage* pImage = ImgManager::GetIntance()->GetImg(IMGTYPE_ChangImage);
   if (nullptr == pImage) {
     return;
   }
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  pRender_->CreateAnimation(PAS_Idle, IMGKEY_ChangImage, 8, 13, 50, true, 8);           // ¾ÆÀÌµé
-  pRender_->CreateAnimation(PAS_SeatDown, IMGKEY_ChangImage, 14, 20, 50, true, 16);     // ¾É±â.
-  pRender_->CreateAnimation(PAS_FrontWalk, IMGKEY_ChangImage, 23, 32, 50, true, 23);    // -> °È±â
-  pRender_->CreateAnimation(PAS_BackWalk, IMGKEY_ChangImage, 32, 23, 50, true, 32);     // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation(PAS_BackStep, IMGKEY_ChangImage, 33, 35, 50, false, 0);     // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(PAS_Run, IMGKEY_ChangImage, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
-  pRender_->CreateAnimation(PAS_Jump, IMGKEY_ChangImage, 36, 42, 50, false, 0);         // Á¡ÇÁ
-  pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_ChangImage, 82, 89, 50, false, 0);    // ¹ßÂ÷±â
-  pRender_->CreateAnimation(PAS_HitHigh, IMGKEY_ChangImage, 310, 314, 50, false, 0);     //
-  pRender_->CreateAnimation(PAS_HitLow, IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
-  pRender_->CreateAnimation(PAS_HitStrong, IMGKEY_ChangImage,
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_NONE),(IMGTYPE_ChangImage | IMGMOD_NONE), 8, 13, 50, true, 8);  // ¾ÆÀÌµé
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_NONE),(IMGTYPE_ChangImage | IMGMOD_NONE), 14, 20, 50, true, 16);  // ¾É±â.
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 23, 32, 50, true, 23);  // -> °È±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 23, 32, 20, true, 23);        // ->-> ¶Ù±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 36, 42, 50, false, 0);       // Á¡ÇÁ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 82, 89, 50, false, 0);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 310, 314, 50, false, 0);  //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 315, 319, 50, false, 0);   //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE),
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
-  pRender_->CreateAnimation(PAS_HitWhileJumping, 4, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
-  pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_ChangImage, 8, 13, 50, true, 8);           // ¾ÆÀÌµé
-  pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_ChangImage, 14, 20, 50, true, 16);     // ¾É±â.
-  pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_ChangImage, 23, 32, 50, true, 23);    // -> °È±â
-  pRender_->CreateAnimation(-PAS_BackWalk, -IMGKEY_ChangImage, 32, 23, 50, true, 32);     // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_ChangImage, 33, 35, 50, false, 0);     // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation(-PAS_Run, -IMGKEY_ChangImage, 23, 32, 20, true, 23);          // ->-> ¶Ù±â
-  pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_ChangImage, 36, 42, 50, false, 0);         // Á¡ÇÁ
-  pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_ChangImage, 82, 89, 50, false, 0);    // ¹ßÂ÷±â
-  pRender_->CreateAnimation(-PAS_HitHigh, -IMGKEY_ChangImage, 310, 314, 50, false, 0);     //
-  pRender_->CreateAnimation(-PAS_HitLow, -IMGKEY_ChangImage, 315, 319, 50, false, 0);  //
-  pRender_->CreateAnimation(-PAS_HitStrong, -IMGKEY_ChangImage,
-                            {339, 335, 336, 337, 338, /*335, 336, 337, 338,*/ 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
-                            {80, 80, 80, 80, 80, 80, /*50, 50, 50, 50,*/ 80, 80, 80, 80, 80, 80, 80, 80, 80},
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 8, 13, 50, true, 8);        // ¾ÆÀÌµé
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 14, 20, 50, true, 16);  // ¾É±â.
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 23, 32, 50, true, 23);  // -> °È±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 23, 32, 20, true, 23);        // ->-> ¶Ù±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 36, 42, 50, false, 0);       // Á¡ÇÁ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 82, 89, 50, false, 0);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 310, 314, 50, false, 0);  //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 315, 319, 50, false, 0);   //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED),
+                            {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
+                            {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
-  pRender_->CreateAnimation(-PAS_HitWhileJumping, -IMGKEY_ChangImage, {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   pRender_->SetTransparentColor(changTransparentColor);
-  UpdateAnimState(PAS_Idle);
+  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   // STATE
-  if (false == pStateComponent_->RegistState(PAS_Idle, PS_Idle, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_SeatDown, PS_Seat, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_SeatUp, PS_Seat, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_FrontWalk, PS_Move, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_BackWalk, PS_Move, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_BackStep, PS_Move, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_Run, PS_Move, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_RunEnd, PS_Move, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_Jump, PS_Jump, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_HeavyKick, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_HitHigh, PS_Hit, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_HitLow, PS_Hit, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_HitStrong, PS_Hit, false, false)) {
-    return;
-  }
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, PS_Idle, true, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, PS_Seat, true, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, PS_Seat, true, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, PS_Move, true, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, PS_Move, true, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, PS_Move, false, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, PS_Move, true, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, PS_Move, false, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, PS_Jump, false, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, PS_Attack, false, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitHigh, PS_Hit, false, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, PS_Hit, false, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, PS_Hit, false, false);
 
   // DAMAGE
-  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
-    return;
-  }
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
 
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(changTransparentColor);
@@ -128,17 +100,17 @@ void Chang::CompareInputBitset() {
     // LEFT UP PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
       if (FacingRight()) {
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(false, false);
         return;
       } else {
-        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
-          UpdateAnimState(PAS_Jump);
+        if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
+          UpdateAnimState(PLAYER_ANIMTYPE_Jump);
           pMovementComponent_->JumpForward(false, true);
           pGhostEffect_->On();
           return;
         }
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(false, false);
         return;
       }
@@ -147,17 +119,17 @@ void Chang::CompareInputBitset() {
     // RIGHT UP PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
       if (FacingRight()) {
-        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
-          UpdateAnimState(PAS_Jump);
+        if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
+          UpdateAnimState(PLAYER_ANIMTYPE_Jump);
           pMovementComponent_->JumpForward(true, true);
           pGhostEffect_->On();
           return;
         }
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(true, false);
         return;
       } else {
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(true, false);
         return;
       }
@@ -175,15 +147,15 @@ void Chang::CompareInputBitset() {
     // LEFT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
-        UpdateAnimState(PAS_BackWalk);
+        UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
         pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       } else {
-        if (PAS_Run == animState_) {
+        if (PLAYER_ANIMTYPE_Run == animState_) {
           pMovementComponent_->Run(false/*, pPushBox_->HasHit()*/);
           return;
         }
-        UpdateAnimState(PAS_FrontWalk);
+        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
         pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       }
@@ -194,7 +166,7 @@ void Chang::CompareInputBitset() {
 
     // DOWN PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
-      UpdateAnimState(PAS_SeatDown);
+      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown);
       return;
     }
 
@@ -205,15 +177,15 @@ void Chang::CompareInputBitset() {
     // RIGHT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
       if (FacingRight()) {
-        if (PAS_Run == animState_) {
+        if (PLAYER_ANIMTYPE_Run == animState_) {
           pMovementComponent_->Run(true/*, pPushBox_->HasHit()*/);
           return;
         }
-        UpdateAnimState(PAS_FrontWalk);
+        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
         pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       } else {
-        UpdateAnimState(PAS_BackWalk);
+        UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
         pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
         return;
       }
@@ -227,7 +199,7 @@ void Chang::CompareInputBitset() {
 
     // UP PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
-      UpdateAnimState(PAS_Jump);
+      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
       pMovementComponent_->Jump();
       return;
     }
@@ -238,7 +210,7 @@ void Chang::CompareInputBitset() {
 
     // A PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
-      UpdateAnimState(PAS_HeavyKick);
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick);
     }
 
     // A UP
@@ -263,7 +235,7 @@ void Chang::CompareInputBitset() {
 
     // D PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
-      UpdateAnimState(PAS_HeavyKick);
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick);
       return;
     }
 
@@ -273,16 +245,16 @@ void Chang::CompareInputBitset() {
   }
 
   ///////////////////////////// Else
-  if (PAS_SeatDown == pStateComponent_->GetCurAnimState()) {
-    UpdateAnimState(PAS_SeatUp);
+  if (PLAYER_ANIMTYPE_SeatDown == pStateComponent_->GetCurAnimState()) {
+    UpdateAnimState(PLAYER_ANIMTYPE_SeatUp);
     return;
   }
 
-  if (PAS_Run == pStateComponent_->GetCurAnimState()) {
-    UpdateAnimState(PAS_RunEnd);
+  if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
+    UpdateAnimState(PLAYER_ANIMTYPE_RunEnd);
     return;
   }
 
-  UpdateAnimState(PAS_Idle);
+  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
   return;
 }

@@ -14,7 +14,7 @@
 #include "Iori.h"
 
 Iori::Iori() {
-  playerKeySet_ = { 'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
+  playerKeySet_ = {'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
 }
 
 Iori::~Iori() {
@@ -27,434 +27,165 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   KOFPlayer::Initialize(position, useCameraPosition, flip, opponentPlayer);
 
   // CHARACTER SETTING
-  IImage* pImage = ImgManager::GetIntance()->GetImg(IMGKEY_IoriImage);
+  IImage* pImage = ImgManager::GetIntance()->GetImg(IMGTYPE_IoriImage);
   if (nullptr == pImage) {
     return;
   }
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // RENDERER
-  if (false == pRender_->CreateAnimation(PAS_Idle, IMGKEY_IoriImage, 7, 15, 50, true, 7)) {
-    return;  // ¾ÆÀÌµé
-  }
-  if (false == pRender_->CreateAnimation(PAS_SeatDown, IMGKEY_IoriImage, 16, 23, 50, true, 18)) {
-    return;  // ¾É±â. Down
-  }
-  if (false == pRender_->CreateAnimation(PAS_SeatUp, IMGKEY_IoriImage, 24, 25, 50, false, 24)) {
-    return;  // ¾É±â. Up
-  }
-  if (false == pRender_->CreateAnimation(PAS_FrontWalk, IMGKEY_IoriImage, 27, 34, 50, true, 27)) {
-    return;  // -> °È±â
-  }
-  if (false == pRender_->CreateAnimation(PAS_BackWalk, IMGKEY_IoriImage, 35, 44, 50, true, 35)) {
-    return;  // <- µÚ·Î°¡±â
-  }
-  if (false == pRender_->CreateAnimation(PAS_BackStep, IMGKEY_IoriImage, 45, 48, 50, false, 45)) {
-    return;  // <- <- ¹é½ºÅÇ
-  }
-  if (false == pRender_->CreateAnimation(PAS_Run, IMGKEY_IoriImage, 49, 57, 50, true, 51)) {
-    return;  // ->-> ¶Ù±â Start
-  }
-  if (false == pRender_->CreateAnimation(PAS_RunEnd, IMGKEY_IoriImage, 58, 60, 50, false, 59)) {
-    return;  // ->-> ¶Ù±â Stop
-  }
-  if (false == pRender_->CreateAnimation(PAS_Jump, IMGKEY_IoriImage, 61, 69, 50, false, 61)) {
-    return;  // Á¡ÇÁ
-  }
-  if (false == pRender_->CreateAnimation(PAS_HeavyKick, IMGKEY_IoriImage, 108, 117, 50, false, 108)) {
-    return;  // °­ ¹ßÂ÷±â
-  }
-  if (false == pRender_->CreateAnimation(PAS_LightKick, IMGKEY_IoriImage, 94, 98, 50, false, 94)) {
-    return;  // ¾à ¹ßÂ÷±â
-  }
-  if (false == pRender_->CreateAnimation(PAS_HeavyPunch, IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
-    return;  // °­ ÆÝÄ¡
-  }
-  if (false == pRender_->CreateAnimation(PAS_LightPunch, IMGKEY_IoriImage, 88, 93, 50, false, 88)) {
-    return;  // ¾à ÆÝÄ¡
-  }
-  if (false == pRender_->CreateAnimation(IOAS_108ShikiYamiBarai, IMGKEY_IoriImage, 223, 230, 50, false, 223)) {
-    return;  // Ä¿¸Çµå Å×½ºÆ®.
-  }
-  if (false == pRender_->CreateAnimation(IOAS_GaishikiMutan_1, IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
-    return;  // ¿Ü½Ä ¸ùÅº_1
-  }
-  if (false == pRender_->CreateAnimation(IOAS_GaishikiMutan_2, IMGKEY_IoriImage, 160, 164, 50, false, 160)) {
-    return;  // ¿Ü½Ä ¸ùÅº_2
-  }
-  if (false == pRender_->CreateAnimation(IOAS_Shinigami, IMGKEY_IoriImage, 136, 144, 50, false, 136)) {
-    return;  // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
-  }
-  if (false == pRender_->CreateAnimation(IOAS_HyakushikiOniyaki, IMGKEY_IoriImage, 276, 291, 50, false, 276)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_1, IMGKEY_IoriImage, 255, 261, 50, false, 255)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_2, IMGKEY_IoriImage, 262, 268, 50, false, 262)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(IOAS_127ShikiAoiHana_3, IMGKEY_IoriImage, 269, 275, 50, false, 269)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(IOAS_UltimateCasting, IMGKEY_IoriImage, 344, 347, 100, false, 344)) {
-    return;  // ±Ã±Ø±â Ä³½ºÆÃ
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_1, IMGKEY_IoriImage, 70, 77, 20, false, 70)) {
-    return;  // ±Ã±Ø±â ´ë½¬  // ÀÌ°Å ´Ù¸¥ ±â¼úÀÌ¶û °ãÄ¡³ª? °ãÄ¡¸é ÀÌ¸§ Á¶Á¤.
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_2, IMGKEY_IoriImage, 118, 122, 20, false, 118)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_3, IMGKEY_IoriImage, 88, 92, 20, false, 88)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_4, IMGKEY_IoriImage, 128, 135, 20, false, 128)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_5, IMGKEY_IoriImage, 223, 229, 20, false, 223)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_6, IMGKEY_IoriImage, 99, 106, 20, false, 99)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_7, IMGKEY_IoriImage, 159, 163, 20, false, 159)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_8, IMGKEY_IoriImage, 99, 107, 20, false, 99)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(IOAS_1211ShikiYaOtome_9, IMGKEY_IoriImage, 347, 352, 250, false, 347)) {
-    return;  //
-  }
+  bool debugFlag = true;
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 7, 15, 50, true, 7);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 16, 23, 50, true, 18);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 24, 25, 50, false, 24);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 27, 34, 50, true, 27);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 35, 44, 50, true, 35);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 45, 48, 50, false, 45);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 49, 57, 50, true, 51);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 58, 60, 50, false, 59);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 61, 69, 50, false, 61);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 108, 117, 50, false, 108);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 94, 98, 50, false, 94);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 93, 50, false, 88);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 230, 50, false, 223);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 160, 164, 50, false, 160);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 136, 144, 50, false, 136);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 276, 291, 50, false, 276);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 255, 261, 50, false, 255);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 262, 268, 50, false, 262);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_3| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 269, 275, 50, false, 269);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_UltimateCasting | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 344, 347, 100, false, 344);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_1| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 70, 77, 20, false, 70);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_2| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 118, 122, 20, false, 118);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_3| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 92, 20, false, 88);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_4| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 128, 135, 20, false, 128);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_5| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 229, 20, false, 223);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_6| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 106, 20, false, 99);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_7| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 159, 163, 20, false, 159);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 20, false, 99);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9| ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 347, 352, 250, false, 347);
 
-  // RENDERER
-  if (false == pRender_->CreateAnimation(-PAS_Idle, -IMGKEY_IoriImage, 7, 15, 50, true, 7)) {
-    return;  // ¾ÆÀÌµé
-  }
-  if (false == pRender_->CreateAnimation(-PAS_SeatDown, -IMGKEY_IoriImage, 16, 23, 50, true, 18)) {
-    return;  // ¾É±â. Down
-  }
-  if (false == pRender_->CreateAnimation(-PAS_SeatUp, -IMGKEY_IoriImage, 24, 25, 50, false, 24)) {
-    return;  // ¾É±â. Up
-  }
-  if (false == pRender_->CreateAnimation(-PAS_FrontWalk, -IMGKEY_IoriImage, 27, 34, 50, true, 27)) {
-    return;  // -> °È±â
-  }
-  if (false == pRender_->CreateAnimation(-PAS_BackWalk, -IMGKEY_IoriImage, 35, 44, 50, true, 35)) {
-    return;  // <- µÚ·Î°¡±â
-  }
-  if (false == pRender_->CreateAnimation(-PAS_BackStep, -IMGKEY_IoriImage, 45, 48, 50, false, 45)) {
-    return;  // <- <- ¹é½ºÅÇ
-  }
-  if (false == pRender_->CreateAnimation(-PAS_Run, -IMGKEY_IoriImage, 49, 57, 50, true, 51)) {
-    return;  // ->-> ¶Ù±â Start
-  }
-  if (false == pRender_->CreateAnimation(-PAS_RunEnd, -IMGKEY_IoriImage, 58, 60, 50, false, 59)) {
-    return;  // ->-> ¶Ù±â Stop
-  }
-  if (false == pRender_->CreateAnimation(-PAS_Jump, -IMGKEY_IoriImage, 61, 69, 50, false, 61)) {
-    return;  // Á¡ÇÁ
-  }
-  if (false == pRender_->CreateAnimation(-PAS_HeavyKick, -IMGKEY_IoriImage, 108, 117, 50, false, 108)) {
-    return;  // °­ ¹ßÂ÷±â
-  }
-  if (false == pRender_->CreateAnimation(-PAS_LightKick, -IMGKEY_IoriImage, 94, 98, 50, false, 94)) {
-    return;  // ¾à ¹ßÂ÷±â
-  }
-  if (false == pRender_->CreateAnimation(-PAS_HeavyPunch, -IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
-    return;  // °­ ÆÝÄ¡
-  }
-  if (false == pRender_->CreateAnimation(-PAS_LightPunch, -IMGKEY_IoriImage, 88, 93, 50, false, 88)) {
-    return;  // ¾à ÆÝÄ¡
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_108ShikiYamiBarai, -IMGKEY_IoriImage, 223, 230, 50, false, 223)) {
-    return;  // Ä¿¸Çµå Å×½ºÆ®.
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_GaishikiMutan_1, -IMGKEY_IoriImage, 99, 107, 50, false, 99)) {
-    return;  // ¿Ü½Ä ¸ùÅº_1
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_GaishikiMutan_2, -IMGKEY_IoriImage, 160, 164, 50, false, 160)) {
-    return;  // ¿Ü½Ä ¸ùÅº_2
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_Shinigami, -IMGKEY_IoriImage, 136, 144, 50, false, 136)) {
-    return;  // ¿Ü½Ä ±¤ºÎ À½ "»ç½Å"
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_HyakushikiOniyaki, -IMGKEY_IoriImage, 276, 291, 50, false, 276)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_127ShikiAoiHana_1, -IMGKEY_IoriImage, 255, 261, 50, false, 255)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_127ShikiAoiHana_2, -IMGKEY_IoriImage, 262, 268, 50, false, 262)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_127ShikiAoiHana_3, -IMGKEY_IoriImage, 269, 275, 50, false, 269)) {
-    return;  // ¹é½Ä ±Í½Å ÅÂ¿ì±â
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_UltimateCasting, -IMGKEY_IoriImage, 344, 347, 100, false, 344)) {
-    return;  // ±Ã±Ø±â Ä³½ºÆÃ
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_1, -IMGKEY_IoriImage, 70, 77, 20, false, 70)) {
-    return;  // ±Ã±Ø±â ´ë½¬  // ÀÌ°Å ´Ù¸¥ ±â¼úÀÌ¶û °ãÄ¡³ª? °ãÄ¡¸é ÀÌ¸§ Á¶Á¤.
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_2, -IMGKEY_IoriImage, 118, 122, 20, false, 118)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_3, -IMGKEY_IoriImage, 88, 92, 20, false, 88)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_4, -IMGKEY_IoriImage, 128, 135, 20, false, 128)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_5, -IMGKEY_IoriImage, 223, 229, 20, false, 223)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_6, -IMGKEY_IoriImage, 99, 106, 20, false, 99)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_7, -IMGKEY_IoriImage, 159, 163, 20, false, 159)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_8, -IMGKEY_IoriImage, 99, 107, 20, false, 99)) {
-    return;  //
-  }
-  if (false == pRender_->CreateAnimation(-IOAS_1211ShikiYaOtome_9, -IMGKEY_IoriImage, 347, 352, 250, false, 347)) {
-    return;  //
-  }
-
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 7, 15, 50, true, 7);      // ¾ÆÀÌµé
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 16, 23, 50, true, 18);  // ¾É±â. Down
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 24, 25, 50, false, 24);   // ¾É±â. Up
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 27, 34, 50, true, 27);  // -> °È±â
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 35, 44, 50, true, 35);   // <- µÚ·Î°¡±â
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 45, 48, 50, false, 45);  // <- <- ¹é½ºÅÇ
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 49, 57, 50, true, 51);        // ->-> ¶Ù±â Start
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 58, 60, 50, false, 59);    // ->-> ¶Ù±â Stop
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 61, 69, 50, false, 61);      // Á¡ÇÁ
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 108, 117, 50, false, 108);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 94, 98, 50, false, 94);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 93, 50, false, 88);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 230, 50, false, 223);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 160, 164, 50, false, 160);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 136, 144, 50, false, 136);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 276, 291, 50, false, 276);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 255, 261, 50, false, 255);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 262, 268, 50, false, 262);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_3 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 269, 275, 50, false, 269);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_UltimateCasting | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 344, 347, 100, false, 344);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 70, 77, 20, false, 70);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 118, 122, 20, false, 118);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_3 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 92, 20, false, 88);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_4 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 128, 135, 20, false, 128);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_5 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 229, 20, false, 223);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_6 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 106, 20, false, 99);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_7 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 159, 163, 20, false, 159);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 20, false, 99);
+  debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 347, 352, 250, false, 347);
 
   pRender_->SetTransparentColor(ioriTransparentColor);
-  UpdateAnimState(PAS_Idle);
+  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   // STATE
-  if (false == pStateComponent_->RegistState(PAS_Idle, PS_Idle, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_SeatDown, PS_Seat, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_SeatUp, PS_Seat, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_FrontWalk, PS_Move, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_BackWalk, PS_Move, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_BackStep, PS_Move, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_Run, PS_Move, true, true)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_RunEnd, PS_Move, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_Jump, PS_Jump, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_HeavyKick, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_LightKick, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_HeavyPunch, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(PAS_LightPunch, PS_Attack, false, false)) {
-    return;
-  }
-
-  if (false == pStateComponent_->RegistState(IOAS_108ShikiYamiBarai, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_GaishikiMutan_1, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_GaishikiMutan_2, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_Shinigami, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_HyakushikiOniyaki, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_1, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_2, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_127ShikiAoiHana_3, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_UltimateCasting, PS_None, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_1, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_2, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_3, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_4, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_5, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_6, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_7, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_8, PS_Attack, false, false)) {
-    return;
-  }
-  if (false == pStateComponent_->RegistState(IOAS_1211ShikiYaOtome_9, PS_Attack, false, false)) {
-    return;
-  }
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, PS_Idle, true, true);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, PS_Seat, true, true);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, PS_Seat, true, true);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, PS_Move, true, true);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, PS_Move, true, true);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, PS_Move, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, PS_Move, true, true);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, PS_Move, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, PS_Jump, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_2, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_Shinigami, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_HyakushikiOniyaki, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_1, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_2, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_3, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_UltimateCasting, PS_None, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_1, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_2, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_3, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_4, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_5, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_6, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_7, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_8, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_9, PS_Attack, false, false);
 
   // DAMAGE
-  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(PAS_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(PAS_HeavyPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(PAS_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 5.0f, {20.0f, 60.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {5.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 40.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 15.0f, {20.0f, 80.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 20.0f, {40.0f, 80.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {10.0f, 00.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2,  5.0f, {10.0f, 00.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 80.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2,  5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pAttackTable_->RegistAttackInfo(IOAS_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFKEY_Iori_Explosion, 10.0f, {45.0f, 60.0f})) {
-    return;
-  }
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 5.0f, {20.0f, 60.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {5.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 40.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 15.0f, {20.0f, 80.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 20.0f, {40.0f, 80.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {10.0f, 00.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {10.0f, 00.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 80.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFKEY_Iori_Explosion, 10.0f, {45.0f, 60.0f});
 
   // SKILL
-  if (false == pSkillComponent_->RegistSkill(IOSK_GaishikiMutan, &Iori::GaishikiMutan, this)) {
-    return;
-  }
-  if (false == pSkillComponent_->RegistSkill(IOSK_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this)) {
-    return;
-  }
-  if (false == pSkillComponent_->RegistSkill(IOSK_Shinigami, &Iori::Shinigami, this)) {
-    return;
-  }
-  if (false == pSkillComponent_->RegistSkill(IOSK_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this)) {
-    return;
-  }
-  if (false == pSkillComponent_->RegistSkill(IOSK_127ShikiAoiHana, &Iori::ShikiAoiHana127, this)) {
-    return;
-  }
-  if (false == pSkillComponent_->RegistSkill(IOSK_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this)) {
-    return;
-  }
+  debugFlag = pSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &Iori::GaishikiMutan, this);
+  debugFlag = pSkillComponent_->RegistSkill(IORI_SKILL_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this);
+  debugFlag = pSkillComponent_->RegistSkill(IORI_SKILL_Shinigami, &Iori::Shinigami, this);
+  debugFlag = pSkillComponent_->RegistSkill(IORI_SKILL_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this);
+  debugFlag = pSkillComponent_->RegistSkill(IORI_SKILL_127ShikiAoiHana, &Iori::ShikiAoiHana127, this);
+  debugFlag = pSkillComponent_->RegistSkill(IORI_SKILL_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this);
 
   // COMMAND
-  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this))) {
-    return;
-  }
-  if (false == pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this))) {
-    return;
-  }
+ debugFlag = pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this));
+ debugFlag = pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this));
 
   // PROJECTILE
-  if (false == pProjectileComponent_->RegistProjectileInfo(1, IMGKEY_IoriImage, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f})) {
-    return;
-  }
-  if (false == pProjectileComponent_->RegistProjectileInfo(2, IMGKEY_IoriImage, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f})) {
-    return;
-  }
-  if (false == pProjectileComponent_->RegistProjectileInfo(3, IMGKEY_IoriImage, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f})) {
-    return;
-  }
+  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_108ShikiYamiBarai, IMGTYPE_IoriImage, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f});
+  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_Low, IMGTYPE_IoriImage, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f});
+  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_High, IMGTYPE_IoriImage, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f});
 
   // GHOST EFFECT
   pGhostEffect_->SetTransparentColor(ioriTransparentColor);
 }
-
 
 void Iori::CompareInputBitset() {
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
@@ -463,17 +194,17 @@ void Iori::CompareInputBitset() {
     // LEFT UP PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
       if (FacingRight()) {
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(false, false);
         return;
       } else {
-        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
-          UpdateAnimState(PAS_Jump);
+        if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
+          UpdateAnimState(PLAYER_ANIMTYPE_Jump);
           pMovementComponent_->JumpForward(false, true);
           pGhostEffect_->On();
           return;
         }
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(false, false);
         return;
       }
@@ -482,17 +213,17 @@ void Iori::CompareInputBitset() {
     // RIGHT UP PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
       if (FacingRight()) {
-        if (PAS_Run == pStateComponent_->GetCurAnimState()) {
-          UpdateAnimState(PAS_Jump);
+        if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
+          UpdateAnimState(PLAYER_ANIMTYPE_Jump);
           pMovementComponent_->JumpForward(true, true);
           pGhostEffect_->On();
           return;
         }
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(true, false);
         return;
       } else {
-        UpdateAnimState(PAS_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
         pMovementComponent_->JumpForward(true, false);
         return;
       }
@@ -501,8 +232,8 @@ void Iori::CompareInputBitset() {
     // RIGHT A - PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
       if (FacingRight()) {
-        UpdateAnimState(IOAS_GaishikiMutan_1);
-        pSkillComponent_->ActivateSkill(IOSK_GaishikiMutan);
+        UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_1);
+        pSkillComponent_->ActivateSkill(IORI_SKILL_GaishikiMutan);
         return;
       }
     }
@@ -510,8 +241,8 @@ void Iori::CompareInputBitset() {
     // RIGHT B - PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100100"))) {
       if (FacingRight()) {
-        UpdateAnimState(IOAS_Shinigami);
-        pSkillComponent_->ActivateSkill(IOSK_Shinigami);
+        UpdateAnimState(IORI_ANIMTYPE_Shinigami);
+        pSkillComponent_->ActivateSkill(IORI_SKILL_Shinigami);
         return;
       }
     }
@@ -519,15 +250,15 @@ void Iori::CompareInputBitset() {
     // LEFT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
       if (FacingRight()) {
-        UpdateAnimState(PAS_BackWalk);
+        UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
         pMovementComponent_->MoveBack(FacingRight());
         return;
       } else {
-        if (PAS_Run == animState_) {
+        if (PLAYER_ANIMTYPE_Run == animState_) {
           pMovementComponent_->Run(false);
           return;
         }
-        UpdateAnimState(PAS_FrontWalk);
+        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
         pMovementComponent_->Move(FacingRight());
         return;
       }
@@ -538,7 +269,7 @@ void Iori::CompareInputBitset() {
 
     // DOWN PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
-      UpdateAnimState(PAS_SeatDown);
+      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown);
       return;
     }
 
@@ -549,16 +280,16 @@ void Iori::CompareInputBitset() {
     // RIGHT PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
       if (FacingRight()) {
-        if (PAS_Run == animState_) {
-          pMovementComponent_->Run(true/*, pPushBox_->HasHit()*/);
+        if (PLAYER_ANIMTYPE_Run == animState_) {
+          pMovementComponent_->Run(true /*, pPushBox_->HasHit()*/);
           return;
         }
-        UpdateAnimState(PAS_FrontWalk);
-        pMovementComponent_->Move(FacingRight()/*, pPushBox_->HasHit()*/);
+        UpdateAnimState(PLAYER_ANIMTYPE_FrontWalk);
+        pMovementComponent_->Move(FacingRight() /*, pPushBox_->HasHit()*/);
         return;
       } else {
-        UpdateAnimState(PAS_BackWalk);
-        pMovementComponent_->MoveBack(FacingRight()/*, pPushBox_->HasHit()*/);
+        UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
+        pMovementComponent_->MoveBack(FacingRight() /*, pPushBox_->HasHit()*/);
         return;
       }
     }
@@ -571,7 +302,7 @@ void Iori::CompareInputBitset() {
 
     // UP PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
-      UpdateAnimState(PAS_Jump);
+      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
       pMovementComponent_->Jump();
       return;
     }
@@ -582,7 +313,7 @@ void Iori::CompareInputBitset() {
 
     // A PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
-      UpdateAnimState(PAS_LightPunch);
+      UpdateAnimState(PLAYER_ANIMTYPE_LightPunch);
       return;
     }
 
@@ -592,7 +323,7 @@ void Iori::CompareInputBitset() {
 
     // B PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
-      UpdateAnimState(PAS_LightKick);
+      UpdateAnimState(PLAYER_ANIMTYPE_LightKick);
       return;
     }
 
@@ -602,7 +333,7 @@ void Iori::CompareInputBitset() {
 
     // C PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
-      UpdateAnimState(PAS_HeavyPunch);
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch);
       return;
     }
 
@@ -612,7 +343,7 @@ void Iori::CompareInputBitset() {
 
     // D PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
-      UpdateAnimState(PAS_HeavyKick);
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick);
       return;
     }
 
@@ -622,42 +353,42 @@ void Iori::CompareInputBitset() {
   }
 
   ///////////////////////////// Else
-  if (PAS_SeatDown == pStateComponent_->GetCurAnimState()) {
-    UpdateAnimState(PAS_SeatUp);
+  if (PLAYER_ANIMTYPE_SeatDown == pStateComponent_->GetCurAnimState()) {
+    UpdateAnimState(PLAYER_ANIMTYPE_SeatUp);
     return;
   }
 
-  if (PAS_Run == pStateComponent_->GetCurAnimState()) {
-    UpdateAnimState(PAS_RunEnd);
+  if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
+    UpdateAnimState(PLAYER_ANIMTYPE_RunEnd);
     return;
   }
 
-  UpdateAnimState(PAS_Idle);
+  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
   return;
 }
 
 void Iori::Command_1() {
-  UpdateAnimState(IOAS_108ShikiYamiBarai);
-  pSkillComponent_->ActivateSkill(IOSK_108ShikiYamiBarai);
+  UpdateAnimState(IORI_ANIMTYPE_108ShikiYamiBarai);
+  pSkillComponent_->ActivateSkill(IORI_SKILL_108ShikiYamiBarai);
 }
 
 void Iori::Command_2() {
-  UpdateAnimState(PAS_BackStep);
+  UpdateAnimState(PLAYER_ANIMTYPE_BackStep);
   pMovementComponent_->BackStep((FacingRight()));
 }
 
 void Iori::Command_3() {
-  UpdateAnimState(PAS_Run);
+  UpdateAnimState(PLAYER_ANIMTYPE_Run);
 }
 
 void Iori::Command_4() {
-  UpdateAnimState(IOAS_HyakushikiOniyaki);
-  pSkillComponent_->ActivateSkill(IOSK_HyakushikiOniyaki);
+  UpdateAnimState(IORI_ANIMTYPE_HyakushikiOniyaki);
+  pSkillComponent_->ActivateSkill(IORI_SKILL_HyakushikiOniyaki);
 }
 
 void Iori::Command_5() {
-  UpdateAnimState(IOAS_127ShikiAoiHana_1);
-  pSkillComponent_->ActivateSkill(IOSK_127ShikiAoiHana);
+  UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_1);
+  pSkillComponent_->ActivateSkill(IORI_SKILL_127ShikiAoiHana);
 }
 
 void Iori::Command_6() {
@@ -676,13 +407,13 @@ void Iori::Command_6() {
     return;
   }
 
-  UpdateAnimState(IOAS_UltimateCasting);
-  pSkillComponent_->ActivateSkill(IOSK_1211ShikiYaOtome);
+  UpdateAnimState(IORI_ANIMTYPE_UltimateCasting);
+  pSkillComponent_->ActivateSkill(IORI_SKILL_1211ShikiYaOtome);
 
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
   pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
-  pBackGroundMask->FadeOut(IMGKEY_BlackBoardImage, 50.0f);
+  pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
 }
 
 void Iori::GaishikiMutan() {
@@ -693,7 +424,7 @@ void Iori::GaishikiMutan() {
 
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
-  if (IOAS_GaishikiMutan_1 == pStateComponent_->GetCurAnimState()) {
+  if (IORI_ANIMTYPE_GaishikiMutan_1 == pStateComponent_->GetCurAnimState()) {
     if (100 <= curImageIndex && 104 >= curImageIndex) {
       if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
         pSkillComponent_->SetMiscTemp(true);
@@ -701,7 +432,7 @@ void Iori::GaishikiMutan() {
     }
 
     if (true == pAttackBox_->HasHit() && 105 == curImageIndex && true == pSkillComponent_->GetMiscTemp()) {
-      UpdateAnimState(IOAS_GaishikiMutan_2);
+      UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_2);
     }
   }
 }
@@ -723,7 +454,7 @@ void Iori::ShikiYamiBarai108() {
   }
 
   if (226 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(1, FacingRight());
+    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_108ShikiYamiBarai, FacingRight());
   }
 }
 
@@ -760,11 +491,11 @@ void Iori::HyakushikiOniyaki() {
 
   if (281 == curImageIndex) {
     pMovementComponent_->Jump(FacingRight(), {0.3f, 60.0f});
-    pProjectileComponent_->FireProjectile(2, FacingRight());
+    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low, FacingRight());
   }
 
   if (284 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(3, FacingRight());
+    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High, FacingRight());
   }
 }
 
@@ -795,7 +526,7 @@ void Iori::ShikiAoiHana127() {
     pMovementComponent_->Jump(FacingRight(), {0.6f, 60.0f});
   }
 
-  if (IOAS_127ShikiAoiHana_1 == pStateComponent_->GetCurAnimState()) {
+  if (IORI_ANIMTYPE_127ShikiAoiHana_1 == pStateComponent_->GetCurAnimState()) {
     if (257 <= curImageIndex && 260 >= curImageIndex) {
       if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000")) ||
           true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
@@ -803,21 +534,21 @@ void Iori::ShikiAoiHana127() {
       }
 
       if (pAttackBox_->HasHit() && pSkillComponent_->GetMiscTemp() == true) {
-        UpdateAnimState(IOAS_127ShikiAoiHana_2);
+        UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_2);
         pSkillComponent_->SetMiscTemp(false);
       }
     }
   }
 
-  if (IOAS_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState()) {
-    if (IOAS_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState() && 264 <= curImageIndex && 267 >= curImageIndex) {
+  if (IORI_ANIMTYPE_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState()) {
+    if (IORI_ANIMTYPE_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState() && 264 <= curImageIndex && 267 >= curImageIndex) {
       if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000")) ||
           true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
         pSkillComponent_->SetMiscTemp(true);
       }
 
       if (pAttackBox_->HasHit() && true == pSkillComponent_->GetMiscTemp()) {
-        UpdateAnimState(IOAS_127ShikiAoiHana_3);
+        UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_3);
       }
     }
   }
@@ -850,14 +581,14 @@ void Iori::ShikiYaOtome1211() {
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
   switch (pStateComponent_->GetCurAnimState()) {
-    case IOAS_UltimateCasting: {
+    case IORI_ANIMTYPE_UltimateCasting: {
       if (347 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_1);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_1);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_1: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_1: {
       if (70 == curImageIndex) {
         pKOFLevel->DefreezeActors();
         pBackGroundMask->FadeIn(50);
@@ -870,105 +601,105 @@ void Iori::ShikiYaOtome1211() {
       }
 
       if (pAttackBox_->HasHit()) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_2);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_2);
         pOpponentPlayer_->SetControlLocked(true);
         pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_2: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_2: {
       if (pOpponentPlayer_->GetPosition().X - GetPosition().X <= 300.0f * FacingRightFlag()) {
         pMovementComponent_->StopDash();
       }
 
       if (120 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
 
       if (122 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_3);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_3);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_3: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_3: {
       if (90 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
       if (92 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_4);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_4);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_4: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_4: {
       if (135 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_5);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_5);
         break;
       }
 
       if (138 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_5: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_5: {
       if (227 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
 
       if (229 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_6);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_6);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_6: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_6: {
       if (102 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
       if (106 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_7);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_7);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_7: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_7: {
       if (161 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
       if (163 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_8);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_8);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_8: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_8: {
       if (102 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
       if (106 == curImageIndex) {
-        UpdateAnimState(IOAS_1211ShikiYaOtome_9);
+        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_9);
         break;
       }
       break;
     }
-    case IOAS_1211ShikiYaOtome_9: {
+    case IORI_ANIMTYPE_1211ShikiYaOtome_9: {
       if (349 == curImageIndex) {
         const Vector& ioriPosition = GetPosition();
-        pOpponentPlayer_->SetPosition(ioriPosition + Vector{100.0f, -50.0f} * FacingRightFlag());
+        pOpponentPlayer_->SetPosition(ioriPosition + Vector{100.0f * FacingRightFlag(), -50.0f});
         break;
       }
       if (351 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGKEY_WhiteBoardImage, 50);
+        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;
       }
       if (352 == curImageIndex) {
@@ -976,7 +707,7 @@ void Iori::ShikiYaOtome1211() {
         break;
       }
       break;
-    }              
+    }
     default:
       break;
   }

@@ -1,19 +1,26 @@
 #pragma once
 #include "stdafx.h"
 
-enum IMAGE_KEY
+enum IMAGE_TYPE : unsigned long long
 {
-  IMGKEY_MouseImage = 1,
-  IMGKEY_BackGoundImage,
-  IMGKEY_BlackBoardImage,
-  IMGKEY_WhiteBoardImage,
-  IMGKEY_IoriImage,
-  IMGKEY_ChangImage,
-  IMGKEY_HealthBarImage,
-  IMGKEY_HealthImage,
-  IMGKEY_HitEffectImage,
-  IMGKEY_CastingEffectImage
+  IMGTYPE_MouseImage = 1ULL,
+  IMGTYPE_BackGoundImage,
+  IMGTYPE_BlackBoardImage,
+  IMGTYPE_WhiteBoardImage,
+  IMGTYPE_IoriImage,
+  IMGTYPE_ChangImage,
+  IMGTYPE_HealthBarImage,
+  IMGTYPE_HealthImage,
+  IMGTYPE_HitEffectImage,
+  IMGTYPE_CastingEffectImage,
 };
+
+enum IMAGE_MODIFIER : unsigned long long {
+  IMGMOD_NONE = 0,
+  IMGMOD_FLIPPED = 1ULL << 63,
+  IMGMOD_COLOR_CHANGED = 1ULL << 62
+};
+
 
 enum EFFECT_KEY
 {
@@ -34,3 +41,9 @@ enum EFFECT_KEY
 
 static Color8Bit ioriTransparentColor = Color8Bit{169, 139, 150, 0};
 static Color8Bit changTransparentColor = Color8Bit{17, 91, 124, 0};
+
+
+
+unsigned long long MakeKey(unsigned long long type, unsigned long long modify) {
+  return type | modify;
+}

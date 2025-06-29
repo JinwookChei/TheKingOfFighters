@@ -27,7 +27,7 @@ KOFPlayer::KOFPlayer()
       pProjectileComponent_(nullptr),
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
-      animState_(PAS_Idle),
+      animState_(PLAYER_ANIMTYPE_Idle),
       prevImageIndex_(0),
       isFacingRight_(true),
       isAtMapEdge_(false),
@@ -161,9 +161,15 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, bool 
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::UpdateAnimState(int animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
+void KOFPlayer::UpdateAnimState(unsigned long long animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   animState_ = animState;
-  pRender_->ChangeAnimation(animState_ * FacingRightFlag(), startFrame, time);
+  if (true == FacingRight()) {
+    pRender_->ChangeAnimation((animState_ | ANIMMOD_NONE), startFrame, time);
+  }
+  else {
+    pRender_->ChangeAnimation((animState_ | ANIMMOD_FLIPPED), startFrame, time);
+  }
+
   pStateComponent_->ChangeState(animState_);
 
   CollisionReset();
@@ -178,26 +184,26 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
 
   switch (damageInfo->attackType_) {
     case ATTYPE_HighAttack: {
-      UpdateAnimState(PAS_HitHigh);
+      UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
       pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
     } break;
 
     case ATTYPE_LowAttack: {
-      UpdateAnimState(PAS_HitLow);
+      UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
       pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
     } break;
     case ATTYPE_StrongAttack: {
-      UpdateAnimState(PAS_HitStrong);
+      UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
       pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
     } break;
     case ATTYPE_NormalAttack: {
       if (pHitBoxTop_->HasHit()) {
-        UpdateAnimState(PAS_HitHigh);
+        UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
         pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
       }
 
       if (pHitBoxBottom_->HasHit()) {
-        UpdateAnimState(PAS_HitLow);
+        UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
         pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
       }
     } break;
@@ -615,3 +621,7 @@ bool KOFPlayer::IsControlLocked() const {
 void KOFPlayer::SetControlLocked(bool bLocked) {
   isControlLocked_ = bLocked;
 }
+
+//void KOFPlayer::TestMakeIMGKey(IMAGE_KEY key, IMAGE_MODIFIER mod) {
+//  return (static_cast<unsigned long long>(mod) << 32) | key;
+//}

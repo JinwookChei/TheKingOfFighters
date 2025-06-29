@@ -13,9 +13,9 @@ class BackGroundMask
 
   void FadeIn(float fadeDuration);
 
-  void FadeOut(IMAGE_KEY image, float fadeDuration);
+  void FadeOut(IMAGE_TYPE image, float fadeDuration);
 
-  void FadeInOut(IMAGE_KEY image, float fadeInOutDuration);
+  void FadeInOut(IMAGE_TYPE image, float fadeInOutDuration);
 
  private:
   ImageRenderer* pRender_;

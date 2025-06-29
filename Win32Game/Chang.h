@@ -1,13 +1,5 @@
 #pragma once
 
-// enum ChangAnimState {
-//   CHAS_None = 0,
-//   CHAS_Idle,
-//   CHAS_HitTop,
-//   CHAS_HitBottom,
-//   CHAS_MAX
-// };
-
 class Chang
     : public KOFPlayer {
  public:

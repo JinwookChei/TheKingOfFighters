@@ -16,7 +16,7 @@ BackGroundMask::~BackGroundMask() {
 
 void BackGroundMask::BeginPlay() {
   pRender_ = CreateImageRenderFIFO();
-  pRender_->SetImage(ImgManager::GetIntance()->GetImg(IMGKEY_BlackBoardImage));
+  pRender_->SetImage(ImgManager::GetIntance()->GetImg(IMGTYPE_BlackBoardImage));
   pRender_->SetImageRenderType(ImageRenderType::LeftTop);
   pRender_->SetLocalScale({2.4f, 3.7f});
   pRender_->SetAlpha(0.0f);
@@ -61,7 +61,7 @@ void BackGroundMask::FadeIn(float fadeDuration) {
   onFadeIn_ = true;
 }
 
-void BackGroundMask::FadeOut(IMAGE_KEY image, float fadeDuration) {
+void BackGroundMask::FadeOut(IMAGE_TYPE image, float fadeDuration) {
   if (onFadeOut_ == true) {
     alpha_ = 0.0f;
   }
@@ -73,7 +73,7 @@ void BackGroundMask::FadeOut(IMAGE_KEY image, float fadeDuration) {
   onFadeIn_ = false;
 }
 
-void BackGroundMask::FadeInOut(IMAGE_KEY image, float fadeInOutDuration) {
+void BackGroundMask::FadeInOut(IMAGE_TYPE image, float fadeInOutDuration) {
   FadeOut(image, fadeInOutDuration);
   onFadeInOut_ = true;
 }
