@@ -161,9 +161,8 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, KOFPl
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::UpdateAnimState(unsigned long long animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
+void KOFPlayer::UpdateAnimState(unsigned long long animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) { 
   animState_ = animState;
-  
   if (true == PlayerOnLeft()) {
     isFacingRight_ = true;
     pRender_->ChangeAnimation((animState_ | ANIMMOD_NONE), startFrame, time);
@@ -171,13 +170,6 @@ void KOFPlayer::UpdateAnimState(unsigned long long animState, int startFrame /*=
     isFacingRight_ = false;
     pRender_->ChangeAnimation((animState_ | ANIMMOD_FLIPPED), startFrame, time);
   }
-
-  /*if (true == FacingRight()) {
-    
-  }
-  else {
-    
-  }*/
 
   pStateComponent_->ChangeState(animState_);
 
@@ -649,7 +641,3 @@ bool KOFPlayer::IsControlLocked() const {
 void KOFPlayer::SetControlLocked(bool bLocked) {
   isControlLocked_ = bLocked;
 }
-
-//void KOFPlayer::TestMakeIMGKey(IMAGE_KEY key, IMAGE_MODIFIER mod) {
-//  return (static_cast<unsigned long long>(mod) << 32) | key;
-//}

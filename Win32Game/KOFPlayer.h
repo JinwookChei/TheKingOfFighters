@@ -34,6 +34,10 @@ enum PLAYER_ANIM_TYPE : unsigned long long{
   PLAYER_ANIMTYPE_LightPunch_Seat,
   PLAYER_ANIMTYPE_HeavyKick_Seat,
   PLAYER_ANIMTYPE_LightKick_Seat,
+  PLAYER_ANIMTYPE_HeavyPunch_Jump,
+  PLAYER_ANIMTYPE_LightPunch_Jump,
+  PLAYER_ANIMTYPE_HeavyKick_Jump,
+  PLAYER_ANIMTYPE_LightKick_Jump,
   PLAYER_ANIMTYPE_HitHigh,
   PLAYER_ANIMTYPE_HitLow,
   PLAYER_ANIMTYPE_HitStrong,
@@ -115,10 +119,6 @@ class KOFPlayer
   bool IsControlLocked() const;
 
   void SetControlLocked(bool bLocked);
-
-
-  //void TestMakeIMGKey(IMAGE_KEY key, IMAGE_MODIFIER mod);
-
 
  protected:
   std::array<int, 8> playerKeySet_;
