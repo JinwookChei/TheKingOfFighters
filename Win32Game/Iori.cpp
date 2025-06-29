@@ -48,6 +48,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 94, 98, 50, false, 94);
   debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
   debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 93, 50, false, 88);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 181, 191, 50, false, 181);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 165, 171, 50, false, 165);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 172, 180, 50, false, 172);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 192, 197, 50, false, 192);
   debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 230, 50, false, 223);
   debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
   debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 160, 164, 50, false, 160);
@@ -80,6 +84,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 94, 98, 50, false, 94);
   debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
   debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 93, 50, false, 88);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 181, 191, 50, false, 181);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 165, 171, 50, false, 165);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 172, 180, 50, false, 172);
+  debugFlag = pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 192, 197, 50, false, 192);
   debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 230, 50, false, 223);
   debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
   debugFlag = pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 160, 164, 50, false, 160);
@@ -116,6 +124,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick, PS_Attack, false, false);
   debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch, PS_Attack, false, false);
   debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick_Seat, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick_Seat, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch_Seat, PS_Attack, false, false);
+  debugFlag = pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch_Seat, PS_Attack, false, false);
   debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, PS_Attack, false, false);
   debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, PS_Attack, false, false);
   debugFlag = pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_2, PS_Attack, false, false);
@@ -140,6 +152,10 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, bool flip,
   debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  debugFlag = pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 5.0f, {20.0f, 60.0f});
   debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {5.0f, 0.0f});
   debugFlag = pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 40.0f});
@@ -227,6 +243,27 @@ void Iori::CompareInputBitset() {
         pMovementComponent_->JumpForward(true, false);
         return;
       }
+    }
+
+    // Down A PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01001000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Seat);
+        return;
+    }
+    // Down B PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000100"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightKick_Seat);
+      return;
+    }
+    // Down C PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000010"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_Seat);
+      return;
+    }
+    // Down D PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000001"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_Seat);
+      return;
     }
 
     // RIGHT A - PRESS
