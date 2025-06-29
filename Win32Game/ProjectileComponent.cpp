@@ -42,14 +42,6 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag, bool 
   }
 
   Projectile* newProjectile = level_->SpawnActor<Projectile>(ActorGroupEngineType_Effect);
-  /*pInfo->position_ = Vector({-pInfo->position_.X, pInfo->position_.Y});
-  pInfo->velocity_ = Vector({-pInfo->velocity_.X, pInfo->velocity_.Y});*/
-
-  //newProjectile->SetOwner(owner);
-  //newProjectile->SetProjectileInfo(*pInfo);
-  //newProjectile->SetUseCameraposition(true);
-
-
   if (true == isFacingRight) {
   newProjectile->SetOwner(owner);
   newProjectile->SetProjectileInfo(*pInfo);
@@ -59,6 +51,7 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag, bool 
     ProjectileInfo copyInfo = *pInfo;
     copyInfo.position_ = Vector({-pInfo->position_.X, pInfo->position_.Y});
     copyInfo.velocity_ = Vector({-pInfo->velocity_.X, pInfo->velocity_.Y});
+    copyInfo.imageIndex_ = (pInfo->imageIndex_ | IMGMOD_FLIPPED);
 
     newProjectile->SetOwner(owner);
     newProjectile->SetProjectileInfo(copyInfo);
