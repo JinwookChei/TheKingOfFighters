@@ -111,6 +111,8 @@ class Win32Image final
 
   void __stdcall ExportImageInfoToCSV(const std::string& filepath) const override;
 
+  void __stdcall MakeColorTransparent(const Color8Bit& transColor) override;
+
   void SetPath(std::string_view path);
 
   bool __stdcall Load();

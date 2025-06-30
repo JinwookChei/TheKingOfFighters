@@ -75,7 +75,7 @@ void GhostEffect::Tick(unsigned long long deltaTick) {
   }
 }
 
-bool GhostEffect::Initialize(ImageRenderer* ownerRenderer, int ghostNum, unsigned long long updateTime) {
+bool GhostEffect::Initialize(ImageRenderer* ownerRenderer, int ghostNum, unsigned long long updateTime, float alpha) {
   owner_ = GetOwner();
   if (nullptr == owner_ || ghostNum < 0) {
     return false;
@@ -103,6 +103,7 @@ bool GhostEffect::Initialize(ImageRenderer* ownerRenderer, int ghostNum, unsigne
     }
     ppGhostRenderers_[i]->SetImageRenderType(ownerRenderer->GetImageRenderType());
     ppGhostRenderers_[i]->SetLocalScale(ownerRenderer->GetLocalScale());
+    ppGhostRenderers_[i]->SetAlpha(alpha);
   };
   return true;
 }

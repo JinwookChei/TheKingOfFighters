@@ -180,6 +180,9 @@
     <ClCompile Include="AttackTable.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
+    <ClCompile Include="ImageEditLevel.cpp">
+      <Filter>Contents\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="AttackTable.h">
       <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageEditLevel.h">
+      <Filter>Contents\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

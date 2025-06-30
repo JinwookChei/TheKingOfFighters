@@ -49,16 +49,16 @@ void KOFLevel::BeginPlay() {
 
   IFileImage* whiteBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\WhiteBoard.png", (IMGTYPE_WhiteBoardImage | IMGMOD_NONE));
 
-  IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", (IMGTYPE_IoriImage | IMGMOD_NONE));
+  IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_NONE));
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
 
-  IFileImage* ioriImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", (IMGTYPE_IoriImage | IMGMOD_FLIPPED));
+  IFileImage* ioriImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED));
   ioriImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Iori.csv");
 
-  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", (IMGTYPE_ChangImage | IMGMOD_NONE));
+  IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_NONE));
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
 
-  IFileImage* changImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", (IMGTYPE_ChangImage | IMGMOD_FLIPPED));
+  IFileImage* changImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED));
   changImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Chang.csv");
 
   IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", (IMGTYPE_HealthBarImage | IMGMOD_NONE));
@@ -186,7 +186,7 @@ void KOFLevel::BeginPlay() {
   if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0})) {
     return;
   }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, ioriTransparentColor)) {
+  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, Color8Bit{0,0,0,0}, true, 1.0f)) {
     return;
   }
 

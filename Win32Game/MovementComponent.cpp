@@ -174,6 +174,7 @@ void MovementComponent::Tick(unsigned long long curTick) {
   }
   // Clamp Level Boundary END
 
+
   // Clamp Screen Boundary
   KOFPlayer* oppPlayer = pKOFOwner->GetOpponentPlayer();
   float playerDistance = std::fabs(oppPlayer->GetPosition().X - newPosition.X);

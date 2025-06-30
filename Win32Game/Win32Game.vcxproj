@@ -176,6 +176,7 @@
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="ImageController.cpp" />
+    <ClCompile Include="ImageEditLevel.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Health.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="ImageEditLevel.h" />
     <ClInclude Include="KOFCommon.h" />
     <ClInclude Include="Portrait.h" />
     <ClInclude Include="ImageController.h" />

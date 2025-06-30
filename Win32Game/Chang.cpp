@@ -65,30 +65,25 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
-
-  pRender_->SetTransparentColor(changTransparentColor);
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   // STATE
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, PS_Idle, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, PS_Seat, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, PS_Seat, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, PS_Move, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, PS_Move, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, PS_Move, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, PS_Move, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, PS_Move, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, PS_Jump, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, PS_Attack, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitHigh, PS_Hit, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, PS_Hit, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, PS_Hit, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, {PS_Idle}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, {PS_Seat}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, {PS_Seat}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, {PS_Move}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, {PS_Move}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, {PS_Move}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, {PS_Move}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_Move}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, {PS_Jump}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitHigh, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, {PS_Hit}, false);
 
   // DAMAGE
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
-
-  // GHOST EFFECT
-  pGhostEffect_->SetTransparentColor(changTransparentColor);
 }
 
 void Chang::CompareInputBitset() {

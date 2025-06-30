@@ -1123,6 +1123,20 @@ void __stdcall Win32Image::ExportImageInfoToCSV(const std::string& filepath) con
   outputFile.close();
 }
 
+void __stdcall Win32Image::MakeColorTransparent(const Color8Bit& transColor) {
+  const Vector scale = GetScale();
+
+  for (float i = 0; i < scale.Y; ++i) {
+    for (float j = 0; j < scale.X; ++j) {
+      Color8Bit tempColor;
+      GetPixel(Vector{j, i}, &tempColor);
+      if (tempColor == transColor) {
+        SetPixel(Vector{j, i}, Color8Bit{0, 0, 0, 0});
+      }
+    }
+  }
+}
+
 bool __stdcall Win32Image::Load() {
   if (currentPath_.IsFile()) {
     return LoadFile();

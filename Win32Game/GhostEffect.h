@@ -89,7 +89,7 @@ class GhostEffect final
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool Initialize(ImageRenderer* ownerRenderer, int ghostNum, unsigned long long updateTime);
+  bool Initialize(ImageRenderer* ownerRenderer, int ghostNum, unsigned long long updateTime, float alpha);
 
   void SetTransparentColor(const Color8Bit& transColor);
 

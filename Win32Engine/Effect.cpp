@@ -23,11 +23,14 @@ bool Effect::Initialize() {
   }
 
   pRender_->SetImage(pImage);
-  pRender_->SetTransparentColor(pEffectInfo_->transColor_);
-  pRender_->SetLocalScale({4.0f, 4.0f});
+  pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetImageRenderType(ImageRenderType::Center);
-  // pRender_->CreateAnimation(1, pEffectInfo_->imageIndex_, pEffectInfo_->indices_, pEffectInfo_->intervals_, pEffectInfo_->loop_);
-  // pRender_->ChangeAnimation(1);
+
+  if (pEffectInfo_->isAlphaEffect_) {
+    pRender_->SetAlpha(pEffectInfo_->alpha_);
+  } else {
+    pRender_->SetTransparentColor(pEffectInfo_->transColor_);
+  }
 
   pRender_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Cyan});
   return true;
@@ -80,7 +83,3 @@ EffectInfo* Effect::GetEffectInfo() const {
 void Effect::SetEffectInfo(EffectInfo* effectInfo) {
   pEffectInfo_ = effectInfo;
 }
-
-// LINK_ITEM* Effect::GetEffectLink() const {
-//   return effectLink_;
-// }

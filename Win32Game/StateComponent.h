@@ -1,6 +1,8 @@
 #pragma once
-enum PLAYERSTATE {
-  PS_None = -1,
+#include <bitset>
+#include <initializer_list>
+
+enum PLAYER_STATE {
   PS_Idle = 0,
   PS_Move,
   PS_Jump,
@@ -8,17 +10,16 @@ enum PLAYERSTATE {
   PS_Attack,
   PS_Hit,
   PS_Guard,
+  PS_SkillCasting,
   PS_Max
 };
 
 struct State {
   unsigned long long stateTag_ = 0;
 
-  PLAYERSTATE playerState_ = PS_None;
+  std::bitset<PS_Max> playerStateBitset_;
 
   bool canInput_ = true;
-
-  //bool canChangeAnimState_ = true;
 
   void* searchHandle_ = nullptr;
 };
@@ -36,7 +37,7 @@ class StateComponent
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool RegistState(unsigned long long stateTag, PLAYERSTATE playerState, bool canInput/*, bool canChangeAnimState*/);
+  bool RegistState(unsigned long long stateTag, std::initializer_list<PLAYER_STATE> playerStateList, bool canInput);
 
   void ChangeState(unsigned long long stateTag);
 
@@ -44,11 +45,11 @@ class StateComponent
 
   unsigned long long GetCurAnimState() const;
 
-  PLAYERSTATE GetPlayerState() const; 
+  bool EqualPlayerState(std::initializer_list<PLAYER_STATE> playerStateList);
+
+  bool ContainPlayerState(std::initializer_list<PLAYER_STATE> playerStateList);
 
   bool CanInput() const;
-
-  //bool CanChangeAnimState() const;
 
  private:
   State curState_;

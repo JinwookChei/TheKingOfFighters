@@ -3,6 +3,7 @@
 #include "ToolLevel.h"
 #include "TestLevel.h"
 #include "KOFLevel.h"
+#include "ImageEditLevel.h"
 
 typedef void (*DLL_INSTANCE_PRINT)(void**, HINSTANCE, const wchar_t*);
 

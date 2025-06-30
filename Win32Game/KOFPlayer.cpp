@@ -47,7 +47,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
   CheckPushCollision();
 
-  if (PS_Attack == pStateComponent_->GetPlayerState()) {
+  if (true == pStateComponent_->ContainPlayerState({PS_Attack})) {
     UpdateAttack();
   }
 
@@ -81,6 +81,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, KOFPl
   pRender_ = CreateImageRenderFIFO();
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetLocalScale({4.2f, 4.2f});
+  pRender_->SetAlpha(1.0f);
 
   // MOVEMENT
   pMovementComponent_ = CreateComponent<MovementComponent>();
@@ -131,7 +132,7 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, KOFPl
 
   // GHOST EFFECT
   pGhostEffect_ = CreateComponent<GhostEffect>();
-  if (false == pGhostEffect_->Initialize(pRender_, 5, 30)) {
+  if (false == pGhostEffect_->Initialize(pRender_, 4, 30, 0.7f)) {
     return;
   }
 

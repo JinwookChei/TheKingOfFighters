@@ -18,8 +18,6 @@ class Effect
 
   void SetEffectInfo(EffectInfo* effectInfo);
 
-  //LINK_ITEM* GetEffectLink() const;
-
  protected:
 
  private:
@@ -27,9 +25,6 @@ class Effect
   EffectInfo* pEffectInfo_;
 
   ImageRenderer* pRender_;
-
-  // TODO
-  //LINK_ITEM* effectLink_;
 
   long long curTime_;
 

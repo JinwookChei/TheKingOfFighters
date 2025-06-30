@@ -73,8 +73,9 @@ bool Projectile::Initialize() {
     return false;
   }
   pRender_->SetImage(pImage);
-  pRender_->SetTransparentColor(projectileInfo_.transColor_);
-  pRender_->SetLocalScale({4.5f, 4.5f});
+  //pRender_->SetTransparentColor(projectileInfo_.transColor_);
+  pRender_->SetAlpha(1.0f);
+  pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetImageRenderType(ImageRenderType::Center);
 
   pCollisionBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_AttackBox);

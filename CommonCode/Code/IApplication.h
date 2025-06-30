@@ -80,6 +80,7 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
 
+  virtual void __stdcall MakeColorTransparent(const Color8Bit& transColor) = 0;
 };
 
 struct IRenderTexture : public IImage {
