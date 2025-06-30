@@ -643,6 +643,10 @@ KOFPlayer* KOFPlayer::GetOpponentPlayer() const {
   return pOpponentPlayer_;
 }
 
+StateComponent* KOFPlayer::GetPlayerStateComponent() const {
+  return pStateComponent_;
+}
+
 bool KOFPlayer::IsControlLocked() const {
   return isControlLocked_;
 }

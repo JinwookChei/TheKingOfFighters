@@ -26,6 +26,8 @@ enum PLAYER_ANIM_TYPE : unsigned long long{
   PLAYER_ANIMTYPE_Run,
   PLAYER_ANIMTYPE_RunEnd,
   PLAYER_ANIMTYPE_Jump,
+  PLAYER_ANIMTYPE_Guard,
+  PLAYER_ANIMTYPE_GuardEnd,
   PLAYER_ANIMTYPE_HeavyPunch,
   PLAYER_ANIMTYPE_LightPunch,
   PLAYER_ANIMTYPE_HeavyKick,
@@ -115,6 +117,8 @@ class KOFPlayer
   bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
 
   KOFPlayer* GetOpponentPlayer() const;
+
+  StateComponent* GetPlayerStateComponent() const;
     
   bool IsControlLocked() const;
 
