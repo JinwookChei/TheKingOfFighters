@@ -48,7 +48,7 @@ enum PLAYER_ANIM_TYPE : unsigned long long{
 enum PLAYER_ANIM_MODIFIER : unsigned long long {
   ANIMMOD_NONE = 0,
   ANIMMOD_FLIPPED = 1ULL << 63,
-  ANIMMOD_COLOR_CHANGED = 1ULL << 62
+  ANIMMOD_BLUEFLAME = 1ULL << 62
 };
 
 class KOFPlayer

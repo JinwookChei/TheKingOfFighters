@@ -169,23 +169,23 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer*
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 5.0f, {20.0f, 60.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {20.0f, 60.0f});
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {5.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 40.0f});
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 15.0f, {20.0f, 80.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFire, EFKEY_Hit_2, 20.0f, {40.0f, 80.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 20.0f, {40.0f, 80.0f});
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {10.0f, 00.0f});
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {10.0f, 00.0f});
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {20.0f, 80.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFKEY_Iori_Explosion, 10.0f, {45.0f, 60.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFKEY_Iori_Explosion, 10.0f, {45.0f, 60.0f});
 
   // SKILL
   pSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &Iori::GaishikiMutan, this);

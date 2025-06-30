@@ -65,6 +65,67 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 8, 13, 50, true, 8)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 14, 20, 50, true, 16)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 23, 32, 50, true, 23)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 32, 23, 50, true, 32)) {
+    return;
+  }
+
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 33, 35, 50, false, 0)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 23, 32, 20, true, 23)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 36, 42, 50, false, 0)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 82, 89, 50, false, 0)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 310, 314, 50, false, 0)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0)) {
+    return;
+  }
+  if( false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME),
+                            {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
+                            {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
+                                         false, 0)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), { 339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350 }, 50, false, 0)) {
+    return;
+  }
+
+
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 8, 13, 50, true, 8)) {
+    return;
+  }
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 14, 20, 50, true, 16);   // ¾É±â.
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 23, 32, 50, true, 23);  // -> °È±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 32, 23, 50, true, 32);   // <- µÚ·Î°¡±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 33, 35, 50, false, 0);   // <- <- ¹é½ºÅÇ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 23, 32, 20, true, 23);        // ->-> ¶Ù±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 36, 42, 50, false, 0);       // Á¡ÇÁ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 82, 89, 50, false, 0);  // ¹ßÂ÷±â
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 310, 314, 50, false, 0);  //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0);   //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME),
+                            {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
+                            {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
+                            false, 0);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   // STATE

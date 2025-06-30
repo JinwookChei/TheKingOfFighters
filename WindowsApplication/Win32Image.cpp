@@ -1137,6 +1137,44 @@ void __stdcall Win32Image::MakeColorTransparent(const Color8Bit& transColor) {
   }
 }
 
+
+
+void __stdcall Win32Image::ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) {
+  const Vector scale = GetScale();
+
+  for (float i = 0; i < scale.Y; ++i) {
+    for (float j = 0; j < scale.X; ++j) {
+      Color8Bit tempColor;
+      GetPixel(Vector{j, i}, &tempColor);
+      if (tempColor != transColor) {
+        tempColor.R = tempColor.R * rScale;
+        tempColor.G = tempColor.G * gScale;
+        tempColor.B = tempColor.B * bScale;
+        SetPixel(Vector{j, i}, tempColor);
+      }
+    }
+  }
+}
+
+std::vector<Color8Bit> __stdcall Win32Image::CountPixelPallet() {
+  const Vector scale = GetScale(0);
+  Transform renderTransform = RenderTransform(0);
+  Vector StartPos = renderTransform.GetPosition();
+  std::vector<Color8Bit> result;
+
+  for (float i = 0; i < scale.Y; ++i) {
+    for (float j = 0; j < scale.X; ++j) {
+      Color8Bit tempColor;
+      GetPixel(Vector{StartPos.X + j, StartPos.Y + i}, &tempColor);
+      if (std::find(result.begin(), result.end(), tempColor) == result.end()) {
+        result.push_back(tempColor);
+      }
+    }
+  }
+
+  return result;
+}
+
 bool __stdcall Win32Image::Load() {
   if (currentPath_.IsFile()) {
     return LoadFile();

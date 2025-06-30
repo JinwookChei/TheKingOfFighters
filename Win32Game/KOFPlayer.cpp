@@ -179,16 +179,31 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
 
   switch (damageInfo->attackType_) {
     case ATTYPE_HighAttack: {
-      UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
+        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+        UpdateAnimState(PLAYER_ANIMTYPE_HitHigh | ANIMMOD_BLUEFLAME);
+        }
+        else {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
+        }
       pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
     } break;
 
     case ATTYPE_LowAttack: {
-      UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+        UpdateAnimState(PLAYER_ANIMTYPE_HitLow | ANIMMOD_BLUEFLAME);
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+      }
+
+      
       pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
     } break;
     case ATTYPE_StrongAttack: {
-      UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
+      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+        UpdateAnimState(PLAYER_ANIMTYPE_HitStrong | ANIMMOD_BLUEFLAME);
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
+      }
       pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
     } break;
     case ATTYPE_NormalAttack: {

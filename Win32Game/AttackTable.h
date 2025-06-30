@@ -13,7 +13,7 @@ enum ATTACK_ELEMENT_TYPE {
   ELMTTYPE_None = -1,
   ELMTTYPE_Normal = 0,
   ELMTTYPE_Fire,
-  ELMTTYPE_BlueFire,
+  ELMTTYPE_BlueFlame,
   ELMTTYPE_Thunder,
   ELMTTYPE_Max
 };

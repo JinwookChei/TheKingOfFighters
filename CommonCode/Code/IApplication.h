@@ -81,6 +81,10 @@ struct IFileImage : public IImage {
   virtual void __stdcall ExportImageInfoToCSV(const std::string& filepath) const = 0;
 
   virtual void __stdcall MakeColorTransparent(const Color8Bit& transColor) = 0;
+
+  virtual void __stdcall ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) = 0;
+
+  virtual std::vector<Color8Bit> __stdcall CountPixelPallet() = 0;
 };
 
 struct IRenderTexture : public IImage {

@@ -113,6 +113,10 @@ class Win32Image final
 
   void __stdcall MakeColorTransparent(const Color8Bit& transColor) override;
 
+  void __stdcall ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) override;
+
+  std::vector<Color8Bit> __stdcall CountPixelPallet() override;
+
   void SetPath(std::string_view path);
 
   bool __stdcall Load();

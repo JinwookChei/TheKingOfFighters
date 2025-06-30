@@ -51,15 +51,21 @@ void KOFLevel::BeginPlay() {
 
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_NONE));
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
-
   IFileImage* ioriImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED));
   ioriImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Iori.csv");
+  IFileImage* ioriImage_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha_BlueFlame.bmp", (IMGTYPE_IoriImage | IMGMOD_BLUEFLAME));
+  ioriImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
+  IFileImage* ioriImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha_BlueFlame.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
+  ioriImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Iori.csv");
 
   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_NONE));
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
-
   IFileImage* changImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED));
   changImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Chang.csv");
+  IFileImage* changImage_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha_BlueFlame.bmp", (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME));
+  changImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
+  IFileImage* changImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha_BlueFlame.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
+  changImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Chang.csv");
 
   IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", (IMGTYPE_HealthBarImage | IMGMOD_NONE));
   healthBarImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
@@ -132,7 +138,7 @@ void KOFLevel::BeginPlay() {
 
   // PLAYER_1 UI
   Portrait* portraitPlayer1 = HUD_->CreateUIComponent<Portrait>();
-  portraitPlayer1->Initialize(IMGTYPE_IoriImage, 655, ioriTransparentColor);
+  portraitPlayer1->Initialize(IMGTYPE_IoriImage | IMGMOD_FLIPPED, 655, ioriTransparentColor);
   portraitPlayer1->SetPosition({90.0f, 100.0f});
 
   HealthBar* healthBarPlayer1 = HUD_->CreateUIComponent<HealthBar>();

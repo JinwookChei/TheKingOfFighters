@@ -8,7 +8,9 @@ enum IMAGE_TYPE : unsigned long long
   IMGTYPE_BlackBoardImage,
   IMGTYPE_WhiteBoardImage,
   IMGTYPE_IoriImage,
+  IMGTYPE_IoriImage_BlueFlame,
   IMGTYPE_ChangImage,
+  IMGTYPE_ChangImage_BlueFlame,
   IMGTYPE_HealthBarImage,
   IMGTYPE_HealthImage,
   IMGTYPE_HitEffectImage,
@@ -18,7 +20,7 @@ enum IMAGE_TYPE : unsigned long long
 enum IMAGE_MODIFIER : unsigned long long {
   IMGMOD_NONE = 0,
   IMGMOD_FLIPPED = 1ULL << 63,
-  IMGMOD_COLOR_CHANGED = 1ULL << 62
+  IMGMOD_BLUEFLAME = 1ULL << 62
 };
 
 
