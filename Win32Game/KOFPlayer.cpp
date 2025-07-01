@@ -43,7 +43,7 @@ void KOFPlayer::BeginPlay() {
 }
 
 void KOFPlayer::Tick(unsigned long long deltaTick) {
-
+  
   UpdateCollisionBoundScale();
 
   CheckPushCollision();
@@ -474,6 +474,10 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
+      if (true == pAttackInfo->isProjectileAttack_) {
+        return;
+      }
+
       pTargetPlayer->HitEvent(pAttackInfo);
 
       Level* pLevel = GetLevel();
@@ -484,6 +488,7 @@ void KOFPlayer::UpdateAttack() {
       if (nullptr == pKOFLevel) {
         return;
       }
+
       pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 80);
 
       // Calculate Effect Position.

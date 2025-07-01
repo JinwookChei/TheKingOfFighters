@@ -174,7 +174,7 @@ void Projectile::UpdateAttack() {
       if (nullptr == pKOFLevel) {
         return;
       }
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 80);
+      pKOFLevel->FreezeActors({pOwner_, pTargetPlayer}, false, 80);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

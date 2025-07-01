@@ -144,7 +144,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, {PS_Hit}, false);
 
   // DAMAGE
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2,false, 10.0f, {20.0f, 0.0f});
 }
 
 void Chang::CompareInputBitset() {
