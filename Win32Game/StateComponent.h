@@ -3,8 +3,10 @@
 #include <initializer_list>
 
 enum PLAYER_STATE {
-  PS_Idle = 0,
+  PS_None = 0,
+  PS_Idle,
   PS_Move,
+  PS_Run,
   PS_Jump,
   PS_Dash,
   PS_Rolling,

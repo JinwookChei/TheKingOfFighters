@@ -62,6 +62,14 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
     UpdateInput();
 
+    // TODO
+    if (pStateComponent_->ContainPlayerState({PS_Jump})) {
+      if (false == pMovementComponent_->EqualMovementState({MOVSTATE_Jump})) {
+        UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+      }
+    }
+    // END
+
     if (true == pStateComponent_->CanInput() || true == pRender_->IsAnimationEnd()) {
       CompareInputBitset();
     }
