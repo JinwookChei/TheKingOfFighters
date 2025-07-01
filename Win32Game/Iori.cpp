@@ -43,6 +43,8 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer*
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 49, 57, 50, true, 51);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 58, 60, 50, false, 59);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 61, 69, 50, false, 61);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Dash | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 70, 77, 50, false, 70);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 78, 87, 50, false, 78);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 541, 541, 50, false, 541);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 542, 543, 50, false, 542);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 108, 117, 50, false, 108);
@@ -85,6 +87,8 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer*
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 49, 57, 50, true, 51);        // ->-> ¶Ù±â Start
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 58, 60, 50, false, 59);    // ->-> ¶Ù±â Stop
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 61, 69, 50, false, 61);      // Á¡ÇÁ
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Dash | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 70, 77, 50, false, 70);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 78, 87, 50, false, 78);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 541, 541, 50, false, 541);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 542, 543, 50, false, 542);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 108, 117, 50, false, 108);
@@ -129,6 +133,8 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer*
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, {PS_Move}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_Move}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, {PS_Jump}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Dash, {PS_Rolling}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RollingBack, {PS_Rolling}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Guard, {PS_Guard}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_GuardEnd, {PS_Guard}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, {PS_Attack}, false);
@@ -319,6 +325,26 @@ void Iori::CompareInputBitset() {
         return;
       }
     }
+
+    // A B LEFT | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("10001100"))) {
+      UpdateAnimState((PLAYER_ANIMTYPE_RollingBack));
+      pMovementComponent_->Dash(!FacingRight(), 150.0f, 300.0f);
+      pGhostEffect_->On();
+      return;
+    }
+
+    // A B | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001100"))) {
+      UpdateAnimState((PLAYER_ANIMTYPE_Dash));
+      pMovementComponent_->Dash(FacingRight(), 150.0f, 300.0f);
+      pGhostEffect_->On();
+      return;
+    }
+    
+
+    
+     
     // RIGHT A | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
       UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_1);

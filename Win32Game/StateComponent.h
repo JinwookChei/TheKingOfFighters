@@ -6,6 +6,8 @@ enum PLAYER_STATE {
   PS_Idle = 0,
   PS_Move,
   PS_Jump,
+  PS_Dash,
+  PS_Rolling,
   PS_Seat,
   PS_Attack,
   PS_Hit,
