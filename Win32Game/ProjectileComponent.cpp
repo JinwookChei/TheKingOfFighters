@@ -58,6 +58,7 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag, bool 
     copyInfo.imageIndex_ = (pInfo->imageIndex_ | IMGMOD_FLIPPED);
 
     newProjectile->SetOwner(owner);
+    newProjectile->SetOwnerProjectileComponent(this);
     newProjectile->SetProjectileInfo(copyInfo);
     newProjectile->SetUseCameraposition(true);
   }

@@ -11,6 +11,7 @@ Projectile::Projectile()
       pOwnerProjectileComponent_(nullptr),
       pRender_(nullptr),
       pCollisionBox_(nullptr),
+      projectileLink_({nullptr, nullptr, this}),
       accumulRange_({0.0f, 0.0f}),
       curTime_(0),
       curFrame_(0),
@@ -237,8 +238,9 @@ bool Projectile::CheckAttackCollision(CollisionComponent** outTargetCollision) {
   return false;
 }
 
-void Projectile::Destroy(){
-  pOwnerProjectileComponent_->UnLinkDestroyedProjectile(&projectileLink_);
-  SetDestroy();
-
+void Projectile::Destroy() {
+  if (false == IsDestroy()) {
+    pOwnerProjectileComponent_->UnLinkDestroyedProjectile(&projectileLink_);
+    SetDestroy();
+  }
 }
