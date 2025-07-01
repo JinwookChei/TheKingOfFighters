@@ -122,7 +122,7 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0);   //
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME),
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
-                            {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
+                            {30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 50, 50, 50, 50},
                             false, 0);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
@@ -148,60 +148,97 @@ void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer
 }
 
 void Chang::CompareInputBitset() {
+
+  if (pStateComponent_->EqualPlayerState({PS_Jump})) {
+    // A | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Jump);
+      return;
+    }
+    // B | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightKick_Jump);
+      return;
+    }
+    // C | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_Jump);
+      return;
+    }
+    // D | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_Jump);
+      return;
+    }
+
+    if (true == pRender_->IsAnimationEnd()) {
+      UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+      return;
+    }
+    return;
+  }
+
+  if (pStateComponent_->ContainPlayerState({PS_Seat})) {
+    // A | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01001000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Seat);
+      return;
+    }
+    // B | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000100"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightKick_Seat);
+      return;
+    }
+    // C | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000010"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_Seat);
+      return;
+    }
+    // D | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000001"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_Seat);
+      return;
+    }
+    // DOWN | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown, ANIMMOD_NONE, 18, 50);
+      return;
+    }
+
+    UpdateAnimState(PLAYER_ANIMTYPE_SeatUp);
+    return;
+  }
+
+  if (pStateComponent_->EqualPlayerState({PS_Guard})) {
+    if (false == pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
+      UpdateAnimState(PLAYER_ANIMTYPE_GuardEnd);
+      return;
+    }
+  }
+
+  if (pStateComponent_->ContainPlayerState({PS_Run})) {
+    if (false == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_RunEnd);
+      return;
+    }
+  }
+
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
       true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
+    UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+    return;
   } else {
-    // LEFT UP | PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-      pMovementComponent_->JumpForward(!FacingRight(), false);
-      return;
-    }
-
-    // RIGHT UP | PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
-      if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
-        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-        pMovementComponent_->JumpForward(FacingRight(), true);
-        pGhostEffect_->On();
+    // LEFT | PRESS Contain
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
+      if (pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
+        UpdateAnimState(PLAYER_ANIMTYPE_Guard);
         return;
       }
-      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
-      pMovementComponent_->JumpForward(FacingRight(), false);
-      return;
     }
 
-    // RIGHT A | PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
-    }
-
-    // RIGHT B | PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100100"))) {
-    }
-
-    // LEFT | PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
-      pMovementComponent_->MoveBack(FacingRight());
-      return;
-    }
-    // LEFT UP
-    if (true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("10000000"))) {
-    }
-
-    // DOWN PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown);
-      return;
-    }
-
-    // DOWN UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("01000000"))) {
-    }
-
-    // RIGHT PRESS
+    // RIGHT | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
-      if (PLAYER_ANIMTYPE_Run == animState_) {
+      if (true == pStateComponent_->ContainPlayerState({PS_Run})) {
         pMovementComponent_->Run(FacingRight());
         return;
       } else {
@@ -211,70 +248,102 @@ void Chang::CompareInputBitset() {
       }
     }
 
-    // RIGHT UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00100000"))) {
-      if (FacingRight()) {
+    // LEFT | PRESS Equal
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10000000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
+      pMovementComponent_->MoveBack(FacingRight());
+      return;
+    }
+
+    // DOWN | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown);
+      return;
+    }
+
+    // RIGHT UP | PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
+      if (true == pStateComponent_->ContainPlayerState({PS_Run})) {
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+        pMovementComponent_->JumpForward(FacingRight(), true);
+        pGhostEffect_->On();
+        return;
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+        pMovementComponent_->JumpForward(FacingRight(), false);
+        return;
       }
     }
 
-    // UP PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
+    // LEFT UP | PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+      pMovementComponent_->JumpForward(!FacingRight(), false);
+      return;
+    }
+
+    // UP | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
       UpdateAnimState(PLAYER_ANIMTYPE_Jump);
       pMovementComponent_->Jump();
       return;
     }
 
-    // UP UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00010000"))) {
+    // A B LEFT | PRESS
+    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10001100"))) {
+      UpdateAnimState((PLAYER_ANIMTYPE_RollingBack));
+      pMovementComponent_->Dash(!FacingRight(), 300.0f, 400.0f);
+      pGhostEffect_->On();
+      return;
     }
 
-    // A PRESS
+    // A B | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001100"))) {
+      UpdateAnimState((PLAYER_ANIMTYPE_Dash));
+      pMovementComponent_->Dash(FacingRight(), 300.0f, 500.0f);
+      pGhostEffect_->On();
+      return;
+    }
+
+    //// RIGHT A | PRESS
+    //if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00101000"))) {
+    //  UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_1);
+    //  pSkillComponent_->ActivateSkill(IORI_SKILL_GaishikiMutan);
+    //  return;
+    //}
+
+    //// RIGHT B | PRESS
+    //if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00100100"))) {
+    //  UpdateAnimState(IORI_ANIMTYPE_Shinigami);
+    //  pSkillComponent_->ActivateSkill(IORI_SKILL_Shinigami);
+    //  return;
+    //}
+
+    // A | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick);
+      UpdateAnimState(PLAYER_ANIMTYPE_LightPunch);
+      return;
     }
 
-    // A UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00001000"))) {
+    // B | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_LightKick);
+      return;
     }
 
-    // B PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
+    // C | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
+      UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch);
+      return;
     }
 
-    // B UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000100"))) {
-    }
-
-    // C PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
-    }
-
-    // C UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000010"))) {
-    }
-
-    // D PRESS
-    if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
+    // D | PRESS
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
       UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick);
       return;
     }
 
-    // D UP
-    if (true == IsContainInputBitSet(inputUpBitSet_, std::bitset<8>("00000001"))) {
-    }
-  }
-
-  ///////////////////////////// Else
-  if (PLAYER_ANIMTYPE_SeatDown == pStateComponent_->GetCurAnimState()) {
-    UpdateAnimState(PLAYER_ANIMTYPE_SeatUp);
+    UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
   }
-
-  if (PLAYER_ANIMTYPE_Run == pStateComponent_->GetCurAnimState()) {
-    UpdateAnimState(PLAYER_ANIMTYPE_RunEnd);
-    return;
-  }
-
-  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
-  return;
 }

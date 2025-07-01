@@ -171,7 +171,7 @@ void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer*
   // DAMAGE
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 10.0f, {20.0f, 0.0f});
@@ -281,7 +281,7 @@ void Iori::CompareInputBitset() {
     }
     // DOWN | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown, 18, 50);
+      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown, ANIMMOD_NONE, 18, 50);
       return;
     }
 

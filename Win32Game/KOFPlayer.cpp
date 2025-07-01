@@ -65,7 +65,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     // TODO
     if (pStateComponent_->ContainPlayerState({PS_Jump})) {
       if (false == pMovementComponent_->EqualMovementState({MOVSTATE_Jump})) {
-        UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+        UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
       }
     }
     // END
@@ -163,14 +163,14 @@ void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, KOFPl
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::UpdateAnimState(unsigned long long animState, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) { 
+void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier/* = ANIMMOD_NONE*/, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) { 
   animState_ = animState;
   if (true == PlayerOnLeft()) {
     isFacingRight_ = true;
-    pRender_->ChangeAnimation((animState_ | ANIMMOD_NONE), startFrame, time);
+    pRender_->ChangeAnimation((animState_ | modifier), startFrame, time);
   } else {
     isFacingRight_ = false;
-    pRender_->ChangeAnimation((animState_ | ANIMMOD_FLIPPED), startFrame, time);
+    pRender_->ChangeAnimation((animState_ | modifier | ANIMMOD_FLIPPED), startFrame, time);
   }
 
   pStateComponent_->ChangeState(animState_);
@@ -188,7 +188,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   switch (damageInfo->attackType_) {
     case ATTYPE_HighAttack: {
         if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitHigh | ANIMMOD_BLUEFLAME);
+        UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
         }
         else {
           UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
@@ -198,7 +198,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
 
     case ATTYPE_LowAttack: {
       if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitLow | ANIMMOD_BLUEFLAME);
+        UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
       }
@@ -208,7 +208,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
     } break;
     case ATTYPE_StrongAttack: {
       if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitStrong | ANIMMOD_BLUEFLAME);
+        UpdateAnimState(PLAYER_ANIMTYPE_HitStrong, ANIMMOD_BLUEFLAME);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
       }
@@ -216,13 +216,26 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
     } break;
     case ATTYPE_NormalAttack: {
       if (pHitBoxTop_->HasHit()) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
-        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+          if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
+          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+        } else {
+            UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
+            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+          }
+        
       }
 
       if (pHitBoxBottom_->HasHit()) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
-        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
+          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+        }
+        else {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+        }
+        
       }
     } break;
     default:

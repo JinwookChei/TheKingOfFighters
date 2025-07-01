@@ -37,6 +37,8 @@ KOFLevel::~KOFLevel() {
 }
 
 void KOFLevel::BeginPlay() {
+  //TimeManager::Instance()->SetTimeScale(0.5f);
+
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
 
   // IMAGES

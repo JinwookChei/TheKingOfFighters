@@ -68,7 +68,7 @@ class KOFPlayer
 
   virtual void Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
 
-  void UpdateAnimState(unsigned long long animState, int startFrame = 0, unsigned long long time = 0.0f);
+  void UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier = ANIMMOD_NONE, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
 
