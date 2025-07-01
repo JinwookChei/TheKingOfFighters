@@ -12,42 +12,57 @@ class ProjectileComponent
 
   void FireProjectile(unsigned long long projectileTag, bool isFacingRight);
 
-  bool RegistProjectileInfo(
-      unsigned long long projectileTag,
-      unsigned long long imageIndex,
-      unsigned int startIndex,
-      unsigned int endIndex,
-      unsigned long long interval,
-      bool loop,
-      const Color8Bit transColor,
-      const Vector& velocity,
-      const Vector& position,
-      const Vector& range);
+  int GetActiveProjectilesCount();
+
+  void UnLinkDestroyedProjectile(LINK_ITEM* linkItem);
 
   bool RegistProjectileInfo(
       unsigned long long projectileTag,
       unsigned long long imageIndex,
+      AttackInfo* pAttackInfo,
+      unsigned int startIndex,
+      unsigned int endIndex,
+      unsigned long long interval,
+      bool loop,
+      const Color8Bit& transColor,
+      const Vector& velocity,
+      const Vector& position,
+      const Vector& range,
+      bool isDestroyOnCollision);
+
+  bool RegistProjectileInfo(
+      unsigned long long projectileTag,
+      unsigned long long imageIndex,
+      AttackInfo* pAttackInfo,
       const std::vector<unsigned int>& indices,
       unsigned long long interval,
       bool loop,
       const Color8Bit& transColor,
       const Vector& velocity,
       const Vector& position,
-      const Vector& range);
+      const Vector& range,
+      bool isDestroyOnCollision);
   
   bool RegistProjectileInfo(
       unsigned long long projectileTag,
       unsigned long long imageIndex,
+      AttackInfo* pAttackInfo,
       std::vector<unsigned int> indices,
       std::vector<unsigned long long> intervals,
       bool loop,
       Color8Bit transColor,
       const Vector& velocity,
       const Vector& position,
-      const Vector& range);
+      const Vector& range,
+      bool isDestroyOnCollision);
 
  private:
   Level* level_;
 
   HashTable projectileTable_;
+
+  LINK_ITEM* activeProjectilesHead_;
+
+  LINK_ITEM* activeProjectilesTail_;
+  
 };

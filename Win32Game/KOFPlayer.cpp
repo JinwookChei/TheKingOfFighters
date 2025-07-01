@@ -43,6 +43,7 @@ void KOFPlayer::BeginPlay() {
 }
 
 void KOFPlayer::Tick(unsigned long long deltaTick) {
+
   UpdateCollisionBoundScale();
 
   CheckPushCollision();
@@ -74,8 +75,14 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
       CompareInputBitset();
     }
 
+    if (pProjectileComponent_->GetActiveProjectilesCount() > 0) {
+      pStateComponent_->AddState({PS_Attack});
+    }
+
     pSkillComponent_->UpdateActiveSkill();
   }
+
+
 
   UpdatePrevAnimationIndex();
 }

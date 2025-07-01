@@ -60,6 +60,12 @@ void StateComponent::ChangeState(unsigned long long stateTag) {
   curState_.searchHandle_ = pState->searchHandle_;
 }
 
+void StateComponent::AddState(std::initializer_list<PLAYER_STATE> playerStateList) {
+  for (auto state : playerStateList) {
+    curState_.playerStateBitset_.set(state);
+  }
+}
+
 State StateComponent::GetCurState() const {
   return curState_;
 }

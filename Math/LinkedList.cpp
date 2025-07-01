@@ -74,3 +74,13 @@ void UnLinkFromLinkedList(LINK_ITEM** ppHead, LINK_ITEM** ppTail, LINK_ITEM* pDe
   pDel->next_ = nullptr;
   pDel->prev_ = nullptr;
 }
+
+int CountLinkedList(const LINK_ITEM* ppHead) {
+  int count = 0;
+  const LINK_ITEM* pCurLink = ppHead;
+  while (pCurLink != nullptr) {
+    ++count;
+    pCurLink = pCurLink->next_;
+  }
+  return count;
+}

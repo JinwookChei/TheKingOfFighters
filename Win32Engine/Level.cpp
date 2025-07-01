@@ -33,13 +33,6 @@ Level::~Level() {
     CollisionContainer* delContainer = (CollisionContainer*)collisionGroupHead_->item_;
     UnLinkFromLinkedList(&collisionGroupHead_, &collisionGroupTail_, &delContainer->link_);
 
-    /*while (delContainer->collisionHead_) {
-      CollisionComponent* delComponent = (CollisionComponent*)delContainer->collisionHead_->item_;
-
-      UnLinkFromLinkedList(&delContainer->collisionHead_, &delContainer->collisionTail_, delComponent->GetLink());
-
-      --delContainer->collisionCount_;
-    }*/
     delete delContainer;
   }
 }

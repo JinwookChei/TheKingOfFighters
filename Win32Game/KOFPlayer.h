@@ -8,7 +8,7 @@ class CommandComponent;
 class SkillComponent;
 class ProjectileComponent;
 class AttackTable;
-class AttackInfo;
+struct AttackInfo;
 class HealthComponent;
 class StateComponent;
 class HitHandlerComponent;

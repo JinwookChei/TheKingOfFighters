@@ -45,6 +45,8 @@ class StateComponent
 
   void ChangeState(unsigned long long stateTag);
 
+  void AddState(std::initializer_list<PLAYER_STATE> playerStateList);
+
   State GetCurState() const;
 
   unsigned long long GetCurAnimState() const;

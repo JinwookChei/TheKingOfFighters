@@ -1,9 +1,14 @@
 #pragma once
 
+struct AttackInfo;
+class ProjectileComponent;
+
 struct ProjectileInfo {
   unsigned long long projectileTag_ = 0;
 
   unsigned long long imageIndex_ = 0;
+
+  AttackInfo* pAttackInfo_ = nullptr;
 
   std::vector<unsigned int> indices_;
 
@@ -18,6 +23,8 @@ struct ProjectileInfo {
   Vector position_ = {0.0f, 0.0f};
 
   Vector range_ = {0.0f, 0.0f};
+
+  bool isDestroyOnCollision_ = false;
 
   void* searchHandle_ = nullptr;
 };
@@ -38,20 +45,36 @@ class Projectile
 
   void SetOwner(Actor* owner);
 
+  ProjectileComponent* GetOwnerProjectileComponent() const;
+
+  void SetOwnerProjectileComponent(ProjectileComponent* ownerProjectileComponent);
+
   ProjectileInfo GetProjectileInfo() const;
 
   void SetProjectileInfo(const ProjectileInfo& projectileInfo);
 
-  void CollisionUpdate();
+  LINK_ITEM* GetProjectileLink();
+
+  void UpdateCollisionBoundScale();
+
+  void UpdateAttack();
+
+  bool CheckAttackCollision(CollisionComponent** outTargetCollision);
+
+  void Destroy();
 
  private:
-  Actor* owner_;
+  Actor* pOwner_;
+
+  ProjectileComponent* pOwnerProjectileComponent_;
 
   ImageRenderer* pRender_;
 
   CollisionComponent* pCollisionBox_;
 
   ProjectileInfo projectileInfo_;
+
+  LINK_ITEM projectileLink_;
 
   Vector accumulRange_;
 

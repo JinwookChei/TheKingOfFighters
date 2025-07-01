@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "Projectile.h"
 #include "ProjectileComponent.h"
+#include "AttackTable.h"
 
 ProjectileComponent::ProjectileComponent()
-    : level_(nullptr) {
+    : level_(nullptr),
+      activeProjectilesHead_ (nullptr),
+      activeProjectilesTail_(nullptr) {
 }
 
 ProjectileComponent::~ProjectileComponent() {
@@ -44,6 +47,7 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag, bool 
   Projectile* newProjectile = level_->SpawnActor<Projectile>(ActorGroupEngineType_Effect);
   if (true == isFacingRight) {
   newProjectile->SetOwner(owner);
+  newProjectile->SetOwnerProjectileComponent(this);
   newProjectile->SetProjectileInfo(*pInfo);
   newProjectile->SetUseCameraposition(true);
   }
@@ -58,22 +62,34 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag, bool 
     newProjectile->SetUseCameraposition(true);
   }
 
+  LinkToLinkedListFIFO(&activeProjectilesHead_, &activeProjectilesTail_, newProjectile->GetProjectileLink());
+
   if (false == newProjectile->Initialize()) {
     return;
   }
 }
 
+int ProjectileComponent::GetActiveProjectilesCount() {
+  return CountLinkedList(activeProjectilesHead_);
+}
+
+void ProjectileComponent::UnLinkDestroyedProjectile(LINK_ITEM* linkItem) {
+  UnLinkFromLinkedList(&activeProjectilesHead_, &activeProjectilesTail_, linkItem);
+}
+
 bool ProjectileComponent::RegistProjectileInfo(
     unsigned long long projectileTag,
     unsigned long long imageIndex,
+    AttackInfo* pAttackInfo,
     unsigned int startIndex,
     unsigned int endIndex,
     unsigned long long interval,
     bool loop,
-    const Color8Bit transColor,
+    const Color8Bit& transColor,
     const Vector& velocity,
     const Vector& position,
-    const Vector& range) {
+    const Vector& range,
+    bool isDestroyOnCollision) {
   std::vector<unsigned int> indices;
 
   int size = (int)(endIndex - startIndex);
@@ -87,19 +103,21 @@ bool ProjectileComponent::RegistProjectileInfo(
     indices.push_back(n);
   }
 
-  return RegistProjectileInfo(projectileTag, imageIndex, indices, interval, loop, transColor, velocity, position, range);
+  return RegistProjectileInfo(projectileTag, imageIndex, pAttackInfo, indices, interval, loop, transColor, velocity, position, range, isDestroyOnCollision);
 }
 
 bool ProjectileComponent::RegistProjectileInfo(
     unsigned long long projectileTag,
     unsigned long long imageIndex,
+    AttackInfo* pAttackInfo,
     const std::vector<unsigned int>& indices,
     unsigned long long interval,
     bool loop,
     const Color8Bit& transColor,
     const Vector& velocity,
     const Vector& position,
-    const Vector& range) {
+    const Vector& range,
+    bool isDestroyOnCollision) {
   std::vector<unsigned long long> intervals;
   intervals.reserve(indices.size());
 
@@ -107,19 +125,21 @@ bool ProjectileComponent::RegistProjectileInfo(
     intervals.push_back(interval);
   }
 
-  return RegistProjectileInfo(projectileTag, imageIndex, indices, intervals, loop, transColor, velocity, position, range);
+  return RegistProjectileInfo(projectileTag, imageIndex, pAttackInfo, indices, intervals, loop, transColor, velocity, position, range, isDestroyOnCollision);
 }
 
 bool ProjectileComponent::RegistProjectileInfo(
     unsigned long long projectileTag,
     unsigned long long imageIndex,
+    AttackInfo* pAttackInfo,
     std::vector<unsigned int> indices,
     std::vector<unsigned long long> intervals,
     bool loop,
     Color8Bit transColor,
     const Vector& velocity,
     const Vector& position,
-    const Vector& range) {
+    const Vector& range,
+    bool isDestroyOnCollision) {
   ProjectileInfo* pFind;
   if (0 != projectileTable_.Select((void**)&pFind, 1, &projectileTag, 8)) {
     return false;
@@ -128,6 +148,7 @@ bool ProjectileComponent::RegistProjectileInfo(
   ProjectileInfo* pInfo = new ProjectileInfo;
   pInfo->projectileTag_ = projectileTag;
   pInfo->imageIndex_ = imageIndex;
+  pInfo->pAttackInfo_ = pAttackInfo;
   pInfo->indices_ = indices;
   pInfo->intervals_ = intervals;
   pInfo->loop_ = loop;
@@ -135,6 +156,7 @@ bool ProjectileComponent::RegistProjectileInfo(
   pInfo->velocity_ = velocity;
   pInfo->position_ = position;
   pInfo->range_ = range;
+  pInfo->isDestroyOnCollision_ = isDestroyOnCollision;
   pInfo->searchHandle_ = projectileTable_.Insert(pInfo, &pInfo->projectileTag_, 8);
 
   return nullptr != pInfo->searchHandle_;
