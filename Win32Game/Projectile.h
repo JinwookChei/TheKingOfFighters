@@ -3,26 +3,14 @@
 struct AttackInfo;
 class ProjectileComponent;
 
-struct ProjectileInfo {
-  unsigned long long projectileTag_ = 0;
 
-  unsigned long long imageIndex_ = 0;
+struct ProjectileInfo {
+
+  unsigned long long projectileTag_ = 0;
 
   AttackInfo* pAttackInfo_ = nullptr;
 
-  std::vector<unsigned int> indices_;
-
-  std::vector<unsigned long long> intervals_;
-
-  bool loop_ = false;
-
-  Color8Bit transColor_;
-
-  Vector velocity_ = {0.0f, 0.0f};
-
-  Vector position_ = {0.0f, 0.0f};
-
-  Vector range_ = {0.0f, 0.0f};
+  Vector spawnPosition_ = {0.0f, 0.0f};
 
   bool isDestroyOnCollision_ = false;
 
@@ -33,13 +21,15 @@ class Projectile
     : public Actor {
  public:
   Projectile();
-  ~Projectile();
+  ~Projectile() override;
 
   void BeginPlay() override;
 
   void Tick(unsigned long long curTick) override;
 
-  bool Initialize();
+  virtual bool Initialize();
+
+  virtual void UpdateProjectile() = 0;
 
   Actor* GetOwner() const;
 
@@ -63,7 +53,7 @@ class Projectile
 
   void Destroy();
 
- private:
+ protected:
   Actor* pOwner_;
 
   ProjectileComponent* pOwnerProjectileComponent_;
@@ -75,12 +65,4 @@ class Projectile
   ProjectileInfo projectileInfo_;
 
   LINK_ITEM projectileLink_;
-
-  Vector accumulRange_;
-
-  long long curTime_;
-
-  int curFrame_;
-
-  bool isFirstTick_;
 };

@@ -83,8 +83,6 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     pSkillComponent_->UpdateActiveSkill();
   }
 
-
-
   UpdatePrevAnimationIndex();
 }
 
@@ -95,9 +93,11 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   if (true == isPlayer1_) {
     playerKeySet_ = {'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
+    //playerKeySet_ = {'1', '2', '3', '4', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
   }
   else {
     playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
+    //playerKeySet_ = {'1', '2', '3', '4', 'S', 'C', 'X', 'Z'};  // D C B A UP RIGHT DONW LEFT
   }
 
   // RENDERER

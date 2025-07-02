@@ -23,6 +23,88 @@ enum IMAGE_MODIFIER : unsigned long long {
   IMGMOD_BLUEFLAME = 1ULL << 62
 };
 
+enum PLAYER_ANIM_TYPE : unsigned long long {
+  PLAYER_ANIMTYPE_None = 0ULL,
+  PLAYER_ANIMTYPE_Start,
+  PLAYER_ANIMTYPE_Idle,
+  PLAYER_ANIMTYPE_SeatDown,
+  PLAYER_ANIMTYPE_SeatUp,
+  PLAYER_ANIMTYPE_FrontWalk,
+  PLAYER_ANIMTYPE_BackWalk,
+  PLAYER_ANIMTYPE_BackStep,
+  PLAYER_ANIMTYPE_Run,
+  PLAYER_ANIMTYPE_RunEnd,
+  PLAYER_ANIMTYPE_Jump,
+  PLAYER_ANIMTYPE_Dash,
+  PLAYER_ANIMTYPE_RollingBack,
+  PLAYER_ANIMTYPE_Guard,
+  PLAYER_ANIMTYPE_GuardEnd,
+  PLAYER_ANIMTYPE_HeavyPunch,
+  PLAYER_ANIMTYPE_LightPunch,
+  PLAYER_ANIMTYPE_HeavyKick,
+  PLAYER_ANIMTYPE_LightKick,
+  PLAYER_ANIMTYPE_HeavyPunch_Seat,
+  PLAYER_ANIMTYPE_LightPunch_Seat,
+  PLAYER_ANIMTYPE_HeavyKick_Seat,
+  PLAYER_ANIMTYPE_LightKick_Seat,
+  PLAYER_ANIMTYPE_HeavyPunch_Jump,
+  PLAYER_ANIMTYPE_LightPunch_Jump,
+  PLAYER_ANIMTYPE_HeavyKick_Jump,
+  PLAYER_ANIMTYPE_LightKick_Jump,
+  PLAYER_ANIMTYPE_HitHigh,
+  PLAYER_ANIMTYPE_HitLow,
+  PLAYER_ANIMTYPE_HitStrong,
+  PLAYER_ANIMTYPE_HitWhileJumping,
+  PLAYER_ANIMTYPE_Max
+};
+
+enum IORI_ANIM_TYPE : unsigned long long {
+  IORI_ANIMTYPE_108ShikiYamiBarai = PLAYER_ANIMTYPE_Max + 1ULL,
+  IORI_ANIMTYPE_GaishikiMutan_1,
+  IORI_ANIMTYPE_GaishikiMutan_2,
+  IORI_ANIMTYPE_Shinigami,
+  IORI_ANIMTYPE_HyakushikiOniyaki,
+  IORI_ANIMTYPE_127ShikiAoiHana_1,
+  IORI_ANIMTYPE_127ShikiAoiHana_2,
+  IORI_ANIMTYPE_127ShikiAoiHana_3,
+  IORI_ANIMTYPE_UltimateCasting,
+  IORI_ANIMTYPE_1211ShikiYaOtome_1,
+  IORI_ANIMTYPE_1211ShikiYaOtome_2,
+  IORI_ANIMTYPE_1211ShikiYaOtome_3,
+  IORI_ANIMTYPE_1211ShikiYaOtome_4,
+  IORI_ANIMTYPE_1211ShikiYaOtome_5,
+  IORI_ANIMTYPE_1211ShikiYaOtome_6,
+  IORI_ANIMTYPE_1211ShikiYaOtome_7,
+  IORI_ANIMTYPE_1211ShikiYaOtome_8,
+  IORI_ANIMTYPE_1211ShikiYaOtome_9
+};
+
+enum PLAYER_ANIM_MODIFIER : unsigned long long {
+  ANIMMOD_NONE = 0,
+  ANIMMOD_FLIPPED = 1ULL << 63,
+  ANIMMOD_BLUEFLAME = 1ULL << 62
+};
+
+
+
+enum IORI_SKILL {
+  IORI_SKILL_None = -1,
+  IORI_SKILL_108ShikiYamiBarai = 0,
+  IORI_SKILL_GaishikiMutan,
+  IORI_SKILL_Shinigami,
+  IORI_SKILL_HyakushikiOniyaki,
+  IORI_SKILL_127ShikiAoiHana,
+  IORI_SKILL_1211ShikiYaOtome,
+  IORI_SKILL_Max
+};
+
+
+enum PROJECTILE_TYPE {
+  IORI_PROJECTILE_YamiBarai = 0,
+  IORI_PROJECTILE_HyakushikiOniyaki_Low,
+  IORI_PROJECTILE_HyakushikiOniyaki_High,
+};
+
 
 enum EFFECT_KEY
 {

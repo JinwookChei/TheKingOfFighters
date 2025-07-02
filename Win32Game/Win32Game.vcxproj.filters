@@ -61,6 +61,12 @@
     <Filter Include="Contents\KOF\Manager">
       <UniqueIdentifier>{1fa86f26-bfbc-44c8-96d8-cb1a8250aa81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Actor\Projectile">
+      <UniqueIdentifier>{0aa567c6-a5b6-4c45-963a-33a144b06ca0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\KOF\Actor\Projectile\Iori">
+      <UniqueIdentifier>{4f933bb1-baf3-4775-999a-712e14cbcf2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -138,9 +144,6 @@
     <ClCompile Include="KOFPlayer.cpp">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClCompile>
-    <ClCompile Include="Projectile.cpp">
-      <Filter>Contents\KOF\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="ProjectileComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
@@ -182,6 +185,12 @@
     </ClCompile>
     <ClCompile Include="ImageEditLevel.cpp">
       <Filter>Contents\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Contents\KOF\Actor\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="YamiBarai.cpp">
+      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +272,6 @@
     <ClInclude Include="KOFPlayer.h">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Contents\KOF\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectileComponent.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
@@ -310,6 +316,12 @@
     </ClInclude>
     <ClInclude Include="ImageEditLevel.h">
       <Filter>Contents\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Contents\KOF\Actor\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="YamiBarai.h">
+      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

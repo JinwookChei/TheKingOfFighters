@@ -225,21 +225,21 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   if (false == pAttackTable_->SearchAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, &pAttackInfo)) {
     return;
   }
-  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_108ShikiYamiBarai, IMGTYPE_IoriImage, pAttackInfo, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f}, true);
+  //pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_108ShikiYamiBarai, IMGTYPE_IoriImage, pAttackInfo, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f}, true);
+  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_YamiBarai,pAttackInfo, {180.0f, 50.0f}, true);
   if (false == pAttackTable_->SearchAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, &pAttackInfo)) {
     return;
   }
-  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_Low, IMGTYPE_IoriImage, pAttackInfo, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f}, false);
+  //pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_Low, IMGTYPE_IoriImage, pAttackInfo, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f}, false);
   if (false == pAttackTable_->SearchAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, &pAttackInfo)) {
     return;
   }
-  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_High, IMGTYPE_IoriImage, pAttackInfo, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f}, false);
+  //pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_High, IMGTYPE_IoriImage, pAttackInfo, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f}, false);
 
-  // GHOST EFFECT
-  // pGhostEffect_->SetTransparentColor(ioriTransparentColor);
 }
 
 void Iori::CompareInputBitset() {
+
   if (pStateComponent_->EqualPlayerState({PS_Jump})) {
     // A | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
@@ -526,7 +526,7 @@ void Iori::ShikiYamiBarai108() {
   }
 
   if (226 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_108ShikiYamiBarai, FacingRight());
+    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_YamiBarai);
   }
 }
 
@@ -563,11 +563,11 @@ void Iori::HyakushikiOniyaki() {
 
   if (281 == curImageIndex) {
     pMovementComponent_->Jump(FacingRight(), {0.3f, 60.0f});
-    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low, FacingRight());
+    //pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low);
   }
 
   if (284 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High, FacingRight());
+    //pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High);
   }
 }
 

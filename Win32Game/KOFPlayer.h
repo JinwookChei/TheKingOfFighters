@@ -14,47 +14,6 @@ class StateComponent;
 class HitHandlerComponent;
 class GhostEffect;
 
-enum PLAYER_ANIM_TYPE : unsigned long long{
-  PLAYER_ANIMTYPE_None = 0ULL,
-  PLAYER_ANIMTYPE_Start,
-  PLAYER_ANIMTYPE_Idle,
-  PLAYER_ANIMTYPE_SeatDown,
-  PLAYER_ANIMTYPE_SeatUp,
-  PLAYER_ANIMTYPE_FrontWalk,
-  PLAYER_ANIMTYPE_BackWalk,
-  PLAYER_ANIMTYPE_BackStep,
-  PLAYER_ANIMTYPE_Run,
-  PLAYER_ANIMTYPE_RunEnd,
-  PLAYER_ANIMTYPE_Jump,
-  PLAYER_ANIMTYPE_Dash,
-  PLAYER_ANIMTYPE_RollingBack,
-  PLAYER_ANIMTYPE_Guard,
-  PLAYER_ANIMTYPE_GuardEnd,
-  PLAYER_ANIMTYPE_HeavyPunch,
-  PLAYER_ANIMTYPE_LightPunch,
-  PLAYER_ANIMTYPE_HeavyKick,
-  PLAYER_ANIMTYPE_LightKick,
-  PLAYER_ANIMTYPE_HeavyPunch_Seat,
-  PLAYER_ANIMTYPE_LightPunch_Seat,
-  PLAYER_ANIMTYPE_HeavyKick_Seat,
-  PLAYER_ANIMTYPE_LightKick_Seat,
-  PLAYER_ANIMTYPE_HeavyPunch_Jump,
-  PLAYER_ANIMTYPE_LightPunch_Jump,
-  PLAYER_ANIMTYPE_HeavyKick_Jump,
-  PLAYER_ANIMTYPE_LightKick_Jump,
-  PLAYER_ANIMTYPE_HitHigh,
-  PLAYER_ANIMTYPE_HitLow,
-  PLAYER_ANIMTYPE_HitStrong,
-  PLAYER_ANIMTYPE_HitWhileJumping,
-  PLAYER_ANIMTYPE_Max
-};
-
-enum PLAYER_ANIM_MODIFIER : unsigned long long {
-  ANIMMOD_NONE = 0,
-  ANIMMOD_FLIPPED = 1ULL << 63,
-  ANIMMOD_BLUEFLAME = 1ULL << 62
-};
-
 class KOFPlayer
     : public Player {
  public:
@@ -159,6 +118,7 @@ class KOFPlayer
 
   Vector characterScale_;
 
+  public:
   bool isPlayer1_;
 
   unsigned long long animState_;
