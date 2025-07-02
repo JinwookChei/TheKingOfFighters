@@ -515,16 +515,16 @@ void KOFPlayer::UpdateAttack() {
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
       // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, effectPosition);
+      EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, effectPosition);
 
       // TODO EFFECT 로직
-      if (pAttackInfo->effectKey_ == EFKEY_Iori_Explosion) {
-        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 150.0f, effectPosition.Y + 90.0f});
-        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X - 50.0f, effectPosition.Y + 110.0f});
-        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X - 30.0f, effectPosition.Y - 170.0f});
-        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 170.0f, effectPosition.Y - 190.0f});
-        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 110.0f, effectPosition.Y + 80.0f});
-        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectKey_, {effectPosition.X + 130.0f, effectPosition.Y - 200.0f});
+      if (pAttackInfo->effectType_ == EFTYPE_Iori_Explosion) {
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 150.0f, effectPosition.Y + 90.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X - 50.0f, effectPosition.Y + 110.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X - 30.0f, effectPosition.Y - 170.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 170.0f, effectPosition.Y - 190.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 110.0f, effectPosition.Y + 80.0f});
+        EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 130.0f, effectPosition.Y - 200.0f});
       }
     }
   }

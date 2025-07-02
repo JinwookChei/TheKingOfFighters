@@ -152,7 +152,7 @@ void Projectile::UpdateAttack() {
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
       // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), projectileInfo_.pAttackInfo_->effectKey_, effectPosition);
+      EffectManager::Instance()->SpawnEffect(GetLevel(), projectileInfo_.pAttackInfo_->effectType_, effectPosition);
 
       if (projectileInfo_.isDestroyOnCollision_ == true) {
         Destroy();

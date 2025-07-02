@@ -25,7 +25,7 @@ bool AttackTable::Initailize() {
   return attackTable_.Initialize(8, 8);
 }
 
-bool AttackTable::RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYPE attackType, ATTACK_ELEMENT_TYPE elementType, EFFECT_KEY effectKey, bool isProjectileAttack, float damage, Vector knockBackForce) {
+bool AttackTable::RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYPE attackType, ATTACK_ELEMENT_TYPE elementType, EFFECT_TYPE effectType, bool isProjectileAttack, float damage, Vector knockBackForce) {
   AttackInfo* pFind;
   if (0 != attackTable_.Select((void**)&pFind, 1, &attackTableKey, 8)) {
     return false;
@@ -35,7 +35,7 @@ bool AttackTable::RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYP
   pInfo->attackTableKey_ = attackTableKey;
   pInfo->attackType_ = attackType;
   pInfo->elementType_ = elementType;
-  pInfo->effectKey_ = effectKey;
+  pInfo->effectType_ = effectType;
   pInfo->isProjectileAttack_ = isProjectileAttack;
   pInfo->damage_ = damage;
   pInfo->knockBackForce_ = knockBackForce;

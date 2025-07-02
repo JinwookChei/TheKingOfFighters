@@ -36,7 +36,7 @@ KOFLevel::~KOFLevel() {
 }
 
 void KOFLevel::BeginPlay() {
-  //TimeManager::Instance()->SetTimeScale(0.5f);
+  // TimeManager::Instance()->SetTimeScale(0.5f);
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
 
@@ -111,7 +111,6 @@ void KOFLevel::BeginPlay() {
   pBackGround_->SetPosition({0.0f, 0.0f});
   pBackGround_->SetUseCameraposition(true);
   Vector backGroundImageScale = pBackGround_->GetBackGroundScale();
-  
 
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
@@ -128,7 +127,7 @@ void KOFLevel::BeginPlay() {
   HUD_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);
   HUD_->SetPosition({backbufferScale.HalfX(), backbufferScale.HalfY()});
   HUD_->SetScale({backbufferScale.X, backbufferScale.Y});
-  HUD_->SetOriginColor(Color8Bit::White); 
+  HUD_->SetOriginColor(Color8Bit::White);
   HUD_->ChangeClearColor_(false);
 
   ImageRenderer* pHUDRenderer_ = HUD_->GetImageRenderer();
@@ -161,44 +160,36 @@ void KOFLevel::BeginPlay() {
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
   healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthImage | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0), {1415.0f, 102.0f}, true);
 
-  // CAMERA 
+  // CAMERA
   pCamera_ = SpawnActor<CameraTarget>();
   pCamera_->Initialize(backbufferScale.HalfY(), backGroundImageScale.IntergerY() - backbufferScale.HalfY() + 60, backbufferScale.HalfX(), backGroundImageScale.X - backbufferScale.HalfX() + 20);
   pCamera_->SetPosition({backGroundImageScale.X / 2, pCamera_->GetCameraMaxHeight()});
   CameraManager::Instance()->SetTarget(pCamera_);
 
-
   // EFFECT
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_1, IMGTYPE_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_2, IMGTYPE_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_3, IMGTYPE_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_1, IMGTYPE_CastingEffectImage, 0, 15, 20, false, Color8Bit{108, 156, 114, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_2, IMGTYPE_CastingEffectImage, 16, 31, 20, false, Color8Bit{108, 156, 114, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_3, IMGTYPE_CastingEffectImage, 32, 47, 20, false, Color8Bit{108, 156, 114, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_4, IMGTYPE_CastingEffectImage, 48, 63, 20, false, Color8Bit{108, 156, 114, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_5, IMGTYPE_CastingEffectImage, 64, 79, 20, false, Color8Bit{108, 156, 114, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0})) {
-    return;
-  }
-  if (false == EffectManager::Instance()->RegistEffect(EFKEY_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, Color8Bit{0,0,0,0}, true, 1.0f)) {
-    return;
-  }
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1, IMGTYPE_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2, IMGTYPE_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3, IMGTYPE_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1, IMGTYPE_CastingEffectImage, 0, 15, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2, IMGTYPE_CastingEffectImage, 16, 31, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3, IMGTYPE_CastingEffectImage, 32, 47, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4, IMGTYPE_CastingEffectImage, 48, 63, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, 64, 79, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, 231, 238, 50, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 0, 15, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 16, 31, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 32, 47, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 48, 63, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 64, 79, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 80, 95, 20, false, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 387, 405, 20, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 231, 238, 50, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
   // SOUND
   /*Path soundPath;
@@ -271,7 +262,7 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
       }
     }
   }
-  
+
   // CameraClamp X
   if (pCamera_->GetPosition().X < pCamera_->GetCameraMinWidth()) {
     pCamera_->SetPosition({pCamera_->GetCameraMinWidth(), pCamera_->GetPosition().Y});
@@ -279,7 +270,6 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
   } else if (pCamera_->GetPosition().X > pCamera_->GetCameraMaxWidth()) {
     pCamera_->SetPosition({pCamera_->GetCameraMaxWidth(), pCamera_->GetPosition().Y});
   }
-
 
   // CameraPosition Y
   float player1JumpHeight = player1SpawnPostion_.Y - player1Position.Y;
@@ -298,7 +288,6 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
   } else if (pCamera_->GetPosition().Y > pCamera_->GetCameraMaxHeight()) {
     pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMaxHeight()});
   }
-
 
   // CHECK PlAYER POSITION EDGE
   if (player1Left < levelLeftBoundary_ || player1Right > levelRightBoundary_) {
@@ -320,7 +309,6 @@ void KOFLevel::SwapPosition() {
 CameraTarget* KOFLevel::GetCameraTarget() const {
   return pCamera_;
 }
-
 
 BackGroundMask* KOFLevel::GetBackGroundMask() const {
   return pBackGroundMask_;

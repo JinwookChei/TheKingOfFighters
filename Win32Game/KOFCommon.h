@@ -106,20 +106,28 @@ enum PROJECTILE_TYPE {
 };
 
 
-enum EFFECT_KEY
+enum EFFECT_TYPE : unsigned long long
 {
-	EFKEY_None = 0,
-	EFKEY_Hit_1 = 1,
-	EFKEY_Hit_2,
-	EFKEY_Hit_3,
-	EFKEY_Casting_1,
-	EFKEY_Casting_2,
-	EFKEY_Casting_3,
-	EFKEY_Casting_4,
-	EFKEY_Casting_5,
-	EFKEY_Casting_6,
-	EFKEY_Iori_Explosion,
-	EFKEY_Max
+	EFTYPE_None = 0ULL,
+	EFTYPE_Hit_1 = 1ULL,
+	EFTYPE_Hit_2,
+	EFTYPE_Hit_3,
+	EFTYPE_Casting_1,
+	EFTYPE_Casting_2,
+	EFTYPE_Casting_3,
+	EFTYPE_Casting_4,
+	EFTYPE_Casting_5,
+	EFTYPE_Casting_6,
+	EFTYPE_Iori_Explosion,
+	EFTYPE_Iori_Casting_YamiBarai,
+	EFTYPE_Max
+};
+
+enum EFFECT_MOD : unsigned long long
+{
+  EFMOD_NONE = 0ULL,
+  EFMOD_FLIPPED = 1ULL << 63,
+  EFMOD_BLUEFLAME = 1ULL << 62
 };
 
 

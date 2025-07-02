@@ -15,7 +15,6 @@
 #include "Iori.h"
 
 Iori::Iori() {
-  
 }
 
 Iori::~Iori() {
@@ -170,35 +169,35 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PS_Attack}, false);
 
   // ATTACK INFO
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2,false,  10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, true, 5.0f, {20.0f, 60.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, false, {5.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 5.0f, false, {20.0f, 40.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, 15.0f, false, {20.0f, 80.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, true, 20.0f, {40.0f, 80.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 5.0f, {10.0f, 00.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 5.0f, {10.0f, 00.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFKEY_Hit_2, false, 5.0f, {20.0f, 80.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFKEY_Hit_2, false, 5.0f, {0.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFKEY_Iori_Explosion, false, 10.0f, {45.0f, 60.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, ATTYPE_NormalAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, true, 5.0f, {20.0f, 60.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, 5.0f, false, {5.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, 5.0f, false, {20.0f, 40.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, 15.0f, false, {20.0f, 80.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, ATTYPE_NormalAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, true, 20.0f, {40.0f, 80.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {10.0f, 00.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {10.0f, 00.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {20.0f, 80.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_LowAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 10.0f, {45.0f, 60.0f});
 
   // SKILL
   pSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &Iori::GaishikiMutan, this);
@@ -225,21 +224,19 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   if (false == pAttackTable_->SearchAttackInfo(IORI_ANIMTYPE_108ShikiYamiBarai, &pAttackInfo)) {
     return;
   }
-  //pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_108ShikiYamiBarai, IMGTYPE_IoriImage, pAttackInfo, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f}, true);
-  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_YamiBarai,pAttackInfo, {180.0f, 50.0f}, true);
+  // pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_108ShikiYamiBarai, IMGTYPE_IoriImage, pAttackInfo, 239, 244, 20, true, {169, 139, 150, 0}, {35.0f, 0.0f}, {180.0f, 50.0f}, {1500.0f, 0.0f}, true);
+  pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_YamiBarai, pAttackInfo, {180.0f, 50.0f}, true);
   if (false == pAttackTable_->SearchAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, &pAttackInfo)) {
     return;
   }
-  //pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_Low, IMGTYPE_IoriImage, pAttackInfo, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f}, false);
+  // pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_Low, IMGTYPE_IoriImage, pAttackInfo, 292, 301, 50, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {50.0f, -30.0f}, {0.0f, 0.0f}, false);
   if (false == pAttackTable_->SearchAttackInfo(IORI_ANIMTYPE_HyakushikiOniyaki, &pAttackInfo)) {
     return;
   }
-  //pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_High, IMGTYPE_IoriImage, pAttackInfo, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f}, false);
-
+  // pProjectileComponent_->RegistProjectileInfo(IORI_PROJECTILE_HyakushikiOniyaki_High, IMGTYPE_IoriImage, pAttackInfo, 302, 311, 40, false, {169, 139, 150, 0}, {0.0f, -7.0f}, {-80.0f, -200.0f}, {0.0f, 0.0f}, false);
 }
 
 void Iori::CompareInputBitset() {
-
   if (pStateComponent_->EqualPlayerState({PS_Jump})) {
     // A | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
@@ -308,10 +305,10 @@ void Iori::CompareInputBitset() {
   }
 
   if (pStateComponent_->ContainPlayerState({PS_Run})) {
-      if (false == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
+    if (false == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00100000"))) {
       UpdateAnimState(PLAYER_ANIMTYPE_RunEnd);
       return;
-      }
+    }
   }
 
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
@@ -482,8 +479,8 @@ void Iori::Command_6() {
   UpdateAnimState(IORI_ANIMTYPE_UltimateCasting);
   pSkillComponent_->ActivateSkill(IORI_SKILL_1211ShikiYaOtome);
 
-  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
-  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFKEY_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
+  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
+  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
   pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
   pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
 }
@@ -525,6 +522,16 @@ void Iori::ShikiYamiBarai108() {
     return;
   }
 
+  if (225 == curImageIndex) {
+    Level* curLevel = GetLevel();
+    Vector curPosition = GetPosition();
+    if (FacingRight()) {
+      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {curPosition.X - 40.0f, curPosition.Y - 70.0f});
+    } else {
+      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {curPosition.X + 40.0f, curPosition.Y - 70.0f});
+    }
+  }
+
   if (226 == curImageIndex) {
     pProjectileComponent_->FireProjectile(IORI_PROJECTILE_YamiBarai);
   }
@@ -563,11 +570,11 @@ void Iori::HyakushikiOniyaki() {
 
   if (281 == curImageIndex) {
     pMovementComponent_->Jump(FacingRight(), {0.3f, 60.0f});
-    //pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low);
+    // pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low);
   }
 
   if (284 == curImageIndex) {
-    //pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High);
+    // pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High);
   }
 }
 
