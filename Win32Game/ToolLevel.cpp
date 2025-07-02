@@ -40,7 +40,8 @@ ToolLevel::ToolLevel()
   //!!!!!!!!!!!! ÁÖÀÇ!!!!!!!!!
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Box.png", 1);
   ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  const std::string& filePath("..\\ContentsResource\\Iori.csv");
+  const std::string& readFilePath("..\\ContentsResource\\Iori.csv");
+  const std::string& writeFilePath("..\\ContentsResource\\Iori_new.csv");
 
    //IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Box.png", 1);
    //changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
@@ -334,7 +335,7 @@ ToolLevel::ToolLevel()
   writeToCSVUI->MakeCollision();
   WriteButton* writeToCSVButton = writeToCSVUI->CreateUIComponent<WriteButton>();
   writeToCSVButton->BindObject(toolActor_);
-  writeToCSVButton->SetFilePath(filePath);
+  writeToCSVButton->SetFilePath(writeFilePath);
   writeToCSVButton->SetScale({400.0f, 50.0f});
   writeToCSVButton->SetPosition({writeToCSVUI->GetScale().HalfX(), writeToCSVUI->GetScale().HalfY()});
   TextComponent* writeTextComponent = writeToCSVUI->CreateUIComponent<TextComponent>();
@@ -350,7 +351,7 @@ ToolLevel::ToolLevel()
   readFromCSVUI->MakeCollision();
   ReadButton* readFromCSVButton = readFromCSVUI->CreateUIComponent<ReadButton>();
   readFromCSVButton->BindObject(toolActor_);
-  readFromCSVButton->SetFilePath(filePath);
+  readFromCSVButton->SetFilePath(readFilePath);
   readFromCSVButton->SetScale({400.0f, 50.0f});
   readFromCSVButton->SetPosition({readFromCSVUI->GetScale().HalfX(), readFromCSVUI->GetScale().HalfY()});
   TextComponent* readTextComponent = readFromCSVUI->CreateUIComponent<TextComponent>();

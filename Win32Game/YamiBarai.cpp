@@ -36,15 +36,15 @@ bool YamiBarai::Initialize() {
   pRender2_->SetAlpha(1.0f);
 
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {
-    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 239, 244, 50, true, 239);
-    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_NONE), 245, 254, 50, true, 245);
-    velocity_ = 35.0f;
-    range_ = 800.0f;
+    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 239, 243, 10, true, 239);
+    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_NONE), 245, 254, 10, true, 245);
+    velocity_ = 25.0f;
+    range_ = 1500.0f;
   } else {
-    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 239, 244, 50, true, 239);
-    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 245, 254, 50, true, 245);
-    velocity_ = -35.0f;
-    range_ = -800.0f;
+    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 239, 244, 10, true, 239);
+    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 245, 254, 10, true, 245);
+    velocity_ = -25.0f;
+    range_ = -1500.0f;
   }
   pRender_->ChangeAnimation(1);
   pRender2_->ChangeAnimation(2);
