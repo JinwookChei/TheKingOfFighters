@@ -15,7 +15,7 @@
 #include "Iori.h"
 
 Iori::Iori() {
-  playerKeySet_ = {'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
+  
 }
 
 Iori::~Iori() {
@@ -24,8 +24,8 @@ Iori::~Iori() {
 void Iori::BeginPlay() {
 }
 
-void Iori::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
-  KOFPlayer::Initialize(position, useCameraPosition, opponentPlayer);
+void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
+  KOFPlayer::Initialize(isPlayer1, position, useCameraPosition, opponentPlayer);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(IMGTYPE_IoriImage);

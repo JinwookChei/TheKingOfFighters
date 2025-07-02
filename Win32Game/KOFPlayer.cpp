@@ -27,6 +27,7 @@ KOFPlayer::KOFPlayer()
       pProjectileComponent_(nullptr),
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
+      isPlayer1_(true),
       animState_(PLAYER_ANIMTYPE_Idle),
       prevImageIndex_(0),
       isPlayerOnLeft_(true),
@@ -87,10 +88,17 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   UpdatePrevAnimationIndex();
 }
 
-void KOFPlayer::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
+void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
   SetPosition(position);
-
   SetUseCameraposition(useCameraPosition);
+  isPlayer1_ = isPlayer1;
+
+  if (true == isPlayer1_) {
+    playerKeySet_ = {'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
+  }
+  else {
+    playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
+  }
 
   // RENDERER
   pRender_ = CreateImageRenderFIFO();

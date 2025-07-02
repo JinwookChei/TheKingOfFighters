@@ -49,7 +49,7 @@ class Iori
 
   void BeginPlay() override;
 
-  void Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) override;
+  void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) override;
 
   void CompareInputBitset() override;
 

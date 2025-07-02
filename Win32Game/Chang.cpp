@@ -15,7 +15,7 @@
 
 Chang::Chang() {
   // playerKeySet_ = {'4', '3', '2', '1', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
-  playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
+  //playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
 }
 
 Chang::~Chang() {
@@ -24,8 +24,8 @@ Chang::~Chang() {
 void Chang::BeginPlay() {
 }
 
-void Chang::Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
-  KOFPlayer::Initialize(position, useCameraPosition, opponentPlayer);
+void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
+  KOFPlayer::Initialize(isPlayer1, position, useCameraPosition, opponentPlayer);
 
   // CHARACTER SETTING
   IImage* pImage = ImgManager::GetIntance()->GetImg(IMGTYPE_ChangImage);

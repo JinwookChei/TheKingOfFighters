@@ -66,7 +66,7 @@ class KOFPlayer
 
   void Tick(unsigned long long deltaTick) override;
 
-  virtual void Initialize(const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
+  virtual void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
 
   void UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier = ANIMMOD_NONE, int startFrame = 0, unsigned long long time = 0.0f);
 
@@ -158,6 +158,8 @@ class KOFPlayer
   GhostEffect* pGhostEffect_;
 
   Vector characterScale_;
+
+  bool isPlayer1_;
 
   unsigned long long animState_;
 

@@ -116,11 +116,13 @@ void KOFLevel::BeginPlay() {
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 250.0f);
-  pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);
+  pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  /*pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
+  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);*/
 
-  pPlayer1_->Initialize(player1SpawnPostion_, true, pPlayer2_);
-  pPlayer2_->Initialize(player2SpawnPostion_, true, pPlayer1_);
+  pPlayer1_->Initialize(true, player1SpawnPostion_, true, pPlayer2_);
+  pPlayer2_->Initialize(false, player2SpawnPostion_, true, pPlayer1_);
 
   // HUD
   HUD_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);
