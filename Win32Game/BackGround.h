@@ -11,6 +11,8 @@ class BackGround
 
   void Tick(unsigned long long curTick) override;
 
+  Vector GetBackGroundScale() const;
+
  private:
   ImageRenderer* pRender_;
 

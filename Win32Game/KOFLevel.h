@@ -20,8 +20,6 @@ class KOFLevel final
 
   void SwapPosition();
 
-  Vector GetBackGroundImageScale() const;
-
   BackGroundMask* GetBackGroundMask() const;
 
   void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);
@@ -37,9 +35,6 @@ class KOFLevel final
   float GetScreenBoundaryWidth() const;
 
  private:
-  const Vector levelLocalScale_{4.5f, 4.5f};
-
-  Vector backGroundImageScale_;
 
   SoundChannel* channel_;
 

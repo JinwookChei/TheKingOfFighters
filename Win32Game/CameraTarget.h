@@ -10,9 +10,22 @@ class CameraTarget final
 
   void Tick(unsigned long long curTick) override;
 
-  float GetCameraHeight() const;
+  bool Initialize(float cameraMinHeight, float cameraMaxHeight, float cameraMinWidth, float cameraMaxWidth);
+
+  float GetCameraMinHeight() const;
+
+  float GetCameraMaxHeight() const;
+
+  float GetCameraMinWidth() const;
+
+  float GetCameraMaxWidth() const;
 
  private:
+  float cameraMinHeight_;
 
-  const float cameraHeight_ = 620.0f;
+  float cameraMaxHeight_;
+
+  float cameraMinWidth_;
+
+  float cameraMaxWidth_;
 };

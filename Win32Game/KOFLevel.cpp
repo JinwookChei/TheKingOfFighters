@@ -12,8 +12,7 @@
 #include <thread>
 
 KOFLevel::KOFLevel()
-    : backGroundImageScale_({0.0f, 0.0f}),
-      channel_(nullptr),
+    : channel_(nullptr),
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
@@ -44,8 +43,8 @@ void KOFLevel::BeginPlay() {
   // IMAGES
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
 
-  IFileImage* backGoundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", (IMGTYPE_BackGoundImage | IMGMOD_NONE));
-  backGoundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
+  IFileImage* backGroundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", (IMGTYPE_BackGoundImage | IMGMOD_NONE));
+  backGroundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
 
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\BlackBoard.png", (IMGTYPE_BlackBoardImage | IMGMOD_NONE));
 
@@ -109,19 +108,16 @@ void KOFLevel::BeginPlay() {
 
   // BACKGROUND
   pBackGround_ = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
-  Vector imageScale = backGoundImage->GetScale(IMGTYPE_BackGoundImage);
-  backGroundImageScale_ = imageScale * levelLocalScale_;
-  pBackGround_->SetPosition({backGroundImageScale_.X / 2, backGroundImageScale_.Y / 2});
+  pBackGround_->SetPosition({0.0f, 0.0f});
   pBackGround_->SetUseCameraposition(true);
-
-  // CAMERA SPAWN
-  pCamera_ = SpawnActor<CameraTarget>();
+  Vector backGroundImageScale = pBackGround_->GetBackGroundScale();
+  
 
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player1SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f - 300, backGroundImageScale_.Y * 0.5f + 250.0f);
+  player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 250.0f);
   pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale_.X * 0.5f + 300, backGroundImageScale_.Y * 0.5f + 170.0f);
+  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);
 
   pPlayer1_->Initialize(player1SpawnPostion_, true, pPlayer2_);
   pPlayer2_->Initialize(player2SpawnPostion_, true, pPlayer1_);
@@ -130,8 +126,9 @@ void KOFLevel::BeginPlay() {
   HUD_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);
   HUD_->SetPosition({backbufferScale.HalfX(), backbufferScale.HalfY()});
   HUD_->SetScale({backbufferScale.X, backbufferScale.Y});
-  HUD_->SetOriginColor(Color8Bit::White);  // 디버그 할때는 오리지널 컬러로 변경.
+  HUD_->SetOriginColor(Color8Bit::White); 
   HUD_->ChangeClearColor_(false);
+
   ImageRenderer* pHUDRenderer_ = HUD_->GetImageRenderer();
   if (nullptr == pHUDRenderer_) {
     return;
@@ -162,9 +159,12 @@ void KOFLevel::BeginPlay() {
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
   healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthImage | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0), {1415.0f, 102.0f}, true);
 
-  // CAMERA SETTING
-  pCamera_->SetPosition({backGroundImageScale_.X / 2, pCamera_->GetCameraHeight()});
+  // CAMERA 
+  pCamera_ = SpawnActor<CameraTarget>();
+  pCamera_->Initialize(backbufferScale.HalfY(), backGroundImageScale.IntergerY() - backbufferScale.HalfY() + 60, backbufferScale.HalfX(), backGroundImageScale.X - backbufferScale.HalfX() + 20);
+  pCamera_->SetPosition({backGroundImageScale.X / 2, pCamera_->GetCameraMaxHeight()});
   CameraManager::Instance()->SetTarget(pCamera_);
+
 
   // EFFECT
   if (false == EffectManager::Instance()->RegistEffect(EFKEY_Hit_1, IMGTYPE_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0})) {
@@ -208,7 +208,7 @@ void KOFLevel::BeginPlay() {
 
   // LEVEL BOUNDARY SETTING
   levelLeftBoundary_ = levelBoundaryMargin_;
-  levelRightBoundary_ = backGroundImageScale_.X - levelBoundaryMargin_;
+  levelRightBoundary_ = backGroundImageScale.X - levelBoundaryMargin_;
 }
 
 void KOFLevel::Tick(unsigned long long deltaTick) {
@@ -227,7 +227,7 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
   }
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
-  float cameraHeight = pCamera_->GetCameraHeight();
+  float cameraHeight = pCamera_->GetCameraMaxHeight();
 
   pPlayer1_->SetIsAtMapEdge(false);
   pPlayer2_->SetIsAtMapEdge(false);
@@ -269,6 +269,15 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
       }
     }
   }
+  
+  // CameraClamp X
+  if (pCamera_->GetPosition().X < pCamera_->GetCameraMinWidth()) {
+    pCamera_->SetPosition({pCamera_->GetCameraMinWidth(), pCamera_->GetPosition().Y});
+
+  } else if (pCamera_->GetPosition().X > pCamera_->GetCameraMaxWidth()) {
+    pCamera_->SetPosition({pCamera_->GetCameraMaxWidth(), pCamera_->GetPosition().Y});
+  }
+
 
   // CameraPosition Y
   float player1JumpHeight = player1SpawnPostion_.Y - player1Position.Y;
@@ -279,6 +288,15 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     const Vector& cameraPosition = pCamera_->GetPosition();
     pCamera_->SetPosition({cameraPosition.X, cameraHeight - addHeight / 5});
   }
+
+  // CameraClamp Y
+  if (pCamera_->GetPosition().Y < pCamera_->GetCameraMinHeight()) {
+    pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMinHeight()});
+
+  } else if (pCamera_->GetPosition().Y > pCamera_->GetCameraMaxHeight()) {
+    pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMaxHeight()});
+  }
+
 
   // CHECK PlAYER POSITION EDGE
   if (player1Left < levelLeftBoundary_ || player1Right > levelRightBoundary_) {
@@ -297,9 +315,6 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
-Vector KOFLevel::GetBackGroundImageScale() const {
-  return backGroundImageScale_;
-}
 
 BackGroundMask* KOFLevel::GetBackGroundMask() const {
   return pBackGroundMask_;
