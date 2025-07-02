@@ -12,6 +12,10 @@ class CameraTarget final
 
   bool Initialize(float cameraMinHeight, float cameraMaxHeight, float cameraMinWidth, float cameraMaxWidth);
 
+  void OnCameraShake(unsigned long long duration);
+
+  void OffCameraShake();
+
   float GetCameraMinHeight() const;
 
   float GetCameraMaxHeight() const;
@@ -21,6 +25,14 @@ class CameraTarget final
   float GetCameraMaxWidth() const;
 
  private:
+  bool onCameraShake_;
+
+  unsigned long long cameraShakeDuration_;
+
+  unsigned long long cameraShakeTimer_;
+
+  Vector preShakePosition_;
+
   float cameraMinHeight_;
 
   float cameraMaxHeight_;

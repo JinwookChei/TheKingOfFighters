@@ -20,6 +20,8 @@ class KOFLevel final
 
   void SwapPosition();
 
+  CameraTarget* GetCameraTarget() const;
+
   BackGroundMask* GetBackGroundMask() const;
 
   void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);

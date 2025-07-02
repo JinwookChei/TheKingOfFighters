@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
+#include "CameraTarget.h"
 #include "BackGroundMask.h"
 #include "MovementComponent.h"
 #include "AttackTable.h"
@@ -771,6 +772,7 @@ void Iori::ShikiYaOtome1211() {
       }
       if (351 == curImageIndex) {
         pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+        pKOFLevel->GetCameraTarget()->OnCameraShake(300);
         break;
       }
       if (352 == curImageIndex) {

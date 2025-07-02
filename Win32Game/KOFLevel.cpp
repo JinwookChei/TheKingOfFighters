@@ -315,6 +315,10 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
+CameraTarget* KOFLevel::GetCameraTarget() const {
+  return pCamera_;
+}
+
 
 BackGroundMask* KOFLevel::GetBackGroundMask() const {
   return pBackGroundMask_;
