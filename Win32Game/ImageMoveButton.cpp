@@ -22,8 +22,7 @@ void ImageMoveButton::ClickDownEvent() {
   }
 
   IImage* pImage = bindToolActor_->GetImage();
-  if (nullptr == pImage || true == pImage->IsRenderTexture())
-  {
+  if (nullptr == pImage || true == pImage->IsRenderTexture()) {
     return;
   }
 
@@ -31,27 +30,42 @@ void ImageMoveButton::ClickDownEvent() {
   unsigned int imageIndex = bindToolActor_->GetImageIndex();
 
   switch (imageMoveDirType_) {
-    case IMD_PlusRow: {
+    case IMD_PlusRow:
       bindToolActor_->AddPositionOffSet({1.0f, 0.0f});
       break;
-    }
-    case IMD_MinusRow: {
+    case IMD_SuperPlusRow:
+      for (int i = 0; i < 10; ++i) {
+        bindToolActor_->AddPositionOffSet({1.0f, 0.0f});
+      }
+      break;
+    case IMD_MinusRow:
       bindToolActor_->AddPositionOffSet({-1.0f, 0.0f});
       break;
-    }
-    case IMD_PlusCol: {
+    case IMD_SuperMinusRow:
+      for (int i = 0; i < 10; ++i) {
+        bindToolActor_->AddPositionOffSet({-1.0f, 0.0f});
+      }
+      break;
+    case IMD_PlusCol:
       bindToolActor_->AddPositionOffSet({0.0f, 1.0f});
       break;
-    }
-    case IMD_MinusCol: {
+    case IMD_SuperPlusCol:
+      for (int i = 0; i < 10; ++i) {
+        bindToolActor_->AddPositionOffSet({0.0f, 1.0f});
+      }
+      break;
+    case IMD_MinusCol:
       bindToolActor_->AddPositionOffSet({0.0f, -1.0f});
       break;
-    }
-    case IMD_Reset: {
-      bindToolActor_->ResetPostionOffset();
-
+    case IMD_SuperMinusCol:
+      for (int i = 0; i < 10; ++i) {
+        bindToolActor_->AddPositionOffSet({0.0f, -1.0f});
+      }
       break;
-    }
+    case IMD_Reset:
+      bindToolActor_->ResetPostionOffset();
+      break;
+
     default:
       break;
   }

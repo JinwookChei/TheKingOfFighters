@@ -4,9 +4,13 @@
 enum ImageMoveDirType {
   IMD_None = -1,
   IMD_PlusRow,
+  IMD_SuperPlusRow,
   IMD_MinusRow,
+  IMD_SuperMinusRow,
   IMD_PlusCol,
+  IMD_SuperPlusCol,
   IMD_MinusCol,
+  IMD_SuperMinusCol,
   IMD_Reset,
   IMD_MAX
 };

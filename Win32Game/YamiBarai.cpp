@@ -4,7 +4,8 @@
 #include "YamiBarai.h"
 
 YamiBarai::YamiBarai()
-    : accumulRange_(0.0f),
+    : pRender2_(nullptr),
+      accumulRange_(0.0f),
       velocity_(0.0f),
       range_(0.0f) {
 }
@@ -29,17 +30,25 @@ bool YamiBarai::Initialize() {
   pRender_->SetLocalScale({4.2f, 4.2f});
   // pRender_->SetTransparentColor(projectileInfo_.transColor_);
   pRender_->SetAlpha(1.0f);
+  pRender2_ = CreateImageRenderFIFO();
+  pRender2_->SetImageRenderType(ImageRenderType::Center);
+  pRender2_->SetLocalScale({4.2f, 4.2f});
+  pRender2_->SetAlpha(1.0f);
 
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {
     pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 239, 244, 50, true, 239);
+    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_NONE), 245, 254, 50, true, 245);
     velocity_ = 35.0f;
     range_ = 800.0f;
   } else {
     pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 239, 244, 50, true, 239);
+    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 245, 254, 50, true, 245);
     velocity_ = -35.0f;
     range_ = -800.0f;
   }
   pRender_->ChangeAnimation(1);
+  pRender2_->ChangeAnimation(2);
+  
 
   return true;
 }
@@ -59,6 +68,4 @@ void YamiBarai::UpdateProjectile() {
       Destroy();
     }
   }
-
-  
 }

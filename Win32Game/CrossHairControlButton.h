@@ -3,9 +3,13 @@
 enum CrossHairControlType {
   CrossHairControlType_None = -1,
   CrossHairControlType_PlusRow,
+  CrossHairControlType_SuperPlusRow,
   CrossHairControlType_MinusRow,
+  CrossHairControlType_SuperMinusRow,
   CrossHairControlType_PlusCol,
+  CrossHairControlType_SuperPlusCol,
   CrossHairControlType_MinusCol,
+  CrossHairControlType_SuperMinusCol,
   CrossHairControlType_Reset,
   CrossHairControlType_MAX
 };

@@ -11,10 +11,7 @@ CrossHairControlButton::~CrossHairControlButton() {
 }
 
 void CrossHairControlButton::BeginPlay() {
-  //UI* owner = GetOwner();
 
-  //SetScale(owner->GetScale());
-  //SetPosition({owner->GetScale().HalfX(), owner->GetScale().HalfY()});
 }
 
 void CrossHairControlButton::Tick(unsigned long long curTick) {
@@ -26,14 +23,34 @@ void CrossHairControlButton::ClickDownEvent() {
     case CrossHairControlType_PlusRow:
       crossHair_->PlusRowOffSet();
       break;
+    case CrossHairControlType_SuperPlusRow:
+      for (int i = 0; i < 10; ++i) {
+        crossHair_->PlusRowOffSet();
+      }
+      break;
     case CrossHairControlType_MinusRow:
       crossHair_->MinusRowOffSet();
+      break;
+    case CrossHairControlType_SuperMinusRow:
+      for (int i = 0; i < 10; ++i) {
+        crossHair_->MinusRowOffSet();
+      }
       break;
     case CrossHairControlType_PlusCol:
       crossHair_->PlusColOffSet();
       break;
+    case CrossHairControlType_SuperPlusCol:
+      for (int i = 0; i < 10; ++i) {
+        crossHair_->PlusColOffSet();
+      }
+      break;
     case CrossHairControlType_MinusCol:
       crossHair_->MinusColOffSet();
+      break;
+    case CrossHairControlType_SuperMinusCol:
+      for (int i = 0; i < 10; ++i) {
+        crossHair_->MinusColOffSet();
+      }
       break;
     case CrossHairControlType_Reset:
       crossHair_->RowColReset();

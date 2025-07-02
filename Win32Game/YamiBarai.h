@@ -12,6 +12,8 @@ class YamiBarai
   void UpdateProjectile() override;
 
  private:
+  ImageRenderer* pRender2_;
+
   float accumulRange_;
 
   float velocity_;
