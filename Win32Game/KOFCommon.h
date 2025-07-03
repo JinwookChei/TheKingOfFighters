@@ -14,7 +14,6 @@ enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_HealthImage,
   IMGTYPE_HitEffectImage,
   IMGTYPE_GuardEffectImage01,
-  IMGTYPE_GuardEffectImage02,
   IMGTYPE_CastingEffectImage,
 };
 

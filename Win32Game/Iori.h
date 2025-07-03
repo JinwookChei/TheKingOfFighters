@@ -31,7 +31,7 @@ class Iori
 
   void ShikiYamiBarai108();
 
-  void Shinigami();
+  //void Shinigami();
 
   void HyakushikiOniyaki();
 

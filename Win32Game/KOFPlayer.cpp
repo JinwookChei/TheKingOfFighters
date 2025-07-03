@@ -198,63 +198,62 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
 }
 
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
-  pHealthComponent_->TakeDamage(damageInfo->damage_);
-
-  switch (damageInfo->attackType_) {
-    case ATTYPE_HighAttack: {
+  if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
+    pHealthComponent_->TakeDamage(damageInfo->damage_ / 10.0f);
+    pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X, 0.0f});
+  }
+  else {
+    pHealthComponent_->TakeDamage(damageInfo->damage_);
+    switch (damageInfo->attackType_) {
+      case ATTYPE_HighAttack: {
         if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
-        }
-        else {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
+        } else {
           UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
         }
-      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-    } break;
+        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+      } break;
 
-    case ATTYPE_LowAttack: {
-      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
-      } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
-      }
-
-      
-      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-    } break;
-    case ATTYPE_StrongAttack: {
-      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitStrong, ANIMMOD_BLUEFLAME);
-      } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
-      }
-      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-    } break;
-    case ATTYPE_NormalAttack: {
-      if (pHitBoxTop_->HasHit()) {
-          if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
-          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+      case ATTYPE_LowAttack: {
+        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
         } else {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+        }
+        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+      } break;
+      case ATTYPE_StrongAttack: {
+        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitStrong, ANIMMOD_BLUEFLAME);
+        } else {
+          UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
+        }
+        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+      } break;
+      case ATTYPE_NormalAttack: {
+        if (pHitBoxTop_->HasHit()) {
+          if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+            UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
+            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+          } else {
             UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
             pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
           }
-        
-      }
+        }
 
-      if (pHitBoxBottom_->HasHit()) {
-        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
-          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+        if (pHitBoxBottom_->HasHit()) {
+          if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
+            UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
+            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+          } else {
+            UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
+          }
         }
-        else {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
-          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-        }
-        
-      }
-    } break;
-    default:
-      break;
+      } break;
+      default:
+        break;
+    }
   }
 }
 
@@ -497,7 +496,7 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 80);
+      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 100);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {
@@ -514,9 +513,7 @@ void KOFPlayer::UpdateAttack() {
           (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
-      // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, effectPosition);
-      //EffectManager::Instance()->SpawnEffect(GetLevel(), EFTYPE_Guard_1, effectPosition);
+
 
       // TODO EFFECT 로직
       if (pAttackInfo->effectType_ == EFTYPE_Iori_Explosion) {
@@ -526,6 +523,23 @@ void KOFPlayer::UpdateAttack() {
         EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 170.0f, effectPosition.Y - 190.0f});
         EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 110.0f, effectPosition.Y + 80.0f});
         EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 130.0f, effectPosition.Y - 200.0f});
+        return;
+      }
+
+      // Spawn Effect
+      if (true == pTargetPlayer->GetPlayerStateComponent()->ContainPlayerState({ PS_Guard })) {
+        if (true == FacingRight()) {
+          EffectManager::Instance()->SpawnEffect(GetLevel(), EFTYPE_Guard_1, effectPosition);
+        } else {
+          EffectManager::Instance()->SpawnEffect(GetLevel(), EFTYPE_Guard_1 | EFMOD_FLIPPED, effectPosition);
+        }
+      }
+      else {
+        if (true == FacingRight()) {
+          EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, effectPosition);
+        } else {
+          EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_ | EFMOD_FLIPPED, effectPosition);
+        }
       }
     }
   }
