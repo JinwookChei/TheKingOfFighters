@@ -14,6 +14,8 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
+#define CLOSEDISTANCE 270.0f
+
 Iori::Iori() {
 }
 
@@ -47,10 +49,14 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 78, 87, 50, false, 78);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 541, 541, 50, false, 541);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 542, 543, 50, false, 542);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 108, 117, 50, false, 108);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 94, 98, 50, false, 94);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 93, 50, false, 88);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 136, 144, 50, false, 136);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 123, 127, 50, false, 123);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 128, 135, 50, false, 128);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 118, 122, 50, false, 118);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 108, 117, 50, false, 108);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 94, 98, 50, false, 94);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 93, 50, false, 88);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 181, 191, 50, false, 181);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 165, 171, 50, false, 165);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 172, 180, 50, false, 172);
@@ -59,10 +65,13 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 204, 205, 50, false, 204);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 206, 212, 50, false, 206);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 198, 203, 50, false, 198);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 557, 562, 50, false, 557);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 563, 567, 50, false, 563);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 552, 556, 50, false, 552);
   pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 230, 50, false, 223);
   pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
   pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 160, 164, 50, false, 160);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 136, 144, 50, false, 136);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 145, 156, 50, false, 145);
   pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 276, 291, 50, false, 276);
   pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 255, 261, 50, false, 255);
   pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 262, 268, 50, false, 262);
@@ -78,6 +87,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 20, false, 99);
   pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 347, 352, 250, false, 347);
 
+  // ANIM FLIP
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 7, 15, 50, true, 7);         // ¾ÆÀÌµé
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 16, 23, 50, true, 18);   // ¾É±â. Down
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 24, 25, 50, false, 24);    // ¾É±â. Up
@@ -91,10 +101,10 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 78, 87, 50, false, 78);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 541, 541, 50, false, 541);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 542, 543, 50, false, 542);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 108, 117, 50, false, 108);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 94, 98, 50, false, 94);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 93, 50, false, 88);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 108, 117, 50, false, 108);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 94, 98, 50, false, 94);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Left | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 93, 50, false, 88);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 181, 191, 50, false, 181);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 165, 171, 50, false, 165);
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 172, 180, 50, false, 172);
@@ -137,10 +147,14 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_RollingBack, {PS_Rolling}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Guard, {PS_Guard}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_GuardEnd, {PS_None}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, {PS_Attack}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick, {PS_Attack}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch, {PS_Attack}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick_CloseRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick_CloseRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch_CloseRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick_LongRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick_LongRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch_LongRange, {PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch_LongRange, {PS_Attack}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick_Seat, {PS_Seat, PS_Attack}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick_Seat, {PS_Seat, PS_Attack}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch_Seat, {PS_Seat, PS_Attack}, false);
@@ -149,6 +163,9 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightKick_Jump, {PS_Jump, PS_Attack}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyPunch_Jump, {PS_Jump, PS_Attack}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_LightPunch_Jump, {PS_Jump, PS_Attack}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitHigh, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Seat, {PS_Hit, PS_Seat}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_2, {PS_Attack}, false);
@@ -169,10 +186,14 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PS_Attack}, false);
 
   // ATTACK INFO
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
@@ -202,7 +223,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   // SKILL
   pSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &Iori::GaishikiMutan, this);
   pSkillComponent_->RegistSkill(IORI_SKILL_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this);
-  //pSkillComponent_->RegistSkill(IORI_SKILL_Shinigami, &Iori::Shinigami, this);
   pSkillComponent_->RegistSkill(IORI_SKILL_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this);
   pSkillComponent_->RegistSkill(IORI_SKILL_127ShikiAoiHana, &Iori::ShikiAoiHana127, this);
   pSkillComponent_->RegistSkill(IORI_SKILL_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this);
@@ -408,25 +428,47 @@ void Iori::CompareInputBitset() {
 
     // A | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_LightPunch);
+      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
+      }
+      else {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
+      }
+      
       return;
     }
 
     // B | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000100"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_LightKick);
+      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
+      }
+      else {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
+      }
+      
       return;
     }
 
     // C | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000010"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch);
+      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+        UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_CloseRange);
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_LongRange);
+      }
+      
       return;
     }
 
     // D | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00000001"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick);
+      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+        UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_CloseRange);
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_LongRange);
+      }
+      
       return;
     }
 
