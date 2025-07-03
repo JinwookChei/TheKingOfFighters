@@ -11,6 +11,8 @@ struct EffectInfo {
 
   bool loop_ = false;
 
+  Vector imageLocalScale_{1.0f, 1.0f};
+
   Color8Bit transColor_;
 
   bool isAlphaEffect_ = false;
@@ -33,11 +35,11 @@ class EffectManager final {
 
   JO_API bool Initialize();
 
-  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageTag, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, const Color8Bit& transColor, bool isAlphaEffect = false, float alpha = 0.0f);
+  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageTag, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, const Vector& imageLocalScale, const Color8Bit& transColor, bool isAlphaEffect = false, float alpha = 0.0f);
   											  
-  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, const Color8Bit& transColor, bool isAlphaEffect = false, float alpha = 0.0f);
+  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, const Vector& imageLocalScale, const Color8Bit& transColor, bool isAlphaEffect = false, float alpha = 0.0f);
 											  
-  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, bool loop, const Color8Bit& transColor, bool isAlphaEffect = false, float alpha = 0.0f);
+  JO_API bool RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, bool loop, const Vector& imageLocalScale, const Color8Bit& transColor, bool isAlphaEffect = false, float alpha = 0.0f);
 
   JO_API Effect* SpawnEffect(Level* level, unsigned long long effectTag, const Vector& position);
 

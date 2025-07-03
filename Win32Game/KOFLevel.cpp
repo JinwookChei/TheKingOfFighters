@@ -42,14 +42,10 @@ void KOFLevel::BeginPlay() {
 
   // IMAGES
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
-
   IFileImage* backGroundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\TownStage.png", (IMGTYPE_BackGoundImage | IMGMOD_NONE));
   backGroundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
-
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\BlackBoard.png", (IMGTYPE_BlackBoardImage | IMGMOD_NONE));
-
   IFileImage* whiteBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\WhiteBoard.png", (IMGTYPE_WhiteBoardImage | IMGMOD_NONE));
-
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_NONE));
   ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
   IFileImage* ioriImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED));
@@ -58,7 +54,6 @@ void KOFLevel::BeginPlay() {
   ioriImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\Iori.csv");
   IFileImage* ioriImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\IoriYagami_Alpha_BlueFlame.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
   ioriImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Iori.csv");
-
   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_NONE));
   changImage->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
   IFileImage* changImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED));
@@ -67,21 +62,20 @@ void KOFLevel::BeginPlay() {
   changImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\Chang.csv");
   IFileImage* changImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Chang Koehan_Alpha_BlueFlame.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
   changImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\Chang.csv");
-
   IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", (IMGTYPE_HealthBarImage | IMGMOD_NONE));
   healthBarImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-
   IFileImage* healthBarImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HealthBar.png", (IMGTYPE_HealthBarImage | IMGMOD_FLIPPED));
   healthBarImageFlipped->CalculateTransformFromDrawBoxImage_Flip(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-
   IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\Health.png", (IMGTYPE_HealthImage | IMGMOD_NONE));
   healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-
   IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\HitEffect01.png", (IMGTYPE_HitEffectImage | IMGMOD_NONE));
   hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
-
   IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\CastingEffectImage_Box.png", (IMGTYPE_CastingEffectImage | IMGMOD_NONE));
   castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
+  IFileImage* guardEffectImage01 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\GuardEffect01.png", (IMGTYPE_GuardEffectImage01 | IMGMOD_NONE));
+  guardEffectImage01->CalculateTransformFromDrawBoxImage(Color8Bit{103, 167, 141, 0}, Color8Bit::Magenta);
+  IFileImage* guardEffectImage02 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\GuardEffect02.png", (IMGTYPE_GuardEffectImage02 | IMGMOD_NONE));
+  guardEffectImage02->CalculateTransformFromDrawBoxImage(Color8Bit{34, 177, 76, 0}, Color8Bit::Magenta);
 
   // TODO :
   // 반전된 Health는 logic으로, 원본 이미지는 여러 포인터가 가르킥로있고, 이미지를 어떻게 그릴지만 각자 알아서 그림.
@@ -167,29 +161,37 @@ void KOFLevel::BeginPlay() {
   CameraManager::Instance()->SetTarget(pCamera_);
 
   // EFFECT
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1, IMGTYPE_HitEffectImage, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2, IMGTYPE_HitEffectImage, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3, IMGTYPE_HitEffectImage, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1, IMGTYPE_CastingEffectImage, 0, 15, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2, IMGTYPE_CastingEffectImage, 16, 31, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3, IMGTYPE_CastingEffectImage, 32, 47, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4, IMGTYPE_CastingEffectImage, 48, 63, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, 64, 79, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, 231, 238, 50, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1, IMGTYPE_HitEffectImage, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2, IMGTYPE_HitEffectImage, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3, IMGTYPE_HitEffectImage, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
 
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 7, 10, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 19, 22, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 31, 34, 50, false, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 0, 15, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 16, 31, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 32, 47, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 48, 63, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 64, 79, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 80, 95, 20, false, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 387, 405, 20, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 231, 238, 50, false, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  // TEMP
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_1, IMGTYPE_GuardEffectImage01, 0, 10, 50, false, {2.1f, 2.1f}, Color8Bit{103, 167, 141, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_2, IMGTYPE_GuardEffectImage02, 0, 9, 50, false, {2.1f, 2.1f}, Color8Bit{34, 177, 76, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_3, IMGTYPE_GuardEffectImage02, 10, 19, 50, false, {2.1f, 2.1f}, Color8Bit{34, 177, 76, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_4, IMGTYPE_GuardEffectImage02, 20, 25, 50, false, {2.1f, 2.1f}, Color8Bit{34, 177, 76, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_5, IMGTYPE_GuardEffectImage02, 25, 34, 50, false, {2.1f, 2.1f}, Color8Bit{34, 177, 76, 0});
+
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1, IMGTYPE_CastingEffectImage, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2, IMGTYPE_CastingEffectImage, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3, IMGTYPE_CastingEffectImage, 32, 47, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4, IMGTYPE_CastingEffectImage, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 32, 47, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
   // SOUND
   /*Path soundPath;

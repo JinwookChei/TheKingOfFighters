@@ -26,7 +26,7 @@ bool EffectManager::Initialize() {
   return effectTable_.Initialize(8, 8);
 }
 
-bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long long imageTag, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, const Color8Bit& transColor, bool isAlphaEffect /* = false*/, float alpha /* = 0.0f*/) {
+bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long long imageTag, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, const Vector& imageLocalScale, const Color8Bit& transColor, bool isAlphaEffect /* = false*/, float alpha /* = 0.0f*/) {
   std::vector<unsigned int> indices;
 
   int size = (int)(endIndex - startIndex);
@@ -40,10 +40,10 @@ bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long lon
     indices.push_back(n);
   }
 
-  return RegistEffect(effectTag, imageTag, indices, interval, loop, transColor, isAlphaEffect, alpha);
+  return RegistEffect(effectTag, imageTag, indices, interval, loop, imageLocalScale,  transColor, isAlphaEffect, alpha);
 }
 
-bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, const Color8Bit& transColor, bool isAlphaEffect /* = false*/, float alpha /* = 0.0f*/) {
+bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, const Vector& imageLocalScale, const Color8Bit& transColor, bool isAlphaEffect /* = false*/, float alpha /* = 0.0f*/) {
   std::vector<unsigned long long> intervals;
   intervals.reserve(indices.size());
 
@@ -51,10 +51,10 @@ bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long lon
     intervals.push_back(interval);
   }
 
-  return RegistEffect(effectTag, imageTag, indices, intervals, loop, transColor, isAlphaEffect, alpha);
+  return RegistEffect(effectTag, imageTag, indices, intervals, loop, imageLocalScale, transColor, isAlphaEffect, alpha);
 }
 
-bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, bool loop, const Color8Bit& transColor, bool isAlphaEffect /* = false*/, float alpha /* = 0.0f*/) {
+bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long long imageTag, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, bool loop, const Vector& imageLocalScale,  const Color8Bit& transColor, bool isAlphaEffect /* = false*/, float alpha /* = 0.0f*/) {
   EffectInfo* pFind;
   if (0 != effectTable_.Select((void**)&pFind, 8, &effectTag, 8)) {
     return false;
@@ -70,6 +70,7 @@ bool EffectManager::RegistEffect(unsigned long long effectTag, unsigned long lon
   newEffectInfo->indices_ = indices;
   newEffectInfo->intervals_ = intervals;
   newEffectInfo->loop_ = loop;
+  newEffectInfo->imageLocalScale_ = imageLocalScale;
   newEffectInfo->transColor_ = transColor;
   newEffectInfo->isAlphaEffect_ = isAlphaEffect;
   newEffectInfo->alpha_ = alpha;

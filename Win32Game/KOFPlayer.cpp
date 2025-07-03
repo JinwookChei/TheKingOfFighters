@@ -516,6 +516,7 @@ void KOFPlayer::UpdateAttack() {
 
       // 이펙트도 여기서 스폰.
       EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, effectPosition);
+      //EffectManager::Instance()->SpawnEffect(GetLevel(), EFTYPE_Guard_1, effectPosition);
 
       // TODO EFFECT 로직
       if (pAttackInfo->effectType_ == EFTYPE_Iori_Explosion) {

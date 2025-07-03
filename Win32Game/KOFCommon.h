@@ -1,8 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-enum IMAGE_TYPE : unsigned long long
-{
+enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_MouseImage = 1ULL,
   IMGTYPE_BackGoundImage,
   IMGTYPE_BlackBoardImage,
@@ -14,6 +13,8 @@ enum IMAGE_TYPE : unsigned long long
   IMGTYPE_HealthBarImage,
   IMGTYPE_HealthImage,
   IMGTYPE_HitEffectImage,
+  IMGTYPE_GuardEffectImage01,
+  IMGTYPE_GuardEffectImage02,
   IMGTYPE_CastingEffectImage,
 };
 
@@ -85,8 +86,6 @@ enum PLAYER_ANIM_MODIFIER : unsigned long long {
   ANIMMOD_BLUEFLAME = 1ULL << 62
 };
 
-
-
 enum IORI_SKILL {
   IORI_SKILL_None = -1,
   IORI_SKILL_108ShikiYamiBarai = 0,
@@ -98,43 +97,41 @@ enum IORI_SKILL {
   IORI_SKILL_Max
 };
 
-
 enum PROJECTILE_TYPE {
   IORI_PROJECTILE_YamiBarai = 0,
   IORI_PROJECTILE_HyakushikiOniyaki_Low,
   IORI_PROJECTILE_HyakushikiOniyaki_High,
 };
 
-
-enum EFFECT_TYPE : unsigned long long
-{
-	EFTYPE_None = 0ULL,
-	EFTYPE_Hit_1 = 1ULL,
-	EFTYPE_Hit_2,
-	EFTYPE_Hit_3,
-	EFTYPE_Casting_1,
-	EFTYPE_Casting_2,
-	EFTYPE_Casting_3,
-	EFTYPE_Casting_4,
-	EFTYPE_Casting_5,
-	EFTYPE_Casting_6,
-	EFTYPE_Iori_Explosion,
-	EFTYPE_Iori_Casting_YamiBarai,
-	EFTYPE_Max
+enum EFFECT_TYPE : unsigned long long {
+  EFTYPE_None = 0ULL,
+  EFTYPE_Hit_1 = 1ULL,
+  EFTYPE_Hit_2,
+  EFTYPE_Hit_3,
+  EFTYPE_Guard_1,
+  EFTYPE_Guard_2,
+  EFTYPE_Guard_3,
+  EFTYPE_Guard_4,
+  EFTYPE_Guard_5,
+  EFTYPE_Casting_1,
+  EFTYPE_Casting_2,
+  EFTYPE_Casting_3,
+  EFTYPE_Casting_4,
+  EFTYPE_Casting_5,
+  EFTYPE_Casting_6,
+  EFTYPE_Iori_Explosion,
+  EFTYPE_Iori_Casting_YamiBarai,
+  EFTYPE_Max
 };
 
-enum EFFECT_MOD : unsigned long long
-{
+enum EFFECT_MOD : unsigned long long {
   EFMOD_NONE = 0ULL,
   EFMOD_FLIPPED = 1ULL << 63,
   EFMOD_BLUEFLAME = 1ULL << 62
 };
 
-
 static Color8Bit ioriTransparentColor = Color8Bit{169, 139, 150, 0};
 static Color8Bit changTransparentColor = Color8Bit{17, 91, 124, 0};
-
-
 
 unsigned long long MakeKey(unsigned long long type, unsigned long long modify) {
   return type | modify;

@@ -23,7 +23,7 @@ bool Effect::Initialize() {
   }
 
   pRender_->SetImage(pImage);
-  pRender_->SetLocalScale({4.2f, 4.2f});
+  pRender_->SetLocalScale(pEffectInfo_->imageLocalScale_);
   pRender_->SetImageRenderType(ImageRenderType::Center);
 
   if (pEffectInfo_->isAlphaEffect_) {

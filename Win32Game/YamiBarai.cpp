@@ -47,7 +47,6 @@ bool YamiBarai::Initialize() {
   pRender_ = CreateImageRenderFIFO();
   pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetLocalScale({4.2f, 4.2f});
-  // pRender_->SetTransparentColor(projectileInfo_.transColor_);
   pRender_->SetAlpha(1.0f);
   pRender2_ = CreateImageRenderFIFO();
   pRender2_->SetImageRenderType(ImageRenderType::Center);
