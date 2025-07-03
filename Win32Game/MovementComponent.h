@@ -96,7 +96,7 @@ class MovementComponent final
 
   // KNOCK BACK
   Vector curKnockBackVelocity_;
-  const float knockBackMinVelocity_ = 15.0f;
+  const float knockBackMinVelocity_ = 10.0f;
 
   // PUSH
   float pushWeight_;

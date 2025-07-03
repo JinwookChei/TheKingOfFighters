@@ -199,8 +199,8 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
 
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
-    pHealthComponent_->TakeDamage(damageInfo->damage_ / 10.0f);
-    pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X, 0.0f});
+    pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
+    pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
   }
   else {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
@@ -496,7 +496,7 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 100);
+      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 130);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

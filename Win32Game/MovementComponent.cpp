@@ -129,8 +129,15 @@ void MovementComponent::Tick(unsigned long long curTick) {
 
   // KNOCK BACK
   if (movementStateBitset_.test(MOVSTATE_KnockBack)) {
-    curKnockBackVelocity_.Y -= gravity_ * curTick;
-    curKnockBackVelocity_.X -= airResistance_ * curTick;
+    if (curKnockBackVelocity_.X > 0) {
+      curKnockBackVelocity_.X -= airResistance_ * curTick;
+      curKnockBackVelocity_.Y -= gravity_ * curTick;
+    } else if (curKnockBackVelocity_.X < 0) {
+      curKnockBackVelocity_.X += airResistance_ * curTick;
+      curKnockBackVelocity_.Y -= gravity_ * curTick;
+    }
+
+
     const Vector& ownerPosition = owner->GetPosition();
 
     Vector knockBackPosition = {
@@ -142,7 +149,7 @@ void MovementComponent::Tick(unsigned long long curTick) {
       knockBackPosition.Y = startPosition_.Y;
       curKnockBackVelocity_.Y = 0.0f;
 
-      if (curKnockBackVelocity_.X <= knockBackMinVelocity_) {
+      if (std::fabs(curKnockBackVelocity_.X) <= knockBackMinVelocity_) {
         curKnockBackVelocity_.X = 0;
         movementStateBitset_.reset(MOVSTATE_KnockBack);
       }
@@ -347,6 +354,7 @@ void MovementComponent::StopDash() {
 }
 
 void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
+
   if (isRightDirection) {
     curKnockBackVelocity_ = {-knockBackForce.X, knockBackForce.Y};
   } else {

@@ -14,7 +14,8 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
-#define CLOSEDISTANCE 270.0f
+#define CLOSEDISTANCE 260.0f
+#define ANIMINTERVAL 40
 
 Iori::Iori() {
 }
@@ -35,102 +36,110 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   }
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
-  // RENDERER
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 7, 15, 50, true, 7);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 16, 23, 50, true, 18);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 24, 25, 50, false, 24);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 27, 34, 50, true, 27);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 35, 44, 50, true, 35);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 45, 48, 50, false, 45);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 49, 57, 50, true, 51);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 58, 60, 50, false, 59);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 61, 69, 50, false, 61);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Dash | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 70, 77, 50, false, 70);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 78, 87, 50, false, 78);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 541, 541, 50, false, 541);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 542, 543, 50, false, 542);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 136, 144, 50, false, 136);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 123, 127, 50, false, 123);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 128, 135, 50, false, 128);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 118, 122, 50, false, 118);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 108, 117, 50, false, 108);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 94, 98, 50, false, 94);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 93, 50, false, 88);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 181, 191, 50, false, 181);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 165, 171, 50, false, 165);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 172, 180, 50, false, 172);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 192, 197, 50, false, 192);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 213, 218, 50, false, 213);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 204, 205, 50, false, 204);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 206, 212, 50, false, 206);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 198, 203, 50, false, 198);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 557, 562, 50, false, 557);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 563, 567, 50, false, 563);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 552, 556, 50, false, 552);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 230, 50, false, 223);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 50, false, 99);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 160, 164, 50, false, 160);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 145, 156, 50, false, 145);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 276, 291, 50, false, 276);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 255, 261, 50, false, 255);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 262, 268, 50, false, 262);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_3 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 269, 275, 50, false, 269);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_UltimateCasting | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 344, 347, 100, false, 344);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 70, 77, 20, false, 70);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 118, 122, 20, false, 118);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_3 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 92, 20, false, 88);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_4 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 128, 135, 20, false, 128);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_5 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 229, 20, false, 223);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_6 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 106, 20, false, 99);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_7 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 159, 163, 20, false, 159);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, 20, false, 99);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 347, 352, 250, false, 347);
+  // ANIM
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 7, 15, ANIMINTERVAL, true, 7);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 16, 23, ANIMINTERVAL, true, 18);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 24, 25, ANIMINTERVAL, false, 24);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 27, 34, ANIMINTERVAL, true, 27);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 35, 44, ANIMINTERVAL, true, 35);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 45, 48, ANIMINTERVAL, false, 45);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 49, 57, ANIMINTERVAL, true, 51);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 58, 60, ANIMINTERVAL, false, 59);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 61, 69, ANIMINTERVAL, false, 61);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Dash | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 70, 77, ANIMINTERVAL, false, 70);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 78, 87, ANIMINTERVAL, false, 78);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 541, 541, ANIMINTERVAL, false, 541);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 542, 543, ANIMINTERVAL, false, 542);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 136, 144, ANIMINTERVAL, false, 136);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 123, 127, ANIMINTERVAL, false, 123);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 128, 135, ANIMINTERVAL, false, 128);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_CloseRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 118, 122, ANIMINTERVAL, false, 118);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 108, 117, ANIMINTERVAL, false, 108);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 94, 98, ANIMINTERVAL, false, 94);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_LongRange | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 93, ANIMINTERVAL, false, 88);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 181, 191, ANIMINTERVAL, false, 181);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 165, 171, ANIMINTERVAL, false, 165);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 172, 180, ANIMINTERVAL, false, 172);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 192, 197, ANIMINTERVAL, false, 192);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 213, 218, ANIMINTERVAL, false, 213);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 204, 205, ANIMINTERVAL, false, 204);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 206, 212, ANIMINTERVAL, false, 206);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Jump | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 198, 203, ANIMINTERVAL, false, 198);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 557, 562, ANIMINTERVAL, false, 557);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 563, 567, ANIMINTERVAL, false, 563);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Seat | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 552, 556, ANIMINTERVAL, false, 552);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 230, ANIMINTERVAL, false, 223);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 160, 164, ANIMINTERVAL, false, 160);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 145, 156, ANIMINTERVAL, false, 145);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 276, 291, ANIMINTERVAL, false, 276);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 255, 261, ANIMINTERVAL, false, 255);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 262, 268, ANIMINTERVAL, false, 262);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_3 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 269, 275, ANIMINTERVAL, false, 269);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_UltimateCasting | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 344, 347, ANIMINTERVAL, false, 344);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_1 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 70, 77, ANIMINTERVAL, false, 70);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_2 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 118, 122, ANIMINTERVAL, false, 118);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_3 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 88, 92, ANIMINTERVAL, false, 88);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_4 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 128, 135, ANIMINTERVAL, false, 128);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_5 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 223, 229, ANIMINTERVAL, false, 223);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_6 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 106, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_7 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 159, 163, ANIMINTERVAL, false, 159);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 99, 107, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9 | ANIMMOD_NONE), (IMGTYPE_IoriImage | IMGMOD_NONE), 347, 352, ANIMINTERVAL, false, 347);
 
   // ANIM FLIP
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 7, 15, 50, true, 7);         // ¾ÆÀÌµé
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 16, 23, 50, true, 18);   // ¾É±â. Down
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 24, 25, 50, false, 24);    // ¾É±â. Up
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 27, 34, 50, true, 27);  // -> °È±â
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 35, 44, 50, true, 35);   // <- µÚ·Î°¡±â
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 45, 48, 50, false, 45);  // <- <- ¹é½ºÅÇ
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 49, 57, 50, true, 51);        // ->-> ¶Ù±â Start
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 58, 60, 50, false, 59);    // ->-> ¶Ù±â Stop
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 61, 69, 50, false, 61);      // Á¡ÇÁ
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Dash | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 70, 77, 50, false, 70);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 78, 87, 50, false, 78);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 541, 541, 50, false, 541);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 542, 543, 50, false, 542);
-  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 108, 117, 50, false, 108);
-  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 94, 98, 50, false, 94);
-  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
-  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Left | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 93, 50, false, 88);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 181, 191, 50, false, 181);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 165, 171, 50, false, 165);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 172, 180, 50, false, 172);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 192, 197, 50, false, 192);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 213, 218, 50, false, 213);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 204, 205, 50, false, 204);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 206, 212, 50, false, 206);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 198, 203, 50, false, 198);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 230, 50, false, 223);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 50, false, 99);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 160, 164, 50, false, 160);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 136, 144, 50, false, 136);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 276, 291, 50, false, 276);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 255, 261, 50, false, 255);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 262, 268, 50, false, 262);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_3 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 269, 275, 50, false, 269);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_UltimateCasting | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 344, 347, 100, false, 344);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 70, 77, 20, false, 70);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 118, 122, 20, false, 118);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_3 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 92, 20, false, 88);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_4 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 128, 135, 20, false, 128);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_5 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 229, 20, false, 223);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_6 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 106, 20, false, 99);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_7 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 159, 163, 20, false, 159);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, 20, false, 99);
-  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 347, 352, 250, false, 347);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 7, 15, ANIMINTERVAL, true, 7);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 16, 23, ANIMINTERVAL, true, 18);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatUp | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 24, 25, ANIMINTERVAL, false, 24);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_FrontWalk | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 27, 34, ANIMINTERVAL, true, 27);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackWalk | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 35, 44, ANIMINTERVAL, true, 35);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_BackStep | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 45, 48, ANIMINTERVAL, false, 45);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 49, 57, ANIMINTERVAL, true, 51);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RunEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 58, 60, ANIMINTERVAL, false, 59);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 61, 69, ANIMINTERVAL, false, 61);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Dash | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 70, 77, ANIMINTERVAL, false, 70);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_RollingBack | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 78, 87, ANIMINTERVAL, false, 78);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Guard | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 541, 541, ANIMINTERVAL, false, 541);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_GuardEnd | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 542, 543, ANIMINTERVAL, false, 542);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_CloseRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 136, 144, ANIMINTERVAL, false, 136);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_CloseRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 123, 127, ANIMINTERVAL, false, 123);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_CloseRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 128, 135, ANIMINTERVAL, false, 128);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_CloseRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 118, 122, ANIMINTERVAL, false, 118);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_LongRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 108, 117, ANIMINTERVAL, false, 108);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_LongRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 94, 98, ANIMINTERVAL, false, 94);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_LongRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_LongRange | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 93, ANIMINTERVAL, false, 88);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 181, 191, ANIMINTERVAL, false, 181);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 165, 171, ANIMINTERVAL, false, 165);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 172, 180, ANIMINTERVAL, false, 172);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 192, 197, ANIMINTERVAL, false, 192);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 213, 218, ANIMINTERVAL, false, 213);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightKick_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 204, 205, ANIMINTERVAL, false, 204);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyPunch_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 206, 212, ANIMINTERVAL, false, 206);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_LightPunch_Jump | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 198, 203, ANIMINTERVAL, false, 198);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 557, 562, ANIMINTERVAL, false, 557);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 563, 567, ANIMINTERVAL, false, 563);
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Seat | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 552, 556, ANIMINTERVAL, false, 552);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_108ShikiYamiBarai | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 230, ANIMINTERVAL, false, 223);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_GaishikiMutan_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 160, 164, ANIMINTERVAL, false, 160);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_Shinigami | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 145, 156, ANIMINTERVAL, false, 145);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_HyakushikiOniyaki | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 276, 291, ANIMINTERVAL, false, 276);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 255, 261, ANIMINTERVAL, false, 255);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 262, 268, ANIMINTERVAL, false, 262);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_127ShikiAoiHana_3 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 269, 275, ANIMINTERVAL, false, 269);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_UltimateCasting | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 344, 347, ANIMINTERVAL, false, 344);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_1 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 70, 77, ANIMINTERVAL, false, 70);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_2 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 118, 122, ANIMINTERVAL, false, 118);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_3 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 88, 92, ANIMINTERVAL, false, 88);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_4 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 128, 135, ANIMINTERVAL, false, 128);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_5 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 223, 229, ANIMINTERVAL, false, 223);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_6 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 106, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_7 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 159, 163, ANIMINTERVAL, false, 159);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_8 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 99, 107, ANIMINTERVAL, false, 99);
+  pRender_->CreateAnimation((IORI_ANIMTYPE_1211ShikiYaOtome_9 | ANIMMOD_FLIPPED), (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 347, 352, ANIMINTERVAL, false, 347);
+
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   // STATE
@@ -186,13 +195,13 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PS_Attack}, false);
 
   // ATTACK INFO
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {23.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {18.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {23.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {18.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {23.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {23.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
