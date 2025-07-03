@@ -14,7 +14,6 @@ struct ImageInfo {
   Vector positionOffSet_;
   std::vector<CollisionInfo> collisionBoxInfo_;
 
-
   HBITMAP hBitMap_;
   HDC imageDC_;
   BITMAP bitMapInfo_;
