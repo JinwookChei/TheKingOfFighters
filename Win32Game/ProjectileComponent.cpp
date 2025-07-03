@@ -3,6 +3,7 @@
 #include "ProjectileComponent.h"
 #include "AttackTable.h"
 #include "YamiBarai.h"
+#include "HyakushikiOniyaki.h"
 
 ProjectileComponent::ProjectileComponent()
     : level_(nullptr),
@@ -52,10 +53,10 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag) {
       newProjectile = level_->SpawnActor<YamiBarai>(ActorGroupEngineType_Effect);
       break;
     case IORI_PROJECTILE_HyakushikiOniyaki_Low:
-      //newProjectile = level_->SpawnActor<Projectile>(ActorGroupEngineType_Effect);
+      newProjectile = level_->SpawnActor<HyakushikiOniyaki>(ActorGroupEngineType_Effect);
       break;
     case IORI_PROJECTILE_HyakushikiOniyaki_High:
-      //newProjectile = level_->SpawnActor<Projectile>(ActorGroupEngineType_Effect);
+      newProjectile = level_->SpawnActor<HyakushikiOniyaki>(ActorGroupEngineType_Effect);
       break;
     default:
       break;
@@ -69,7 +70,6 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag) {
   newProjectile->SetOwnerProjectileComponent(this);
   newProjectile->SetProjectileInfo(*pInfo);
   
-
   LinkToLinkedListFIFO(&activeProjectilesHead_, &activeProjectilesTail_, newProjectile->GetProjectileLink());
 
   if (false == newProjectile->Initialize()) {
@@ -85,7 +85,7 @@ void ProjectileComponent::UnLinkDestroyedProjectile(LINK_ITEM* linkItem) {
   UnLinkFromLinkedList(&activeProjectilesHead_, &activeProjectilesTail_, linkItem);
 }
 
-bool ProjectileComponent::RegistProjectileInfo(unsigned long long projectileTag, AttackInfo* pAttackInfo, const Vector& spawnPosition, bool isDestroyOnCollision) {
+bool ProjectileComponent::RegistProjectileInfo(unsigned long long projectileTag, AttackInfo* pAttackInfo, const Vector& spawnPosition, bool isDestroyOnCollision, int miscValue/* = 0*/) {
   ProjectileInfo* pFind;
   if (0 != projectileTable_.Select((void**)&pFind, 1, &projectileTag, 8)) {
     return false;
@@ -96,6 +96,7 @@ bool ProjectileComponent::RegistProjectileInfo(unsigned long long projectileTag,
   pInfo->pAttackInfo_ = pAttackInfo;
   pInfo->spawnPosition_ = spawnPosition;
   pInfo->isDestroyOnCollision_ = isDestroyOnCollision;
+  pInfo->miscValue_ = miscValue;
   pInfo->searchHandle_ = projectileTable_.Insert(pInfo, &pInfo->projectileTag_, 8);
 
   return nullptr != pInfo->searchHandle_;

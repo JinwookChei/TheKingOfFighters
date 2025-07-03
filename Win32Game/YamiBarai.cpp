@@ -13,9 +13,28 @@ YamiBarai::YamiBarai()
 YamiBarai::~YamiBarai() {
 }
 
+void YamiBarai::Tick(unsigned long long deltaTick) {
+  SetPosition({GetPosition().X + velocity_, GetPosition().Y});
+
+  if (range_ > 0) {
+    accumulRange_ += velocity_;
+    if (accumulRange_ > range_) {
+      Destroy();
+    }
+  } else {
+    accumulRange_ += velocity_;
+    if (accumulRange_ < range_) {
+      Destroy();
+    }
+  }
+
+  UpdateCollisionBoundScale();
+
+  UpdateAttack();
+}
+
 bool YamiBarai::Initialize() {
-  bool baseInitResult = Projectile::Initialize();
-  if (false == baseInitResult) {
+  if (false == Projectile::Initialize()) {
     return false;
   }
 
@@ -51,21 +70,4 @@ bool YamiBarai::Initialize() {
   
 
   return true;
-}
-
-void YamiBarai::UpdateProjectile() {
-  SetPosition({GetPosition().X + velocity_, GetPosition().Y});
-
-  if (range_ > 0) {
-    accumulRange_ += velocity_;
-    if (accumulRange_ > range_) {
-      Destroy();
-    }
-  }
-  else {
-    accumulRange_ += velocity_;
-    if (accumulRange_ < range_) {
-      Destroy();
-    }
-  }
 }

@@ -21,11 +21,7 @@ void Projectile::BeginPlay() {
 }
 
 void Projectile::Tick(unsigned long long curTick) {
-  UpdateProjectile();
 
-  UpdateCollisionBoundScale();
-
-  UpdateAttack();
 }
 
 bool Projectile::Initialize() {

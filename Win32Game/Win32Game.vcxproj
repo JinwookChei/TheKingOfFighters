@@ -175,6 +175,7 @@
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HyakushikiOniyaki.cpp" />
     <ClCompile Include="ImageController.cpp" />
     <ClCompile Include="ImageEditLevel.cpp" />
     <ClCompile Include="Iori.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Health.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HyakushikiOniyaki.h" />
     <ClInclude Include="ImageEditLevel.h" />
     <ClInclude Include="KOFCommon.h" />
     <ClInclude Include="Portrait.h" />

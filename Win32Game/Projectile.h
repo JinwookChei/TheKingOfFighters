@@ -14,6 +14,8 @@ struct ProjectileInfo {
 
   bool isDestroyOnCollision_ = false;
 
+  int miscValue_ = 0;
+
   void* searchHandle_ = nullptr;
 };
 
@@ -28,8 +30,6 @@ class Projectile
   void Tick(unsigned long long curTick) override;
 
   virtual bool Initialize();
-
-  virtual void UpdateProjectile() = 0;
 
   Actor* GetOwner() const;
 

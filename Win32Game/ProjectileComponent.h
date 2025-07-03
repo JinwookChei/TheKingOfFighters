@@ -16,7 +16,7 @@ class ProjectileComponent
 
   void UnLinkDestroyedProjectile(LINK_ITEM* linkItem);
   
-  bool RegistProjectileInfo(unsigned long long projectileTag, AttackInfo* pAttackInfo, const Vector& spawnPosition, bool isDestroyOnCollision);
+  bool RegistProjectileInfo(unsigned long long projectileTag, AttackInfo* pAttackInfo, const Vector& spawnPosition, bool isDestroyOnCollision, int miscValue = 0);
 
  private:
   Level* level_;

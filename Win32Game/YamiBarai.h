@@ -7,9 +7,9 @@ class YamiBarai
 
   ~YamiBarai() override;
 
-  bool Initialize() override;
+  void Tick(unsigned long long deltaTick) override;
 
-  void UpdateProjectile() override;
+  bool Initialize() override;
 
  private:
   ImageRenderer* pRender2_;

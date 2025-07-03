@@ -192,6 +192,9 @@
     <ClCompile Include="YamiBarai.cpp">
       <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
     </ClCompile>
+    <ClCompile Include="HyakushikiOniyaki.cpp">
+      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -321,6 +324,9 @@
       <Filter>Contents\KOF\Actor\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="YamiBarai.h">
+      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
+    </ClInclude>
+    <ClInclude Include="HyakushikiOniyaki.h">
       <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
     </ClInclude>
   </ItemGroup>
