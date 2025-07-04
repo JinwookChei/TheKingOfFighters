@@ -44,7 +44,6 @@ void KOFPlayer::BeginPlay() {
 }
 
 void KOFPlayer::Tick(unsigned long long deltaTick) {
-  
   UpdateCollisionBoundScale();
 
   CheckPushCollision();
@@ -67,7 +66,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     // TODO
     if (pStateComponent_->ContainPlayerState({PS_Jump})) {
       if (false == pMovementComponent_->EqualMovementState({MOVSTATE_Jump})) {
-        UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
+          UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
       }
     }
     // END
@@ -93,11 +92,10 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   if (true == isPlayer1_) {
     playerKeySet_ = {'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
-    //playerKeySet_ = {'1', '2', '3', '4', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
-  }
-  else {
+    // playerKeySet_ = {'1', '2', '3', '4', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
+  } else {
     playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
-    //playerKeySet_ = {'1', '2', '3', '4', 'S', 'C', 'X', 'Z'};  // D C B A UP RIGHT DONW LEFT
+    // playerKeySet_ = {'1', '2', '3', '4', 'S', 'C', 'X', 'Z'};  // D C B A UP RIGHT DONW LEFT
   }
 
   // RENDERER
@@ -178,25 +176,25 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
- void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
-    if (nullptr == pRender_) {
+void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
+  if (nullptr == pRender_) {
     return;
   }
-    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, startIndex, endIndex, interval, loop, loopStartFrame)) {
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, startIndex, endIndex, interval, loop, loopStartFrame)) {
     return;
-    }
-    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, startIndex, endIndex, interval, loop, loopStartFrame)) {
-      return;
-    }
-    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
-      return;
-    }
-    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
-      return;
-    }
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return;
+  }
 }
 
- void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
+void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
   if (nullptr == pRender_) {
     return;
   }
@@ -212,9 +210,27 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, interval, loop, loopStartFrame)) {
     return;
   }
- }
+}
 
-void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier/* = ANIMMOD_NONE*/, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) { 
+void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, const std::vector<unsigned long long> intervals, bool loop, unsigned long long loopStartFrame) {
+  if (nullptr == pRender_) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, indices, intervals, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, indices, intervals, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, indices, intervals, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, intervals, loop, loopStartFrame)) {
+    return;
+  }
+}
+
+void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier /* = ANIMMOD_NONE*/, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   animState_ = animState;
   if (true == PlayerOnLeft()) {
     isFacingRight_ = true;
@@ -237,18 +253,15 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
-  }
-  else if (true == pStateComponent_->ContainPlayerState({ PS_Jump })) {
+  } else if (pMovementComponent_->ContainMovementState({MOVSTATE_Jump})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
-    pMovementComponent_->KnockBack(FacingRight(), {35.0f, 5.0f});
+    pMovementComponent_->KnockBack(FacingRight(), {35.0f, 50.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump);
-  }
-  else if (true == pStateComponent_->ContainPlayerState({ PS_Seat })) {
+  } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat);
-  }
-  else {
+  } else {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
     switch (damageInfo->attackType_) {
       case ATTYPE_HighAttack: {
@@ -331,8 +344,7 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsPress(playerKeySet_[7])) {
     if (PlayerOnLeft()) {
       inputPressBitSet_.set(7);
-    }
-    else {
+    } else {
       inputPressBitSet_.set(5);
     }
   }
@@ -541,10 +553,9 @@ void KOFPlayer::UpdateAttack() {
       }
 
       pTargetPlayer->HitEvent(pAttackInfo);
-       /* if (pOpponentPlayer_->IsAtMapEdge()) {
-        pMovementComponent_->KnockBack(FacingRight(), {pAttackInfo->knockBackForce_.X, 0.0f});
-      }*/
-      
+      /* if (pOpponentPlayer_->IsAtMapEdge()) {
+       pMovementComponent_->KnockBack(FacingRight(), {pAttackInfo->knockBackForce_.X, 0.0f});
+     }*/
 
       pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 
@@ -590,8 +601,6 @@ void KOFPlayer::UpdateAttack() {
       }
     }
   }
-
-  
 }
 bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
   if (true == pAttackBox_->HasHit()) {

@@ -44,6 +44,15 @@ class KOFPlayer
       bool loop,
       unsigned long long loopStartFrame);
 
+  void CallCreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex,
+      const std::vector<unsigned int>& indices,
+      const std::vector<unsigned long long> intervals,
+      bool loop,
+      unsigned long long loopStartFrame);
+      
+
   void UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier = ANIMMOD_NONE, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;

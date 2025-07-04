@@ -72,7 +72,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(PLAYER_ANIMTYPE_HitLow, IMGTYPE_IoriImage, 563, 567, ANIMINTERVAL, false, 563);
   CallCreateAnimation(PLAYER_ANIMTYPE_HitStrong, IMGTYPE_IoriImage, 594, 607, ANIMINTERVAL, false, 594);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Seat, IMGTYPE_IoriImage, 552, 556, ANIMINTERVAL, false, 552);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Jump, IMGTYPE_IoriImage, {557, 558, 80, 81, 82, 83, 84, 85}, ANIMINTERVAL, false, 557);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Jump, IMGTYPE_IoriImage, {557/*, 558*/, 80, 81, 82, 83, 84, 85}, {80, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL}, false, 557);
   CallCreateAnimation(PLAYER_ANIMTYPE_NeckGrab, IMGTYPE_IoriImage, 572, 575, 200, false, 572);
   CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_IoriImage, 223, 230, ANIMINTERVAL, false, 223);
   CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);
@@ -92,7 +92,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_7, IMGTYPE_IoriImage, 159, 163, 20, false, 159);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_IoriImage, 99, 107, 20, false, 99);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_IoriImage, 347, 352, 200, false, 347);
-
 
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
@@ -132,7 +131,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, {PS_Hit}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, {PS_Hit}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Seat, {PS_Hit, PS_Seat}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Jump, {PS_Hit, PS_Jump}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Jump, {PS_Hit}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_NeckGrab, {PS_Hit}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, {PS_Attack}, false);
@@ -261,14 +260,12 @@ void Iori::CompareInputBitset() {
         return;
       }
     }
-
     if (pStateComponent_->ContainPlayerState({PS_Guard})) {
       if (false == pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
         UpdateAnimState(PLAYER_ANIMTYPE_GuardEnd_Seat);
         return;
       }
     }
-
     // A | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01001000"))) {
       UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Seat);
