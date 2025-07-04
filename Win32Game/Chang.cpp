@@ -48,7 +48,7 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 8, 13, 50, true, 8);         // ¾ÆÀÌµé
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_SeatDown | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 14, 20, 50, true, 16);   // ¾É±â.
@@ -64,7 +64,7 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 8, 13, 50, true, 8)) {
     return;
@@ -103,9 +103,9 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
                                          false, 0)) {
     return;
   }
-  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), { 339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350 }, 50, false, 0)) {
+  /*if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), { 339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350 }, 50, false, 0)) {
     return;
-  }
+  }*/
 
 
   if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Idle | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 8, 13, 50, true, 8)) {
@@ -124,7 +124,7 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 50, 50, 50, 50},
                             false, 0);
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
+  //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitWhileJumping | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), {339, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350}, 50, false, 0);
 
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 

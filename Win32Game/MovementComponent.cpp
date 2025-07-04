@@ -91,20 +91,22 @@ bool MovementComponent::ContainMovementState(std::initializer_list<MOVEMENT_STAT
 }
 
 void MovementComponent::UpdateMove(unsigned long long deltaTick) {
+  if (false == movementStateBitset_.test(MOVSTATE_Move)) {
+    return;
+  }
   Actor* pOwner = GetOwner();
   if (nullptr == pOwner) {
     return;
   }
   const Vector& curPosition = pOwner->GetPosition();
 
-  if (movementStateBitset_.test(MOVSTATE_Move)) {
-    const Vector& movePosition = curPosition + moveDir_ * pushWeight_ * (float)deltaTick;
-    pOwner->SetPosition(movePosition);
+  const Vector& movePosition = curPosition + moveDir_ * pushWeight_ * (float)deltaTick;
+  pOwner->SetPosition(movePosition);
 
-    if (Vector({0.0f, 0.0f}) == moveDir_) {
-      movementStateBitset_.reset(MOVSTATE_Move);
-    }
+  if (Vector({0.0f, 0.0f}) == moveDir_) {
+    movementStateBitset_.reset(MOVSTATE_Move);
   }
+
   moveDir_ = {0.0f, 0.0f};
 }
 
@@ -150,30 +152,31 @@ void MovementComponent::Run(bool isRightDirection) {
 }
 
 void MovementComponent::UpdateJump(unsigned long long deltaTick) {
+  if (false == movementStateBitset_.test(MOVSTATE_Jump)) {
+    return;
+  }
   Actor* pOwner = GetOwner();
   if (nullptr == pOwner) {
     return;
   }
 
-  if (movementStateBitset_.test(MOVSTATE_Jump)) {
-    curJumpVelocity_.Y -= gravity_ * deltaTick;
+  curJumpVelocity_.Y -= gravity_ * deltaTick;
 
-    const Vector& ownerPosition = pOwner->GetPosition();
+  const Vector& ownerPosition = pOwner->GetPosition();
 
-    Vector jumpPosition = {
-        ownerPosition.X + curJumpVelocity_.X * deltaTick,  // X축 앞으로 이동
-        ownerPosition.Y - curJumpVelocity_.Y               // Y축 점프
-    };
+  Vector jumpPosition = {
+      ownerPosition.X + curJumpVelocity_.X * deltaTick,  // X축 앞으로 이동
+      ownerPosition.Y - curJumpVelocity_.Y               // Y축 점프
+  };
 
-    // 땅에 도착했는지 체크
-    if (jumpPosition.Y >= startPosition_.Y) {
-      jumpPosition.Y = startPosition_.Y;
-      curJumpVelocity_ = {0.0f, 0.0f};
-      movementStateBitset_.reset(MOVSTATE_Jump);
-    }
-
-    pOwner->SetPosition(jumpPosition);
+  // 땅에 도착했는지 체크
+  if (jumpPosition.Y >= startPosition_.Y) {
+    jumpPosition.Y = startPosition_.Y;
+    curJumpVelocity_ = {0.0f, 0.0f};
+    movementStateBitset_.reset(MOVSTATE_Jump);
   }
+
+  pOwner->SetPosition(jumpPosition);
 }
 
 void MovementComponent::Jump(bool isRightDirection, Vector normalJumpForce) {
@@ -225,28 +228,29 @@ bool MovementComponent::GetIsGround() const {
 }
 
 void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
+  if (false == movementStateBitset_.test(MOVSTATE_BackStep)) {
+    return;
+  }
   Actor* pOwner = GetOwner();
   if (nullptr == pOwner) {
     return;
   }
 
-  if (movementStateBitset_.test(MOVSTATE_BackStep)) {
-    backstepTimer_ += deltaTick;
-    float t = backstepTimer_ / backstepDuration_;
+  backstepTimer_ += deltaTick;
+  float t = backstepTimer_ / backstepDuration_;
 
-    if (t >= 1.0f) {
-      t = 1.0f;
-      movementStateBitset_.reset(MOVSTATE_BackStep);
-    }
-
-    Vector backStepPostion;
-    backStepPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
-
-    float height = -4 * backstepHeight_ * (t - 0.5f) * (t - 0.5f) + backstepHeight_;
-    backStepPostion.Y = startPosition_.Y - height;
-
-    pOwner->SetPosition(backStepPostion);
+  if (t >= 1.0f) {
+    t = 1.0f;
+    movementStateBitset_.reset(MOVSTATE_BackStep);
   }
+
+  Vector backStepPostion;
+  backStepPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
+
+  float height = -4 * backstepHeight_ * (t - 0.5f) * (t - 0.5f) + backstepHeight_;
+  backStepPostion.Y = startPosition_.Y - height;
+
+  pOwner->SetPosition(backStepPostion);
 }
 
 void MovementComponent::BackStep(bool isRightDirection) {
@@ -274,26 +278,27 @@ void MovementComponent::BackStep(bool isRightDirection) {
 }
 
 void MovementComponent::UpdateDash(unsigned long long deltaTick) {
+  if (false == movementStateBitset_.test(MOVSTATE_Dash)) {
+    return;
+  }
   Actor* pOwner = GetOwner();
   if (nullptr == pOwner) {
     return;
   }
 
-  if (movementStateBitset_.test(MOVSTATE_Dash)) {
-    dashTimer_ += deltaTick;
-    float t = dashTimer_ / dashDuration_;
+  dashTimer_ += deltaTick;
+  float t = dashTimer_ / dashDuration_;
 
-    if (t >= 1.0f) {
-      t = 1.0f;
-      movementStateBitset_.reset(MOVSTATE_Dash);
-    }
-
-    Vector dashPostion;
-    dashPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
-    dashPostion.Y = startPosition_.Y;
-
-    pOwner->SetPosition(dashPostion);
+  if (t >= 1.0f) {
+    t = 1.0f;
+    movementStateBitset_.reset(MOVSTATE_Dash);
   }
+
+  Vector dashPostion;
+  dashPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
+  dashPostion.Y = startPosition_.Y;
+
+  pOwner->SetPosition(dashPostion);
 }
 
 void MovementComponent::Dash(bool isRightDirection, float dashDuration, float dashDistance) {

@@ -178,7 +178,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
+ void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
     if (nullptr == pRender_) {
     return;
   }
@@ -194,8 +194,25 @@ void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned lo
     if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
       return;
     }
-
 }
+
+ void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, const std::vector<unsigned int>& indices, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
+  if (nullptr == pRender_) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, indices, interval, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, indices, interval, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, indices, interval, loop, loopStartFrame)) {
+    return;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, interval, loop, loopStartFrame)) {
+    return;
+  }
+ }
 
 void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier/* = ANIMMOD_NONE*/, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) { 
   animState_ = animState;
@@ -220,6 +237,16 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
+  }
+  else if (true == pStateComponent_->ContainPlayerState({ PS_Jump })) {
+    pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
+    pMovementComponent_->KnockBack(FacingRight(), {35.0f, 5.0f});
+    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump);
+  }
+  else if (true == pStateComponent_->ContainPlayerState({ PS_Seat })) {
+    pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
+    pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
+    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat);
   }
   else {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
@@ -737,5 +764,7 @@ void KOFPlayer::SetControlLocked(bool bLocked) {
 }
 
 void KOFPlayer::ReceiveClampedWidthOffset(float clampOffset) {
-  pMovementComponent_->ApplyClampedWidthOffset(clampOffset);
+  if (true == pStateComponent_->ContainPlayerState({PS_EnableClampOffset})) {
+    pMovementComponent_->ApplyClampedWidthOffset(clampOffset);
+  }
 }

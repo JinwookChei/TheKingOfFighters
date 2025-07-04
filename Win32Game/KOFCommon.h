@@ -39,6 +39,8 @@ enum PLAYER_ANIM_TYPE : unsigned long long {
   PLAYER_ANIMTYPE_RollingBack,
   PLAYER_ANIMTYPE_Guard,
   PLAYER_ANIMTYPE_GuardEnd,
+  PLAYER_ANIMTYPE_Guard_Seat,
+  PLAYER_ANIMTYPE_GuardEnd_Seat,
   PLAYER_ANIMTYPE_HeavyPunch_CloseRange,
   PLAYER_ANIMTYPE_HeavyPunch_LongRange,
   PLAYER_ANIMTYPE_LightPunch_CloseRange,
@@ -57,9 +59,10 @@ enum PLAYER_ANIM_TYPE : unsigned long long {
   PLAYER_ANIMTYPE_LightKick_Jump,
   PLAYER_ANIMTYPE_HitHigh,
   PLAYER_ANIMTYPE_HitLow,
-  PLAYER_ANIMTYPE_Hit_Seat,
   PLAYER_ANIMTYPE_HitStrong,
-  PLAYER_ANIMTYPE_HitWhileJumping,
+  PLAYER_ANIMTYPE_Hit_Seat,
+  PLAYER_ANIMTYPE_Hit_Jump,
+  PLAYER_ANIMTYPE_NeckGrab,
   PLAYER_ANIMTYPE_Max
 };
 

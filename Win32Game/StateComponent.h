@@ -14,6 +14,7 @@ enum PLAYER_STATE {
   PS_Attack,
   PS_Hit,
   PS_Guard,
+  PS_EnableClampOffset,
   PS_SkillCasting,
   PS_Max
 };
