@@ -495,6 +495,15 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
+      Level* pLevel = GetLevel();
+      if (nullptr == pLevel) {
+        return;
+      }
+      KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+      if (nullptr == pKOFLevel) {
+        return;
+      }
+
       AttackInfo* pAttackInfo;
       if (false == pAttackTable_->SearchAttackInfo(animState_, &pAttackInfo)) {
         return;
@@ -505,15 +514,10 @@ void KOFPlayer::UpdateAttack() {
       }
 
       pTargetPlayer->HitEvent(pAttackInfo);
-
-      Level* pLevel = GetLevel();
-      if (nullptr == pLevel) {
-        return;
-      }
-      KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-      if (nullptr == pKOFLevel) {
-        return;
-      }
+       /* if (pOpponentPlayer_->IsAtMapEdge()) {
+        pMovementComponent_->KnockBack(FacingRight(), {pAttackInfo->knockBackForce_.X, 0.0f});
+      }*/
+      
 
       pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 
@@ -532,8 +536,6 @@ void KOFPlayer::UpdateAttack() {
           (collisionSectionRightBottom.X + collisionSectionLeftTop.X) / 2,
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
-
-
       // TODO EFFECT ·ÎÁ÷
       if (pAttackInfo->effectType_ == EFTYPE_Iori_Explosion) {
         EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, {effectPosition.X + 150.0f, effectPosition.Y + 90.0f});
@@ -546,14 +548,13 @@ void KOFPlayer::UpdateAttack() {
       }
 
       // Spawn Effect
-      if (true == pTargetPlayer->GetPlayerStateComponent()->ContainPlayerState({ PS_Guard })) {
+      if (true == pTargetPlayer->GetPlayerStateComponent()->ContainPlayerState({PS_Guard})) {
         if (true == FacingRight()) {
           EffectManager::Instance()->SpawnEffect(GetLevel(), EFTYPE_Guard_1, effectPosition);
         } else {
           EffectManager::Instance()->SpawnEffect(GetLevel(), EFTYPE_Guard_1 | EFMOD_FLIPPED, effectPosition);
         }
-      }
-      else {
+      } else {
         if (true == FacingRight()) {
           EffectManager::Instance()->SpawnEffect(GetLevel(), pAttackInfo->effectType_, effectPosition);
         } else {
@@ -562,8 +563,9 @@ void KOFPlayer::UpdateAttack() {
       }
     }
   }
-}
 
+  
+}
 bool KOFPlayer::CheckAttackCollision(CollisionComponent** outTargetCollision) {
   if (true == pAttackBox_->HasHit()) {
     return false;
@@ -722,10 +724,18 @@ StateComponent* KOFPlayer::GetPlayerStateComponent() const {
   return pStateComponent_;
 }
 
+MovementComponent* KOFPlayer::GetMovementComponent() const {
+  return pMovementComponent_;
+}
+
 bool KOFPlayer::IsControlLocked() const {
   return isControlLocked_;
 }
 
 void KOFPlayer::SetControlLocked(bool bLocked) {
   isControlLocked_ = bLocked;
+}
+
+void KOFPlayer::ReceiveClampedWidthOffset(float clampOffset) {
+  pMovementComponent_->ApplyClampedWidthOffset(clampOffset);
 }

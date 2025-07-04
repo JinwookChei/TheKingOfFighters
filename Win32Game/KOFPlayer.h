@@ -90,9 +90,13 @@ class KOFPlayer
 
   StateComponent* GetPlayerStateComponent() const;
 
+  MovementComponent* GetMovementComponent() const;
+
   bool IsControlLocked() const;
 
   void SetControlLocked(bool bLocked);
+
+  void ReceiveClampedWidthOffset(float clampOffset);
 
  protected:
   std::array<int, 8> playerKeySet_;

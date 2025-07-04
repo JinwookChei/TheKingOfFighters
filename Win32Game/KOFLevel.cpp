@@ -290,10 +290,10 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
   }
 
   // CHECK PlAYER POSITION EDGE
-  if (player1Left < levelLeftBoundary_ || player1Right > levelRightBoundary_) {
+  if (player1Left <= levelLeftBoundary_ || player1Right >= levelRightBoundary_) {
     pPlayer1_->SetIsAtMapEdge(true);
   }
-  if (player2Left < levelLeftBoundary_ || player2Right > levelRightBoundary_) {
+  if (player2Left <= levelLeftBoundary_ || player2Right >= levelRightBoundary_) {
     pPlayer2_->SetIsAtMapEdge(true);
   }
 }

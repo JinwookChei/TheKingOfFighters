@@ -19,7 +19,7 @@ class MovementComponent final
 
   void BeginPlay() override;
 
-  void Tick(unsigned long long curTick) override;
+  void Tick(unsigned long long deltaTick) override;
 
   bool Initialize(const Vector& startPosition);
 
@@ -27,7 +27,7 @@ class MovementComponent final
   
   bool ContainMovementState(std::initializer_list<MOVEMENT_STATE> movStateList);
 
-  Vector GetVelocity() const; 
+  void UpdateMove(unsigned long long deltaTick);
 
   void Move(bool isRightDirection);
 
@@ -35,17 +35,27 @@ class MovementComponent final
 
   void Run(bool isRightDirection);
 
+  void UpdateJump(unsigned long long deltaTick);
+
   void Jump(bool isRightDirection = true, Vector normalJumpForce = {0.0f, 75.0f});
 
   void JumpForward(bool isRightDirection, bool isRunning);
 
+  void UpdateGroundedState();
+
   bool GetIsGround() const;
 
+  void UpdateBackStep(unsigned long long deltaTick);
+
   void BackStep(bool isRightDirection);
+
+  void UpdateDash(unsigned long long deltaTick);
 
   void Dash(bool isRightDirection, float dashDuration, float dashDistance);
 
   void StopDash();
+
+  void UpdateKnockBack(unsigned long long deltaTick);
 
   void KnockBack(bool isRightDirection, const Vector& knockBackForce);
 
@@ -53,14 +63,20 @@ class MovementComponent final
 
   void ApplyPushWeight(float pushWeight);
 
+  void ClampPositionToLevelBoundary();
+
+  void ClampPositionToScreenBoundary();
+
+  void BroadcastClampedWidthOffset();
+
+  void ApplyClampedWidthOffset(float clampOffset);
+
  private:
   Vector startPosition_;
 
-  std::bitset<MOVSTATE_Max> movementStateBitset_;
-  
-  Vector velocity_;
-
   Vector preFramePosition_;
+
+  std::bitset<MOVSTATE_Max> movementStateBitset_;
 
   // MOVE
   Vector moveDir_;
@@ -102,4 +118,7 @@ class MovementComponent final
   float pushWeight_;
   
   const float pushTriggerDistance_ = 150.0f;
+
+  // ClampOffset
+  float clampedWidthOffset_;
 };

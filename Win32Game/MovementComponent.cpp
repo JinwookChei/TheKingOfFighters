@@ -2,6 +2,7 @@
 #include "MovementComponent.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
+#include "StateComponent.h"
 
 float Lerp(float a, float b, float t) {
   return a + (b - a) * t;
@@ -9,7 +10,6 @@ float Lerp(float a, float b, float t) {
 
 MovementComponent::MovementComponent()
     : startPosition_({0.0f, 0.0f}),
-      velocity_({0.0f, 0.0f}),
       preFramePosition_({0.0f, 0.0f}),
       // MOVE
       moveDir_({0.0f, 0.0f}),
@@ -29,7 +29,8 @@ MovementComponent::MovementComponent()
       // KNOCK BACK
       curKnockBackVelocity_({0.0f, 0.0f}),
       // PUSH
-      pushWeight_(1.0f) {
+      pushWeight_(1.0f),
+      clampedWidthOffset_(0.0f) {
 }
 
 MovementComponent::~MovementComponent() {
@@ -39,161 +40,32 @@ void MovementComponent::BeginPlay() {
   movementStateBitset_.reset();
 }
 
-void MovementComponent::Tick(unsigned long long curTick) {
-  Actor* owner = GetOwner();
-  if (nullptr == owner) {
-    return;
-  }
+void MovementComponent::Tick(unsigned long long deltaTick) {
+  UpdateGroundedState();
 
-  const Vector& curPosition = owner->GetPosition();
+  UpdateMove(deltaTick);
 
-  // UPDATE
-  if (std::abs(curPosition.Y - startPosition_.Y) < 0.0001f) {
-    isGrounded_ = true;
-  } else {
-    isGrounded_ = false;
-  }
-  // UPDATE END
+  UpdateDash(deltaTick);
 
-  // MOVEDIR
-  if (movementStateBitset_.test(MOVSTATE_Move)) {
-    const Vector& movePosition = curPosition + moveDir_ * pushWeight_ * (float)curTick;
-    owner->SetPosition(movePosition);
+  UpdateBackStep(deltaTick);
 
-    if (Vector({0.0f, 0.0f}) == moveDir_) {
-      movementStateBitset_.reset(MOVSTATE_Move);
-    }
-  }
-  moveDir_ = {0.0f, 0.0f};
-  // MOVEDIR END
+  UpdateJump(deltaTick);
 
-  // DASH
-  if (movementStateBitset_.test(MOVSTATE_Dash)) {
-    dashTimer_ += curTick;
-    float t = dashTimer_ / dashDuration_;
+  UpdateKnockBack(deltaTick);
 
-    if (t >= 1.0f) {
-      t = 1.0f;
-      movementStateBitset_.reset(MOVSTATE_Dash);
-    }
+  BroadcastClampedWidthOffset();
 
-    Vector dashPostion;
-    dashPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
-    dashPostion.Y = startPosition_.Y;
+  ClampPositionToLevelBoundary();
 
-    owner->SetPosition(dashPostion);
-  }
-  // DASH END
-
-  // BACKSTEP
-  if (movementStateBitset_.test(MOVSTATE_BackStep)) {
-    backstepTimer_ += curTick;
-    float t = backstepTimer_ / backstepDuration_;
-
-    if (t >= 1.0f) {
-      t = 1.0f;
-      movementStateBitset_.reset(MOVSTATE_BackStep);
-    }
-
-    Vector backStepPostion;
-    backStepPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
-
-    float height = -4 * backstepHeight_ * (t - 0.5f) * (t - 0.5f) + backstepHeight_;
-    backStepPostion.Y = startPosition_.Y - height;
-
-    owner->SetPosition(backStepPostion);
-  }
-  // BACKSTEP END
-
-  // JUMP
-  if (movementStateBitset_.test(MOVSTATE_Jump)) {
-    curJumpVelocity_.Y -= gravity_ * curTick;
-
-    const Vector& ownerPosition = owner->GetPosition();
-
-    Vector jumpPosition = {
-        ownerPosition.X + curJumpVelocity_.X * curTick,  // X축 앞으로 이동
-        ownerPosition.Y - curJumpVelocity_.Y             // Y축 점프
-    };
-
-    // 땅에 도착했는지 체크
-    if (jumpPosition.Y >= startPosition_.Y) {
-      jumpPosition.Y = startPosition_.Y;
-      curJumpVelocity_ = {0.0f, 0.0f};
-      movementStateBitset_.reset(MOVSTATE_Jump);
-    }
-
-    owner->SetPosition(jumpPosition);
-  }
-  // JUMP END
-
-  // KNOCK BACK
-  if (movementStateBitset_.test(MOVSTATE_KnockBack)) {
-    if (curKnockBackVelocity_.X > 0) {
-      curKnockBackVelocity_.X -= airResistance_ * curTick;
-      curKnockBackVelocity_.Y -= gravity_ * curTick;
-    } else if (curKnockBackVelocity_.X < 0) {
-      curKnockBackVelocity_.X += airResistance_ * curTick;
-      curKnockBackVelocity_.Y -= gravity_ * curTick;
-    }
-
-
-    const Vector& ownerPosition = owner->GetPosition();
-
-    Vector knockBackPosition = {
-        ownerPosition.X + curKnockBackVelocity_.X,  // X축 앞으로 이동
-        ownerPosition.Y - curKnockBackVelocity_.Y   // Y축 점프
-    };
-
-    if (knockBackPosition.Y >= startPosition_.Y) {
-      knockBackPosition.Y = startPosition_.Y;
-      curKnockBackVelocity_.Y = 0.0f;
-      if (std::fabs(curKnockBackVelocity_.X) <= knockBackMinVelocity_) {
-        curKnockBackVelocity_.X = 0;
-        movementStateBitset_.reset(MOVSTATE_KnockBack);
-      }
-    }
-
-    owner->SetPosition(knockBackPosition);
-  }
-  // KNOCK BACK END
-
-
-  // Clamp Level Boundary
-  KOFPlayer* pKOFOwner = dynamic_cast<KOFPlayer*>(owner);
-  if (nullptr == pKOFOwner) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(owner->GetLevel());
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-  const Vector& newPosition = pKOFOwner->GetPosition();
-  float newPositionLeft = newPosition.X - pKOFOwner->CharacterScale().HalfX();
-  float newPositionRight = newPosition.X + pKOFOwner->CharacterScale().HalfX();
-  if (newPositionLeft < pKOFLevel->GetLevelLeftBoundary()) {
-    pKOFOwner->SetPosition({preFramePosition_.X, newPosition.Y});
-  } else if (newPositionRight > pKOFLevel->GetLevelRightBoundary()) {
-    pKOFOwner->SetPosition({preFramePosition_.X, newPosition.Y});
-  }
-  // Clamp Level Boundary END
-
-
-  // Clamp Screen Boundary
-  KOFPlayer* oppPlayer = pKOFOwner->GetOpponentPlayer();
-  float playerDistance = std::fabs(oppPlayer->GetPosition().X - newPosition.X);
-  float screenBoundaryWidth = pKOFLevel->GetScreenBoundaryWidth();
-  if (playerDistance > screenBoundaryWidth) {
-    pKOFOwner->SetPosition({preFramePosition_.X, newPosition.Y});
-  }
-  // Clamp Screen Boundary END
-
+  ClampPositionToScreenBoundary();
 
   pushWeight_ = 1.0f;
-  velocity_ = curPosition - preFramePosition_;
-  preFramePosition_ = owner->GetPosition();
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+  const Vector& curPosition = pOwner->GetPosition();
+  preFramePosition_ = pOwner->GetPosition();
 }
 
 bool MovementComponent::Initialize(const Vector& startPosition) {
@@ -218,8 +90,22 @@ bool MovementComponent::ContainMovementState(std::initializer_list<MOVEMENT_STAT
   return false;
 }
 
-Vector MovementComponent::GetVelocity() const {
-  return velocity_;
+void MovementComponent::UpdateMove(unsigned long long deltaTick) {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+  const Vector& curPosition = pOwner->GetPosition();
+
+  if (movementStateBitset_.test(MOVSTATE_Move)) {
+    const Vector& movePosition = curPosition + moveDir_ * pushWeight_ * (float)deltaTick;
+    pOwner->SetPosition(movePosition);
+
+    if (Vector({0.0f, 0.0f}) == moveDir_) {
+      movementStateBitset_.reset(MOVSTATE_Move);
+    }
+  }
+  moveDir_ = {0.0f, 0.0f};
 }
 
 void MovementComponent::Move(bool isRightDirection) {
@@ -263,6 +149,33 @@ void MovementComponent::Run(bool isRightDirection) {
   }
 }
 
+void MovementComponent::UpdateJump(unsigned long long deltaTick) {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+
+  if (movementStateBitset_.test(MOVSTATE_Jump)) {
+    curJumpVelocity_.Y -= gravity_ * deltaTick;
+
+    const Vector& ownerPosition = pOwner->GetPosition();
+
+    Vector jumpPosition = {
+        ownerPosition.X + curJumpVelocity_.X * deltaTick,  // X축 앞으로 이동
+        ownerPosition.Y - curJumpVelocity_.Y               // Y축 점프
+    };
+
+    // 땅에 도착했는지 체크
+    if (jumpPosition.Y >= startPosition_.Y) {
+      jumpPosition.Y = startPosition_.Y;
+      curJumpVelocity_ = {0.0f, 0.0f};
+      movementStateBitset_.reset(MOVSTATE_Jump);
+    }
+
+    pOwner->SetPosition(jumpPosition);
+  }
+}
+
 void MovementComponent::Jump(bool isRightDirection, Vector normalJumpForce) {
   if (isGrounded_) {
     movementStateBitset_.set(MOVSTATE_Jump);
@@ -294,8 +207,46 @@ void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
   }
 }
 
+void MovementComponent::UpdateGroundedState() {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+  const Vector& curPosition = pOwner->GetPosition();
+  if (std::abs(curPosition.Y - startPosition_.Y) < 0.0001f) {
+    isGrounded_ = true;
+  } else {
+    isGrounded_ = false;
+  }
+}
+
 bool MovementComponent::GetIsGround() const {
   return isGrounded_;
+}
+
+void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+
+  if (movementStateBitset_.test(MOVSTATE_BackStep)) {
+    backstepTimer_ += deltaTick;
+    float t = backstepTimer_ / backstepDuration_;
+
+    if (t >= 1.0f) {
+      t = 1.0f;
+      movementStateBitset_.reset(MOVSTATE_BackStep);
+    }
+
+    Vector backStepPostion;
+    backStepPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
+
+    float height = -4 * backstepHeight_ * (t - 0.5f) * (t - 0.5f) + backstepHeight_;
+    backStepPostion.Y = startPosition_.Y - height;
+
+    pOwner->SetPosition(backStepPostion);
+  }
 }
 
 void MovementComponent::BackStep(bool isRightDirection) {
@@ -319,6 +270,29 @@ void MovementComponent::BackStep(bool isRightDirection) {
     backstepStartPos_ = owner->GetPosition();
     backstepEndPos_ = owner->GetPosition();
     backstepEndPos_.X += backstepDistance_;
+  }
+}
+
+void MovementComponent::UpdateDash(unsigned long long deltaTick) {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+
+  if (movementStateBitset_.test(MOVSTATE_Dash)) {
+    dashTimer_ += deltaTick;
+    float t = dashTimer_ / dashDuration_;
+
+    if (t >= 1.0f) {
+      t = 1.0f;
+      movementStateBitset_.reset(MOVSTATE_Dash);
+    }
+
+    Vector dashPostion;
+    dashPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
+    dashPostion.Y = startPosition_.Y;
+
+    pOwner->SetPosition(dashPostion);
   }
 }
 
@@ -352,8 +326,42 @@ void MovementComponent::StopDash() {
   movementStateBitset_.reset(MOVSTATE_Dash);
 }
 
-void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
+void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
 
+  if (movementStateBitset_.test(MOVSTATE_KnockBack)) {
+    if (curKnockBackVelocity_.X > 0) {
+      curKnockBackVelocity_.X -= airResistance_ * deltaTick;
+      curKnockBackVelocity_.Y -= gravity_ * deltaTick;
+    } else if (curKnockBackVelocity_.X < 0) {
+      curKnockBackVelocity_.X += airResistance_ * deltaTick;
+      curKnockBackVelocity_.Y -= gravity_ * deltaTick;
+    }
+
+    const Vector& ownerPosition = pOwner->GetPosition();
+
+    Vector knockBackPosition = {
+        ownerPosition.X + curKnockBackVelocity_.X,  // X축 앞으로 이동
+        ownerPosition.Y - curKnockBackVelocity_.Y   // Y축 점프
+    };
+
+    if (knockBackPosition.Y >= startPosition_.Y) {
+      knockBackPosition.Y = startPosition_.Y;
+      curKnockBackVelocity_.Y = 0.0f;
+      if (std::fabs(curKnockBackVelocity_.X) <= knockBackMinVelocity_) {
+        curKnockBackVelocity_.X = 0;
+        movementStateBitset_.reset(MOVSTATE_KnockBack);
+      }
+    }
+
+    pOwner->SetPosition(knockBackPosition);
+  }
+}
+
+void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
   if (isRightDirection) {
     curKnockBackVelocity_ = {-knockBackForce.X, knockBackForce.Y};
   } else {
@@ -367,11 +375,104 @@ void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBack
   movementStateBitset_.set(MOVSTATE_KnockBack);
 }
 
-
 float MovementComponent::GetPushTriggerDistance() const {
   return pushTriggerDistance_;
 }
 
 void MovementComponent::ApplyPushWeight(float pushWeight) {
   pushWeight_ = pushWeight;
+}
+
+void MovementComponent::ClampPositionToLevelBoundary() {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+
+  KOFPlayer* pKOFOwner = dynamic_cast<KOFPlayer*>(pOwner);
+  if (nullptr == pKOFOwner) {
+    return;
+  }
+
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pOwner->GetLevel());
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  const Vector& newPosition = pKOFOwner->GetPosition();
+  float newPositionLeft = newPosition.X - pKOFOwner->CharacterScale().HalfX();
+  float newPositionRight = newPosition.X + pKOFOwner->CharacterScale().HalfX();
+  if (newPositionLeft < pKOFLevel->GetLevelLeftBoundary()) {
+    pKOFOwner->SetPosition({pKOFLevel->GetLevelLeftBoundary() + pKOFOwner->CharacterScale().X * 0.5f, newPosition.Y});
+  } else if (newPositionRight > pKOFLevel->GetLevelRightBoundary()) {
+    pKOFOwner->SetPosition({pKOFLevel->GetLevelRightBoundary() - pKOFOwner->CharacterScale().X * 0.5f, newPosition.Y});
+  }
+}
+
+void MovementComponent::ClampPositionToScreenBoundary() {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+  KOFPlayer* pKOFOwner = dynamic_cast<KOFPlayer*>(pOwner);
+  if (nullptr == pKOFOwner) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pOwner->GetLevel());
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  Vector ownerPosition = pKOFOwner->GetPosition();
+  KOFPlayer* opponentPlayer = pKOFOwner->GetOpponentPlayer();
+  float playerDistance = std::fabs(opponentPlayer->GetPosition().X - ownerPosition.X);
+  float screenBoundaryWidth = pKOFLevel->GetScreenBoundaryWidth();
+  if (playerDistance > screenBoundaryWidth) {
+    pKOFOwner->SetPosition({preFramePosition_.X, ownerPosition.Y});
+  }
+}
+
+void MovementComponent::BroadcastClampedWidthOffset() {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+  KOFPlayer* pKOFOwner = dynamic_cast<KOFPlayer*>(pOwner);
+  if (nullptr == pKOFOwner) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pOwner->GetLevel());
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  const Vector& ownerPosition = pKOFOwner->GetPosition();
+  float ownerPositionLeft = ownerPosition.X - pKOFOwner->CharacterScale().HalfX();
+  float ownerPositionRight = ownerPosition.X + pKOFOwner->CharacterScale().HalfX();
+
+  float clampedWidthOffset = 0.0f;
+
+  if (true == pKOFOwner->GetPlayerStateComponent()->ContainPlayerState({PS_Hit})) {
+    if (ownerPositionLeft < pKOFLevel->GetLevelLeftBoundary()) {
+      clampedWidthOffset = pKOFLevel->GetLevelLeftBoundary() - ownerPositionLeft;
+    } else if (ownerPositionRight > pKOFLevel->GetLevelRightBoundary()) {
+      clampedWidthOffset = pKOFLevel->GetLevelRightBoundary() - ownerPositionRight;
+    }
+  }
+
+  KOFPlayer* oppenPlayer = pKOFOwner->GetOpponentPlayer();
+  if (nullptr == oppenPlayer) {
+    return;
+  }
+  oppenPlayer->ReceiveClampedWidthOffset(clampedWidthOffset);
+}
+
+void MovementComponent::ApplyClampedWidthOffset(float clampOffset) {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+
+  Vector curPosition = pOwner->GetPosition();
+  pOwner->SetPosition({curPosition.X + clampOffset, curPosition.Y});
 }
