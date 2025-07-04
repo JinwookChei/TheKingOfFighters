@@ -148,7 +148,6 @@ void MovementComponent::Tick(unsigned long long curTick) {
     if (knockBackPosition.Y >= startPosition_.Y) {
       knockBackPosition.Y = startPosition_.Y;
       curKnockBackVelocity_.Y = 0.0f;
-
       if (std::fabs(curKnockBackVelocity_.X) <= knockBackMinVelocity_) {
         curKnockBackVelocity_.X = 0;
         movementStateBitset_.reset(MOVSTATE_KnockBack);

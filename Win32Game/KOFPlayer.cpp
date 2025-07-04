@@ -178,6 +178,25 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
+void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned long long imageIndex, unsigned int startIndex, unsigned int endIndex, unsigned long long interval, bool loop, unsigned long long loopStartFrame) {
+    if (nullptr == pRender_) {
+    return;
+  }
+    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return;
+    }
+    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, startIndex, endIndex, interval, loop, loopStartFrame)) {
+      return;
+    }
+    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
+      return;
+    }
+    if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
+      return;
+    }
+
+}
+
 void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier/* = ANIMMOD_NONE*/, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) { 
   animState_ = animState;
   if (true == PlayerOnLeft()) {
@@ -496,7 +515,7 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, 130);
+      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

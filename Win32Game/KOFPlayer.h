@@ -27,6 +27,15 @@ class KOFPlayer
 
   virtual void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
 
+  void CallCreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex,
+      unsigned int startIndex,
+      unsigned int endIndex,
+      unsigned long long interval,
+      bool loop,
+      unsigned long long loopStartFrame);
+
   void UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier = ANIMMOD_NONE, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
@@ -80,7 +89,7 @@ class KOFPlayer
   KOFPlayer* GetOpponentPlayer() const;
 
   StateComponent* GetPlayerStateComponent() const;
-    
+
   bool IsControlLocked() const;
 
   void SetControlLocked(bool bLocked);
@@ -118,7 +127,7 @@ class KOFPlayer
 
   Vector characterScale_;
 
-  public:
+ public:
   bool isPlayer1_;
 
   unsigned long long animState_;

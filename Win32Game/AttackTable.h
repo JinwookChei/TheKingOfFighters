@@ -26,6 +26,7 @@ struct AttackInfo {
   bool isProjectileAttack_ = false;
   float damage_ = 0.0f;
   Vector knockBackForce_ = {0.0f, 0.0f};
+  float freezeTime_ = 0.0f;
   void* searchHandle_ = nullptr;
 };
 
@@ -41,7 +42,7 @@ class AttackTable
 
   bool Initailize();
 
-  bool RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYPE attackType, ATTACK_ELEMENT_TYPE elementType, EFFECT_TYPE effectType, bool isProjectileAttack, float damage, Vector knockBackForce);
+  bool RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYPE attackType, ATTACK_ELEMENT_TYPE elementType, EFFECT_TYPE effectType, bool isProjectileAttack, float damage, Vector knockBackForce, float freezeTime);
 
   bool SearchAttackInfo(unsigned long long attackTableKey, AttackInfo** outSearchResult);
 

@@ -175,7 +175,7 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, 231, 238, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
 
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
