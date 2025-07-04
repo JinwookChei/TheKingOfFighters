@@ -6,8 +6,7 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
     return indices_[curFrame_];
   }
 
-  if (loop_ == true)
-  {
+  if (loop_ == true) {
     isEnd_ = true;
   } else {
     isEnd_ = false;
@@ -303,7 +302,7 @@ bool ImageRenderer::CreateAnimation(
   return nullptr != pNew->searchHandle_;
 }
 
-bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFrame, unsigned long long time) {
+bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, bool isForce, int startFrame, unsigned long long time) {
   AnimationInfo* pFind = nullptr;
   if (0 == animations_.Select((void**)&pFind, 1, &animationTag, 8)) {
     return false;
@@ -323,6 +322,24 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, int startFr
   }
   pCurAnimInfo_->isEnd_ = false;
 
+
+
+  if (true == isForce) {
+    if (nullptr != pCurAnimInfo_) {
+      if (nullptr != image_) {
+        image_->Release();
+        image_ = nullptr;
+      }
+
+      image_ = pCurAnimInfo_->image_;
+      imageIndex_ = pCurAnimInfo_->indices_[startFrame];
+
+      if (nullptr != image_) {
+        image_->AddRef();
+        SetScale(image_->GetScale(imageIndex_));
+      }
+    }
+  }
   return true;
 }
 

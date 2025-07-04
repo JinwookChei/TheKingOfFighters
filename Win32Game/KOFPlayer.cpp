@@ -230,14 +230,14 @@ void KOFPlayer::CallCreateAnimation(unsigned long long animationTag, unsigned lo
   }
 }
 
-void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier /* = ANIMMOD_NONE*/, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
+void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier /* = ANIMMOD_NONE*/, bool isForce, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   animState_ = animState;
   if (true == PlayerOnLeft()) {
     isFacingRight_ = true;
-    pRender_->ChangeAnimation((animState_ | modifier), startFrame, time);
+    pRender_->ChangeAnimation((animState_ | modifier), isForce, startFrame, time);
   } else {
     isFacingRight_ = false;
-    pRender_->ChangeAnimation((animState_ | modifier | ANIMMOD_FLIPPED), startFrame, time);
+    pRender_->ChangeAnimation((animState_ | modifier | ANIMMOD_FLIPPED), isForce, startFrame, time);
   }
 
   pStateComponent_->ChangeState(animState_);
@@ -256,56 +256,56 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   } else if (pMovementComponent_->ContainMovementState({MOVSTATE_Jump})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMovementComponent_->KnockBack(FacingRight(), {35.0f, 50.0f});
-    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump);
+    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump, ANIMMOD_NONE, true);
   } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
-    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat);
+    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat, ANIMMOD_NONE, true);
   } else {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
     switch (damageInfo->attackType_) {
       case ATTYPE_HighAttack: {
         if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
+          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME, true);
         } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
+          UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_NONE, true);
         }
         pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
       } break;
 
       case ATTYPE_LowAttack: {
         if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
+          UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME, true);
         } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+          UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_NONE, true);
         }
         pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
       } break;
       case ATTYPE_StrongAttack: {
         if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitStrong, ANIMMOD_BLUEFLAME);
+          UpdateAnimState(PLAYER_ANIMTYPE_HitStrong, ANIMMOD_BLUEFLAME, true);
         } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_HitStrong);
+          UpdateAnimState(PLAYER_ANIMTYPE_HitStrong, ANIMMOD_NONE, true);
         }
         pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
       } break;
       case ATTYPE_NormalAttack: {
         if (pHitBoxTop_->HasHit()) {
           if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-            UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME);
+            UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_BLUEFLAME, true);
             pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
           } else {
-            UpdateAnimState(PLAYER_ANIMTYPE_HitHigh);
+            UpdateAnimState(PLAYER_ANIMTYPE_HitHigh, ANIMMOD_NONE, true);
             pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
           }
         }
 
         if (pHitBoxBottom_->HasHit()) {
           if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-            UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME);
+            UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME, true);
             pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
           } else {
-            UpdateAnimState(PLAYER_ANIMTYPE_HitLow);
+            UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_NONE, true);
             pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
           }
         }

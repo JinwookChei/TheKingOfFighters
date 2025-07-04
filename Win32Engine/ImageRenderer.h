@@ -97,7 +97,7 @@ class ImageRenderer
       bool loop,
       unsigned long long loopStartFrame);
 
-  JO_API bool ChangeAnimation(unsigned long long animationTag, int startFrame = 0, unsigned long long time = 0.0f);
+  JO_API bool ChangeAnimation(unsigned long long animationTag, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
 
   JO_API bool IsAnimationEnd();
 
