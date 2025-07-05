@@ -322,8 +322,6 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, bool isForc
   }
   pCurAnimInfo_->isEnd_ = false;
 
-
-
   if (true == isForce) {
     if (nullptr != pCurAnimInfo_) {
       if (nullptr != image_) {
@@ -340,6 +338,7 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, bool isForc
       }
     }
   }
+
   return true;
 }
 

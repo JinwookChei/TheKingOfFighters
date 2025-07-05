@@ -288,7 +288,7 @@ void Iori::CompareInputBitset() {
     }
     // DOWN | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("01000000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown, ANIMMOD_NONE, 18, 50);
+      UpdateAnimState(PLAYER_ANIMTYPE_SeatDown, ANIMMOD_NONE, false, 18, 50);
       return;
     }
 
@@ -414,7 +414,6 @@ void Iori::CompareInputBitset() {
       else {
         UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
       }
-      
       return;
     }
 
