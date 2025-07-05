@@ -195,6 +195,9 @@
     <ClCompile Include="HyakushikiOniyaki.cpp">
       <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
     </ClCompile>
+    <ClCompile Include="SoundTable.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="HyakushikiOniyaki.h">
       <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundTable.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

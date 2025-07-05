@@ -12,7 +12,7 @@
 #include <thread>
 
 KOFLevel::KOFLevel()
-    : channel_(nullptr),
+    : /*channel_(nullptr),*/
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
@@ -192,12 +192,29 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
   // SOUND
-  /*Path soundPath;
+  Path soundPath;
   soundPath.MoveParent();
   soundPath.Move("ContentsResource\\Sound\\");
   soundPath.Move("Kyoku-Gen.mp3");
-  SoundManager::Instance()->Load(soundPath, 0);
-  channel_ = SoundManager::Instance()->SoundPlay(0);*/
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_BackGround);
+  soundPath.MoveParent();
+  soundPath.Move("Iori\\");
+  soundPath.Move("f1f_108ShikiYamiBarai.wav");  // 108
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_108ShikiYamiBarai);
+  soundPath.MoveParent();
+  soundPath.Move("f1f_Kiai_01.wav");
+  soundPath.MoveParent();
+  soundPath.Move("f1f_Kiai_02.wav"); // mutan 1 ,2.
+  soundPath.MoveParent();
+  soundPath.Move("f1f_Kiai_03.wav"); // mutan 3
+  soundPath.MoveParent();
+  soundPath.Move("f1f_HyakushikiOniyaki.wav");  // ╠м╫ееб©Л╠Б.
+  soundPath.MoveParent();
+  soundPath.Move("f1f_HyakushikiOniyaki.wav");  // ╠м╫ееб©Л╠Б.
+  
+  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
+  
+  
 
   // LEVEL BOUNDARY SETTING
   levelLeftBoundary_ = levelBoundaryMargin_;
@@ -217,7 +234,18 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     if (InputManager::Instance()->IsDown(VK_F2)) {
       SetCollisionRender(!GetCollisionRender());
     }
+
+    if (InputManager::Instance()->IsDown(VK_F3)) {
+      backGroundSoundChannel_.Pause();
+    }
+    if (InputManager::Instance()->IsDown(VK_F4)) {
+      backGroundSoundChannel_.Play();
+    }
+
+    
   }
+
+
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
   float cameraHeight = pCamera_->GetCameraMaxHeight();

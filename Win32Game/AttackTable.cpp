@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AttackTable.h"
+#include "SoundTable.h"
 
 AttackTable::AttackTable() {
 }

@@ -9,6 +9,7 @@ class SkillComponent;
 class ProjectileComponent;
 class AttackTable;
 struct AttackInfo;
+class SoundTable;
 class HealthComponent;
 class StateComponent;
 class HitHandlerComponent;
@@ -120,7 +121,11 @@ class KOFPlayer
 
   ImageRenderer* pRender_;
 
+  SoundChannel soundChannel_;
+
   MovementComponent* pMovementComponent_;
+
+  SoundTable* pSoundTable_;
 
   AttackTable* pAttackTable_;
 
@@ -145,6 +150,8 @@ class KOFPlayer
   ProjectileComponent* pProjectileComponent_;
 
   GhostEffect* pGhostEffect_;
+
+
 
   Vector characterScale_;
 

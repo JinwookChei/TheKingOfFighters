@@ -138,6 +138,12 @@ enum EFFECT_MOD : unsigned long long {
   EFMOD_BLUEFLAME = 1ULL << 62
 };
 
+enum SOUND_TYPE : unsigned long long {
+  SOUNDTYPE_None = 0ULL,
+  SOUNDTYPE_BackGround,
+  SOUNDTYPE_IORI_108ShikiYamiBarai
+};
+
 static Color8Bit ioriTransparentColor = Color8Bit{169, 139, 150, 0};
 static Color8Bit changTransparentColor = Color8Bit{17, 91, 124, 0};
 

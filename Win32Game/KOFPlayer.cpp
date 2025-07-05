@@ -5,6 +5,7 @@
 #include "MovementComponent.h"
 #include "StateComponent.h"
 #include "AttackTable.h"
+#include "SoundTable.h"
 #include "HealthComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
@@ -12,8 +13,10 @@
 #include "KOFLevel.h"
 
 KOFPlayer::KOFPlayer()
-    : pRender_(nullptr),
+    : playerKeySet_(),
+    pRender_(nullptr),
       pMovementComponent_(nullptr),
+      pSoundTable_(nullptr),
       pAttackTable_(nullptr),
       pHealthComponent_(nullptr),
       pStateComponent_(nullptr),
@@ -110,7 +113,13 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
     return;
   }
 
-  // DAMAGE
+  // SOUND
+  pSoundTable_ = CreateComponent<SoundTable>();
+  if (false == pSoundTable_->Initailize()) {
+    return;
+  }
+
+  // ATTACK
   pAttackTable_ = CreateComponent<AttackTable>();
   if (false == pAttackTable_->Initailize()) {
     return;
@@ -241,6 +250,11 @@ void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFI
   }
 
   pStateComponent_->ChangeState(animState_);
+
+  SoundInfo* pSoundInfo;
+  if (true == pSoundTable_->SearchSoundInfo(animState, &pSoundInfo)) {
+    soundChannel_ = SoundManager::Instance()->SoundPlay(pSoundInfo->soundType_);
+  }
 
   CollisionReset();
 }
@@ -553,9 +567,6 @@ void KOFPlayer::UpdateAttack() {
       }
 
       pTargetPlayer->HitEvent(pAttackInfo);
-      /* if (pOpponentPlayer_->IsAtMapEdge()) {
-       pMovementComponent_->KnockBack(FacingRight(), {pAttackInfo->knockBackForce_.X, 0.0f});
-     }*/
 
       pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 

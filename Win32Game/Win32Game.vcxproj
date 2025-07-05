@@ -191,6 +191,7 @@
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ReadButton.cpp" />
     <ClCompile Include="GhostEffect.cpp" />
+    <ClCompile Include="SoundTable.cpp" />
     <ClCompile Include="YamiBarai.cpp" />
     <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="StateComponent.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="ReadButton.h" />
     <ClInclude Include="GhostEffect.h" />
+    <ClInclude Include="SoundTable.h" />
     <ClInclude Include="YamiBarai.h" />
     <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="StateComponent.h" />

@@ -38,7 +38,7 @@ class KOFLevel final
 
  private:
 
-  SoundChannel* channel_;
+  SoundChannel backGroundSoundChannel_;
 
   CameraTarget* pCamera_;
 

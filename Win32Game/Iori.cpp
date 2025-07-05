@@ -4,6 +4,7 @@
 #include "CameraTarget.h"
 #include "BackGroundMask.h"
 #include "MovementComponent.h"
+#include "SoundTable.h"
 #include "AttackTable.h"
 #include "SkillComponent.h"
 #include "CommandComponent.h"
@@ -95,6 +96,10 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
 
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
+  // SOUND
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_108ShikiYamiBarai, SOUNDTYPE_IORI_108ShikiYamiBarai);
+
+
   // STATE
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, {PS_Idle}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, {PS_Seat}, true);
@@ -152,6 +157,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_8, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PS_Attack}, false);
 
+  
   // ATTACK INFO
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {23.0f, 0.0f}, 140.0f);
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {18.0f, 0.0f}, 80.0f);
