@@ -21,7 +21,6 @@ void SoundTable::BeginPlay() {
 void SoundTable::Tick(unsigned long long deltaTick) {
 }
 
-
 bool SoundTable::Initailize() {
   return soundTable_.Initialize(8, 8);
 }

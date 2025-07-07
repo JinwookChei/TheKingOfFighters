@@ -63,6 +63,7 @@ enum PLAYER_ANIM_TYPE : unsigned long long {
   PLAYER_ANIMTYPE_Hit_Seat,
   PLAYER_ANIMTYPE_Hit_Jump,
   PLAYER_ANIMTYPE_NeckGrab,
+  PLAYER_ANIMTYPE_UltimateCasting,
   PLAYER_ANIMTYPE_Max
 };
 
@@ -75,7 +76,6 @@ enum IORI_ANIM_TYPE : unsigned long long {
   IORI_ANIMTYPE_127ShikiAoiHana_1,
   IORI_ANIMTYPE_127ShikiAoiHana_2,
   IORI_ANIMTYPE_127ShikiAoiHana_3,
-  IORI_ANIMTYPE_UltimateCasting,
   IORI_ANIMTYPE_1211ShikiYaOtome_1,
   IORI_ANIMTYPE_1211ShikiYaOtome_2,
   IORI_ANIMTYPE_1211ShikiYaOtome_3,
@@ -143,6 +143,7 @@ enum SOUND_TYPE : unsigned long long {
   SOUNDTYPE_BackGround,
   SOUNDTYPE_COMMON_Jump01,
   SOUNDTYPE_COMMON_Jump02,
+  SOUNDTYPE_COMMON_Land,
   SOUNDTYPE_COMMON_FootStep,
   SOUNDTYPE_COMMON_Hit01,
   SOUNDTYPE_COMMON_Hit02,
@@ -150,6 +151,8 @@ enum SOUND_TYPE : unsigned long long {
   SOUNDTYPE_COMMON_Hit04,
   SOUNDTYPE_COMMON_Hit05,
   SOUNDTYPE_COMMON_Hit06,
+  SOUNDTYPE_COMMON_Casting,
+  SOUNDTYPE_COMMON_Explosion,
   SOUNDTYPE_IORI_Kiai_Light01,
   SOUNDTYPE_IORI_Kiai_Light02,
   SOUNDTYPE_IORI_Kiai_Light03,
@@ -157,7 +160,11 @@ enum SOUND_TYPE : unsigned long long {
   SOUNDTYPE_IORI_Kiai_Heavy02,
   SOUNDTYPE_IORI_Kiai_Heavy03,
   SOUNDTYPE_IORI_Dash,
-  SOUNDTYPE_IORI_108ShikiYamiBarai
+  SOUNDTYPE_IORI_108ShikiYamiBarai,
+  SOUNDTYPE_IORI_HyakushikiOniyaki,
+  SOUNDTYPE_IORI_1211ShikiYaOtome01,
+  SOUNDTYPE_IORI_1211ShikiYaOtome02,
+  SOUNDTYPE_IORI_1211ShikiYaOtome03
 };
 
 static Color8Bit ioriTransparentColor = Color8Bit{169, 139, 150, 0};

@@ -26,6 +26,8 @@ class Effect
 
   ImageRenderer* pRender_;
 
+  SoundChannel soundChannel_;
+
   long long curTime_;
 
   int curFrame_;

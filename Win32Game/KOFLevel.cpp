@@ -164,32 +164,32 @@ void KOFLevel::BeginPlay() {
   CameraManager::Instance()->SetTarget(pCamera_);
 
   // EFFECT
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1, IMGTYPE_HitEffectImage, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2, IMGTYPE_HitEffectImage, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3, IMGTYPE_HitEffectImage, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_1, IMGTYPE_GuardEffectImage01, 0, 10, 50, false, {2.1f, 2.1f}, Color8Bit{103, 167, 141, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1, IMGTYPE_CastingEffectImage, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2, IMGTYPE_CastingEffectImage, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3, IMGTYPE_CastingEffectImage, 32, 47, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4, IMGTYPE_CastingEffectImage, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, 231, 238, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1, IMGTYPE_HitEffectImage, SOUNDTYPE_COMMON_Hit02, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2, IMGTYPE_HitEffectImage, SOUNDTYPE_COMMON_Hit03, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3, IMGTYPE_HitEffectImage, SOUNDTYPE_COMMON_Hit02, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_1, IMGTYPE_GuardEffectImage01, SOUNDTYPE_COMMON_Hit01, 0, 10, 50, false, {2.1f, 2.1f}, Color8Bit{103, 167, 141, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 32, 47, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, SOUNDTYPE_None, 231, 238, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
 
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_1 | EFMOD_FLIPPED, IMGTYPE_GuardEffectImage01 | IMGMOD_FLIPPED, 0, 10, 50, false, {2.1f, 2.1f}, Color8Bit{103, 167, 141, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 32, 47, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit03,19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02,31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Guard_1 | EFMOD_FLIPPED, IMGTYPE_GuardEffectImage01 | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit01, 0, 10, 50, false, {2.1f, 2.1f}, Color8Bit{103, 167, 141, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_3 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 32, 47, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, SOUNDTYPE_None, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
   // SOUND
   Path soundPath;
@@ -204,6 +204,9 @@ void KOFLevel::BeginPlay() {
   soundPath.MoveParent();
   soundPath.Move("common_Jump02.wav");  
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Jump02);
+  soundPath.MoveParent();
+  soundPath.Move("common_Land02.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Land);
   soundPath.MoveParent();
   soundPath.Move("common_Footstep.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_FootStep);
@@ -225,6 +228,12 @@ void KOFLevel::BeginPlay() {
   soundPath.MoveParent();
   soundPath.Move("common_Hit06.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Hit06);
+  soundPath.MoveParent();
+  soundPath.Move("common_Casting.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Casting);
+  soundPath.MoveParent();
+  soundPath.Move("common_Explosion.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Explosion);
   soundPath.MoveParent();
   soundPath.MoveParent();
   soundPath.Move("Iori\\");
@@ -248,18 +257,23 @@ void KOFLevel::BeginPlay() {
   soundPath.MoveParent();
   soundPath.Move("f1f_Hit_02_Dash.wav");  
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_Dash);
-
   soundPath.MoveParent();
   soundPath.Move("f1f_108ShikiYamiBarai.wav");  
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_108ShikiYamiBarai);
   soundPath.MoveParent();
-  soundPath.Move("f1f_Kiai_01.wav");
+  soundPath.Move("f1f_HyakushikiOniyaki.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_HyakushikiOniyaki);
   soundPath.MoveParent();
-  soundPath.Move("f1f_Kiai_02.wav"); // mutan 1 ,2.
+  soundPath.Move("f1f_1211ShikiYaOtome01.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_1211ShikiYaOtome01);
   soundPath.MoveParent();
-  soundPath.Move("f1f_Kiai_03.wav"); // mutan 3
+  soundPath.Move("f1f_1211ShikiYaOtome02.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_1211ShikiYaOtome02);
   soundPath.MoveParent();
-  soundPath.Move("f1f_HyakushikiOniyaki.wav");  // ╠м╫ееб©Л╠Б.
+  soundPath.Move("f1f_1211ShikiYaOtome03.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_1211ShikiYaOtome03);
+
+  
   soundPath.MoveParent();
   soundPath.Move("f1f_HyakushikiOniyaki.wav");  // ╠м╫ееб©Л╠Б.
   

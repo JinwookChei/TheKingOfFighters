@@ -313,7 +313,6 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
             pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
           }
         }
-
         if (pHitBoxBottom_->HasHit()) {
           if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
             UpdateAnimState(PLAYER_ANIMTYPE_HitLow, ANIMMOD_BLUEFLAME, true);

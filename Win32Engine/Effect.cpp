@@ -15,7 +15,14 @@ Effect::~Effect() {
 }
 
 bool Effect::Initialize() {
+  if (nullptr == pEffectInfo_) {
+    return false;
+  }
   pRender_ = CreateImageRenderFIFO();
+
+  if (0 != pEffectInfo_->soundTag_) {
+  soundChannel_ = SoundManager::Instance()->SoundPlay(pEffectInfo_->soundTag_);
+  }
 
   IImage* pImage = ImgManager::GetIntance()->GetImg(pEffectInfo_->imageTag_);
   if (nullptr == pImage) {

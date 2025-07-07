@@ -151,8 +151,6 @@ class KOFPlayer
 
   GhostEffect* pGhostEffect_;
 
-
-
   Vector characterScale_;
 
  public:

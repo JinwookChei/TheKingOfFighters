@@ -174,6 +174,7 @@ void MovementComponent::UpdateJump(unsigned long long deltaTick) {
     jumpPosition.Y = startPosition_.Y;
     curJumpVelocity_ = {0.0f, 0.0f};
     movementStateBitset_.reset(MOVSTATE_Jump);
+    movementSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_Land);
   }
 
   pOwner->SetPosition(jumpPosition);

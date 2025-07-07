@@ -121,4 +121,7 @@ class MovementComponent final
 
   // ClampOffset
   float clampedWidthOffset_;
+
+  // Sound
+  SoundChannel movementSoundChannel_;
 };

@@ -198,6 +198,9 @@
     <ClCompile Include="SoundTable.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
+    <ClCompile Include="KOFLoby.cpp">
+      <Filter>Contents\KOF\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="SoundTable.h">
       <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="KOFLoby.h">
+      <Filter>Contents\KOF\Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

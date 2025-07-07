@@ -180,6 +180,7 @@
     <ClCompile Include="ImageEditLevel.cpp" />
     <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KOFLevel.cpp" />
+    <ClCompile Include="KOFLoby.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="NextImageButton.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="HyakushikiOniyaki.h" />
     <ClInclude Include="ImageEditLevel.h" />
     <ClInclude Include="KOFCommon.h" />
+    <ClInclude Include="KOFLoby.h" />
     <ClInclude Include="Portrait.h" />
     <ClInclude Include="ImageController.h" />
     <ClInclude Include="Iori.h" />

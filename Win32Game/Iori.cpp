@@ -83,7 +83,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_1,IMGTYPE_IoriImage, 255, 261, ANIMINTERVAL, false, 255);
   CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_2, IMGTYPE_IoriImage, 262, 268, ANIMINTERVAL, false, 262);
   CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_3, IMGTYPE_IoriImage, 269, 275, ANIMINTERVAL, false, 269);
-  CallCreateAnimation(IORI_ANIMTYPE_UltimateCasting, IMGTYPE_IoriImage, 344, 347, 120, false, 344);
+  CallCreateAnimation(PLAYER_ANIMTYPE_UltimateCasting, IMGTYPE_IoriImage, 344, 347, 120, false, 344);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_1, IMGTYPE_IoriImage, 70, 77, 20, false, 70);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_2, IMGTYPE_IoriImage, 118, 122, 20, false, 118);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_3, IMGTYPE_IoriImage, 88, 92, 20, false, 88);
@@ -117,13 +117,22 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, SOUNDTYPE_IORI_Kiai_Heavy01);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_LightKick_Jump, SOUNDTYPE_IORI_Kiai_Light01);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, SOUNDTYPE_IORI_Kiai_Heavy02);
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitHigh, SOUNDTYPE_COMMON_Hit02);
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitLow, SOUNDTYPE_COMMON_Hit03);
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitStrong, SOUNDTYPE_COMMON_Hit04);
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Seat, SOUNDTYPE_COMMON_Hit05);
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Jump, SOUNDTYPE_COMMON_Hit06);
-
-
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitHigh, SOUNDTYPE_None);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitLow, SOUNDTYPE_None);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitStrong, SOUNDTYPE_None);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Seat, SOUNDTYPE_None);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Jump, SOUNDTYPE_None);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_NeckGrab, SOUNDTYPE_COMMON_Hit01);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_UltimateCasting, SOUNDTYPE_IORI_1211ShikiYaOtome01);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_GaishikiMutan_1, SOUNDTYPE_IORI_Kiai_Light01);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_GaishikiMutan_2, SOUNDTYPE_IORI_Kiai_Light02);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Shinigami, SOUNDTYPE_IORI_Kiai_Light02);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_HyakushikiOniyaki, SOUNDTYPE_IORI_HyakushikiOniyaki);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, SOUNDTYPE_IORI_1211ShikiYaOtome02);
+  //pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, SOUNDTYPE_IORI_1211ShikiYaOtome03);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_HyakushikiOniyaki, SOUNDTYPE_IORI_HyakushikiOniyaki);
+  
+  
 
   // STATE
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, {PS_Idle}, true);
@@ -171,7 +180,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_1, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_2, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_3, {PS_Attack}, false);
-  pStateComponent_->RegistState(IORI_ANIMTYPE_UltimateCasting, {PS_SkillCasting}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_UltimateCasting, {PS_SkillCasting}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_1, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_2, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_3, {PS_Attack}, false);
@@ -527,7 +536,7 @@ void Iori::Command_6() {
     return;
   }
 
-  UpdateAnimState(IORI_ANIMTYPE_UltimateCasting);
+  UpdateAnimState(PLAYER_ANIMTYPE_UltimateCasting);
   pSkillComponent_->ActivateSkill(IORI_SKILL_1211ShikiYaOtome);
 
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
@@ -700,7 +709,7 @@ void Iori::ShikiYaOtome1211() {
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
   switch (pStateComponent_->GetCurAnimState()) {
-    case IORI_ANIMTYPE_UltimateCasting: {
+    case PLAYER_ANIMTYPE_UltimateCasting: {
       if (347 == curImageIndex) {
         UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_1);
         break;
@@ -823,6 +832,7 @@ void Iori::ShikiYaOtome1211() {
       if (349 == curImageIndex) {
         const Vector& ioriPosition = GetPosition();
         pOpponentPlayer_->SetPosition(ioriPosition + Vector{100.0f * FacingRightFlag(), -50.0f});
+        soundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
         break;
       }
       if (351 == curImageIndex) {
