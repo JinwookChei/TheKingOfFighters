@@ -3,6 +3,8 @@
 
 enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_MouseImage = 1ULL,
+  IMGTYPE_LogoImage,
+  IMGTYPE_PressEnter,
   IMGTYPE_BackGoundImage,
   IMGTYPE_BlackBoardImage,
   IMGTYPE_WhiteBoardImage,

@@ -17,6 +17,8 @@ class BackGroundMask
 
   void FadeInOut(IMAGE_TYPE image, float fadeInOutDuration);
 
+  float GetCurrentAlpha() const;
+
  private:
   ImageRenderer* pRender_;
 

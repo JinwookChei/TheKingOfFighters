@@ -77,3 +77,7 @@ void BackGroundMask::FadeInOut(IMAGE_TYPE image, float fadeInOutDuration) {
   FadeOut(image, fadeInOutDuration);
   onFadeInOut_ = true;
 }
+
+float BackGroundMask::GetCurrentAlpha() const {
+  return alpha_;
+}

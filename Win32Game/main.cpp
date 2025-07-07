@@ -3,6 +3,7 @@
 #include "ToolLevel.h"
 #include "TestLevel.h"
 #include "KOFLevel.h"
+#include "KOFLoby.h"
 #include "ImageEditLevel.h"
 
 typedef void (*DLL_INSTANCE_PRINT)(void**, HINSTANCE, const wchar_t*);
@@ -56,7 +57,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
   application->Release();
   application = nullptr;
 
-  GEngineCore->ChangeLevel<KOFLevel>();
+  GEngineCore->ChangeLevel<KOFLobyLevel>();
 
   GEngineCore->EngineLoop();
 
