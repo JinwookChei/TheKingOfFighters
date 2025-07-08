@@ -5,10 +5,11 @@
 #include "Iori.h"
 #include "Chang.h"
 #include "BackGround.h"
-#include "BackGroundMask.h"
+#include "ScreenMask.h"
 #include "HealthBar.h"
 #include "Portrait.h"
 #include "Health.h"
+#include "Notification.h"
 #include <thread>
 
 KOFLevel::KOFLevel()
@@ -17,9 +18,16 @@ KOFLevel::KOFLevel()
       pMouse_(nullptr),
       pBackGround_(nullptr),
       pBackGroundMask_(nullptr),
+      pScreenMask_(nullptr),
       pPlayer1_(nullptr),
       pPlayer2_(nullptr),
       HUD_(nullptr),
+      systemUI_(nullptr),
+      readyNotification_(nullptr),
+      goNotification_(nullptr),
+      koNotification_(nullptr),
+      gameStatus_(GAMESTATUS_None),
+      acuumDeltaTick_(0),
       player1SpawnPostion_({0.0f, 0.0f}),
       player2SpawnPostion_({0.0f, 0.0f}),
       OnFreezeTimer_(false),
@@ -52,8 +60,11 @@ void KOFLevel::BeginPlay() {
   pMouse_->SetPosition(Vector(backbufferScale.X * 0.5f, backbufferScale.Y * 0.5f));
 
   // BLACKBOARD
-  pBackGroundMask_ = SpawnActor<BackGroundMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
+  pBackGroundMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
   pBackGroundMask_->SetPosition({0.0f, 0.0f});
+
+  pScreenMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
+  pScreenMask_->SetPosition({0.0f, 0.0f});
 
   // BACKGROUND
   pBackGround_ = SpawnActor<BackGround>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
@@ -64,10 +75,13 @@ void KOFLevel::BeginPlay() {
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  pPlayer1_->SetPlayerOnLeft(true);
   pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  pPlayer2_->SetPlayerOnLeft(false);
   /*pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);*/
+
 
   pPlayer1_->Initialize(true, player1SpawnPostion_, true, pPlayer2_);
   pPlayer2_->Initialize(false, player2SpawnPostion_, true, pPlayer1_);
@@ -78,6 +92,7 @@ void KOFLevel::BeginPlay() {
   HUD_->SetScale({backbufferScale.X, backbufferScale.Y});
   HUD_->SetOriginColor(Color8Bit::White);
   HUD_->ChangeClearColor_(false);
+  HUD_->SetActive(false);
 
   ImageRenderer* pHUDRenderer_ = HUD_->GetImageRenderer();
   if (nullptr == pHUDRenderer_) {
@@ -109,6 +124,36 @@ void KOFLevel::BeginPlay() {
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
   healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthImage | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0), {1415.0f, 102.0f}, true);
 
+
+  // System UI
+  systemUI_ = SpawnActor<UI>(ActorGroupEngineType::ActorGroupEngineType_UI);
+  systemUI_->SetPosition({backbufferScale.HalfX(), backbufferScale.HalfY()});
+  systemUI_->SetScale({backbufferScale.X, backbufferScale.Y});
+  systemUI_->SetActive(true);
+
+  readyNotification_ = systemUI_->CreateUIComponent<Notification>();
+  readyNotification_->Initialize(IMGTYPE_Ready, 0, Color8Bit(0, 0, 0, 0));
+  readyNotification_->SetPosition({systemUI_->GetScale().HalfX(), systemUI_->GetScale().HalfY()});
+  readyNotification_->SetEnableTick(false);
+  readyNotification_->SetEnableRender(false);
+
+ 
+  goNotification_ = systemUI_->CreateUIComponent<Notification>();
+  goNotification_->Initialize(IMGTYPE_Go, 0, Color8Bit(0, 0, 0, 0));
+  goNotification_->SetPosition({systemUI_->GetScale().HalfX(), systemUI_->GetScale().HalfY()});
+  goNotification_->SetEnableTick(false);
+  goNotification_->SetEnableRender(false);
+
+  koNotification_ = systemUI_->CreateUIComponent<Notification>();
+  koNotification_->Initialize(IMGTYPE_KO, 0, Color8Bit(0, 0, 0, 0));
+  koNotification_->SetPosition({systemUI_->GetScale().HalfX(), systemUI_->GetScale().HalfY()});
+  koNotification_->SetEnableTick(false);
+  koNotification_->SetEnableRender(false);
+
+
+
+  
+
   // CAMERA
   pCamera_ = SpawnActor<CameraTarget>();
   pCamera_->Initialize(backbufferScale.HalfY(), backGroundImageScale.IntergerY() - backbufferScale.HalfY() + 60, backbufferScale.HalfX(), backGroundImageScale.X - backbufferScale.HalfX() + 20);
@@ -129,10 +174,9 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, SOUNDTYPE_None, 231, 238, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
 
-
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit03,19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02,31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit03, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
+  EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Guard_1 | EFMOD_FLIPPED, IMGTYPE_GuardEffectImage01 | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit01, 0, 10, 50, false, {2.1f, 2.1f}, Color8Bit{103, 167, 141, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_1 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 0, 15, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_2 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 16, 31, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
@@ -151,10 +195,22 @@ void KOFLevel::BeginPlay() {
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_BackGround);
   soundPath.MoveParent();
   soundPath.Move("Common\\");
-  soundPath.Move("common_Jump01.wav");  
+  soundPath.Move("common_Ready.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Ready);
+  soundPath.MoveParent();
+  soundPath.Move("common_Go.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Go);
+  soundPath.MoveParent();
+  soundPath.Move("common_KO.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_KO);
+  soundPath.MoveParent();
+  soundPath.Move("common_System01.wav");
+  SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_System01);
+  soundPath.MoveParent();
+  soundPath.Move("common_Jump01.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Jump01);
   soundPath.MoveParent();
-  soundPath.Move("common_Jump02.wav");  
+  soundPath.Move("common_Jump02.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_COMMON_Jump02);
   soundPath.MoveParent();
   soundPath.Move("common_Land02.wav");
@@ -207,10 +263,10 @@ void KOFLevel::BeginPlay() {
   soundPath.Move("f1f_Kiai_Heavy03.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_Kiai_Heavy03);
   soundPath.MoveParent();
-  soundPath.Move("f1f_Hit_02_Dash.wav");  
+  soundPath.Move("f1f_Hit_02_Dash.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_Dash);
   soundPath.MoveParent();
-  soundPath.Move("f1f_108ShikiYamiBarai.wav");  
+  soundPath.Move("f1f_108ShikiYamiBarai.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_108ShikiYamiBarai);
   soundPath.MoveParent();
   soundPath.Move("f1f_HyakushikiOniyaki.wav");
@@ -225,17 +281,14 @@ void KOFLevel::BeginPlay() {
   soundPath.Move("f1f_1211ShikiYaOtome03.wav");
   SoundManager::Instance()->Load(soundPath, SOUNDTYPE_IORI_1211ShikiYaOtome03);
 
-  
   soundPath.MoveParent();
   soundPath.Move("f1f_HyakushikiOniyaki.wav");  // ╠м╫ееб©Л╠Б.
-  
-  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
-  
-  
 
   // LEVEL BOUNDARY SETTING
   levelLeftBoundary_ = levelBoundaryMargin_;
   levelRightBoundary_ = backGroundImageScale.X - levelBoundaryMargin_;
+
+  InitReadyGame();
 }
 
 void KOFLevel::Tick(unsigned long long deltaTick) {
@@ -253,17 +306,138 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     }
 
     if (InputManager::Instance()->IsDown(VK_F3)) {
-      backGroundSoundChannel_.Pause();
+      //backGroundSoundChannel_.Pause();
+      HUD_->SetActive(true);
     }
     if (InputManager::Instance()->IsDown(VK_F4)) {
       backGroundSoundChannel_.Play();
-    }
 
-    
+    }
   }
 
+  switch (gameStatus_) {
+    case GAMESTATUS_GameReady:
+      ReadyGame(deltaTick);
+      break;
+    case GAMESTATUS_GameInProgress:
+      InProgressGame(deltaTick);
+      break;
+    case GAMESTATUS_GameEnd:
+      break;
+    default:
+      break;
+  }
+}
 
+CameraTarget* KOFLevel::GetCameraTarget() const {
+  return pCamera_;
+}
 
+ScreenMask* KOFLevel::GetBackGroundMask() const {
+  return pBackGroundMask_;
+}
+
+void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
+  for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
+    if (nullptr == *iter) {
+      continue;
+    }
+
+    Actor* pActor = *iter;
+    pActor->SetEnableTick(false);
+  }
+
+  OnFreezeTimer_ = true;
+  isFreezeInfinite_ = isInfinite;
+  freezedActors_ = actors;
+  freezeDuration_ = freezeDuration;
+  freezeTiemr_ = 0;
+}
+
+void KOFLevel::DefreezeActors() {
+  for (auto iter = freezedActors_.begin(); iter != freezedActors_.end(); ++iter) {
+    if (nullptr == *iter) {
+      continue;
+    }
+
+    Actor* pActor = *iter;
+    pActor->SetEnableTick(true);
+  }
+
+  OnFreezeTimer_ = false;
+  isFreezeInfinite_ = false;
+  freezeDuration_ = 0;
+  freezeTiemr_ = 0;
+}
+
+void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
+  if (true == OnFreezeTimer_) {
+    freezeTiemr_ += deltaTick;
+    if (freezeTiemr_ >= freezeDuration_ && false == isFreezeInfinite_) {
+      DefreezeActors();
+    }
+  }
+}
+
+float KOFLevel::GetLevelLeftBoundary() const {
+  return levelLeftBoundary_;
+}
+
+float KOFLevel::GetLevelRightBoundary() const {
+  return levelRightBoundary_;
+}
+
+float KOFLevel::GetScreenBoundaryWidth() const {
+  return screenBoundaryWidth_;
+}
+
+void KOFLevel::InitReadyGame() {
+  if (nullptr == pPlayer1_ || nullptr == pPlayer2_) {
+    return;
+  }
+
+  Vector backbufferScale = GEngineCore->GetBackbufferScale();
+  screenBoundaryWidth_ = backbufferScale.X - pPlayer1_->CharacterScale().HalfX() - pPlayer2_->CharacterScale().HalfX();
+
+  pPlayer1_->SetControlLocked(true);
+  pPlayer2_->SetControlLocked(true);
+
+  pScreenMask_->InitAlpha(1.0f);
+  pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 0.0f);
+  pScreenMask_->FadeIn(300.0f);
+
+  gameStatus_ = GAMESTATUS_GameReady;
+}
+
+void KOFLevel::ReadyGame(unsigned long long deltaTick) {
+  acuumDeltaTick_ += deltaTick;
+  if (true == backGroundSoundChannel_.IsEmpty() && 100 <= acuumDeltaTick_ && 200 > acuumDeltaTick_) {
+    backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_Ready);
+    readyNotification_->SetEnableRender(true);
+  }
+
+  if (true == backGroundSoundChannel_.IsEmpty() && 800 <= acuumDeltaTick_ && 900 > acuumDeltaTick_) {
+    backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_Go);
+    readyNotification_->SetEnableRender(false);
+    goNotification_->SetEnableRender(true);
+  }
+
+  if (1300 <= acuumDeltaTick_) {
+    goNotification_->SetEnableRender(false);
+    InitInProgressGame();
+  } 
+}
+
+void KOFLevel::InitInProgressGame() {
+  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
+  HUD_->SetActive(true);
+  pPlayer1_->SetControlLocked(false);
+  pPlayer2_->SetControlLocked(false);
+
+  gameStatus_ = GAMESTATUS_GameInProgress;
+}
+
+void KOFLevel::InProgressGame(unsigned long long deltaTick) {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
   float cameraHeight = pCamera_->GetCameraMaxHeight();
 
@@ -351,64 +525,5 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
-CameraTarget* KOFLevel::GetCameraTarget() const {
-  return pCamera_;
-}
-
-BackGroundMask* KOFLevel::GetBackGroundMask() const {
-  return pBackGroundMask_;
-}
-
-void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
-  for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
-    if (nullptr == *iter) {
-      continue;
-    }
-
-    Actor* pActor = *iter;
-    pActor->SetEnableTick(false);
-  }
-
-  OnFreezeTimer_ = true;
-  isFreezeInfinite_ = isInfinite;
-  freezedActors_ = actors;
-  freezeDuration_ = freezeDuration;
-  freezeTiemr_ = 0;
-}
-
-void KOFLevel::DefreezeActors() {
-  for (auto iter = freezedActors_.begin(); iter != freezedActors_.end(); ++iter) {
-    if (nullptr == *iter) {
-      continue;
-    }
-
-    Actor* pActor = *iter;
-    pActor->SetEnableTick(true);
-  }
-
-  OnFreezeTimer_ = false;
-  isFreezeInfinite_ = false;
-  freezeDuration_ = 0;
-  freezeTiemr_ = 0;
-}
-
-void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
-  if (true == OnFreezeTimer_) {
-    freezeTiemr_ += deltaTick;
-    if (freezeTiemr_ >= freezeDuration_ && false == isFreezeInfinite_) {
-      DefreezeActors();
-    }
-  }
-}
-
-float KOFLevel::GetLevelLeftBoundary() const {
-  return levelLeftBoundary_;
-}
-
-float KOFLevel::GetLevelRightBoundary() const {
-  return levelRightBoundary_;
-}
-
-float KOFLevel::GetScreenBoundaryWidth() const {
-  return screenBoundaryWidth_;
+void KOFLevel::EndGame(unsigned long long deltaTick) {
 }

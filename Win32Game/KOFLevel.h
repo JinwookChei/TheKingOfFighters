@@ -2,10 +2,18 @@
 
 class Mouse;
 class BackGround;
-class BackGroundMask;
+class ScreenMask;
 class CameraTarget;
 class KOFPlayer;
 class UI;
+class Notification;
+
+enum GameStatus {
+  GAMESTATUS_None = 0,
+  GAMESTATUS_GameReady,
+  GAMESTATUS_GameInProgress,
+  GAMESTATUS_GameEnd
+};
 
 class KOFLevel final
     : public Level {
@@ -22,7 +30,7 @@ class KOFLevel final
 
   CameraTarget* GetCameraTarget() const;
 
-  BackGroundMask* GetBackGroundMask() const;
+  ScreenMask* GetBackGroundMask() const;
 
   void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);
 
@@ -36,6 +44,16 @@ class KOFLevel final
 
   float GetScreenBoundaryWidth() const;
 
+  void InitReadyGame();
+
+  void ReadyGame(unsigned long long deltaTick);
+
+  void InitInProgressGame();
+
+  void InProgressGame(unsigned long long deltaTick);
+
+  void EndGame(unsigned long long deltaTick);
+
  private:
 
   SoundChannel backGroundSoundChannel_;
@@ -46,13 +64,27 @@ class KOFLevel final
 
   BackGround* pBackGround_;
 
-  BackGroundMask* pBackGroundMask_;
+  ScreenMask* pBackGroundMask_;
+
+  ScreenMask* pScreenMask_;
 
   KOFPlayer* pPlayer1_;
 
   KOFPlayer* pPlayer2_;
 
   UI* HUD_;
+
+  UI* systemUI_;
+
+  Notification* readyNotification_;
+
+  Notification* goNotification_;
+
+  Notification* koNotification_;
+
+  GameStatus gameStatus_;
+
+  unsigned long long acuumDeltaTick_;
 
   Vector player1SpawnPostion_;
 

@@ -1130,7 +1130,12 @@ void __stdcall Win32Image::MakeColorTransparent(const Color8Bit& transColor) {
     for (float j = 0; j < scale.X; ++j) {
       Color8Bit tempColor;
       GetPixel(Vector{j, i}, &tempColor);
-      if (tempColor == transColor) {
+      /*if (tempColor == transColor) {
+        SetPixel(Vector{j, i}, Color8Bit{0, 0, 0, 0});
+      }*/
+
+      // From Black
+      if (tempColor.R <= transColor.R && tempColor.G <= transColor.G && tempColor.B <= transColor.B) {
         SetPixel(Vector{j, i}, Color8Bit{0, 0, 0, 0});
       }
     }

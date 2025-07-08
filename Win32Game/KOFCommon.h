@@ -5,6 +5,9 @@ enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_MouseImage = 1ULL,
   IMGTYPE_LogoImage,
   IMGTYPE_PressEnter,
+  IMGTYPE_Ready,
+  IMGTYPE_Go,
+  IMGTYPE_KO,
   IMGTYPE_BackGoundImage,
   IMGTYPE_BlackBoardImage,
   IMGTYPE_WhiteBoardImage,
@@ -27,7 +30,7 @@ enum IMAGE_MODIFIER : unsigned long long {
 
 enum PLAYER_ANIM_TYPE : unsigned long long {
   PLAYER_ANIMTYPE_None = 0ULL,
-  PLAYER_ANIMTYPE_Start,
+  PLAYER_ANIMTYPE_StartPos,
   PLAYER_ANIMTYPE_Idle,
   PLAYER_ANIMTYPE_SeatDown,
   PLAYER_ANIMTYPE_SeatUp,
@@ -143,6 +146,10 @@ enum EFFECT_MOD : unsigned long long {
 enum SOUND_TYPE : unsigned long long {
   SOUNDTYPE_None = 0ULL,
   SOUNDTYPE_BackGround,
+  SOUNDTYPE_COMMON_System01,
+  SOUNDTYPE_COMMON_Ready,
+  SOUNDTYPE_COMMON_Go,
+  SOUNDTYPE_COMMON_KO,
   SOUNDTYPE_COMMON_Jump01,
   SOUNDTYPE_COMMON_Jump02,
   SOUNDTYPE_COMMON_Land,

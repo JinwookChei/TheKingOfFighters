@@ -2,9 +2,10 @@
 #include "UIComponent.h"
 #include "UI.h"
 
-
 UIComponent::UIComponent()
     : owner_(nullptr),
+      enableTick_(true),
+      enableRender_(true),
       angle_(0.0f),
       isMouseClick_(false),
       transform_({0.0f, 0.0f}, {1.0f, 1.0f}),
@@ -25,6 +26,22 @@ void UIComponent::BeginPlay() {
 void UIComponent::Tick(unsigned long long curTick) {
 }
 
+bool UIComponent::EnableTick() const {
+  return enableTick_;
+}
+
+void UIComponent::SetEnableTick(bool isActive) {
+  enableTick_ = isActive;
+}
+
+bool UIComponent::EnableRender() const {
+  return enableRender_;
+}
+
+void UIComponent::SetEnableRender(bool enableRender) {
+  enableRender_ = enableRender;
+}
+
 void UIComponent::ClickDownEvent() {
 }
 
@@ -34,7 +51,6 @@ void UIComponent::ClickExit() {
 bool UIComponent::IsMouseClick() {
   return isMouseClick_;
 }
-
 
 void UIComponent::SetPosition(const Vector& position) {
   transform_.SetPosition(position);
@@ -70,7 +86,6 @@ void UIComponent::EnableCollision(bool isOn) {
 
 void UIComponent::PostRender() {
 }
-
 
 void UIComponent::OnRender(IRenderTexture* renderTexture) {
   if (nullptr == renderTexture) {

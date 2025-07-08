@@ -1,6 +1,6 @@
 #pragma once
 
-class BackGroundMask;
+class ScreenMask;
 
 
 class KOFLobyLevel final
@@ -23,7 +23,7 @@ private:
 
   Mouse* pMouse_;
 
-  BackGroundMask* pBackGroundMask_;
+  ScreenMask* pScreenMask_;
 
   UI* pressEnter_;
 

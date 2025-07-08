@@ -159,7 +159,8 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
-    <ClCompile Include="BackGroundMask.cpp" />
+    <ClCompile Include="Notification.cpp" />
+    <ClCompile Include="ScreenMask.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CameraTarget.cpp" />
     <ClCompile Include="Chang.cpp" />
@@ -209,7 +210,8 @@
     <ClInclude Include="..\CommonCode\Code\IApplication.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
-    <ClInclude Include="BackGroundMask.h" />
+    <ClInclude Include="Notification.h" />
+    <ClInclude Include="ScreenMask.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CameraTarget.h" />
     <ClInclude Include="Chang.h" />

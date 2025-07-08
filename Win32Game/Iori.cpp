@@ -2,7 +2,7 @@
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
-#include "BackGroundMask.h"
+#include "ScreenMask.h"
 #include "MovementComponent.h"
 #include "SoundTable.h"
 #include "AttackTable.h"
@@ -38,6 +38,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // ANIM
+  CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_IoriImage, 0, 15, ANIMINTERVAL, true, 7);
   CallCreateAnimation(PLAYER_ANIMTYPE_Idle, IMGTYPE_IoriImage, 7, 15, ANIMINTERVAL, true, 7);
   CallCreateAnimation(PLAYER_ANIMTYPE_SeatDown, IMGTYPE_IoriImage, 16, 23, ANIMINTERVAL, true, 18);
   CallCreateAnimation(PLAYER_ANIMTYPE_SeatUp, IMGTYPE_IoriImage, 24, 25, ANIMINTERVAL, false, 24);
@@ -94,7 +95,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_IoriImage, 99, 107, 20, false, 99);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_IoriImage, 347, 352, 200, false, 347);
 
-  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+  UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
 
   // SOUND
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Jump, SOUNDTYPE_COMMON_Jump01);
@@ -531,7 +532,7 @@ void Iori::Command_6() {
     return;
   }
 
-  BackGroundMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
   if (nullptr == pBackGroundMask) {
     return;
   }
@@ -701,7 +702,7 @@ void Iori::ShikiYaOtome1211() {
     return;
   }
 
-  BackGroundMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
   if (nullptr == pBackGroundMask) {
     return;
   }

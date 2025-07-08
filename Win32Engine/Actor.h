@@ -8,6 +8,7 @@ class CollisionComponent;
 enum ActorGroupEngineType {
   ActorGroupEngineType_Invalid = -1,
   ActorGroupEngineType_MOUSE,
+  ActorGroupEngineType_Screen,
   ActorGroupEngineType_UI,
   ActorGroupEngineType_Effect,
   ActorGroupEngineType_None,

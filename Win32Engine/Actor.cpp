@@ -3,7 +3,8 @@
 #include "ImageRenderer.h"
 #include "CollisionComponent.h"
 #include "Level.h"
-// #include "ConsoleRenderer.h"
+#include "UIComponent.h"
+
 
 Actor::Actor()
     : position_({0.0f, 0.0f}),
@@ -142,6 +143,7 @@ void Actor::OnTick(unsigned long long curTick) {
   while (pCur) {
     ActorComponent* pCom = (ActorComponent*)pCur->item_;
     pCur = pCur->next_;
+   
 
     if (false == pCom->IsActive()) {
       continue;

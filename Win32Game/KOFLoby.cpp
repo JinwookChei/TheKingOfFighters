@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "KOFLoby.h"
 #include "KOFLevel.h"
-#include "BackGroundMask.h"
+#include "ScreenMask.h"
 
 KOFLobyLevel::KOFLobyLevel()
     : onStartGame_(false),
       pMouse_(nullptr),
-      pBackGroundMask_(nullptr),
+      pScreenMask_(nullptr),
       pressEnter_(nullptr),
       pressEntetBlinkPeriod(0.5f),
       pressEnterBlinkTime(0.0f) {
@@ -26,9 +26,6 @@ void KOFLobyLevel::BeginPlay() {
   Vector localScale = {0.1f, 0.1f};
   pMouse_->SetRenderLocalScale(localScale);
 
-  // UI
-  pBackGroundMask_ = SpawnActor<BackGroundMask>(ActorGroupEngineType::ActorGroupEngineType_UI);
-  pBackGroundMask_->SetPosition({0.0f, 0.0f});
 
   Vector newPosition = {100.0f, -70.0f};
   newPosition = newPosition * localScale;
@@ -53,6 +50,10 @@ void KOFLobyLevel::BeginPlay() {
   IFileImage* backGroundImage = ImgManager::GetIntance()->GetImg(IMGTYPE_BlackBoardImage);
   backGround->GetImageRenderer()->SetImage(backGroundImage);
   backGround->GetImageRenderer()->SetLocalScale({3.0f, 4.0f});
+
+  // UI
+  pScreenMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_Screen);
+  pScreenMask_->SetPosition({0.0f, 0.0f});
 }
 
 void KOFLobyLevel::Tick(unsigned long long deltaTime) {
@@ -70,7 +71,7 @@ void KOFLobyLevel::Tick(unsigned long long deltaTime) {
   pressEnter_->GetImageRenderer()->SetAlpha(value);
   }
 
-  if (true == onStartGame_ && 1.0f <= pBackGroundMask_->GetCurrentAlpha()) {
+  if (true == onStartGame_ && 1.0f <= pScreenMask_->GetCurrentAlpha()) {
     GEngineCore->ChangeLevel<KOFLevel>();
   }
 }
@@ -80,7 +81,9 @@ void KOFLobyLevel::LoadKOFImages() {
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
   IFileImage* lobyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KOF_logo.png", (IMGTYPE_LogoImage | IMGMOD_NONE));
   IFileImage* pressEnterImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Press_Enter.png", (IMGTYPE_PressEnter | IMGMOD_NONE));
-
+  IFileImage* readyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\READY_alpha.bmp", (IMGTYPE_Ready | IMGMOD_NONE));
+  IFileImage* goImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GO_alpha.bmp", (IMGTYPE_Go | IMGMOD_NONE));
+  IFileImage* koImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KO_alpha.bmp", (IMGTYPE_KO | IMGMOD_NONE));
   IFileImage* backGroundImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\TownStage.png", (IMGTYPE_BackGoundImage | IMGMOD_NONE));
   backGroundImage->CalculateTransformByAuto({.emptyColor = Color8Bit(77, 111, 111, 0), .reCalculateHeight = true, .start = {0.0f, 0.0f}, .end = {779.0f, 2015.0f}});
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\BlackBoard.png", (IMGTYPE_BlackBoardImage | IMGMOD_NONE));
@@ -128,6 +131,6 @@ void KOFLobyLevel::LoadKOFImages() {
 void KOFLobyLevel::StartGame() {
   onStartGame_ = true;
   
-  pBackGroundMask_->FadeOut(IMGTYPE_BlackBoardImage, 800.0f);
+  pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 800.0f);
 
 }

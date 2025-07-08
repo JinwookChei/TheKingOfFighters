@@ -32,14 +32,19 @@ bool SoundManager::Load(const Path& path, int key) {
   return true;
 }
 
-SoundChannel SoundManager::SoundPlay(int key, bool pause) {
+SoundChannel SoundManager::SoundPlay(int key, bool loop, bool pause) {
   Sound* pSound = Get(key);
   if (nullptr == pSound) {
     return SoundChannel();
   }
 
   SoundChannel channel = pSound->Play(pause);
-  channel.LoopCount(0);
+  if (loop) {
+    channel.LoopCount(-1);
+  } else {
+    channel.LoopCount(0);
+  }
+  
 
   return channel;
 }

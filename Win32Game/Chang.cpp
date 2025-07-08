@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
-#include "BackGroundMask.h"
+#include "ScreenMask.h"
 #include "MovementComponent.h"
 #include "AttackTable.h"
 #include "SkillComponent.h"

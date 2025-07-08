@@ -14,6 +14,15 @@ class UIComponent {
   JO_API virtual void BeginPlay();
 
   JO_API virtual void Tick(unsigned long long curTick);
+  
+  JO_API bool EnableTick() const;
+
+  JO_API void SetEnableTick(bool enableTick);
+
+  JO_API bool EnableRender() const;
+
+  JO_API void SetEnableRender(bool enableRender);
+
 
   JO_API virtual void ClickDownEvent();
 
@@ -37,6 +46,7 @@ class UIComponent {
 
   JO_API void EnableCollision(bool isOn);
 
+
  protected:
   JO_API virtual void Render(struct IRenderTexture* renderTexture) = 0;
 
@@ -54,6 +64,10 @@ class UIComponent {
   LINK_ITEM* GetLinkUI();
 
   UI* owner_;
+
+  bool enableTick_;
+
+  bool enableRender_;
 
   float angle_;
 

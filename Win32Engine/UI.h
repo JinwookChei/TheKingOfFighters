@@ -79,5 +79,6 @@ class UI final
   mutable Color8Bit currentColor_;
 
   LINK_ITEM* componentHead_;
+  
   LINK_ITEM* componentTail_;
 };

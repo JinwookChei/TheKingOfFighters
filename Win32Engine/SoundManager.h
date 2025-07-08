@@ -14,7 +14,7 @@ class SoundManager final {
 
   JO_API bool Load(const Path& path, int key);
 
-  JO_API SoundChannel SoundPlay(int key, bool pause = false);
+  JO_API SoundChannel SoundPlay(int key, bool loop = false, bool pause = false);
 
  private:
   Sound* Get(int key);

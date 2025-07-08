@@ -130,7 +130,7 @@ SoundChannel Sound::Play(bool pause) {
     return SoundChannel();
   }
   if (nullptr == sound_) {
-    return SoundChannel();
+    return SoundChannel();  
   }
 
   FMOD::Channel* channel = nullptr;

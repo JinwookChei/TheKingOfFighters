@@ -177,7 +177,7 @@
     <ClCompile Include="SkillComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
-    <ClCompile Include="BackGroundMask.cpp">
+    <ClCompile Include="ScreenMask.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
     <ClCompile Include="AttackTable.cpp">
@@ -200,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="KOFLoby.cpp">
       <Filter>Contents\KOF\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Notification.cpp">
+      <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,7 +320,7 @@
     <ClInclude Include="SkillComponent.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
-    <ClInclude Include="BackGroundMask.h">
+    <ClInclude Include="ScreenMask.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
     <ClInclude Include="AttackTable.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="KOFLoby.h">
       <Filter>Contents\KOF\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Notification.h">
+      <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

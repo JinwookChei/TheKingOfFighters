@@ -182,9 +182,10 @@ void Level::OnTick(unsigned long long deltaTime) {
       if (false == pActor->EnableTick()) {
         continue;
       }
+
       pActor->OnTick(deltaTime);
-    }
   }
+    }
 }
 
 void Level::OnRender() {
