@@ -13,6 +13,16 @@ class AIiori
 
   void UpdateInput() override;
 
+
+
+private:
+  void Idle();
+
+  void MoveFront();
+
+  void MoveBack();
+
+
  private:
   AIBehaviorStateMachine* pAIBehaviorStateMachine_;
 

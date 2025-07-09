@@ -20,24 +20,11 @@ void AIBehaviorStateMachine::BeginPlay() {
 }
 
 void AIBehaviorStateMachine::Tick(unsigned long long deltaTick) {
+
 }
 
 bool AIBehaviorStateMachine::Initialize() {
   return behabiorTable_.Initialize(8, 8);
-}
-
-bool AIBehaviorStateMachine::RegistBehabior(AI_BEHABIOR_STATE behabiorTag, unsigned long long behabiorDuration) {
-  AIBehabiorInfo* pFind;
-  if (0 != behabiorTable_.Select((void**)&pFind, 1, &behabiorTag, 8)) {
-    return false;
-  }
-
-  AIBehabiorInfo* pInfo = new AIBehabiorInfo;
-  pInfo->behabiorTag_ = behabiorTag;
-  pInfo->behabiorDuration_ = behabiorDuration;
-  pInfo->searchHandle_ = behabiorTable_.Insert(pInfo, &pInfo->behabiorTag_, 8);
-
-  return nullptr != pInfo->searchHandle_;
 }
 
 bool AIBehaviorStateMachine::SearchBehabior(AI_BEHABIOR_STATE behabiorTag, AIBehabiorInfo** outBehabiorInfo) {
@@ -60,7 +47,25 @@ void AIBehaviorStateMachine::ChangeBehabiorState(AI_BEHABIOR_STATE behabiorTag) 
     return;
   }
 
+  if (nullptr != curBehabiorInfo_) {
+    curBehabiorInfo_->currentRunning_ = false;
+  }
+
+  if (false == pBehabiorInfo->isCoolTimeActive_) {
   curBehabiorInfo_ = pBehabiorInfo;
+  pBehabiorInfo->isCoolTimeActive_ = true;
+  pBehabiorInfo->coolTimer_ = 0;
+  pBehabiorInfo->currentRunning_ = true;
+  }else{
+    pBehabiorInfo = nullptr;
+    if (false == SearchBehabior(AI_BEHABIOR_Idle, &pBehabiorInfo)) {
+      return;
+    }
+    curBehabiorInfo_ = pBehabiorInfo;
+    pBehabiorInfo->isCoolTimeActive_ = true;
+    pBehabiorInfo->coolTimer_ = 0;
+    pBehabiorInfo->currentRunning_ = true;
+  }
 }
 
 void AIBehaviorStateMachine::DecideBehabior(unsigned long long deltaTick) {
@@ -69,19 +74,44 @@ void AIBehaviorStateMachine::DecideBehabior(unsigned long long deltaTick) {
   }
 
   behabiorTimer_ += deltaTick;
-  if (behabiorTimer_ >= curBehabiorInfo_->behabiorDuration_) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, AI_BEHABIOR_Max - 1);
-    AI_BEHABIOR_STATE behabiorTag = (AI_BEHABIOR_STATE)dist(gen);
 
-    AIBehabiorInfo* pBehabiorInfo = nullptr;
-    if (false == SearchBehabior(behabiorTag, &pBehabiorInfo)) {
-      return;
+  if (behabiorTimer_ >= curBehabiorInfo_->behabiorDuration_) {
+
+      std::random_device rd;
+      std::mt19937 gen(rd());
+      std::uniform_int_distribution<> dist(0, AI_BEHABIOR_Max - 1);
+      AI_BEHABIOR_STATE behabiorTag = (AI_BEHABIOR_STATE)dist(gen);
+
+      ChangeBehabiorState(behabiorTag);
+      behabiorTimer_ = 0;
+  }
+}
+
+void AIBehaviorStateMachine::UpdateCoolTime(unsigned long long deltaTick) {
+  for (HashTableIterator iter = behabiorTable_.begin(); iter != behabiorTable_.end();) {
+    AIBehabiorInfo* pInfo = (AIBehabiorInfo*)*iter;
+    ++iter;
+
+    if (false == pInfo->isCoolTimeActive_) {
+      continue;
     }
 
-    curBehabiorInfo_ = pBehabiorInfo;
-    behabiorTimer_ = 0;
+    if (true == pInfo->currentRunning_) {
+      continue;
+    }
+
+    pInfo->coolTimer_ += deltaTick;
+
+    if (pInfo->coolTimer_ >= pInfo->coolTime_) {
+      pInfo->isCoolTimeActive_ = false;
+      pInfo->coolTimer_ = 0;
+    }
+  }
+}
+
+void AIBehaviorStateMachine::UpdateBehabior() {
+  if (nullptr != curBehabiorInfo_ && nullptr != curBehabiorInfo_->behabior_) {
+    curBehabiorInfo_->behabior_();
   }
 }
 

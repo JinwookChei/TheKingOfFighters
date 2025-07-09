@@ -33,10 +33,10 @@ void AIiori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPo
     return;
   }
 
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Idle, 200);
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveFront, 500);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Idle, 100, 0, &AIiori::Idle, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveFront, 1000, 1000, &AIiori::MoveFront, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveBack, 1000, 1000, &AIiori::MoveBack, this);
   pAIBehaviorStateMachine_->ChangeBehabiorState(AI_BEHABIOR_Idle);
-  
 }
 
 void AIiori::Tick(unsigned long long deltaTick) {
@@ -57,9 +57,14 @@ void AIiori::Tick(unsigned long long deltaTick) {
 
     ResetInputBitSet();
 
+    pAIBehaviorStateMachine_->UpdateCoolTime(deltaTick);
+
     pAIBehaviorStateMachine_->DecideBehabior(deltaTick);
 
-    UpdateInput();
+    pAIBehaviorStateMachine_->UpdateBehabior();
+
+
+    //UpdateInput();
 
     // TODO
     if (pStateComponent_->ContainPlayerState({PS_Jump})) {
@@ -102,3 +107,18 @@ void AIiori::UpdateInput() {
       break;
   }
 }
+
+
+void AIiori::Idle() {
+}
+
+
+
+void AIiori::MoveFront() {
+    inputPressBitSet_.set(5);
+}
+
+void AIiori::MoveBack() {
+  inputPressBitSet_.set(7);
+}
+
