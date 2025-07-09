@@ -19,10 +19,6 @@ AIBehaviorStateMachine::~AIBehaviorStateMachine() {
 void AIBehaviorStateMachine::BeginPlay() {
 }
 
-void AIBehaviorStateMachine::Tick(unsigned long long deltaTick) {
-
-}
-
 bool AIBehaviorStateMachine::Initialize() {
   return behabiorTable_.Initialize(8, 8);
 }
@@ -66,6 +62,8 @@ void AIBehaviorStateMachine::ChangeBehabiorState(AI_BEHABIOR_STATE behabiorTag) 
     pBehabiorInfo->coolTimer_ = 0;
     pBehabiorInfo->currentRunning_ = true;
   }
+
+  behabiorTimer_ = 0;
 }
 
 void AIBehaviorStateMachine::DecideBehabior(unsigned long long deltaTick) {
@@ -83,7 +81,6 @@ void AIBehaviorStateMachine::DecideBehabior(unsigned long long deltaTick) {
       AI_BEHABIOR_STATE behabiorTag = (AI_BEHABIOR_STATE)dist(gen);
 
       ChangeBehabiorState(behabiorTag);
-      behabiorTimer_ = 0;
   }
 }
 

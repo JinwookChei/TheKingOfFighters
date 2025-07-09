@@ -11,10 +11,6 @@ class AIiori
 
   void Tick(unsigned long long deltaTick) override;
 
-  void UpdateInput() override;
-
-
-
 private:
   void Idle();
 
@@ -22,6 +18,11 @@ private:
 
   void MoveBack();
 
+  void AttackPunch();
+
+  void AttackKick();
+
+  void ActiveShikiYamiBarai108();
 
  private:
   AIBehaviorStateMachine* pAIBehaviorStateMachine_;

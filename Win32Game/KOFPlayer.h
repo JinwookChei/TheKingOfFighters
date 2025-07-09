@@ -117,7 +117,6 @@ class KOFPlayer
   void ReceiveClampedWidthOffset(float clampOffset);
 
  protected:
- public:
   std::array<int, 8> playerKeySet_;
 
   ImageRenderer* pRender_;

@@ -355,6 +355,7 @@ void Iori::CompareInputBitset() {
 
   // IDLE
   if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000")) &&
+      true == IsEqualInputBitSet(inputDownBitSet_, std::bitset<8>("00000000")) &&
       true == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
     UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
@@ -421,7 +422,8 @@ void Iori::CompareInputBitset() {
     }
 
     // A B LEFT | PRESS
-    if (true == IsEqualInputBitSet(inputDownBitSet_, std::bitset<8>("10001100"))) {
+    if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("10000000")) && 
+        true == IsEqualInputBitSet(inputDownBitSet_, std::bitset<8>("00001100"))) {
       UpdateAnimState((PLAYER_ANIMTYPE_RollingBack));
       pMovementComponent_->Dash(!FacingRight(), 300.0f, 400.0f);
       pGhostEffect_->On();

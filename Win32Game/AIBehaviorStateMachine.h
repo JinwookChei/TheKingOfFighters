@@ -6,6 +6,9 @@ enum AI_BEHABIOR_STATE : unsigned long long {
   AI_BEHABIOR_Idle = 0ULL,
   AI_BEHABIOR_MoveFront,
   AI_BEHABIOR_MoveBack,
+  AI_BEHABIOR_AttackPunch,
+  AI_BEHABIOR_AttackKick,
+  AI_BEHABIOR_Skill_01,
   AI_BEHABIOR_Max
 };
 
@@ -35,8 +38,6 @@ class AIBehaviorStateMachine
   ~AIBehaviorStateMachine();
 
   void BeginPlay() override;
-
-  void Tick(unsigned long long deltaTick) override;
 
   bool Initialize(); 
 
