@@ -67,6 +67,9 @@
     <Filter Include="Contents\KOF\Actor\Projectile\Iori">
       <UniqueIdentifier>{4f933bb1-baf3-4775-999a-712e14cbcf2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameInstance">
+      <UniqueIdentifier>{ead86b14-5935-4b08-ae2f-386da4a2b385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Notification.cpp">
       <Filter>Contents\KOF\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance.cpp">
+      <Filter>GameInstance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="Notification.h">
       <Filter>Contents\KOF\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance.h">
+      <Filter>GameInstance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

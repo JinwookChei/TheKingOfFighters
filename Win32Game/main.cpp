@@ -8,6 +8,7 @@
 
 typedef void (*DLL_INSTANCE_PRINT)(void**, HINSTANCE, const wchar_t*);
 
+GameInstance* GGameInstance = nullptr;
 EngineCore* GEngineCore = nullptr;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
@@ -57,12 +58,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
   application->Release();
   application = nullptr;
 
+  GGameInstance = new GameInstance();
+  if (false == GGameInstance->Initialize()) {
+    __debugbreak();
+    return -1;
+  }
+
   GEngineCore->ChangeLevel<KOFLobyLevel>();
 
   GEngineCore->EngineLoop();
 
   delete GEngineCore;
   GEngineCore = nullptr;
+
+  delete GGameInstance;
+  GGameInstance = nullptr;
 
   FreeLibrary(dynamicLibAModule);
   dynamicLibAModule = nullptr;

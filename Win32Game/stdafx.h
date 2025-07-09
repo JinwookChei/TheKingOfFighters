@@ -39,7 +39,10 @@
 #include <Win32Engine/SoundManager.h>
 #include <Win32Engine/TimeManager.h>
 
+#include "GameInstance.h"
 #include "KOFCommon.h"
 #include "Types.h"
 
 extern EngineCore* GEngineCore;
+
+extern GameInstance* GGameInstance;

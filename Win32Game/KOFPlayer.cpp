@@ -327,6 +327,19 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
         break;
     }
   }
+
+  if (0 > pHealthComponent_->Health()) {
+    Level* pLevel = GetLevel();
+    if (nullptr == pLevel) {
+      return;
+    }
+    KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+    if (nullptr == pKOFLevel) {
+        return;
+    }
+
+    pKOFLevel->InitEndGame();
+  }
 }
 
 void KOFPlayer::UpdateInput() {

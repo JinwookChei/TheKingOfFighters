@@ -13,7 +13,7 @@ class KOFLobyLevel final
 
   void Tick(unsigned long long deltaTime) override;
 
-  void LoadKOFImages();
+  //void LoadKOFImages();
 
   void StartGame();
 

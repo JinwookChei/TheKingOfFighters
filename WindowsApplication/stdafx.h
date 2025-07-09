@@ -29,7 +29,6 @@
 #include <Math/Transform.h>
 #include <Math/LinkedList.h>
 #include <Math/Directory.h>
-
 #include <Code/IApplication.h>
 
 #include "Structure.h"

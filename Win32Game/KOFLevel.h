@@ -52,6 +52,8 @@ class KOFLevel final
 
   void InProgressGame(unsigned long long deltaTick);
 
+  void InitEndGame();
+
   void EndGame(unsigned long long deltaTick);
 
  private:

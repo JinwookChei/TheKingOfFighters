@@ -10,7 +10,7 @@
 #include "Portrait.h"
 #include "Health.h"
 #include "Notification.h"
-#include <thread>
+#include "KOFLoby.h"
 
 KOFLevel::KOFLevel()
     : /*channel_(nullptr),*/
@@ -291,6 +291,14 @@ void KOFLevel::BeginPlay() {
   InitReadyGame();
 }
 
+void KOFLevel::SwapPosition() {
+  const Vector& player1Postion = pPlayer1_->GetPosition();
+  const Vector& player2Postion = pPlayer2_->GetPosition();
+
+  pPlayer1_->SetPlayerOnLeft(player1Postion.X < player2Postion.X);
+  pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
+}
+
 void KOFLevel::Tick(unsigned long long deltaTick) {
   CalculateFreeze(deltaTick);
 
@@ -304,15 +312,6 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     if (InputManager::Instance()->IsDown(VK_F2)) {
       SetCollisionRender(!GetCollisionRender());
     }
-
-    if (InputManager::Instance()->IsDown(VK_F3)) {
-      //backGroundSoundChannel_.Pause();
-      HUD_->SetActive(true);
-    }
-    if (InputManager::Instance()->IsDown(VK_F4)) {
-      backGroundSoundChannel_.Play();
-
-    }
   }
 
   switch (gameStatus_) {
@@ -323,6 +322,7 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
       InProgressGame(deltaTick);
       break;
     case GAMESTATUS_GameEnd:
+      EndGame(deltaTick);
       break;
     default:
       break;
@@ -429,6 +429,7 @@ void KOFLevel::ReadyGame(unsigned long long deltaTick) {
 }
 
 void KOFLevel::InitInProgressGame() {
+  acuumDeltaTick_ = 0;
   backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
   HUD_->SetActive(true);
   pPlayer1_->SetControlLocked(false);
@@ -517,13 +518,27 @@ void KOFLevel::InProgressGame(unsigned long long deltaTick) {
   }
 }
 
-void KOFLevel::SwapPosition() {
-  const Vector& player1Postion = pPlayer1_->GetPosition();
-  const Vector& player2Postion = pPlayer2_->GetPosition();
+void KOFLevel::InitEndGame() {
+  acuumDeltaTick_ = 0;
+  koNotification_->SetEnableRender(true);
+  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_KO);
 
-  pPlayer1_->SetPlayerOnLeft(player1Postion.X < player2Postion.X);
-  pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
+  pPlayer1_->SetControlLocked(true);
+  pPlayer2_->SetControlLocked(true);
+
+  gameStatus_ = GAMESTATUS_GameEnd;
+
+  
 }
 
 void KOFLevel::EndGame(unsigned long long deltaTick) {
+  acuumDeltaTick_ += deltaTick;
+
+  if (400 > acuumDeltaTick_) {
+    pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 500.0f);
+  }
+
+  if (1000 > acuumDeltaTick_) {
+    GEngineCore->ChangeLevel<KOFLobyLevel>();
+  }
 }
