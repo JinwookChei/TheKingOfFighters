@@ -157,6 +157,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIBehaviorStateMachine.cpp" />
+    <ClCompile Include="AIiori.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="GameInstance.cpp" />
@@ -209,6 +211,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CommonCode\Code\IApplication.h" />
+    <ClInclude Include="AIBehaviorStateMachine.h" />
+    <ClInclude Include="AIiori.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="GameInstance.h" />

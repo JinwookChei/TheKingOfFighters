@@ -58,7 +58,7 @@ class KOFPlayer
 
   const HealthComponent* GetHealthComponent() const;
 
-  void UpdateInput();
+  virtual void UpdateInput();
 
   void UpdateCommand();
 
@@ -117,6 +117,7 @@ class KOFPlayer
   void ReceiveClampedWidthOffset(float clampOffset);
 
  protected:
+ public:
   std::array<int, 8> playerKeySet_;
 
   ImageRenderer* pRender_;

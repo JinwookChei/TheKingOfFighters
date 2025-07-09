@@ -70,6 +70,9 @@
     <Filter Include="GameInstance">
       <UniqueIdentifier>{ead86b14-5935-4b08-ae2f-386da4a2b385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Actor\AI">
+      <UniqueIdentifier>{1d9e99ac-6605-447c-92a7-b4af6cf1706a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -209,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="GameInstance.cpp">
       <Filter>GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="AIiori.cpp">
+      <Filter>Contents\KOF\Actor\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIBehaviorStateMachine.cpp">
+      <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="GameInstance.h">
       <Filter>GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="AIiori.h">
+      <Filter>Contents\KOF\Actor\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIBehaviorStateMachine.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

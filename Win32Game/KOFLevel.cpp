@@ -4,6 +4,7 @@
 #include "KOFPlayer.h"
 #include "Iori.h"
 #include "Chang.h"
+#include "AIiori.h"
 #include "BackGround.h"
 #include "ScreenMask.h"
 #include "HealthBar.h"
@@ -76,11 +77,15 @@ void KOFLevel::BeginPlay() {
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 250.0f);
   pPlayer1_->SetPlayerOnLeft(true);
-  pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  /*pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
-  pPlayer2_->SetPlayerOnLeft(false);
+  pPlayer2_->SetPlayerOnLeft(false);*/
   /*pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);*/
+  pPlayer2_ = SpawnActor<AIiori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  pPlayer2_->SetPlayerOnLeft(false);
+  
 
 
   pPlayer1_->Initialize(true, player1SpawnPostion_, true, pPlayer2_);
@@ -519,26 +524,24 @@ void KOFLevel::InProgressGame(unsigned long long deltaTick) {
 }
 
 void KOFLevel::InitEndGame() {
-  acuumDeltaTick_ = 0;
-  koNotification_->SetEnableRender(true);
-  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_KO);
+  //acuumDeltaTick_ = 0;
+  //koNotification_->SetEnableRender(true);
+  //backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_KO);
 
-  pPlayer1_->SetControlLocked(true);
-  pPlayer2_->SetControlLocked(true);
+  //pPlayer1_->SetControlLocked(true);
+  //pPlayer2_->SetControlLocked(true);
 
-  gameStatus_ = GAMESTATUS_GameEnd;
-
-  
+  //gameStatus_ = GAMESTATUS_GameEnd;
 }
 
 void KOFLevel::EndGame(unsigned long long deltaTick) {
-  acuumDeltaTick_ += deltaTick;
+  //acuumDeltaTick_ += deltaTick;
 
-  if (400 > acuumDeltaTick_) {
-    pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 500.0f);
-  }
+  //if (400 > acuumDeltaTick_) {
+  //  pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 500.0f);
+  //}
 
-  if (1000 > acuumDeltaTick_) {
-    GEngineCore->ChangeLevel<KOFLobyLevel>();
-  }
+  //if (1000 > acuumDeltaTick_) {
+  //  GEngineCore->ChangeLevel<KOFLobyLevel>();
+  //}
 }
