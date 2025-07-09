@@ -169,6 +169,8 @@ class KOFPlayer
 
   std::bitset<8> inputPressBitSet_;
 
+  std::bitset<8> inputDownBitSet_;
+
   std::bitset<8> inputUpBitSet_;
 
   KOFPlayer* pOpponentPlayer_;

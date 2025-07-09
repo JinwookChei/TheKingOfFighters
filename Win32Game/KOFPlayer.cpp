@@ -14,7 +14,7 @@
 
 KOFPlayer::KOFPlayer()
     : playerKeySet_(),
-    pRender_(nullptr),
+      pRender_(nullptr),
       pMovementComponent_(nullptr),
       pSoundTable_(nullptr),
       pAttackTable_(nullptr),
@@ -69,7 +69,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     // TODO
     if (pStateComponent_->ContainPlayerState({PS_Jump})) {
       if (false == pMovementComponent_->EqualMovementState({MOVSTATE_Jump})) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
+        UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
       }
     }
     // END
@@ -335,7 +335,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
     }
     KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
     if (nullptr == pKOFLevel) {
-        return;
+      return;
     }
 
     pKOFLevel->InitEndGame();
@@ -356,6 +356,7 @@ void KOFPlayer::UpdateInput() {
   bool anyKeyActive = false;
   for (int key : playerKeySet_) {
     if (InputManager::Instance()->IsPress(key) ||
+        InputManager::Instance()->IsDown(key) ||
         InputManager::Instance()->IsUp(key)) {
       anyKeyActive = true;
       break;
@@ -366,12 +367,19 @@ void KOFPlayer::UpdateInput() {
     return;
   }
 
-  // LEFT PRESS
+  // LEFT
   if (InputManager::Instance()->IsPress(playerKeySet_[7])) {
     if (PlayerOnLeft()) {
       inputPressBitSet_.set(7);
     } else {
       inputPressBitSet_.set(5);
+    }
+  }
+  if (InputManager::Instance()->IsDown(playerKeySet_[7])) {
+    if (PlayerOnLeft()) {
+      inputDownBitSet_.set(7);
+    } else {
+      inputDownBitSet_.set(5);
     }
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[7])) {
@@ -385,6 +393,9 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsPress(playerKeySet_[6])) {
     inputPressBitSet_.set(6);
   }
+  if (InputManager::Instance()->IsDown(playerKeySet_[6])) {
+    inputDownBitSet_.set(6);
+  }
   if (InputManager::Instance()->IsUp(playerKeySet_[6])) {
     inputUpBitSet_.set(6);
   }
@@ -394,6 +405,13 @@ void KOFPlayer::UpdateInput() {
       inputPressBitSet_.set(5);
     } else {
       inputPressBitSet_.set(7);
+    }
+  }
+  if (InputManager::Instance()->IsDown(playerKeySet_[5])) {
+    if (PlayerOnLeft()) {
+      inputDownBitSet_.set(5);
+    } else {
+      inputDownBitSet_.set(7);
     }
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[5])) {
@@ -407,12 +425,18 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsPress(playerKeySet_[4])) {
     inputPressBitSet_.set(4);
   }
+  if (InputManager::Instance()->IsDown(playerKeySet_[4])) {
+    inputDownBitSet_.set(4);
+  }
   if (InputManager::Instance()->IsUp(playerKeySet_[4])) {
     inputUpBitSet_.set(4);
   }
   // A
   if (InputManager::Instance()->IsPress(playerKeySet_[3])) {
     inputPressBitSet_.set(3);
+  }
+  if (InputManager::Instance()->IsDown(playerKeySet_[3])) {
+    inputDownBitSet_.set(3);
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[3])) {
     inputUpBitSet_.set(3);
@@ -421,6 +445,9 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsPress(playerKeySet_[2])) {
     inputPressBitSet_.set(2);
   }
+  if (InputManager::Instance()->IsDown(playerKeySet_[2])) {
+    inputDownBitSet_.set(2);
+  }
   if (InputManager::Instance()->IsUp(playerKeySet_[2])) {
     inputUpBitSet_.set(2);
   }
@@ -428,12 +455,18 @@ void KOFPlayer::UpdateInput() {
   if (InputManager::Instance()->IsPress(playerKeySet_[1])) {
     inputPressBitSet_.set(1);
   }
+  if (InputManager::Instance()->IsDown(playerKeySet_[1])) {
+    inputDownBitSet_.set(1);
+  }
   if (InputManager::Instance()->IsUp(playerKeySet_[1])) {
     inputUpBitSet_.set(1);
   }
   // D
   if (InputManager::Instance()->IsPress(playerKeySet_[0])) {
     inputPressBitSet_.set(0);
+  }
+  if (InputManager::Instance()->IsDown(playerKeySet_[0])) {
+    inputDownBitSet_.set(0);
   }
   if (InputManager::Instance()->IsUp(playerKeySet_[0])) {
     inputUpBitSet_.set(0);
@@ -764,6 +797,7 @@ void KOFPlayer::CompareInputBitset() {
 
 void KOFPlayer::ResetInputBitSet() {
   inputPressBitSet_.reset();
+  inputDownBitSet_.reset();
   inputUpBitSet_.reset();
 }
 
