@@ -48,3 +48,14 @@ IFileImage* ImgManager::GetImg(unsigned long long key) {
   }
   return findImg;
 }
+
+//IFileImage* ImgManager::GetCopyImg(unsigned long long key) {
+//  IFileImage* findImg = nullptr;
+//  if (0 == imgTable_.Select((void**)&findImg, 1, &key, 8)) {
+//    return nullptr;
+//  }
+//
+//  IFileImage* newImg = GGraphicDevice->LoadImg(path);
+//
+//  return findImg;
+//}

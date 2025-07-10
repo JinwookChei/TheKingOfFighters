@@ -14,6 +14,8 @@ class ImgManager final {
 
   JO_API IFileImage* GetImg(unsigned long long key);
 
+  //JO_API IFileImage* GetCopyImg(unsigned long long key);
+
  private:
   HashTable imgTable_;
 };

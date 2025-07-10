@@ -94,6 +94,8 @@ struct IRenderTexture : public IImage {
 
   virtual bool __stdcall Transparent(IImage* srcImg, unsigned int index, const Vector& scale, const Color8Bit& colorTransparent) = 0;
 
+  virtual bool __stdcall TransparentWithTransform(IImage* srcImg, const Transform& renderTransform, const Transform& imageTransform, const Color8Bit& colorTransparent) = 0;
+
   virtual bool __stdcall Stretch(IImage* srcImg, const Transform& transform) = 0;
 
   virtual void __stdcall DrawRectagle(const Vector& scale, const Color8Bit& color, float Linethickness = 1.0f) = 0;

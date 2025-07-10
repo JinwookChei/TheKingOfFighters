@@ -30,7 +30,13 @@ class Health final
 
   Transform originComponentTransform_;
 
-  Transform originImageTransform_;
+  Transform originRenderTransform_;
+
+  Transform componentTransform_;
+
+  Transform renderTransform_;
 
   float healthPercentage_;
 };
+
+

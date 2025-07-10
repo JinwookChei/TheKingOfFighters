@@ -3,7 +3,6 @@
 #include "KOFPlayer.h"
 #include "HealthComponent.h"
 
-
 Health::Health()
     : pPlayer_(nullptr),
       pImage_(nullptr),
@@ -11,7 +10,9 @@ Health::Health()
       imageIndex_(0),
       colorTransparent_({0, 0, 0, 0}),
       originComponentTransform_(),
-      originImageTransform_(),
+      originRenderTransform_(),
+      componentTransform_(),
+      renderTransform_(),
       healthPercentage_(0.0f) {
 }
 
@@ -39,7 +40,9 @@ bool Health::Initialize(KOFPlayer* bindPlayer, unsigned long long imageNum, unsi
   imageIndex_ = imageIndex;
   colorTransparent_ = colorTransparent;
   originComponentTransform_ = GetTransform();
-  originImageTransform_ = pImage_->RenderTransform(imageIndex);
+  originRenderTransform_ = pImage_->RenderTransform(imageIndex);
+  componentTransform_ = GetTransform();
+  renderTransform_ = pImage_->RenderTransform(imageIndex);
 
   return true;
 }
@@ -49,63 +52,25 @@ void Health::Tick(unsigned long long curTick) {
     return;
   }
 
-  // Calculate Health Start
+  const HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
+  float maxHealth = pHealthComponent->MaxHealth();
+  float curHealth = pHealthComponent->Health();
+
+  healthPercentage_ = curHealth / maxHealth;
+
+  float healthScaleOffset = originComponentTransform_.GetScale().X;
+  healthScaleOffset = (healthScaleOffset * (1.0f - healthPercentage_)) * 0.5f;
+
   if (false == isFlip_) {
-    const HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
-    float maxHealth = pHealthComponent->MaxHealth();
-    float curHealth = pHealthComponent->Health();
-
-    healthPercentage_ = curHealth / maxHealth;
-
-    if (nullptr == pImage_ || true == pImage_->IsRenderTexture()) {
-      return;
-    }
-
-    IFileImage* pFileImage = (IFileImage*)pImage_;
-    Transform newImageTransform = originImageTransform_;
-
-    Vector renderScale = newImageTransform.GetScale();
-    renderScale = {renderScale.X * healthPercentage_, renderScale.Y};
-    newImageTransform.SetScale(renderScale);
-
-    pFileImage->SetTransform(newImageTransform, imageIndex_);
-
-    Vector positionOffset = {(originImageTransform_.GetScale().X - renderScale.X) * 0.5f, 0.0f};
-    Vector componentPosition = {originComponentTransform_.GetPosition() - positionOffset};
-    SetPosition(componentPosition);
-
+    componentTransform_.SetScale({originComponentTransform_.GetScale().X * healthPercentage_, originComponentTransform_.GetScale().Y});
+    SetPosition({originComponentTransform_.GetPosition().X - healthScaleOffset, originComponentTransform_.GetPosition().Y});
+    renderTransform_.SetScale(componentTransform_.GetScale());
   } else {
-    const HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
-    float maxHealth = pHealthComponent->MaxHealth();
-    float curHealth = pHealthComponent->Health();
-
-    healthPercentage_ = curHealth / maxHealth;
-
-    if (nullptr == pImage_ || true == pImage_->IsRenderTexture()) {
-      return;
-    }
-
-    IFileImage* pFileImage = (IFileImage*)pImage_;
-    Transform newImageTransform = originImageTransform_;
-
-    Vector renderScale = newImageTransform.GetScale();
-    renderScale = {renderScale.X * healthPercentage_, renderScale.Y};
-    newImageTransform.SetScale(renderScale);
-
-    Vector renderPosition = originImageTransform_.GetPosition();
-    Vector renderImageOffset = {(originImageTransform_.GetScale().X - renderScale.X), 0.0f};
-    renderPosition = renderPosition + renderImageOffset;
-    newImageTransform.SetPosition(renderPosition);
-
-    pFileImage->SetTransform(newImageTransform, imageIndex_);
-
-
-    Vector positionOffset = {(originImageTransform_.GetScale().X - renderScale.X) * 0.5f, 0.0f};
-    Vector componentPosition = {originComponentTransform_.GetPosition() + positionOffset};
-    
-    SetPosition(componentPosition);
+    componentTransform_.SetScale({originComponentTransform_.GetScale().X * healthPercentage_, originComponentTransform_.GetScale().Y});
+    SetPosition({originComponentTransform_.GetPosition().X + healthScaleOffset, originComponentTransform_.GetPosition().Y});
+    renderTransform_.SetScale(componentTransform_.GetScale());
+    renderTransform_.SetPosition({originRenderTransform_.GetPosition().X + healthScaleOffset, originRenderTransform_.GetPosition().Y});
   }
-  // Calculate Health End
 }
 
 void Health::Render(IRenderTexture* renderTexture) {
@@ -118,6 +83,5 @@ void Health::Render(IRenderTexture* renderTexture) {
     return;
   }
 
-  const Vector& imageScale = pImage_->GetScale(imageIndex_);
-  renderTexture->Transparent(pImage_, imageIndex_, imageScale, colorTransparent_);
+  renderTexture->TransparentWithTransform(pImage_, componentTransform_, renderTransform_, colorTransparent_);
 }

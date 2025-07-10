@@ -225,6 +225,35 @@ bool Win32RenderTexture::Transparent(IImage* srcImg, unsigned int index, const V
   return TRUE == isSuccess;
 }
 
+bool __stdcall Win32RenderTexture::TransparentWithTransform(IImage* srcImg, const Transform& renderTransform, const Transform& imageTransform, const Color8Bit& colorTransparent) {
+  HDC srcHDC = (HDC)srcImg->GetHandle();
+  
+  int RenderStartX = std::lround(0 - renderTransform.GetScale().HalfX());
+  int RenderStartY = std::lround(0 - renderTransform.GetScale().HalfY());
+  int RenderWidth = renderTransform.GetScale().IntergerX();
+  int RenderHeight = renderTransform.GetScale().IntergerY();
+
+  int ImageLeft = imageTransform.GetPosition().IntergerX();
+  int ImageTop = imageTransform.GetPosition().IntergerY();
+  int ImageRight = imageTransform.GetScale().IntergerX();
+  int ImageBottom = imageTransform.GetScale().IntergerY();
+
+  BOOL isSuccess = ::TransparentBlt(
+      imageDC_,
+      RenderStartX,
+      RenderStartY,
+      RenderWidth,
+      RenderHeight,
+      srcHDC,
+      ImageLeft,
+      ImageTop,
+      ImageRight,
+      ImageBottom,
+      colorTransparent.Color);
+
+  return TRUE == isSuccess;
+}
+
 bool Win32RenderTexture::Stretch(IImage* srcImg, const Transform& transform) {
   HDC srcHDC = (HDC)srcImg->GetHandle();
   Vector srcScale = srcImg->GetScale();

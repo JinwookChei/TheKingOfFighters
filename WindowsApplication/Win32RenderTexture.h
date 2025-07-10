@@ -37,6 +37,8 @@ class Win32RenderTexture final
 
   bool __stdcall Transparent(IImage* srcImg, unsigned int index, const Vector& scale, const Color8Bit& colorTransparent) override;
 
+  bool __stdcall TransparentWithTransform(IImage* srcImg, const Transform& renderTransform, const Transform& imageTransform, const Color8Bit& colorTransparent) override;
+
   bool __stdcall Stretch(IImage* srcImg, const Transform& transform) override;
 
   void __stdcall DrawRectagle(const Vector& scale, const Color8Bit& color, float Linethickness = 1.0f) override;
