@@ -563,7 +563,8 @@ void Iori::GaishikiMutan() {
 
   if (IORI_ANIMTYPE_GaishikiMutan_1 == pStateComponent_->GetCurAnimState()) {
     if (100 <= curImageIndex && 104 >= curImageIndex) {
-      if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00001000"))) {
+      if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00001000")) || 
+          true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000010"))) {
         pSkillComponent_->SetMiscTemp(true);
       }
     }

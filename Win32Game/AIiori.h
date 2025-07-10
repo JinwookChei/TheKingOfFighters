@@ -22,7 +22,15 @@ private:
 
   void AttackKick();
 
+  void AttackJumpPunch();
+
+  void AttackJumpKick();
+
+  void ActiveGaishikiMutan();
+
   void ActiveShikiYamiBarai108();
+
+  void ActiveHyakushikiOniyaki();
 
  private:
   AIBehaviorStateMachine* pAIBehaviorStateMachine_;

@@ -18,10 +18,12 @@
 #include <random>
 #include "AIBehaviorStateMachine.h"
 
-
 #define PUNCHRANGE 200.0f
 #define KICKRANGE 300.0f
 #define BACKSTEPRANGE 400.0f
+#define HYAKUSHIKIONIYAKIRANGE 400.0f
+#define RUNRANGE 800.0f
+#define JUMPRANGE 400.0f
 
 AIiori::AIiori()
     : pAIBehaviorStateMachine_(nullptr) {
@@ -38,12 +40,16 @@ void AIiori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPo
     return;
   }
 
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Idle, 100, 0, &AIiori::Idle, this);
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveFront, 1000, 1000, &AIiori::MoveFront, this);
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveBack, 1000, 1000, &AIiori::MoveBack, this);
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_AttackPunch, 3000, 1000, &AIiori::AttackPunch, this);
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_AttackKick, 3000, 1000, &AIiori::AttackKick, this);
-  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Skill_01, 1000, 1000, &AIiori::ActiveShikiYamiBarai108, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Idle, 20, 0, &AIiori::Idle, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveFront, 200, 8000, &AIiori::MoveFront, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_MoveBack, 200, 8000, &AIiori::MoveBack, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_AttackPunch, 3000, 5000, &AIiori::AttackPunch, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_AttackKick, 3000, 5000, &AIiori::AttackKick, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_AttackJumpPunch, 1000, 5000, &AIiori::AttackJumpPunch, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_AttackJumpKick, 1000, 5000, &AIiori::AttackJumpKick, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Skill_01, 1000, 5000, &AIiori::ActiveShikiYamiBarai108, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Skill_02, 1000, 5000, &AIiori::ActiveHyakushikiOniyaki, this);
+  pAIBehaviorStateMachine_->RegistBehabior(AI_BEHABIOR_Skill_03, 4000, 5000, &AIiori::ActiveGaishikiMutan, this);
   pAIBehaviorStateMachine_->ChangeBehabiorState(AI_BEHABIOR_Idle);
 }
 
@@ -128,7 +134,7 @@ void AIiori::AttackPunch() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, 1);
-    int result = dist(gen) == 0 ? 0 : 2;
+    int result = dist(gen) == 0 ? 1 : 3;
     inputDownBitSet_.set(result);
   } else {
     inputPressBitSet_.set(5);
@@ -145,23 +151,100 @@ void AIiori::AttackKick() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, 1);
-    int result = dist(gen) == 0 ? 1 : 3;
+    int result = dist(gen) == 0 ? 0 : 2;
     inputDownBitSet_.set(result);
   } else {
     inputPressBitSet_.set(5);
   }
 }
 
-void AIiori::ActiveShikiYamiBarai108() {
+void AIiori::AttackJumpPunch() {
+  float distanceX = std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X);
+  if (distanceX < JUMPRANGE) {
+    inputPressBitSet_.set(5);
+    inputPressBitSet_.set(4);
+  }
 
+  if (distanceX < PUNCHRANGE) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, 1);
+    int result = dist(gen) == 0 ? 1 : 3;
+    inputDownBitSet_.set(result);
+  } else {
+    inputPressBitSet_.set(5);
+  }
+
+  if (PLAYER_ANIMTYPE_HeavyPunch_Jump == pStateComponent_->GetCurAnimState() ||
+      PLAYER_ANIMTYPE_LightPunch_Jump == pStateComponent_->GetCurAnimState()) {
+    pAIBehaviorStateMachine_->ChangeBehabiorState(AI_BEHABIOR_Idle);
+  }
+}
+
+void AIiori::AttackJumpKick() {
+  float distanceX = std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X);
+  if (distanceX < JUMPRANGE) {
+    inputPressBitSet_.set(5);
+    inputPressBitSet_.set(4);
+  }
+
+  if (distanceX < PUNCHRANGE) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, 1);
+    int result = dist(gen) == 0 ? 0 : 2;
+    inputDownBitSet_.set(result);
+  } else {
+    inputPressBitSet_.set(5);
+  }
+
+  if (PLAYER_ANIMTYPE_HeavyKick_Jump == pStateComponent_->GetCurAnimState() ||
+      PLAYER_ANIMTYPE_LightKick_Jump == pStateComponent_->GetCurAnimState()) {
+    pAIBehaviorStateMachine_->ChangeBehabiorState(AI_BEHABIOR_Idle);
+  }
+}
+
+void AIiori::ActiveGaishikiMutan() {
+  float distanceX = std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X);
+  if (distanceX > RUNRANGE && distanceX > PUNCHRANGE + 200.0f) {
+    pCommandComponent_->JumpNode(CK_Right);
+    pCommandComponent_->JumpNode(CK_Right);
+  }
+
+  if (distanceX < PUNCHRANGE) {
+    inputDownBitSet_.set(1);
+    inputPressBitSet_.set(1);
+  }
+  inputPressBitSet_.set(5);
+
+  if (pStateComponent_->GetCurAnimState() == IORI_ANIMTYPE_GaishikiMutan_2) {
+    pAIBehaviorStateMachine_->ChangeBehabiorState(AI_BEHABIOR_Idle);
+  }
+}
+
+void AIiori::ActiveShikiYamiBarai108() {
   float distanceX = std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X);
   if (distanceX < BACKSTEPRANGE) {
+    inputPressBitSet_.set(5);
+  }
+
+  pCommandComponent_->JumpNode(CK_Left);
+  pCommandComponent_->JumpNode(CK_Down);
+  pCommandComponent_->JumpNode(CK_Right);
+  pCommandComponent_->JumpNode(CK_A);
+
+  pAIBehaviorStateMachine_->ChangeBehabiorState(AI_BEHABIOR_Idle);
+}
+
+void AIiori::ActiveHyakushikiOniyaki() {
+  float distanceX = std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X);
+  if (distanceX >= HYAKUSHIKIONIYAKIRANGE) {
     pCommandComponent_->JumpNode(CK_Left);
     pCommandComponent_->JumpNode(CK_Left);
     return;
   }
 
-  pCommandComponent_->JumpNode(CK_Left);
+  pCommandComponent_->JumpNode(CK_Right);
   pCommandComponent_->JumpNode(CK_Down);
   pCommandComponent_->JumpNode(CK_Right);
   pCommandComponent_->JumpNode(CK_A);

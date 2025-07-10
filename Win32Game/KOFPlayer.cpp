@@ -269,7 +269,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
   } else if (pMovementComponent_->ContainMovementState({MOVSTATE_Jump})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
-    pMovementComponent_->KnockBack(FacingRight(), {35.0f, 50.0f});
+    pMovementComponent_->KnockBack(PlayerOnLeft(), {35.0f, 50.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump, ANIMMOD_NONE, true);
   } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
