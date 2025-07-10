@@ -107,6 +107,22 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
 
+  // UI
+  pUI_ = CreateImageRenderFIFO();
+  pUI_->SetImageRenderType(ImageRenderType::Center);
+  pUI_->SetLocalScale({0.15f, 0.15f});
+  pUI_->SetPosition({0.0f, -300.0f});
+  IFileImage* youUiPlayer = nullptr;
+  if (isPlayer1) {
+    youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_YouPlayer1);
+  }
+  else {
+    youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_YouPlayer2);
+  }
+  pUI_->SetImage(youUiPlayer);
+  pUI_->SetAlpha(1.0f);
+
+
   // MOVEMENT
   pMovementComponent_ = CreateComponent<MovementComponent>();
   if (false == pMovementComponent_->Initialize(position)) {
@@ -722,7 +738,8 @@ bool KOFPlayer::CheckPushCollision() {
     float pushTriggerDistance = pMovementComponent_->GetPushTriggerDistance();
     if (absPlayerDistance <= pushTriggerDistance) {
       pMovementComponent_->ApplyPushWeight(0.3f);
-      pTargetPlayer->SetPosition({(myPosition.X + pushTriggerDistance * FacingRightFlag()), TargetPostion.Y});
+      
+      pTargetPlayer->SetPosition({(myPosition.X + pushTriggerDistance * PlayerOnLeftFlag()), TargetPostion.Y});
     }
   }
 
@@ -766,6 +783,14 @@ void KOFPlayer::SetPlayerOnLeft(bool isPlayerOnLeft) {
 
 bool KOFPlayer::PlayerOnLeft() const {
   return isPlayerOnLeft_;
+}
+
+int KOFPlayer::PlayerOnLeftFlag() const {
+  if (isPlayerOnLeft_) {
+    return 1;
+  }
+
+  return -1;
 }
 
 int KOFPlayer::FacingRightFlag() const {

@@ -86,6 +86,8 @@ class KOFPlayer
 
   bool PlayerOnLeft() const;
 
+  int PlayerOnLeftFlag() const;
+
   int FacingRightFlag() const;
 
   bool FacingRight() const;
@@ -120,6 +122,8 @@ class KOFPlayer
   std::array<int, 8> playerKeySet_;
 
   ImageRenderer* pRender_;
+
+  ImageRenderer* pUI_;
 
   SoundChannel soundChannel_;
 

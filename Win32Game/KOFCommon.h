@@ -20,6 +20,8 @@ enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_HitEffectImage,
   IMGTYPE_GuardEffectImage01,
   IMGTYPE_CastingEffectImage,
+  IMGTYPE_YouPlayer1,
+  IMGTYPE_YouPlayer2,
 };
 
 enum IMAGE_MODIFIER : unsigned long long {

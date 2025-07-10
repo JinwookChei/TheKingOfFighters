@@ -61,6 +61,11 @@ void GameInstance::LoadKOFImages() {
   guardEffectImage01Flipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\GuardEffect01.csv");
   IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\CastingEffectImage_Box.png", (IMGTYPE_CastingEffectImage | IMGMOD_NONE));
   castingEffectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\CastingEffect.csv");
+  IFileImage* youPlayer1 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\YOU_Player1.png", (IMGTYPE_YouPlayer1 | IMGMOD_NONE));
+  IFileImage* youPlayer2 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\YOU_Player2.png", (IMGTYPE_YouPlayer2 | IMGMOD_NONE));
+  
+
+
 
   // TODO :
   // 반전된 Health는 logic으로, 원본 이미지는 여러 포인터가 가르킥로있고, 이미지를 어떻게 그릴지만 각자 알아서 그림.
