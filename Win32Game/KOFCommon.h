@@ -17,6 +17,8 @@ enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_ChangImage_BlueFlame,
   IMGTYPE_HealthBarImage,
   IMGTYPE_HealthImage,
+  IMGTYPE_MPBarImage,
+  IMGTYPE_MPImage,
   IMGTYPE_HitEffectImage,
   IMGTYPE_GuardEffectImage01,
   IMGTYPE_CastingEffectImage,

@@ -1,0 +1,2 @@
+Position_X,Position_Y,Scale_X,Scale_Y,Offset_X,Offset_Y,HasHitBoxTop,HitBoxTopPosition_X,HitBoxTopPosition_Y,HitBoxTopScale_X,HitBoxTopScale_Y,HasHitBoxBottom,HitBoxBottomPosition_X,HitBoxBottomPosition_Y,HitBoxBottomScale_X,HitBoxBottomScale_Y,HasAttackBox,AttackBoxPosition_X,AttackBoxPosition_Y,AttackBoxScale_X,AttackBoxScale_Y,HasPushBox,PushBoxPosition_X,PushBoxPosition_Y,PushBoxScale_X,PushBoxScale_Y,HasGrabBox,GrabBoxPosition_X,GrabBoxPosition_Y,GrabBoxScale_X,GrabBoxScale_Y,
+15,12,663,49,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

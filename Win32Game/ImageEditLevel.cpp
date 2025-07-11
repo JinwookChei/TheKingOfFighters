@@ -50,18 +50,20 @@ void ImageEditLevel::BeginPlay() {
   // std::vector<Color8Bit> result1 = normalImage->CountPixelPallet();
   // std::vector<Color8Bit> result2 = blueFameImage->CountPixelPallet();
 
+
+
   // MAKE TRANSPARENT
-  IFileImage* readyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\READY.png", IMGTYPE_Ready);
-  readyImage->MakeColorTransparent(Color8Bit{100, 100, 100, 0});
-  readyImage->Save("..\\ContentsResource\\KOFImages\\READY_Alpha.bmp", 0);
+  //IFileImage* readyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\READY.png", IMGTYPE_Ready);
+  //readyImage->MakeColorTransparent(Color8Bit{100, 100, 100, 0});
+  //readyImage->Save("..\\ContentsResource\\KOFImages\\READY_Alpha.bmp", 0);
 
-  IFileImage* goImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GO.png", IMGTYPE_Go);
-  goImage->MakeColorTransparent(Color8Bit{100, 100, 100, 0});
-  goImage->Save("..\\ContentsResource\\KOFImages\\GO_Alpha.bmp", 0);
+  //IFileImage* goImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GO.png", IMGTYPE_Go);
+  //goImage->MakeColorTransparent(Color8Bit{100, 100, 100, 0});
+  //goImage->Save("..\\ContentsResource\\KOFImages\\GO_Alpha.bmp", 0);
 
-  IFileImage* koImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KO.png", IMGTYPE_KO);
-  koImage->MakeColorTransparent(Color8Bit{100, 100, 100, 0});
-  koImage->Save("..\\ContentsResource\\KOFImages\\KO_Alpha.bmp", 0);
+  //IFileImage* koImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KO.png", IMGTYPE_KO);
+  //koImage->MakeColorTransparent(Color8Bit{100, 100, 100, 0});
+  //koImage->Save("..\\ContentsResource\\KOFImages\\KO_Alpha.bmp", 0);
 
 
   return;

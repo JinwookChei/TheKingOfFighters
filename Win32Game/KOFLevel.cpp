@@ -8,8 +8,9 @@
 #include "BackGround.h"
 #include "ScreenMask.h"
 #include "HealthBar.h"
-#include "Portrait.h"
 #include "Health.h"
+#include "MPBar.h"
+#include "Portrait.h"
 #include "Notification.h"
 #include "KOFLoby.h"
 
@@ -117,6 +118,11 @@ void KOFLevel::BeginPlay() {
   Health* healthPlayer1 = HUD_->CreateUIComponent<Health>();
   healthPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthImage, 0, Color8Bit(0, 0, 0, 0), {490.0f, 102.0f}, false);
 
+  MPBar* mpBarPlayer1 = HUD_->CreateUIComponent<MPBar>();
+  mpBarPlayer1->Initialize(IMGTYPE_MPBarImage, 0, Color8Bit(0, 0, 0, 0));
+  mpBarPlayer1->SetPosition({490.0f, 160.0f});
+
+
   // PLAYER_2 UI
   Portrait* portraitPlayer2 = HUD_->CreateUIComponent<Portrait>();
   portraitPlayer2->Initialize(IMGTYPE_ChangImage, 399, changTransparentColor);
@@ -128,6 +134,10 @@ void KOFLevel::BeginPlay() {
 
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
   healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthImage | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0), {1415.0f, 102.0f}, true);
+
+  MPBar* mpBarPlayer2 = HUD_->CreateUIComponent<MPBar>();
+  mpBarPlayer2->Initialize(IMGTYPE_MPBarImage, 0, Color8Bit(0, 0, 0, 0));
+  mpBarPlayer2->SetPosition({1415.0f, 1020.0f});
 
 
   // System UI
