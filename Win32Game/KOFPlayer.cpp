@@ -7,6 +7,7 @@
 #include "AttackTable.h"
 #include "SoundTable.h"
 #include "HealthComponent.h"
+#include "MPComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
@@ -15,10 +16,12 @@
 KOFPlayer::KOFPlayer()
     : playerKeySet_(),
       pRender_(nullptr),
+      pUI_(nullptr),
       pMovementComponent_(nullptr),
       pSoundTable_(nullptr),
       pAttackTable_(nullptr),
       pHealthComponent_(nullptr),
+      pMPComponent_(nullptr),
       pStateComponent_(nullptr),
       pHitBoxTop_(nullptr),
       pHitBoxBottom_(nullptr),
@@ -143,6 +146,12 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   // HEALTH
   pHealthComponent_ = CreateComponent<HealthComponent>();
+  if (false == pHealthComponent_->Initialize(100.0f)) {
+    return;
+  }
+
+  // MP
+  pMPComponent_ = CreateComponent<MPComponent>();
   if (false == pHealthComponent_->Initialize(100.0f)) {
     return;
   }
@@ -279,20 +288,28 @@ const HealthComponent* KOFPlayer::GetHealthComponent() const {
   return pHealthComponent_;
 }
 
+const MPComponent* KOFPlayer::GetMPComponent() const {
+  return pMPComponent_;
+}
+
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
+    pMPComponent_->ChargeMP(damageInfo->damage_);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
   } else if (pMovementComponent_->ContainMovementState({MOVSTATE_Jump})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
+    pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     pMovementComponent_->KnockBack(PlayerOnLeft(), {35.0f, 50.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump, ANIMMOD_NONE, true);
   } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
+    pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat, ANIMMOD_NONE, true);
   } else {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
+    pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     switch (damageInfo->attackType_) {
       case ATTYPE_HighAttack: {
         if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {

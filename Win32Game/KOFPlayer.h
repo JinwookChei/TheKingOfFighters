@@ -11,6 +11,7 @@ class AttackTable;
 struct AttackInfo;
 class SoundTable;
 class HealthComponent;
+class MPComponent;
 class StateComponent;
 class HitHandlerComponent;
 class GhostEffect;
@@ -57,6 +58,8 @@ class KOFPlayer
   void UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier = ANIMMOD_NONE, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
+
+  const MPComponent* GetMPComponent() const;
 
   virtual void UpdateInput();
 
@@ -134,6 +137,8 @@ class KOFPlayer
   AttackTable* pAttackTable_;
 
   HealthComponent* pHealthComponent_;
+
+  MPComponent* pMPComponent_;
 
   StateComponent* pStateComponent_;
 

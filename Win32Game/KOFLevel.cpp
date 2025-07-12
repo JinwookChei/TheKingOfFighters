@@ -9,6 +9,7 @@
 #include "ScreenMask.h"
 #include "HealthBar.h"
 #include "Health.h"
+#include "MP.h"
 #include "Portrait.h"
 #include "Notification.h"
 #include "KOFLoby.h"
@@ -111,11 +112,14 @@ void KOFLevel::BeginPlay() {
   portraitPlayer1->SetPosition({90.0f, 100.0f});
 
   HealthBar* healthBarPlayer1 = HUD_->CreateUIComponent<HealthBar>();
-  healthBarPlayer1->Initialize(IMGTYPE_HealthHUD, 0, Color8Bit(0, 0, 0, 0));
+  healthBarPlayer1->Initialize(IMGTYPE_HealthHUD | IMGMOD_NONE, 0, Color8Bit(0, 0, 0, 0));
   healthBarPlayer1->SetPosition({490.0f, 102.0f});
 
   Health* healthPlayer1 = HUD_->CreateUIComponent<Health>();
-  healthPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD, 1, Color8Bit(0, 0, 0, 0), {490.0f, 89.45f}, false);
+  healthPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD | IMGMOD_NONE, 1, Color8Bit(0, 0, 0, 0), {490.0f, 89.45f}, false);
+
+  MP* mpPlayer1 = HUD_->CreateUIComponent<MP>();
+  mpPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD | IMGMOD_NONE, 2, Color8Bit(0, 0, 0, 0), {490.0f, 123.5f}, false);
 
   // PLAYER_2 UI
   Portrait* portraitPlayer2 = HUD_->CreateUIComponent<Portrait>();
@@ -128,6 +132,9 @@ void KOFLevel::BeginPlay() {
 
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
   healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 1, Color8Bit(0, 0, 0, 0), {1415.0f, 89.45f}, true);
+
+  MP* mpPlayer2 = HUD_->CreateUIComponent<MP>();
+  mpPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 2, Color8Bit(0, 0, 0, 0), {1415.0f, 123.5f}, true);
 
 
   // System UI

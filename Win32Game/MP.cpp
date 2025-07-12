@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MP.h"
 #include "KOFPlayer.h"
-#include "HealthComponent.h"
+#include "MPComponent.h"
 
 MP::MP()
     : pPlayer_(nullptr),
@@ -13,7 +13,7 @@ MP::MP()
       originRenderTransform_(),
       componentTransform_(),
       renderTransform_(),
-      healthPercentage_(0.0f) {
+      mpPercentage_(0.0f) {
 }
 
 MP::~MP() {
@@ -52,24 +52,24 @@ void MP::Tick(unsigned long long curTick) {
     return;
   }
 
-  const HealthComponent* pHealthComponent = pPlayer_->GetHealthComponent();
-  float maxHealth = pHealthComponent->MaxHealth();
-  float curHealth = pHealthComponent->Health();
+  const MPComponent* pMPComponent = pPlayer_->GetMPComponent();
+  float maxMP = pMPComponent->MaxMP();
+  float curMP = pMPComponent->MP();
 
-  healthPercentage_ = curHealth / maxHealth;
+  mpPercentage_ = curMP / maxMP;
 
-  float healthScaleOffset = originComponentTransform_.GetScale().X;
-  healthScaleOffset = (healthScaleOffset * (1.0f - healthPercentage_)) * 0.5f;
+  float mpScaleOffset = originComponentTransform_.GetScale().X;
+  mpScaleOffset = (mpScaleOffset * (1.0f - mpPercentage_)) * 0.5f;
 
-  if (false == isFlip_) {
-    componentTransform_.SetScale({originComponentTransform_.GetScale().X * healthPercentage_, originComponentTransform_.GetScale().Y});
-    SetPosition({originComponentTransform_.GetPosition().X - healthScaleOffset, originComponentTransform_.GetPosition().Y});
+if (false == isFlip_) {
+    componentTransform_.SetScale({originComponentTransform_.GetScale().X * mpPercentage_, originComponentTransform_.GetScale().Y});
+    SetPosition({originComponentTransform_.GetPosition().X - mpScaleOffset, originComponentTransform_.GetPosition().Y});
     renderTransform_.SetScale(componentTransform_.GetScale());
   } else {
-    componentTransform_.SetScale({originComponentTransform_.GetScale().X * healthPercentage_, originComponentTransform_.GetScale().Y});
-    SetPosition({originComponentTransform_.GetPosition().X + healthScaleOffset, originComponentTransform_.GetPosition().Y});
+    componentTransform_.SetScale({originComponentTransform_.GetScale().X * mpPercentage_, originComponentTransform_.GetScale().Y});
+    SetPosition({originComponentTransform_.GetPosition().X + mpScaleOffset, originComponentTransform_.GetPosition().Y});
     renderTransform_.SetScale(componentTransform_.GetScale());
-    renderTransform_.SetPosition({originRenderTransform_.GetPosition().X + healthScaleOffset, originRenderTransform_.GetPosition().Y});
+    renderTransform_.SetPosition({originRenderTransform_.GetPosition().X + mpScaleOffset, originRenderTransform_.GetPosition().Y});
   }
 }
 

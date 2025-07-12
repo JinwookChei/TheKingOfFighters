@@ -163,6 +163,7 @@
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="MP.cpp" />
+    <ClCompile Include="MPComponent.cpp" />
     <ClCompile Include="Notification.cpp" />
     <ClCompile Include="ScreenMask.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="MP.h" />
+    <ClInclude Include="MPComponent.h" />
     <ClInclude Include="Notification.h" />
     <ClInclude Include="ScreenMask.h" />
     <ClInclude Include="Button.h" />

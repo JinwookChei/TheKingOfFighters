@@ -35,5 +35,5 @@ class MP final
 
   Transform renderTransform_;
 
-  float healthPercentage_;
+  float mpPercentage_;
 };
