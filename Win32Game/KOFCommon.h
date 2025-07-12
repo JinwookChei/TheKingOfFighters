@@ -24,6 +24,8 @@ enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_CastingEffectImage,
   IMGTYPE_YouPlayer1,
   IMGTYPE_YouPlayer2,
+  IMGTYPE_HealthHUD,
+  IMGTPYE_Max
 };
 
 enum IMAGE_MODIFIER : unsigned long long {

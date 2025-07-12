@@ -9,7 +9,6 @@
 #include "ScreenMask.h"
 #include "HealthBar.h"
 #include "Health.h"
-#include "MPBar.h"
 #include "Portrait.h"
 #include "Notification.h"
 #include "KOFLoby.h"
@@ -112,16 +111,11 @@ void KOFLevel::BeginPlay() {
   portraitPlayer1->SetPosition({90.0f, 100.0f});
 
   HealthBar* healthBarPlayer1 = HUD_->CreateUIComponent<HealthBar>();
-  healthBarPlayer1->Initialize(IMGTYPE_HealthBarImage, 0, Color8Bit(0, 0, 0, 0));
+  healthBarPlayer1->Initialize(IMGTYPE_HealthHUD, 0, Color8Bit(0, 0, 0, 0));
   healthBarPlayer1->SetPosition({490.0f, 102.0f});
 
   Health* healthPlayer1 = HUD_->CreateUIComponent<Health>();
-  healthPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthImage, 0, Color8Bit(0, 0, 0, 0), {490.0f, 102.0f}, false);
-
-  MPBar* mpBarPlayer1 = HUD_->CreateUIComponent<MPBar>();
-  mpBarPlayer1->Initialize(IMGTYPE_MPBarImage, 0, Color8Bit(0, 0, 0, 0));
-  mpBarPlayer1->SetPosition({490.0f, 160.0f});
-
+  healthPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD, 1, Color8Bit(0, 0, 0, 0), {490.0f, 89.45f}, false);
 
   // PLAYER_2 UI
   Portrait* portraitPlayer2 = HUD_->CreateUIComponent<Portrait>();
@@ -129,15 +123,11 @@ void KOFLevel::BeginPlay() {
   portraitPlayer2->SetPosition({1810.0f, 100.0f});
 
   HealthBar* healthBarPlayer2 = HUD_->CreateUIComponent<HealthBar>();
-  healthBarPlayer2->Initialize((IMGTYPE_HealthBarImage | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0));
+  healthBarPlayer2->Initialize((IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0));
   healthBarPlayer2->SetPosition({1415.0f, 102.0f});
 
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
-  healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthImage | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0), {1415.0f, 102.0f}, true);
-
-  MPBar* mpBarPlayer2 = HUD_->CreateUIComponent<MPBar>();
-  mpBarPlayer2->Initialize(IMGTYPE_MPBarImage, 0, Color8Bit(0, 0, 0, 0));
-  mpBarPlayer2->SetPosition({1415.0f, 1020.0f});
+  healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 1, Color8Bit(0, 0, 0, 0), {1415.0f, 89.45f}, true);
 
 
   // System UI
@@ -165,9 +155,6 @@ void KOFLevel::BeginPlay() {
   koNotification_->SetEnableTick(false);
   koNotification_->SetEnableRender(false);
 
-
-
-  
 
   // CAMERA
   pCamera_ = SpawnActor<CameraTarget>();

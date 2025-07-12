@@ -222,9 +222,6 @@
     <ClCompile Include="MP.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
-    <ClCompile Include="MPBar.cpp">
-      <Filter>Contents\KOF\UI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -378,9 +375,6 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
     <ClInclude Include="MP.h">
-      <Filter>Contents\KOF\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MPBar.h">
       <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
   </ItemGroup>
