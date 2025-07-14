@@ -225,6 +225,9 @@
     <ClCompile Include="MPComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
+    <ClCompile Include="SkillPoint.cpp">
+      <Filter>Contents\KOF\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="MPComponent.h">
       <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillPoint.h">
+      <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

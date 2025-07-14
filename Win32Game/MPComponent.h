@@ -17,10 +17,18 @@ class MPComponent
 
   float MaxMP() const;
 
+  int SkillPoint() const;
+
+  int MaxSkillPoint() const;
+
   void ChargeMP(float mp);
 
  private:
   float maxMP_;
 
   float MP_;
+
+  int maxSkillPoint_;
+
+  int skillPoint_;
 };

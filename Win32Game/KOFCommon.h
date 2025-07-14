@@ -25,6 +25,7 @@ enum IMAGE_TYPE : unsigned long long {
   IMGTYPE_YouPlayer1,
   IMGTYPE_YouPlayer2,
   IMGTYPE_HealthHUD,
+  IMGTYPE_SkillPoint,
   IMGTPYE_Max
 };
 

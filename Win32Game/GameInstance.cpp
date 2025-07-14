@@ -18,7 +18,7 @@ GameInstance* GameInstance::Instance() {
 }
 
 void GameInstance::LoadKOFImages() {
-  //// IMAGES
+  // IMAGES
   IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
   IFileImage* lobyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KOF_logo.png", (IMGTYPE_LogoImage | IMGMOD_NONE));
   IFileImage* pressEnterImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Press_Enter.png", (IMGTYPE_PressEnter | IMGMOD_NONE));
@@ -45,11 +45,12 @@ void GameInstance::LoadKOFImages() {
   changImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Chang.csv");
   IFileImage* changImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang Koehan_Alpha_BlueFlame.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
   changImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Chang.csv");
-
   IFileImage* healthHUDImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HUD_Health.png", (IMGTYPE_HealthHUD | IMGMOD_NONE));
   healthHUDImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\HUD_Health.csv");
   IFileImage* healthHUDImageFlippped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HUD_Health.png", (IMGTYPE_HealthHUD | IMGMOD_FLIPPED));
   healthHUDImageFlippped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\HUD_Health.csv");
+  IFileImage* skillPointImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\SkillPoint.png", (IMGTYPE_SkillPoint | IMGMOD_NONE));
+  skillPointImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\SkillPoint.csv");
   IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HitEffect01.png", (IMGTYPE_HitEffectImage | IMGMOD_NONE));
   hitEffectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\HitEffect01.csv");
   IFileImage* hitEffectImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HitEffect01.png", (IMGTYPE_HitEffectImage | IMGMOD_FLIPPED));
@@ -64,16 +65,4 @@ void GameInstance::LoadKOFImages() {
   IFileImage* youPlayer2Image = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\YOU_Player2.png", (IMGTYPE_YouPlayer2 | IMGMOD_NONE));
 
 
-
-
-  /*IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HealthBar.png", (IMGTYPE_HealthBarImage | IMGMOD_NONE));
-  healthBarImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\HealthBar.csv");
-  IFileImage* healthBarImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HealthBar.png", (IMGTYPE_HealthBarImage | IMGMOD_FLIPPED));
-  healthBarImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\HealthBar.csv");
-  IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Health.png", (IMGTYPE_HealthImage | IMGMOD_NONE));
-  healthImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Health.csv");
-  IFileImage* reverseHealthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Health.png", (IMGTYPE_HealthImage | IMGMOD_FLIPPED));
-  reverseHealthImage->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Health.csv");
-  IFileImage* mpBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\MPBar.png", (IMGTYPE_MPBarImage | IMGMOD_NONE));
-  IFileImage* mpImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\MP.png", (IMGTYPE_MPImage | IMGMOD_NONE));*/
 }

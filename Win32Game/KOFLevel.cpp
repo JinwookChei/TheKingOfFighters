@@ -10,6 +10,7 @@
 #include "HealthBar.h"
 #include "Health.h"
 #include "MP.h"
+#include "SkillPoint.h"
 #include "Portrait.h"
 #include "Notification.h"
 #include "KOFLoby.h"
@@ -121,20 +122,37 @@ void KOFLevel::BeginPlay() {
   MP* mpPlayer1 = HUD_->CreateUIComponent<MP>();
   mpPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD | IMGMOD_NONE, 2, Color8Bit(0, 0, 0, 0), {490.0f, 123.5f}, false);
 
+  SkillPoint* skillPoint1Player1 = HUD_->CreateUIComponent<SkillPoint>();
+  skillPoint1Player1->Initialize(pPlayer1_,0, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
+  skillPoint1Player1->SetPosition({190.0f, 170.0f});
+  SkillPoint* skillPoint2Player1 = HUD_->CreateUIComponent<SkillPoint>();
+  skillPoint2Player1->Initialize(pPlayer1_, 1, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
+  skillPoint2Player1->SetPosition({250.0f, 170.0f});
+  SkillPoint* skillPoint3Player1 = HUD_->CreateUIComponent<SkillPoint>();
+  skillPoint3Player1->Initialize(pPlayer1_, 2, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
+  skillPoint3Player1->SetPosition({310.0f, 170.0f});
+
+
   // PLAYER_2 UI
   Portrait* portraitPlayer2 = HUD_->CreateUIComponent<Portrait>();
   portraitPlayer2->Initialize(IMGTYPE_ChangImage, 399, changTransparentColor);
   portraitPlayer2->SetPosition({1810.0f, 100.0f});
-
   HealthBar* healthBarPlayer2 = HUD_->CreateUIComponent<HealthBar>();
   healthBarPlayer2->Initialize((IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 0, Color8Bit(0, 0, 0, 0));
   healthBarPlayer2->SetPosition({1415.0f, 102.0f});
-
   Health* healthPlayer2 = HUD_->CreateUIComponent<Health>();
   healthPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 1, Color8Bit(0, 0, 0, 0), {1415.0f, 89.45f}, true);
-
   MP* mpPlayer2 = HUD_->CreateUIComponent<MP>();
   mpPlayer2->Initialize(pPlayer2_, (IMGTYPE_HealthHUD | IMGMOD_FLIPPED), 2, Color8Bit(0, 0, 0, 0), {1415.0f, 123.5f}, true);
+  SkillPoint* skillPoint1Player2 = HUD_->CreateUIComponent<SkillPoint>();
+  skillPoint1Player2->Initialize(pPlayer2_, 0, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
+  skillPoint1Player2->SetPosition({1710.0f, 170.0f});
+  SkillPoint* skillPoint2Player2 = HUD_->CreateUIComponent<SkillPoint>();
+  skillPoint2Player2->Initialize(pPlayer2_, 1, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
+  skillPoint2Player2->SetPosition({1650.0f, 170.0f});
+  SkillPoint* skillPoint3Player2 = HUD_->CreateUIComponent<SkillPoint>();
+  skillPoint3Player2->Initialize(pPlayer2_, 2, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
+  skillPoint3Player2->SetPosition({1590.0f, 170.0f});
 
 
   // System UI

@@ -38,11 +38,6 @@ void Portrait::Render(IRenderTexture* renderTexture) {
     return;
   }
 
-  UI* owner = GetOwner();
-  if (nullptr == owner) {
-    return;
-  }
-
   const Vector& imageScale = pImage_->GetScale(imageIndex_) * localeScale_;
 
   renderTexture->Transparent(pImage_, imageIndex_, imageScale, colorTransparent_);

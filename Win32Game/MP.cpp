@@ -74,12 +74,7 @@ if (false == isFlip_) {
 }
 
 void MP::Render(IRenderTexture* renderTexture) {
-  if (nullptr == renderTexture || nullptr == pPlayer_) {
-    return;
-  }
-
-  UI* owner = GetOwner();
-  if (nullptr == owner) {
+  if (nullptr == renderTexture) {
     return;
   }
 
