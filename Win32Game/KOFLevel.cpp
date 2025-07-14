@@ -79,14 +79,14 @@ void KOFLevel::BeginPlay() {
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 250.0f);
   pPlayer1_->SetPlayerOnLeft(true);
-  /*pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
-  pPlayer2_->SetPlayerOnLeft(false);*/
   /*pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);*/
-  pPlayer2_ = SpawnActor<AIiori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
   pPlayer2_->SetPlayerOnLeft(false);
+  //pPlayer2_ = SpawnActor<AIiori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  //pPlayer2_->SetPlayerOnLeft(false);
   
 
 
@@ -200,7 +200,7 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, SOUNDTYPE_None, 231, 238, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-
+  
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit03, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_3 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02, 31, 34, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
@@ -213,7 +213,7 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
   EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, SOUNDTYPE_None, 231, 238, 50, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-
+  
   // SOUND
   Path soundPath;
   soundPath.MoveParent();
@@ -339,6 +339,12 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     if (InputManager::Instance()->IsDown(VK_F2)) {
       SetCollisionRender(!GetCollisionRender());
     }
+    if (InputManager::Instance()->IsDown(VK_F3)) {
+      FreezeActors({pPlayer1_, pPlayer2_}, true);
+    }
+    if (InputManager::Instance()->IsDown(VK_F4)) {
+      DefreezeActors();
+    }
   }
 
   switch (gameStatus_) {
@@ -365,6 +371,7 @@ ScreenMask* KOFLevel::GetBackGroundMask() const {
 }
 
 void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
+  DefreezeActors();
   for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
     if (nullptr == *iter) {
       continue;

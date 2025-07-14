@@ -342,7 +342,7 @@ void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
     if (curKnockBackVelocity_.X > 0) {
       curKnockBackVelocity_.X -= airResistance_ * deltaTick;
       curKnockBackVelocity_.Y -= gravity_ * deltaTick;
-    } else if (curKnockBackVelocity_.X < 0) {
+    } else if (curKnockBackVelocity_.X <= 0) {
       curKnockBackVelocity_.X += airResistance_ * deltaTick;
       curKnockBackVelocity_.Y -= gravity_ * deltaTick;
     }

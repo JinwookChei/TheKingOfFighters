@@ -7,7 +7,7 @@ class HyakushikiOniyaki
 
   ~HyakushikiOniyaki() override;
 
-  void Tick(unsigned long long deltaTick);
+  void Tick(unsigned long long deltaTick) override;
   
   bool Initialize() override;
 

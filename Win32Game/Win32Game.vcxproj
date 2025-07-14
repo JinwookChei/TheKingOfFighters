@@ -200,6 +200,7 @@
     <ClCompile Include="GhostEffect.cpp" />
     <ClCompile Include="SkillPoint.cpp" />
     <ClCompile Include="SoundTable.cpp" />
+    <ClCompile Include="Ura306Shiki.cpp" />
     <ClCompile Include="YamiBarai.cpp" />
     <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="StateComponent.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="GhostEffect.h" />
     <ClInclude Include="SkillPoint.h" />
     <ClInclude Include="SoundTable.h" />
+    <ClInclude Include="Ura306Shiki.h" />
     <ClInclude Include="YamiBarai.h" />
     <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="StateComponent.h" />

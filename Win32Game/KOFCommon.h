@@ -96,7 +96,10 @@ enum IORI_ANIM_TYPE : unsigned long long {
   IORI_ANIMTYPE_1211ShikiYaOtome_6,
   IORI_ANIMTYPE_1211ShikiYaOtome_7,
   IORI_ANIMTYPE_1211ShikiYaOtome_8,
-  IORI_ANIMTYPE_1211ShikiYaOtome_9
+  IORI_ANIMTYPE_1211ShikiYaOtome_9,
+  IORI_ANIMTYPE_Ura306shikiShika_1,
+  IORI_ANIMTYPE_Ura306shikiShika_2,
+  IORI_ANIMTYPE_Ura306shikiShika_3
 };
 
 enum PLAYER_ANIM_MODIFIER : unsigned long long {
@@ -114,6 +117,7 @@ enum IORI_SKILL {
   IORI_SKILL_HyakushikiOniyaki,
   IORI_SKILL_127ShikiAoiHana,
   IORI_SKILL_1211ShikiYaOtome,
+  IORI_SKILL_Ura306shikiShika,
   IORI_SKILL_Max
 };
 
@@ -121,6 +125,8 @@ enum PROJECTILE_TYPE {
   IORI_PROJECTILE_YamiBarai = 0,
   IORI_PROJECTILE_HyakushikiOniyaki_Low,
   IORI_PROJECTILE_HyakushikiOniyaki_High,
+  IORI_PROJECTILE_Ura306Shiki,
+  IORI_PROJECTILE_Max,
 };
 
 enum EFFECT_TYPE : unsigned long long {

@@ -50,6 +50,8 @@ class SkillComponent
 
   void SetMiscTemp(bool temp);
 
+  SkillInfo* GetCurrentActiveSkillInfo();
+
  private:
   HashTable skillTable_;
 

@@ -33,14 +33,16 @@ void SkillComponent::ActivateSkill(unsigned long long skillTag) {
   if (0 == skillTable_.Select((void**)&pInfo, 1, &skillTag, 8)) {
     return;
   }
-  
-    onSkillActive_ = true;
-    activeSkillInfo_ = pInfo;
+
+  onSkillActive_ = true;
+  miscTemp_ = false;
+  activeSkillInfo_ = pInfo;
 }
 
 void SkillComponent::DeactivateSkill() {
   onSkillActive_ = false;
   miscTemp_ = false;
+  activeSkillInfo_ = nullptr;
 }
 
 void SkillComponent::UpdateActiveSkill() const {
@@ -55,4 +57,8 @@ bool SkillComponent::GetMiscTemp() const {
 
 void SkillComponent::SetMiscTemp(bool temp) {
   miscTemp_ = temp;
+}
+
+SkillInfo* SkillComponent::GetCurrentActiveSkillInfo() {
+  return activeSkillInfo_;
 }

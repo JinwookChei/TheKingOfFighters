@@ -5,7 +5,7 @@ MPComponent::MPComponent()
     : maxMP_(100),
       MP_(0),
       maxSkillPoint_(3),
-      skillPoint_(0) {
+      skillPoint_(2) {
 }
 
 MPComponent::~MPComponent() {

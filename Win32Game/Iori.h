@@ -27,6 +27,8 @@ class Iori
 
   void Command_6();
 
+  void Command_7();
+
   // Skills
   void GaishikiMutan();
 
@@ -37,4 +39,8 @@ class Iori
   void ShikiAoiHana127();
 
   void ShikiYaOtome1211();
+
+  void ActiveUra306shikiShika();
+
+  void Ura306shikiShika();
 };

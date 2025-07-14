@@ -4,6 +4,7 @@
 #include "AttackTable.h"
 #include "YamiBarai.h"
 #include "HyakushikiOniyaki.h"
+#include "Ura306Shiki.h"
 
 ProjectileComponent::ProjectileComponent()
     : level_(nullptr),
@@ -57,6 +58,9 @@ void ProjectileComponent::FireProjectile(unsigned long long projectileTag) {
       break;
     case IORI_PROJECTILE_HyakushikiOniyaki_High:
       newProjectile = level_->SpawnActor<HyakushikiOniyaki>(ActorGroupEngineType_Effect);
+      break;
+    case IORI_PROJECTILE_Ura306Shiki:
+      newProjectile = level_->SpawnActor<Ura306Shiki>(ActorGroupEngineType_Effect);
       break;
     default:
       break;
