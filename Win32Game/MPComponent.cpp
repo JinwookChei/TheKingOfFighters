@@ -5,7 +5,7 @@ MPComponent::MPComponent()
     : maxMP_(100),
       MP_(0),
       maxSkillPoint_(3),
-      skillPoint_(0){
+      skillPoint_(0) {
 }
 
 MPComponent::~MPComponent() {
@@ -51,6 +51,12 @@ void MPComponent::ChargeMP(float mp) {
     ++skillPoint_;
     MP_ = 0;
   }
+}
 
+void MPComponent::ReduceSkillPoint() {
+  --skillPoint_;
 
+  if (skillPoint_ < 0) {
+    skillPoint_ = 0;
+  }
 }

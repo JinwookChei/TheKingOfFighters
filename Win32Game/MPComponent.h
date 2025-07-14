@@ -23,6 +23,8 @@ class MPComponent
 
   void ChargeMP(float mp);
 
+  void ReduceSkillPoint();
+
  private:
   float maxMP_;
 

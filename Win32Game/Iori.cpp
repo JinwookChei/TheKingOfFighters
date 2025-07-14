@@ -10,6 +10,7 @@
 #include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "HealthComponent.h"
+#include "MPComponent.h"
 #include "StateComponent.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
@@ -529,6 +530,13 @@ void Iori::Command_5() {
 }
 
 void Iori::Command_6() {
+  if (nullptr == pMPComponent_) {
+    return;
+  }
+  if (0 >= pMPComponent_->SkillPoint()) {
+    return;
+  }
+
   Level* pLevel = GetLevel();
   if (nullptr == pLevel) {
     return;
@@ -546,7 +554,7 @@ void Iori::Command_6() {
 
   UpdateAnimState(PLAYER_ANIMTYPE_UltimateCasting);
   pSkillComponent_->ActivateSkill(IORI_SKILL_1211ShikiYaOtome);
-
+  pMPComponent_->ReduceSkillPoint();
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
   pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
