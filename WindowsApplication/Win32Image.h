@@ -114,6 +114,8 @@ class Win32Image final
 
   void __stdcall ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) override;
 
+  void __stdcall ChangePixelRGB(const Color8Bit& srcColor, const Color8Bit& destColor) override;
+
   std::vector<Color8Bit> __stdcall CountPixelPallet() override;
 
   void SetPath(std::string_view path);

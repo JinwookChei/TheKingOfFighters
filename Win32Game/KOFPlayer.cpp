@@ -89,6 +89,8 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   }
 
   UpdatePrevAnimationIndex();
+
+  
 }
 
 void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
@@ -107,24 +109,24 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
   pRender_->SetImageRenderType(ImageRenderType::Center);
+  //pRender_->SetImageRenderType(ImageRenderType::Bottom);
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
 
   // UI
   pUI_ = CreateImageRenderFIFO();
   pUI_->SetImageRenderType(ImageRenderType::Center);
-  pUI_->SetLocalScale({0.15f, 0.15f});
+  pUI_->SetLocalScale({3.0f, 3.0f});
   pUI_->SetPosition({0.0f, -300.0f});
+  pUI_->SetTransparentColor({0,0,0,0});
   IFileImage* youUiPlayer = nullptr;
+  youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_PlayerLabel);
   if (isPlayer1) {
-    youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_YouPlayer1);
+    pUI_->SetImage(youUiPlayer, 0);
   }
   else {
-    youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_YouPlayer2);
+    pUI_->SetImage(youUiPlayer, 2);
   }
-  pUI_->SetImage(youUiPlayer);
-  pUI_->SetAlpha(1.0f);
-
 
   // MOVEMENT
   pMovementComponent_ = CreateComponent<MovementComponent>();
@@ -281,7 +283,7 @@ void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFI
     soundChannel_ = SoundManager::Instance()->SoundPlay(pSoundInfo->soundType_);
   }
 
-  CollisionReset();
+  //CollisionReset();
 }
 
 const HealthComponent* KOFPlayer::GetHealthComponent() const {
@@ -780,6 +782,7 @@ void KOFPlayer::UpdatePrevAnimationIndex() {
 
   if (curImageIndex != prevImageIndex_) {
     prevImageIndex_ = curImageIndex;
+    CollisionReset();
   }
 }
 

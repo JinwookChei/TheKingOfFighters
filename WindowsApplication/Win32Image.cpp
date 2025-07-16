@@ -1143,7 +1143,6 @@ void __stdcall Win32Image::MakeColorTransparent(const Color8Bit& transColor) {
 }
 
 
-
 void __stdcall Win32Image::ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) {
   const Vector scale = GetScale();
 
@@ -1155,6 +1154,23 @@ void __stdcall Win32Image::ScalePixelRGB(float rScale, float gScale, float bScal
         tempColor.R = tempColor.R * rScale;
         tempColor.G = tempColor.G * gScale;
         tempColor.B = tempColor.B * bScale;
+        SetPixel(Vector{j, i}, tempColor);
+      }
+    }
+  }
+}
+
+void __stdcall Win32Image::ChangePixelRGB(const Color8Bit& srcColor, const Color8Bit& destColor) {
+  const Vector scale = GetScale();
+
+  for (float i = 0; i < scale.Y; ++i) {
+    for (float j = 0; j < scale.X; ++j) {
+      Color8Bit tempColor;
+      GetPixel(Vector{j, i}, &tempColor);
+      if (tempColor == srcColor) {
+        tempColor.R = destColor.R;
+        tempColor.G = destColor.G;
+        tempColor.B = destColor.B;
         SetPixel(Vector{j, i}, tempColor);
       }
     }

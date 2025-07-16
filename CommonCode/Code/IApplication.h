@@ -84,6 +84,8 @@ struct IFileImage : public IImage {
 
   virtual void __stdcall ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) = 0;
 
+  virtual void __stdcall ChangePixelRGB(const Color8Bit& srcColor, const Color8Bit& destColor) = 0;
+
   virtual std::vector<Color8Bit> __stdcall CountPixelPallet() = 0;
 };
 

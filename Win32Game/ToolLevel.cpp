@@ -37,10 +37,10 @@ ToolLevel::ToolLevel()
 
   // VIEWPORT
   //!!!!!!!!!!!! 주의!!!!!!!!! - IORI
-   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
-   ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-   const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
-   const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
+  // IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
+  // ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  // const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
+  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
 
   //!!!!!!!!!!!! 주의!!!!!!!!! - CHANG
   // IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang Koehan_Box.png", 1);
@@ -89,10 +89,15 @@ ToolLevel::ToolLevel()
   // const std::string& readFilePath("..\\ContentsResource\\CSV\\MP.csv");
   // const std::string& writeFilePath("..\\ContentsResource\\CSV\\MP_new.csv");
 
-  //IFileImage* skillPointImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\SkillPoint_Box.png", 1);
-  //skillPointImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  //const std::string& readFilePath("..\\ContentsResource\\CSV\\SkillPoint.csv");
-  //const std::string& writeFilePath("..\\ContentsResource\\CSV\\SkillPoint_new.csv");
+  // IFileImage* skillPointImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\SkillPoint_Box.png", 1);
+  // skillPointImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
+  // const std::string& readFilePath("..\\ContentsResource\\CSV\\SkillPoint.csv");
+  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\SkillPoint_new.csv");
+
+  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\PlayerLabel_Box.png", 1);
+  effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
+  const std::string& readFilePath("..\\ContentsResource\\CSV\\PlayerLabelImage.csv");
+  const std::string& writeFilePath("..\\ContentsResource\\CSV\\PlayerLabelImage_new.csv");
 
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));

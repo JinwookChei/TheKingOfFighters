@@ -985,15 +985,12 @@ void Iori::Ura306shikiShika() {
     }
     case IORI_ANIMTYPE_Ura306shikiShika_2: {
         if (363 == curImageIndex) {
-        pAttackBox_->ResetHit();
         break;
       }
         if (364 == curImageIndex) {
-        pAttackBox_->ResetHit();
           break;
         }
         if (365 == curImageIndex) {
-          pAttackBox_->ResetHit();
           break;
         }
         if (366 == curImageIndex) {
