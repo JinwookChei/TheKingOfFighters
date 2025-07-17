@@ -37,21 +37,25 @@ void CollisionBoxCorner::Tick(unsigned long long curTick) {
 
   const Vector& collisionPosition = pCollisionInfo->position_;
   const Vector& collisionScale = pCollisionInfo->scale_;
-
   const Transform& controllerTransform = bindImageController_->GetTransform();
   const Vector& controllerPosition = controllerTransform.GetPosition();
-
   UI* ownerUI = GetOwner();
   if (nullptr == ownerUI) {
     return;
   }
   const Vector& ownerScale = ownerUI->GetScale();
+  const Vector& bindActorPosition = bindToolActor_->GetPosition();
+  const Vector& imagePostionOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
 
   if (CollisionBoxCornerType::CBCT_Start == cornerType_) {
-    Vector newPosition = {ownerScale.HalfX() + collisionPosition.X - collisionScale.HalfX(), ownerScale.HalfY() + collisionPosition.Y - collisionScale.HalfY()};
+    Vector newPosition = {
+        bindActorPosition.X + collisionPosition.X - collisionScale.HalfX(),
+        bindActorPosition.Y + collisionPosition.Y - collisionScale.HalfY()};
     SetPosition(newPosition);
   } else {
-    Vector newPosition = {ownerScale.HalfX() + collisionPosition.X + collisionScale.HalfX(), ownerScale.HalfY() + collisionPosition.Y + collisionScale.HalfY()};
+    Vector newPosition = {
+        bindActorPosition.X + collisionPosition.X + collisionScale.HalfX(),
+        bindActorPosition.Y + collisionPosition.Y + collisionScale.HalfY()};
     SetPosition(newPosition);
   }
 

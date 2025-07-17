@@ -23,7 +23,8 @@ void ToolActor::BeginPlay() {
   }
 
   pRender_ = CreateImageRenderFIFO();
-  pRender_->SetImageRenderType(ImageRenderType::Center);
+  //pRender_->SetImageRenderType(ImageRenderType::Center);
+  pRender_->SetImageRenderType(ImageRenderType::Bottom);
 
   pRender_->SetTransparentColor(transColor);  //
   pRender_->SetLocalScale({4.2f, 4.2f});
@@ -59,7 +60,7 @@ bool ToolActor::Initialize(UI* ui) {
   }
 
   Vector uiPosition = bindUI_->GetPosition();
-  SetPosition(uiPosition);
+  SetPosition({uiPosition.X, uiPosition.Y + 200.0f});
 
   return true;
 }

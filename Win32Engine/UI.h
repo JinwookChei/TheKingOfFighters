@@ -33,6 +33,8 @@ class UI final
 
   JO_API ImageRenderer* GetImageRenderer() const;
 
+  JO_API CollisionComponent* GetCollisionComponent() const;
+
   template <typename ComponentType>
   ComponentType* CreateUIComponent() {
     ComponentType* newComponent = new ComponentType;

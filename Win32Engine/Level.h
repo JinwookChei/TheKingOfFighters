@@ -55,15 +55,15 @@ class Level {
 
   JO_API bool UseCameraPostion() const;
 
-  void RegisterCollision(class CollisionComponent* newCollision, bool bFocus = false);
+  JO_API void RegisterCollision(class CollisionComponent* newCollision, bool bFocus = false);
 
-  void UnRegisterCollision(class CollisionComponent* delCollision);
+  JO_API void UnRegisterCollision(class CollisionComponent* delCollision);
 
-  void RegisterActor(Actor* actor, bool bFocus = false);
+  JO_API void RegisterActor(Actor* actor, bool bFocus = false);
 
-  void UnRegisterActor(Actor* actor);
+  JO_API void UnRegisterActor(Actor* actor);
 
-  bool GetCollisionGroup(unsigned int collisionGroup, LINK_ITEM** head, LINK_ITEM** tail);
+  JO_API bool GetCollisionGroup(unsigned int collisionGroup, LINK_ITEM** head, LINK_ITEM** tail);
 
  protected:
   JO_API void SetUseCameraPosition(bool use);

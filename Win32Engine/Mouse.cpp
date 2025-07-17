@@ -69,11 +69,11 @@ void Mouse::Tick(unsigned long long curTick) {
       } else if (isMouseDown) {
         pUI->OnClickDownEvent();
 
-        Level* level = pUI->GetLevel();
-        level->UnRegisterActor(pUI);
-        level->RegisterActor(pUI, true);
-        level->UnRegisterCollision(targetCollision);
-        level->RegisterCollision(targetCollision, true);
+        //Level* level = pUI->GetLevel();
+        //level->UnRegisterActor(pUI);
+        //level->RegisterActor(pUI, true);
+        //level->UnRegisterCollision(targetCollision);
+        //level->RegisterCollision(targetCollision, true);
       }
 
       prevHoverCollision_ = targetCollision;
@@ -94,8 +94,6 @@ void Mouse::Tick(unsigned long long curTick) {
     }
     prevHoverCollision_ = nullptr;
   }
-
-  
 }
 
 void Mouse::SetImage(IImage* image) {

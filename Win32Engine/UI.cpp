@@ -147,6 +147,10 @@ ImageRenderer* UI::GetImageRenderer() const {
   return imageRenderer_;
 }
 
+CollisionComponent* UI::GetCollisionComponent() const {
+  return collision_;
+}
+
 bool UI::Save(std::string_view filePath) {
   if (nullptr == renderTexture_) {
     return false;

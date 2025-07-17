@@ -16,7 +16,6 @@ class ToolActor
 
   bool Initialize(UI* ui);
 
-
   ImageRenderer* GetImageRenderer() const;
 
   IImage* GetImage() const;

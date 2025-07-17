@@ -108,8 +108,8 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
-  pRender_->SetImageRenderType(ImageRenderType::Center);
-  //pRender_->SetImageRenderType(ImageRenderType::Bottom);
+  //pRender_->SetImageRenderType(ImageRenderType::Center);
+  pRender_->SetImageRenderType(ImageRenderType::Bottom);
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
 

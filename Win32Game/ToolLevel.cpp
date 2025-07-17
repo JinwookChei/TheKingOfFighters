@@ -37,10 +37,10 @@ ToolLevel::ToolLevel()
 
   // VIEWPORT
   //!!!!!!!!!!!! 주의!!!!!!!!! - IORI
-  // IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
-  // ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
+  IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
+  ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
+  const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
 
   //!!!!!!!!!!!! 주의!!!!!!!!! - CHANG
   // IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang Koehan_Box.png", 1);
@@ -49,60 +49,14 @@ ToolLevel::ToolLevel()
   // const std::string& writeFilePath("..\\ContentsResource\\CSV\\Chang_new.csv");
 
   //!!!!!!!!!!!! 주의!!!!!!!!! - IMAGES
-  // IFileImage* healthBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HealthBar.png", 1);
-  // healthBarImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\HealthBar.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\HealthBar_new.csv");
-
-  // IFileImage* healthImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Health.png", 1);
-  // healthImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\Health.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\Health_new.csv");
-
-  // IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HitEffect01.png", 1);
-  // hitEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{128, 0, 255, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\HitEffect01.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\HitEffect01_new.csv");
-
-  // IFileImage* guardEffectImage01 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GuardEffect01.png", 1);
-  // guardEffectImage01->CalculateTransformFromDrawBoxImage(Color8Bit{103, 167, 141, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\GuardEffect01.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\GuardEffect01_new.csv");
-
-  // IFileImage* guardEffectImage02 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GuardEffect02.png", 1);
-  // guardEffectImage02->CalculateTransformFromDrawBoxImage(Color8Bit{34, 177, 76, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\GuardEffect02.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\GuardEffect02_new.csv");
-
-  // IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\CastingEffectImage_Box.png", 1);
-  // castingEffectImage->CalculateTransformFromDrawBoxImage(Color8Bit{108, 156, 114, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\CastingEffect.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\CastingEffect_new.csv");
-
-  // IFileImage* mpBarImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\MPBar_Box.png", 1);
-  // mpBarImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\MPBar.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\MPBar_new.csv");
-
-  // IFileImage* mpImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\MP_Box.png", 1);
-  // mpImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\MP.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\MP_new.csv");
-
-  // IFileImage* skillPointImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\SkillPoint_Box.png", 1);
-  // skillPointImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  // const std::string& readFilePath("..\\ContentsResource\\CSV\\SkillPoint.csv");
-  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\SkillPoint_new.csv");
-
-  IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\PlayerLabel_Box.png", 1);
-  effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
-  const std::string& readFilePath("..\\ContentsResource\\CSV\\PlayerLabelImage.csv");
-  const std::string& writeFilePath("..\\ContentsResource\\CSV\\PlayerLabelImage_new.csv");
+  // IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\PlayerLabel_Box.png", 1);
+  // effectImage->CalculateTransformFromDrawBoxImage(Color8Bit{0, 0, 0, 0}, Color8Bit::Magenta);
+  // const std::string& readFilePath("..\\ContentsResource\\CSV\\PlayerLabelImage.csv");
+  // const std::string& writeFilePath("..\\ContentsResource\\CSV\\PlayerLabelImage_new.csv");
 
   UI* ViewPortUI = SpawnActor<UI>();
   ViewPortUI->SetPosition(Vector(backbufferScale.HalfX(), backbufferScale.HalfY()));
-  ViewPortUI->SetScale({800.0f, 800.0f});
-  ViewPortUI->MakeCollision();
+  ViewPortUI->SetScale(backbufferScale);
   ViewPortUI->SetOriginColor(Color8Bit::Magenta);
   ViewPortUI->ChangeClearColor_(false);
 
@@ -120,16 +74,17 @@ ToolLevel::ToolLevel()
   }
 
   // ViewPortImage* viewPortImage = ViewPortUI->CreateUIComponent<ViewPortImage>();
+  CollisionBox* pushBox = ViewPortUI->CreateUIComponent<CollisionBox>();
+  pushBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_PushBox);
+  CollisionBox* grabBox = ViewPortUI->CreateUIComponent<CollisionBox>();
+  grabBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_GrabBox);
   CollisionBox* hitBoxTop = ViewPortUI->CreateUIComponent<CollisionBox>();
   hitBoxTop->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_HitBoxTop);
   CollisionBox* hitBoxBottom = ViewPortUI->CreateUIComponent<CollisionBox>();
   hitBoxBottom->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_HitBoxBottom);
   CollisionBox* attackBox = ViewPortUI->CreateUIComponent<CollisionBox>();
   attackBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_AttackBox);
-  CollisionBox* pushBox = ViewPortUI->CreateUIComponent<CollisionBox>();
-  pushBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_PushBox);
-  CollisionBox* grabBox = ViewPortUI->CreateUIComponent<CollisionBox>();
-  grabBox->Initialize(toolActor_, imageControlBox, CollisionBoxType::CBT_GrabBox);
+
 
   // CREATE COLLISION BUTTON
   UI* createHitBoxTopUI = SpawnActor<UI>();
@@ -619,6 +574,7 @@ ToolLevel::ToolLevel()
   imageIndexTextComponent_->SetPosition({100.0f, 25.0f});
 
   // TOOLS
+  ViewPortUI->MakeCollision();
 }
 
 ToolLevel::~ToolLevel() {
@@ -636,12 +592,14 @@ void ToolLevel::Tick(unsigned long long deltaTick) {
     return;
   }
 
-  if (InputManager::Instance()->IsDown(VK_F1)) {
-    SetDebugRender(!GetDebugRender());
-  }
+  if (true == InputManager::Instance()->IsAnyKeyPress()) {
+    if (InputManager::Instance()->IsDown(VK_F1)) {
+      SetDebugRender(!GetDebugRender());
+    }
 
-  if (InputManager::Instance()->IsDown(VK_F2)) {
-    SetCollisionRender(!GetCollisionRender());
+    if (InputManager::Instance()->IsDown(VK_F2)) {
+      SetCollisionRender(!GetCollisionRender());
+    }
   }
 
   unsigned int imageIndex = toolActor_->GetImageIndex();
