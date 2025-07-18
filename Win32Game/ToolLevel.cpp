@@ -89,7 +89,7 @@ ToolLevel::ToolLevel()
   // CREATE COLLISION BUTTON
   UI* createHitBoxTopUI = SpawnActor<UI>();
   createHitBoxTopUI->SetOriginColor(Color8Bit::CyanAlpha);
-  createHitBoxTopUI->SetPosition(Vector(1500.0f, 100.0f));
+  createHitBoxTopUI->SetPosition(Vector(700.0f, 800.0f));
   createHitBoxTopUI->SetScale({200.0f, 50.0f});
   createHitBoxTopUI->MakeCollision();
   createHitBoxTopUI->SetOriginColor({0, 0, 255, 255});
@@ -100,7 +100,7 @@ ToolLevel::ToolLevel()
 
   UI* deleteHitBoxTopUI = SpawnActor<UI>();
   deleteHitBoxTopUI->SetOriginColor(Color8Bit::CyanAlpha);
-  deleteHitBoxTopUI->SetPosition(Vector(1700.0f, 100.0f));
+  deleteHitBoxTopUI->SetPosition(Vector(900.0f, 800.0f));
   deleteHitBoxTopUI->SetScale({200.0f, 50.0f});
   deleteHitBoxTopUI->MakeCollision();
   deleteHitBoxTopUI->SetOriginColor({0, 0, 255, 255});
@@ -111,7 +111,7 @@ ToolLevel::ToolLevel()
 
   UI* createHitBoxBottomUI = SpawnActor<UI>();
   createHitBoxBottomUI->SetOriginColor(Color8Bit::CyanAlpha);
-  createHitBoxBottomUI->SetPosition(Vector(1500.0f, 250.0f));
+  createHitBoxBottomUI->SetPosition(Vector(1100.0f, 800.0f));
   createHitBoxBottomUI->SetScale({200.0f, 50.0f});
   createHitBoxBottomUI->MakeCollision();
   createHitBoxBottomUI->SetOriginColor({150, 100, 255, 255});
@@ -122,7 +122,7 @@ ToolLevel::ToolLevel()
 
   UI* deleteHitBoxBottomUI = SpawnActor<UI>();
   deleteHitBoxBottomUI->SetOriginColor(Color8Bit::CyanAlpha);
-  deleteHitBoxBottomUI->SetPosition(Vector(1700.0f, 250.0f));
+  deleteHitBoxBottomUI->SetPosition(Vector(1300.0f, 800.0f));
   deleteHitBoxBottomUI->SetScale({200.0f, 50.0f});
   deleteHitBoxBottomUI->MakeCollision();
   deleteHitBoxBottomUI->SetOriginColor({150, 100, 255, 255});
@@ -133,7 +133,7 @@ ToolLevel::ToolLevel()
 
   UI* createAttackBoxUI = SpawnActor<UI>();
   createAttackBoxUI->SetOriginColor(Color8Bit::CyanAlpha);
-  createAttackBoxUI->SetPosition(Vector(1500.0f, 400.0f));
+  createAttackBoxUI->SetPosition(Vector(700.0f, 900.0f));
   createAttackBoxUI->SetScale({200.0f, 50.0f});
   createAttackBoxUI->MakeCollision();
   createAttackBoxUI->SetOriginColor({255, 0, 0, 255});
@@ -144,7 +144,7 @@ ToolLevel::ToolLevel()
 
   UI* deleteAttackBoxUI = SpawnActor<UI>();
   deleteAttackBoxUI->SetOriginColor(Color8Bit::CyanAlpha);
-  deleteAttackBoxUI->SetPosition(Vector(1700.0f, 400.0f));
+  deleteAttackBoxUI->SetPosition(Vector(900.0f, 900.0f));
   deleteAttackBoxUI->SetScale({200.0f, 50.0f});
   deleteAttackBoxUI->MakeCollision();
   deleteAttackBoxUI->SetOriginColor({255, 0, 0, 255});
@@ -155,7 +155,7 @@ ToolLevel::ToolLevel()
 
   UI* createPushBoxUI = SpawnActor<UI>();
   createPushBoxUI->SetOriginColor(Color8Bit::CyanAlpha);
-  createPushBoxUI->SetPosition(Vector(1500.0f, 550.0f));
+  createPushBoxUI->SetPosition(Vector(1100.0f, 900.0f));
   createPushBoxUI->SetScale({200.0f, 50.0f});
   createPushBoxUI->MakeCollision();
   createPushBoxUI->SetOriginColor({255, 255, 255, 255});
@@ -166,7 +166,7 @@ ToolLevel::ToolLevel()
 
   UI* deletePushBoxUI = SpawnActor<UI>();
   deletePushBoxUI->SetOriginColor(Color8Bit::CyanAlpha);
-  deletePushBoxUI->SetPosition(Vector(1700.0f, 550.0f));
+  deletePushBoxUI->SetPosition(Vector(1300.0f, 900.0f));
   deletePushBoxUI->SetScale({200.0f, 50.0f});
   deletePushBoxUI->MakeCollision();
   deletePushBoxUI->SetOriginColor({255, 255, 255, 255});
@@ -177,7 +177,7 @@ ToolLevel::ToolLevel()
 
   UI* createGrabBoxUI = SpawnActor<UI>();
   createGrabBoxUI->SetOriginColor(Color8Bit::CyanAlpha);
-  createGrabBoxUI->SetPosition(Vector(1500.0f, 700.0f));
+  createGrabBoxUI->SetPosition(Vector(1500.0f, 900.0f));
   createGrabBoxUI->SetScale({200.0f, 50.0f});
   createGrabBoxUI->MakeCollision();
   createGrabBoxUI->SetOriginColor({255, 255, 0, 255});
@@ -188,7 +188,7 @@ ToolLevel::ToolLevel()
 
   UI* deleteGrabBoxUI = SpawnActor<UI>();
   deleteGrabBoxUI->SetOriginColor(Color8Bit::CyanAlpha);
-  deleteGrabBoxUI->SetPosition(Vector(1700.0f, 700.0f));
+  deleteGrabBoxUI->SetPosition(Vector(1700.0f, 900.0f));
   deleteGrabBoxUI->SetScale({200.0f, 50.0f});
   deleteGrabBoxUI->MakeCollision();
   deleteGrabBoxUI->SetOriginColor({255, 255, 0, 255});
