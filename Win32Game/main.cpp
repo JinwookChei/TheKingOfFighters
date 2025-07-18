@@ -64,7 +64,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     return -1;
   }
 
-  GEngineCore->ChangeLevel<KOFLevel>();
+  GEngineCore->ChangeLevel<ToolLevel>();
 
   GEngineCore->EngineLoop();
 

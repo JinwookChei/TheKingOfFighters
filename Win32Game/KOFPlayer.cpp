@@ -117,7 +117,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pUI_ = CreateImageRenderFIFO();
   pUI_->SetImageRenderType(ImageRenderType::Center);
   pUI_->SetLocalScale({3.0f, 3.0f});
-  pUI_->SetPosition({0.0f, -300.0f});
+  pUI_->SetPosition({0.0f, -510.0f});
   pUI_->SetTransparentColor({0,0,0,0});
   IFileImage* youUiPlayer = nullptr;
   youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_PlayerLabel);

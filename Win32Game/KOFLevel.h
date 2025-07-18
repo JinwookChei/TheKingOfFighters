@@ -109,4 +109,6 @@ class KOFLevel final
   float levelRightBoundary_;
 
   float screenBoundaryWidth_;
+
+  const float groundHeight_ = 1000;
 };

@@ -15,6 +15,23 @@ void NextImageButton::BeginPlay() {
 }
 
 void NextImageButton::Tick(unsigned long long curTick) {
+  if (false == InputManager::Instance()->IsAnyKeyPress()) {
+    return;
+  }
+
+  if (true == InputManager::Instance()->IsAnyKeyPress()) {
+    if (InputManager::Instance()->IsDown(VK_RIGHT)) {
+      if (nextImageType_ == NextImage_Next) {
+        ClickDownEvent();
+      }
+    }
+
+    if (InputManager::Instance()->IsDown(VK_LEFT)) {
+      if (nextImageType_ == NextImage_Prev) {
+        ClickDownEvent();
+      }
+    }
+  }
 }
 
 void NextImageButton::ClickDownEvent() {

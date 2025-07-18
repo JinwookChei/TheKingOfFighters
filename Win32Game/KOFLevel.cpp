@@ -77,15 +77,15 @@ void KOFLevel::BeginPlay() {
 
   // PLAYER SET
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, groundHeight_);
   pPlayer1_->SetPlayerOnLeft(true);
   /*pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 170.0f);*/
+  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);*/
   pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
   pPlayer2_->SetPlayerOnLeft(false);
   //pPlayer2_ = SpawnActor<AIiori>(ActorGroupEngineType::ActorGroupEngineType_None);
-  //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, backGroundImageScale.Y * 0.5f + 250.0f);
+  //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
   //pPlayer2_->SetPlayerOnLeft(false);
   
 

@@ -50,8 +50,9 @@ void CreateCollisionButton::ClickDownEvent() {
   IFileImage* pFileImage = (IFileImage*)pImage;
   unsigned int imageIndex = bindToolActor_->GetImageIndex();
   ImageRenderType  imageRenderType = bindToolActor_->GetImageRenderer()->GetImageRenderType();
-  Vector localScale = bindToolActor_->GetImageRenderer()->GetLocalScale();
-  
+  Vector localScale = bindToolActor_->GetImageRenderer()->GetLocalScale();  
+  Vector imagePostionOffSet = pFileImage->GetImagePositionOffSet(imageIndex);
+
   CollisionInfo* pCollisionInfo;
   if (false == pFileImage->GetCollisionBoxInfo(imageIndex, collisionBoxType_, &pCollisionInfo)) {
     return;
@@ -59,39 +60,53 @@ void CreateCollisionButton::ClickDownEvent() {
 
   pCollisionInfo->hasCollision_ = true;
   pCollisionInfo->scale_ = pFileImage->GetScale(imageIndex) * localScale;
+  pCollisionInfo->position_ = imagePostionOffSet;
 
   switch (imageRenderType) {
     case ImageRenderType::Center:
-      pCollisionInfo->position_ = {0.0f, 0.0f};
+      //pCollisionInfo->position_ = {0.0f, 0.0f};
       break;
     case ImageRenderType::Left:
-      pCollisionInfo->position_ = {+pCollisionInfo->scale_.HalfX(), 0.0f};
+      //pCollisionInfo->position_ = {+pCollisionInfo->scale_.HalfX(), 0.0f};
+      pCollisionInfo->position_.X += pCollisionInfo->scale_.HalfX();
       break;
     case ImageRenderType::Right:
-      pCollisionInfo->position_ = {-pCollisionInfo->scale_.HalfX(), 0.0f};
+      //pCollisionInfo->position_ = {-pCollisionInfo->scale_.HalfX(), 0.0f};
+      pCollisionInfo->position_.X -= pCollisionInfo->scale_.HalfX();
       break;
     case ImageRenderType::Top:
-      pCollisionInfo->position_ = {0.0f, +pCollisionInfo->scale_.HalfY()};
+      //pCollisionInfo->position_ = {0.0f, +pCollisionInfo->scale_.HalfY()};
+      pCollisionInfo->position_.Y += pCollisionInfo->scale_.HalfY();
       break;
     case ImageRenderType::Bottom:
-      pCollisionInfo->position_ = {0.0f, -pCollisionInfo->scale_.HalfY()};
+      //pCollisionInfo->position_ = {0.0f, -pCollisionInfo->scale_.HalfY()};
+      pCollisionInfo->position_.Y -= pCollisionInfo->scale_.HalfY();
       break;
     case ImageRenderType::LeftTop:
-      pCollisionInfo->position_ = {+pCollisionInfo->scale_.HalfX(), +pCollisionInfo->scale_.HalfY()};
+      //pCollisionInfo->position_ = {+pCollisionInfo->scale_.HalfX(), +pCollisionInfo->scale_.HalfY()};
+      pCollisionInfo->position_.X += pCollisionInfo->scale_.HalfX();
+      pCollisionInfo->position_.Y += pCollisionInfo->scale_.HalfY();
       break;
     case ImageRenderType::LeftBottom:
-      pCollisionInfo->position_ = {+pCollisionInfo->scale_.HalfX(), -pCollisionInfo->scale_.HalfY()};
+      //pCollisionInfo->position_ = {+pCollisionInfo->scale_.HalfX(), -pCollisionInfo->scale_.HalfY()};
+      pCollisionInfo->position_.X += pCollisionInfo->scale_.HalfX();
+      pCollisionInfo->position_.Y -= pCollisionInfo->scale_.HalfY();
       break;
     case ImageRenderType::RightTop:
-      pCollisionInfo->position_ = {-pCollisionInfo->scale_.HalfX(), +pCollisionInfo->scale_.HalfY()};
+      //pCollisionInfo->position_ = {-pCollisionInfo->scale_.HalfX(), +pCollisionInfo->scale_.HalfY()};
+      pCollisionInfo->position_.X -= pCollisionInfo->scale_.HalfX();
+      pCollisionInfo->position_.Y += pCollisionInfo->scale_.HalfY();
       break;
     case ImageRenderType::RightBottom:
-      pCollisionInfo->position_ = {-pCollisionInfo->scale_.HalfX(), -pCollisionInfo->scale_.HalfY()};
+      //pCollisionInfo->position_ = {-pCollisionInfo->scale_.HalfX(), -pCollisionInfo->scale_.HalfY()};
+      pCollisionInfo->position_.X -= pCollisionInfo->scale_.HalfX();
+      pCollisionInfo->position_.Y -= pCollisionInfo->scale_.HalfY();
       break;
     default:
-      pCollisionInfo->position_ = {0.0f, 0.0f};
       break;
   }
+
+    
 }
 
 void CreateCollisionButton::Render(IRenderTexture* renderTexture) {

@@ -6,10 +6,14 @@ enum CrossHairControlType {
   CrossHairControlType_SuperPlusRow,
   CrossHairControlType_MinusRow,
   CrossHairControlType_SuperMinusRow,
-  CrossHairControlType_PlusCol,
-  CrossHairControlType_SuperPlusCol,
-  CrossHairControlType_MinusCol,
-  CrossHairControlType_SuperMinusCol,
+  CrossHairControlType_PlusCol1,
+  CrossHairControlType_SuperPlusCol1,
+  CrossHairControlType_MinusCol1,
+  CrossHairControlType_SuperMinusCol1,
+  CrossHairControlType_PlusCol2,
+  CrossHairControlType_SuperPlusCol2,
+  CrossHairControlType_MinusCol2,
+  CrossHairControlType_SuperMinusCol2,
   CrossHairControlType_Reset,
   CrossHairControlType_MAX
 };

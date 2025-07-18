@@ -16,9 +16,13 @@ class CrossHair final
 
   void MinusRowOffSet();
 
-  void PlusColOffSet();
+  void PlusColOffSet1();
 
-  void MinusColOffSet();
+  void MinusColOffSet1();
+
+  void PlusColOffSet2();
+
+  void MinusColOffSet2();
 
   void RowColReset();
 
@@ -26,7 +30,8 @@ class CrossHair final
   void Render(struct IRenderTexture* renderTexture) override;
 
  private:
-  float rowOffSet;
+  float rowOffSet_;
 
-  float colOffSet;
+  float colOffSet1_;
+  float colOffSet2_;
 };
