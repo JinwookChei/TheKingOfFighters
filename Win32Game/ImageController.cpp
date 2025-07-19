@@ -17,9 +17,9 @@ void ImageController::Tick(unsigned long long curTick) {
   // Drag Move
   Vector curMousePosition = GEngineCore->GetMousePosition();
   if (IsMouseClick()) {
-    Vector deltaPosition = curMousePosition - prevMousePosition_;
+    //Vector deltaPosition = curMousePosition - prevMousePosition_;
 
-    bindActor_->AddPositionOffSet(deltaPosition);
+    //bindActor_->AddPositionOffSet(deltaPosition);
   }
 
   // SetPosition
