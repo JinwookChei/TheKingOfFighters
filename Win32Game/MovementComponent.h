@@ -3,7 +3,8 @@
 #include <initializer_list>
 
 enum MOVEMENT_STATE {
-  MOVSTATE_Move = 0,
+  MOVSTATE_Idle = 0,
+  MOVSTATE_Move,
   MOVSTATE_Dash,
   MOVSTATE_BackStep,
   MOVSTATE_Jump,
@@ -23,9 +24,7 @@ class MovementComponent final
 
   bool Initialize(const Vector& startPosition);
 
-  bool EqualMovementState(std::initializer_list<MOVEMENT_STATE> movStateList);
-  
-  bool ContainMovementState(std::initializer_list<MOVEMENT_STATE> movStateList);
+  MOVEMENT_STATE GetMovementState() const;
 
   void UpdateMove(unsigned long long deltaTick);
 
@@ -76,7 +75,7 @@ class MovementComponent final
 
   Vector preFramePosition_;
 
-  std::bitset<MOVSTATE_Max> movementStateBitset_;
+  MOVEMENT_STATE curMovementState_;
 
   // MOVE
   Vector moveDir_;

@@ -11,6 +11,7 @@ float Lerp(float a, float b, float t) {
 MovementComponent::MovementComponent()
     : startPosition_({0.0f, 0.0f}),
       preFramePosition_({0.0f, 0.0f}),
+      curMovementState_(MOVEMENT_STATE::MOVSTATE_Idle),
       // MOVE
       moveDir_({0.0f, 0.0f}),
       // DASH
@@ -37,7 +38,7 @@ MovementComponent::~MovementComponent() {
 }
 
 void MovementComponent::BeginPlay() {
-  movementStateBitset_.reset();
+  curMovementState_ = MOVEMENT_STATE::MOVSTATE_Idle;
 }
 
 void MovementComponent::Tick(unsigned long long deltaTick) {
@@ -73,27 +74,15 @@ bool MovementComponent::Initialize(const Vector& startPosition) {
   return true;
 }
 
-bool MovementComponent::EqualMovementState(std::initializer_list<MOVEMENT_STATE> movStateList) {
-  std::bitset<MOVSTATE_Max> temp;
-  for (auto state : movStateList) {
-    temp.set(state);
-  }
-  return movementStateBitset_ == temp;
-}
-
-bool MovementComponent::ContainMovementState(std::initializer_list<MOVEMENT_STATE> movStateList) {
-  for (auto state : movStateList) {
-    if (movementStateBitset_.test(state)) {
-      return true;
-    }
-  }
-  return false;
+MOVEMENT_STATE MovementComponent::GetMovementState() const {
+  return curMovementState_;
 }
 
 void MovementComponent::UpdateMove(unsigned long long deltaTick) {
-  if (false == movementStateBitset_.test(MOVSTATE_Move)) {
+  if (curMovementState_ != MOVSTATE_Move) {
     return;
   }
+
   Actor* pOwner = GetOwner();
   if (nullptr == pOwner) {
     return;
@@ -104,7 +93,7 @@ void MovementComponent::UpdateMove(unsigned long long deltaTick) {
   pOwner->SetPosition(movePosition);
 
   if (Vector({0.0f, 0.0f}) == moveDir_) {
-    movementStateBitset_.reset(MOVSTATE_Move);
+    curMovementState_ = MOVSTATE_Idle;
   }
 
   moveDir_ = {0.0f, 0.0f};
@@ -114,8 +103,7 @@ void MovementComponent::Move(bool isRightDirection) {
   if (false == isGrounded_) {
     return;
   }
-
-  movementStateBitset_.set(MOVSTATE_Move);
+  curMovementState_ = MOVSTATE_Move;
 
   if (isRightDirection) {
     moveDir_ = Vector::Right * moveVelocity_;
@@ -129,7 +117,7 @@ void MovementComponent::MoveBack(bool isRightDirection) {
     return;
   }
 
-  movementStateBitset_.set(MOVSTATE_Move);
+  curMovementState_ = MOVSTATE_Move;
 
   if (isRightDirection) {
     moveDir_ = Vector::Left * moveBackVelocity_;
@@ -142,7 +130,8 @@ void MovementComponent::Run(bool isRightDirection) {
   if (false == isGrounded_) {
     return;
   }
-  movementStateBitset_.set(MOVSTATE_Move);
+
+  curMovementState_ = MOVSTATE_Move;
 
   if (isRightDirection) {
     moveDir_ = Vector::Right * runVelocity_;
@@ -152,7 +141,7 @@ void MovementComponent::Run(bool isRightDirection) {
 }
 
 void MovementComponent::UpdateJump(unsigned long long deltaTick) {
-  if (false == movementStateBitset_.test(MOVSTATE_Jump)) {
+  if (curMovementState_ != MOVSTATE_Jump) {
     return;
   }
   Actor* pOwner = GetOwner();
@@ -173,7 +162,7 @@ void MovementComponent::UpdateJump(unsigned long long deltaTick) {
   if (jumpPosition.Y >= startPosition_.Y) {
     jumpPosition.Y = startPosition_.Y;
     curJumpVelocity_ = {0.0f, 0.0f};
-    movementStateBitset_.reset(MOVSTATE_Jump);
+    curMovementState_ = MOVSTATE_Idle;
     movementSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_Land);
   }
 
@@ -182,7 +171,7 @@ void MovementComponent::UpdateJump(unsigned long long deltaTick) {
 
 void MovementComponent::Jump(bool isRightDirection, Vector normalJumpForce) {
   if (isGrounded_) {
-    movementStateBitset_.set(MOVSTATE_Jump);
+    curMovementState_ = MOVSTATE_Jump;
     if (isRightDirection == true) {
       curJumpVelocity_ = normalJumpForce;
     } else {
@@ -194,7 +183,7 @@ void MovementComponent::Jump(bool isRightDirection, Vector normalJumpForce) {
 
 void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
   if (isGrounded_) {
-    movementStateBitset_.set(MOVSTATE_Jump);
+    curMovementState_ = MOVSTATE_Jump;
     if (isRightDirection) {
       if (isRunning) {
         curJumpVelocity_ = fowardJumpForceInRunning_;
@@ -229,9 +218,10 @@ bool MovementComponent::GetIsGround() const {
 }
 
 void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
-  if (false == movementStateBitset_.test(MOVSTATE_BackStep)) {
+  if (curMovementState_ != MOVSTATE_BackStep) {
     return;
   }
+
   Actor* pOwner = GetOwner();
   if (nullptr == pOwner) {
     return;
@@ -242,7 +232,7 @@ void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
 
   if (t >= 1.0f) {
     t = 1.0f;
-    movementStateBitset_.reset(MOVSTATE_BackStep);
+    curMovementState_ = MOVSTATE_Idle;
   }
 
   Vector backStepPostion;
@@ -264,7 +254,7 @@ void MovementComponent::BackStep(bool isRightDirection) {
     return;
   }
 
-  movementStateBitset_.set(MOVSTATE_BackStep);
+  curMovementState_ = MOVSTATE_BackStep;
   backstepTimer_ = 0.0f;
 
   if (isRightDirection) {
@@ -279,7 +269,7 @@ void MovementComponent::BackStep(bool isRightDirection) {
 }
 
 void MovementComponent::UpdateDash(unsigned long long deltaTick) {
-  if (false == movementStateBitset_.test(MOVSTATE_Dash)) {
+  if (curMovementState_ != MOVSTATE_Dash) {
     return;
   }
   Actor* pOwner = GetOwner();
@@ -292,7 +282,7 @@ void MovementComponent::UpdateDash(unsigned long long deltaTick) {
 
   if (t >= 1.0f) {
     t = 1.0f;
-    movementStateBitset_.reset(MOVSTATE_Dash);
+    curMovementState_ = MOVSTATE_Idle;
   }
 
   Vector dashPostion;
@@ -312,7 +302,7 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
     return;
   }
 
-  movementStateBitset_.set(MOVSTATE_Dash);
+  curMovementState_ = MOVSTATE_Dash;
   dashTimer_ = 0.0f;
   dashDuration_ = dashDuration;
   dashDistance_ = dashDistance;
@@ -329,7 +319,7 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
 }
 
 void MovementComponent::StopDash() {
-  movementStateBitset_.reset(MOVSTATE_Dash);
+  curMovementState_ = MOVSTATE_Dash;
 }
 
 void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
@@ -338,7 +328,7 @@ void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
     return;
   }
 
-  if (movementStateBitset_.test(MOVSTATE_KnockBack)) {
+  if (curMovementState_ == MOVSTATE_KnockBack) {
     if (curKnockBackVelocity_.X > 0) {
       curKnockBackVelocity_.X -= airResistance_ * deltaTick;
       curKnockBackVelocity_.Y -= gravity_ * deltaTick;
@@ -359,7 +349,7 @@ void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
       curKnockBackVelocity_.Y = 0.0f;
       if (std::fabs(curKnockBackVelocity_.X) <= knockBackMinVelocity_) {
         curKnockBackVelocity_.X = 0;
-        movementStateBitset_.reset(MOVSTATE_KnockBack);
+        curMovementState_ = MOVSTATE_Idle;
       }
     }
 
@@ -374,11 +364,7 @@ void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBack
     curKnockBackVelocity_ = {knockBackForce.X, knockBackForce.Y};
   }
 
-  if (movementStateBitset_.test(MOVSTATE_Jump)) {
-    movementStateBitset_.reset(MOVSTATE_Jump);
-  }
-
-  movementStateBitset_.set(MOVSTATE_KnockBack);
+  curMovementState_ = MOVSTATE_KnockBack;
 }
 
 float MovementComponent::GetPushTriggerDistance() const {

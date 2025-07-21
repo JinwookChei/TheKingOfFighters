@@ -77,7 +77,7 @@ void AIiori::Tick(unsigned long long deltaTick) {
 
     // TODO
     if (pStateComponent_->ContainPlayerState({PS_Jump})) {
-      if (false == pMovementComponent_->EqualMovementState({MOVSTATE_Jump})) {
+      if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
         UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
       }
     }

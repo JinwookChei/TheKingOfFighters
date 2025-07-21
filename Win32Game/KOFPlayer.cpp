@@ -71,7 +71,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
     // TODO
     if (pStateComponent_->ContainPlayerState({PS_Jump})) {
-      if (false == pMovementComponent_->EqualMovementState({MOVSTATE_Jump})) {
+      if (pMovementComponent_->GetMovementState() != MOVSTATE_Jump) {
         UpdateAnimState(PLAYER_ANIMTYPE_Idle, ANIMMOD_NONE);
       }
     }
@@ -89,8 +89,6 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   }
 
   UpdatePrevAnimationIndex();
-
-  
 }
 
 void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
@@ -108,7 +106,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
-  //pRender_->SetImageRenderType(ImageRenderType::Center);
+  // pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetImageRenderType(ImageRenderType::Bottom);
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
@@ -118,13 +116,12 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pUI_->SetImageRenderType(ImageRenderType::Center);
   pUI_->SetLocalScale({3.0f, 3.0f});
   pUI_->SetPosition({0.0f, -510.0f});
-  pUI_->SetTransparentColor({0,0,0,0});
+  pUI_->SetTransparentColor({0, 0, 0, 0});
   IFileImage* youUiPlayer = nullptr;
   youUiPlayer = ImgManager::GetIntance()->GetImg(IMGTYPE_PlayerLabel);
   if (isPlayer1) {
     pUI_->SetImage(youUiPlayer, 0);
-  }
-  else {
+  } else {
     pUI_->SetImage(youUiPlayer, 2);
   }
 
@@ -283,7 +280,7 @@ void KOFPlayer::UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFI
     soundChannel_ = SoundManager::Instance()->SoundPlay(pSoundInfo->soundType_);
   }
 
-  //CollisionReset();
+  CollisionReset();
 }
 
 const HealthComponent* KOFPlayer::GetHealthComponent() const {
@@ -295,11 +292,11 @@ const MPComponent* KOFPlayer::GetMPComponent() const {
 }
 
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
-  if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
+    if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
-  } else if (pMovementComponent_->ContainMovementState({MOVSTATE_Jump})) {
+  } else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     pMovementComponent_->KnockBack(PlayerOnLeft(), {35.0f, 50.0f});
@@ -647,6 +644,9 @@ void KOFPlayer::UpdateAttack() {
       }
 
       pTargetPlayer->HitEvent(pAttackInfo);
+      if (true == pAttackInfo->isMultiHit) {
+        CollisionReset();
+      }
 
       pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 
@@ -757,7 +757,7 @@ bool KOFPlayer::CheckPushCollision() {
     float pushTriggerDistance = pMovementComponent_->GetPushTriggerDistance();
     if (absPlayerDistance <= pushTriggerDistance) {
       pMovementComponent_->ApplyPushWeight(0.3f);
-      
+
       pTargetPlayer->SetPosition({(myPosition.X + pushTriggerDistance * PlayerOnLeftFlag()), TargetPostion.Y});
     }
   }
@@ -780,10 +780,10 @@ void KOFPlayer::UpdatePrevAnimationIndex() {
   }
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
-  if (curImageIndex != prevImageIndex_) {
-    prevImageIndex_ = curImageIndex;
-    CollisionReset();
-  }
+  // if (curImageIndex != prevImageIndex_) {
+  //   prevImageIndex_ = curImageIndex;
+  //   CollisionReset();
+  // }
 }
 
 Vector KOFPlayer::CharacterScale() const {
