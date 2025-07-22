@@ -161,7 +161,9 @@
     <ClCompile Include="AIiori.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
+    <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="GameInstance.cpp" />
+    <ClCompile Include="IoriCommandHandler.cpp" />
     <ClCompile Include="MP.cpp" />
     <ClCompile Include="MPComponent.cpp" />
     <ClCompile Include="Notification.cpp" />
@@ -219,7 +221,9 @@
     <ClInclude Include="AIiori.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
+    <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="GameInstance.h" />
+    <ClInclude Include="IoriCommandHandler.h" />
     <ClInclude Include="MP.h" />
     <ClInclude Include="MPComponent.h" />
     <ClInclude Include="Notification.h" />

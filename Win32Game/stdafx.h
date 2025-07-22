@@ -11,6 +11,11 @@
 #include <Windows.h>
 #include <string>
 #include <filesystem>
+#include <vector>
+#include <array>
+#include <bitset>
+#include <initializer_list>
+#include <functional>
 
 #include <Math/Math.h>
 #include <Math/Path.h>

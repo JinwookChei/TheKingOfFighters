@@ -62,7 +62,7 @@ void AIiori::Tick(unsigned long long deltaTick) {
     UpdateAttack();
   }
 
-  if (false == isControlLocked_) {
+  if (false == IsControlLocked()) {
     if (true == pRender_->IsAnimationEnd()) {
       pCommandComponent_->ExcuteTask();
     }

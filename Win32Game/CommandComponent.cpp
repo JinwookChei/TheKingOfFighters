@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CommandComponent.h"
-#include <functional>
+
 
 CommandComponent::CommandComponent()
     : pRootNode_(new CommandNode()),

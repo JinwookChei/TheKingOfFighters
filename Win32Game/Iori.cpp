@@ -16,6 +16,9 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
+#include "CommandHandler.h"
+#include "IoriCommandHandler.h"
+
 #define CLOSEDISTANCE 260.0f
 #define ANIMINTERVAL 35
 
@@ -49,9 +52,9 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(PLAYER_ANIMTYPE_Run, IMGTYPE_IoriImage, 49, 57, ANIMINTERVAL, true, 51);
   CallCreateAnimation(PLAYER_ANIMTYPE_RunEnd, IMGTYPE_IoriImage, 58, 60, ANIMINTERVAL, false, 59);
   CallCreateAnimation(PLAYER_ANIMTYPE_Jump, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  //CallCreateAnimation(PLAYER_ANIMTYPE_JumpStart, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  //CallCreateAnimation(PLAYER_ANIMTYPE_JumpIdle, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  //CallCreateAnimation(PLAYER_ANIMTYPE_Jump, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
+  // CallCreateAnimation(PLAYER_ANIMTYPE_JumpStart, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
+  // CallCreateAnimation(PLAYER_ANIMTYPE_JumpIdle, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
+  // CallCreateAnimation(PLAYER_ANIMTYPE_Jump, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
   CallCreateAnimation(PLAYER_ANIMTYPE_Dash, IMGTYPE_IoriImage, 70, 77, ANIMINTERVAL, false, 70);
   CallCreateAnimation(PLAYER_ANIMTYPE_RollingBack, IMGTYPE_IoriImage, 78, 87, ANIMINTERVAL, false, 78);
   CallCreateAnimation(PLAYER_ANIMTYPE_Guard, IMGTYPE_IoriImage, 541, 541, ANIMINTERVAL, false, 541);
@@ -250,18 +253,20 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pSkillComponent_->RegistSkill(IORI_SKILL_Ura306shikiShika, &Iori::Ura306shikiShika, this);
 
   // COMMAND
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, &Iori::Command_1, this);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, &Iori::Command_1, this);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, &Iori::Command_2, this);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, &Iori::Command_3, this);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, &Iori::Command_4, this);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, &Iori::Command_4, this);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, &Iori::Command_5, this);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, &Iori::Command_5, this);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, &Iori::Command_6, this);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, &Iori::Command_6, this);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_A}, &Iori::Command_7, this);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_C}, &Iori::Command_7, this);
+  pCommandHandler_ = (CommandHandler*)CreateComponent<IoriCommandHandler>();
+  if (nullptr == pCommandHandler_) {
+    __debugbreak();
+    return;
+  }
+  if (false == pCommandHandler_->Initialize(this, pCommandComponent_, pMovementComponent_, pSkillComponent_, pMPComponent_)) {
+    __debugbreak();
+    return;
+  }
+
+  if (false == pCommandHandler_->RegistCommands()) {
+    __debugbreak();
+    return;
+  }
 
   // PROJECTILE
   AttackInfo* pAttackInfo;
@@ -518,80 +523,6 @@ void Iori::CompareInputBitset() {
 
     UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
-  }
-}
-
-void Iori::Command_1() {
-  UpdateAnimState(IORI_ANIMTYPE_108ShikiYamiBarai);
-  pSkillComponent_->ActivateSkill(IORI_SKILL_108ShikiYamiBarai);
-}
-
-void Iori::Command_2() {
-  UpdateAnimState(PLAYER_ANIMTYPE_BackStep);
-  pMovementComponent_->BackStep((FacingRight()));
-}
-
-void Iori::Command_3() {
-  UpdateAnimState(PLAYER_ANIMTYPE_Run);
-}
-
-void Iori::Command_4() {
-  UpdateAnimState(IORI_ANIMTYPE_HyakushikiOniyaki);
-  pSkillComponent_->ActivateSkill(IORI_SKILL_HyakushikiOniyaki);
-}
-
-void Iori::Command_5() {
-  UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_1);
-  pSkillComponent_->ActivateSkill(IORI_SKILL_127ShikiAoiHana);
-}
-
-void Iori::Command_6() {
-  if (nullptr == pMPComponent_) {
-    return;
-  }
-  if (0 >= pMPComponent_->SkillPoint()) {
-    return;
-  }
-
-  Level* pLevel = GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
-
-  UpdateAnimState(PLAYER_ANIMTYPE_UltimateCasting);
-  pSkillComponent_->ActivateSkill(IORI_SKILL_1211ShikiYaOtome);
-  pMPComponent_->ReduceSkillPoint();
-  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
-  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
-  pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
-  pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
-}
-
-void Iori::Command_7() {
-  if (nullptr == pMPComponent_) {
-    return;
-  }
-  if (0 >= pMPComponent_->SkillPoint()) {
-    return;
-  }
-
-  SkillInfo* pCurSkillInfo = pSkillComponent_->GetCurrentActiveSkillInfo();
-  if (nullptr == pCurSkillInfo) {
-    return;
-  }
-
-  if (IORI_SKILL_1211ShikiYaOtome == pCurSkillInfo->skillTag_) {
-    pSkillComponent_->SetMiscTemp(true);
   }
 }
 
@@ -976,7 +907,6 @@ void Iori::Ura306shikiShika() {
         pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
       }
       if (356 == curImageIndex) {
-        
         pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
       }
       if (360 == curImageIndex) {
@@ -987,21 +917,21 @@ void Iori::Ura306shikiShika() {
       break;
     }
     case IORI_ANIMTYPE_Ura306shikiShika_2: {
-        if (363 == curImageIndex) {
+      if (363 == curImageIndex) {
         break;
       }
-        if (364 == curImageIndex) {
-          break;
-        }
-        if (365 == curImageIndex) {
-          break;
-        }
-        if (366 == curImageIndex) {
-          pAttackBox_->ResetHit();
-          pKOFLevel->DefreezeActors();
-          //pOpponentPlayer_->SetControlLocked(false);
-          break;
-        }
+      if (364 == curImageIndex) {
+        break;
+      }
+      if (365 == curImageIndex) {
+        break;
+      }
+      if (366 == curImageIndex) {
+        pAttackBox_->ResetHit();
+        pKOFLevel->DefreezeActors();
+        // pOpponentPlayer_->SetControlLocked(false);
+        break;
+      }
 
       if (370 == curImageIndex) {
         UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_3);
@@ -1019,7 +949,7 @@ void Iori::Ura306shikiShika() {
       }
 
       break;
-    }                            
+    }
     default:
       break;
   }

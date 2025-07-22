@@ -73,6 +73,9 @@
     <Filter Include="Contents\KOF\Actor\AI">
       <UniqueIdentifier>{1d9e99ac-6605-447c-92a7-b4af6cf1706a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Actor\PLayer\Iori">
+      <UniqueIdentifier>{bc843fc2-420e-411d-a2a7-f394fe0e5a15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -142,9 +145,6 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
     <ClCompile Include="Chang.cpp">
-      <Filter>Contents\KOF\Actor\PLayer</Filter>
-    </ClCompile>
-    <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClCompile>
     <ClCompile Include="KOFPlayer.cpp">
@@ -231,6 +231,15 @@
     <ClCompile Include="Ura306Shiki.cpp">
       <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
     </ClCompile>
+    <ClCompile Include="CommandHandler.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Iori.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+    </ClCompile>
+    <ClCompile Include="IoriCommandHandler.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -303,9 +312,6 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
     <ClInclude Include="Chang.h">
-      <Filter>Contents\KOF\Actor\PLayer</Filter>
-    </ClInclude>
-    <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClInclude>
     <ClInclude Include="KOFPlayer.h">
@@ -394,6 +400,15 @@
     </ClInclude>
     <ClInclude Include="Ura306Shiki.h">
       <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandHandler.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Iori.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+    </ClInclude>
+    <ClInclude Include="IoriCommandHandler.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

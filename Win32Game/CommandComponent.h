@@ -1,7 +1,6 @@
 #pragma once
-#include <initializer_list>
 #include "KOFPlayer.h"
-#include <functional>
+
 
 enum CommandKey {
   CK_None = -1,

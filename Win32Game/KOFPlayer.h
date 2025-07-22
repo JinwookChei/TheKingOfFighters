@@ -1,10 +1,8 @@
 #pragma once
-#include <vector>
-#include <array>
-#include <bitset>
 
 class MovementComponent;
 class CommandComponent;
+class CommandHandler;
 class SkillComponent;
 class ProjectileComponent;
 class AttackTable;
@@ -156,24 +154,13 @@ class KOFPlayer
 
   CommandComponent* pCommandComponent_;
 
+  CommandHandler* pCommandHandler_;
+
   ProjectileComponent* pProjectileComponent_;
 
   GhostEffect* pGhostEffect_;
 
   Vector characterScale_;
-
- public:
-  bool isPlayer1_;
-
-  unsigned long long animState_;
-
-  unsigned int prevImageIndex_;
-
-  bool isPlayerOnLeft_;
-
-  bool isFacingRight_;
-
-  bool isAtMapEdge_;
 
   std::bitset<8> inputPressBitSet_;
 
@@ -182,6 +169,19 @@ class KOFPlayer
   std::bitset<8> inputUpBitSet_;
 
   KOFPlayer* pOpponentPlayer_;
+
+  unsigned int prevImageIndex_;
+
+  private:
+  bool isPlayer1_;
+
+  unsigned long long animState_;
+
+  bool isPlayerOnLeft_;
+
+  bool isFacingRight_;
+
+  bool isAtMapEdge_;
 
   bool isControlLocked_;
 };
