@@ -4,14 +4,16 @@
 #include "KOFLevel.h"
 #include "StateComponent.h"
 
-float Lerp(float a, float b, float t) {
-  return a + (b - a) * t;
+float CalculateParabolaHeight(float height, float duration, unsigned long long t) {
+  float result = -(height / ((duration / 2.0f) * (duration / 2.0f))) * (t - (duration / 2.0f)) * (t - (duration / 2.0f)) + height;
+  return result;
 }
 
 MovementComponent::MovementComponent()
     : startPosition_({0.0f, 0.0f}),
       preFramePosition_({0.0f, 0.0f}),
       curMovementState_(MOVEMENT_STATE::MOVSTATE_Idle),
+      curVelocity_({0.0f, 0.0f}),
       // MOVE
       moveDir_({0.0f, 0.0f}),
       // DASH
@@ -21,12 +23,11 @@ MovementComponent::MovementComponent()
       dashStartPos_({0.0f, 0.0f}),
       dashEndPos_({0.0f, 0.0f}),
       // BACK STEP
-      backstepTimer_(0.0f),
-      backstepStartPos_({0.0f, 0.0f}),
-      backstepEndPos_({0.0f, 0.0f}),
+      backStepTimer_(0.0f),
+      backStepStartPos_({0.0f, 0.0f}),
+      backStepEndPos_({0.0f, 0.0f}),
       // JUMP
       isGrounded_(true),
-      curJumpVelocity_({0.0f, 0.0f}),
       // KNOCK BACK
       curKnockBackVelocity_({0.0f, 0.0f}),
       // PUSH
@@ -42,17 +43,31 @@ void MovementComponent::BeginPlay() {
 }
 
 void MovementComponent::Tick(unsigned long long deltaTick) {
+  switch (curMovementState_) {
+    case MOVSTATE_Idle:
+      UpdateIdle(deltaTick);
+      break;
+    case MOVSTATE_Move:
+      UpdateMove(deltaTick);
+      break;
+    case MOVSTATE_Dash:
+      UpdateDash(deltaTick);
+      break;
+    case MOVSTATE_BackStep:
+      UpdateBackStep(deltaTick);
+      break;
+    case MOVSTATE_Jump:
+      UpdateJump(deltaTick);
+      break;
+    case MOVSTATE_KnockBack:
+      UpdateKnockBack(deltaTick);
+      break;
+    case MOVSTATE_Max:
+    default:
+      break;
+  }
+
   UpdateGroundedState();
-
-  UpdateMove(deltaTick);
-
-  UpdateDash(deltaTick);
-
-  UpdateBackStep(deltaTick);
-
-  UpdateJump(deltaTick);
-
-  UpdateKnockBack(deltaTick);
 
   BroadcastClampedWidthOffset();
 
@@ -61,12 +76,8 @@ void MovementComponent::Tick(unsigned long long deltaTick) {
   ClampPositionToScreenBoundary();
 
   pushWeight_ = 1.0f;
-  Actor* pOwner = GetOwner();
-  if (nullptr == pOwner) {
-    return;
-  }
-  const Vector& curPosition = pOwner->GetPosition();
-  preFramePosition_ = pOwner->GetPosition();
+
+  UpdatePreframePosition();
 }
 
 bool MovementComponent::Initialize(const Vector& startPosition) {
@@ -76,6 +87,24 @@ bool MovementComponent::Initialize(const Vector& startPosition) {
 
 MOVEMENT_STATE MovementComponent::GetMovementState() const {
   return curMovementState_;
+}
+
+void MovementComponent::UpdateIdle(unsigned long long deltaTick) {
+  if (true == isGrounded_) {
+    curVelocity_ = {0.0f, 0.0f};
+    moveDir_ = {0.0f, 0.0f};
+  } else {
+    Actor* pOwner = GetOwner();
+    if (nullptr == pOwner) {
+      return;
+    }
+    const Vector& curPosition = pOwner->GetPosition();
+
+    curVelocity_.Y += gravity_ * deltaTick;
+    const Vector& movePosition = curPosition + curVelocity_;
+
+    pOwner->SetPosition(movePosition);
+  }
 }
 
 void MovementComponent::UpdateMove(unsigned long long deltaTick) {
@@ -89,7 +118,10 @@ void MovementComponent::UpdateMove(unsigned long long deltaTick) {
   }
   const Vector& curPosition = pOwner->GetPosition();
 
-  const Vector& movePosition = curPosition + moveDir_ * pushWeight_ * (float)deltaTick;
+  curVelocity_ = moveDir_ * pushWeight_ * (float)deltaTick;
+
+  const Vector& movePosition = curPosition + curVelocity_;
+
   pOwner->SetPosition(movePosition);
 
   if (Vector({0.0f, 0.0f}) == moveDir_) {
@@ -149,19 +181,21 @@ void MovementComponent::UpdateJump(unsigned long long deltaTick) {
     return;
   }
 
-  curJumpVelocity_.Y -= gravity_ * deltaTick;
+  moveDir_.Y = (moveDir_.Y + gravity_);
+  curVelocity_.X = moveDir_.X * (float)deltaTick;
+  curVelocity_.Y = moveDir_.Y * (float)deltaTick;
 
   const Vector& ownerPosition = pOwner->GetPosition();
 
   Vector jumpPosition = {
-      ownerPosition.X + curJumpVelocity_.X * deltaTick,  // X축 앞으로 이동
-      ownerPosition.Y - curJumpVelocity_.Y               // Y축 점프
-  };
+      ownerPosition.X + curVelocity_.X,
+      ownerPosition.Y + curVelocity_.Y};
 
   // 땅에 도착했는지 체크
   if (jumpPosition.Y >= startPosition_.Y) {
     jumpPosition.Y = startPosition_.Y;
-    curJumpVelocity_ = {0.0f, 0.0f};
+    curVelocity_ = {0.0f, 0.0f};
+    moveDir_ = {0.0f, 0.0f};
     curMovementState_ = MOVSTATE_Idle;
     movementSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_Land);
   }
@@ -169,15 +203,17 @@ void MovementComponent::UpdateJump(unsigned long long deltaTick) {
   pOwner->SetPosition(jumpPosition);
 }
 
-void MovementComponent::Jump(bool isRightDirection, Vector normalJumpForce) {
+void MovementComponent::Jump() {
   if (isGrounded_) {
     curMovementState_ = MOVSTATE_Jump;
-    if (isRightDirection == true) {
-      curJumpVelocity_ = normalJumpForce;
-    } else {
-      curJumpVelocity_.X = -normalJumpForce.X;
-      curJumpVelocity_.Y = normalJumpForce.Y;
-    }
+    moveDir_ = normalJumpForce_;
+  }
+}
+
+void MovementComponent::Jump(bool isRightDirection, const Vector& jumpForce_) {
+  if (isGrounded_) {
+    curMovementState_ = MOVSTATE_Jump;
+    moveDir_ = isRightDirection ? jumpForce_ : Vector{-jumpForce_.X, jumpForce_.Y};
   }
 }
 
@@ -186,15 +222,15 @@ void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
     curMovementState_ = MOVSTATE_Jump;
     if (isRightDirection) {
       if (isRunning) {
-        curJumpVelocity_ = fowardJumpForceInRunning_;
+        moveDir_ = fowardJumpForceInRunning_;
       } else {
-        curJumpVelocity_ = fowardJumpForceInWalking_;
+        moveDir_ = fowardJumpForceInWalking_;
       }
     } else {
       if (isRunning) {
-        curJumpVelocity_ = {-fowardJumpForceInRunning_.X, fowardJumpForceInRunning_.Y};
+        moveDir_ = {-fowardJumpForceInRunning_.X, fowardJumpForceInRunning_.Y};
       } else {
-        curJumpVelocity_ = {-fowardJumpForceInWalking_.X, fowardJumpForceInWalking_.Y};
+        moveDir_ = {-fowardJumpForceInWalking_.X, fowardJumpForceInWalking_.Y};
       }
     }
   }
@@ -206,8 +242,9 @@ void MovementComponent::UpdateGroundedState() {
     return;
   }
   const Vector& curPosition = pOwner->GetPosition();
-  if (std::abs(curPosition.Y - startPosition_.Y) < 0.0001f) {
+  if (startPosition_.Y - curPosition.Y <= 0.0f) {
     isGrounded_ = true;
+    pOwner->SetPosition({curPosition.X, startPosition_.Y});
   } else {
     isGrounded_ = false;
   }
@@ -227,21 +264,22 @@ void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
     return;
   }
 
-  backstepTimer_ += deltaTick;
-  float t = backstepTimer_ / backstepDuration_;
-
-  if (t >= 1.0f) {
-    t = 1.0f;
+  backStepTimer_ += deltaTick;
+  if (backStepTimer_ >= backStepDuration_) {
+    backStepTimer_ = 0.0f;
+    moveDir_ = {0.0f, 0.0f};
     curMovementState_ = MOVSTATE_Idle;
+    return;
   }
 
-  Vector backStepPostion;
-  backStepPostion.X = Lerp(backstepStartPos_.X, backstepEndPos_.X, t);
+  const Vector& ownerPosition = pOwner->GetPosition();
 
-  float height = -4 * backstepHeight_ * (t - 0.5f) * (t - 0.5f) + backstepHeight_;
-  backStepPostion.Y = startPosition_.Y - height;
+  curVelocity_.X = moveDir_.X * (float)deltaTick;
+  curVelocity_.Y = CalculateParabolaHeight(backStepHeight_, backStepDuration_, backStepTimer_) - moveDir_.Y;
+  moveDir_.Y = CalculateParabolaHeight(backStepHeight_, backStepDuration_, backStepTimer_);
 
-  pOwner->SetPosition(backStepPostion);
+  Vector backstepPosition = {ownerPosition.X + curVelocity_.X, ownerPosition.Y + curVelocity_.Y};
+  pOwner->SetPosition(backstepPosition);
 }
 
 void MovementComponent::BackStep(bool isRightDirection) {
@@ -255,16 +293,14 @@ void MovementComponent::BackStep(bool isRightDirection) {
   }
 
   curMovementState_ = MOVSTATE_BackStep;
-  backstepTimer_ = 0.0f;
+  backStepTimer_ = 0.0f;
 
   if (isRightDirection) {
-    backstepStartPos_ = owner->GetPosition();
-    backstepEndPos_ = owner->GetPosition();
-    backstepEndPos_.X -= backstepDistance_;
+    moveDir_.X = -backStepDistance_ / backStepDuration_;
+    moveDir_.Y = 0.0f;
   } else {
-    backstepStartPos_ = owner->GetPosition();
-    backstepEndPos_ = owner->GetPosition();
-    backstepEndPos_.X += backstepDistance_;
+    moveDir_.X = backStepDistance_ / backStepDuration_;
+    moveDir_.Y = 0.0f;
   }
 }
 
@@ -278,18 +314,20 @@ void MovementComponent::UpdateDash(unsigned long long deltaTick) {
   }
 
   dashTimer_ += deltaTick;
-  float t = dashTimer_ / dashDuration_;
-
-  if (t >= 1.0f) {
-    t = 1.0f;
+  if (dashTimer_ >= dashDuration_) {
+    dashTimer_ = 0.0f;
+    moveDir_ = {0.0f, 0.0f};
     curMovementState_ = MOVSTATE_Idle;
+    return;
   }
 
-  Vector dashPostion;
-  dashPostion.X = Lerp(dashStartPos_.X, dashEndPos_.X, t);
-  dashPostion.Y = startPosition_.Y;
+  const Vector& ownerPosition = pOwner->GetPosition();
 
-  pOwner->SetPosition(dashPostion);
+  curVelocity_.X = moveDir_.X * (float)deltaTick;
+  curVelocity_.Y = moveDir_.Y * (float)deltaTick;
+
+  Vector dashPosition = {ownerPosition.X + curVelocity_.X, ownerPosition.Y + curVelocity_.Y};
+  pOwner->SetPosition(dashPosition);
 }
 
 void MovementComponent::Dash(bool isRightDirection, float dashDuration, float dashDistance) {
@@ -308,13 +346,11 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
   dashDistance_ = dashDistance;
 
   if (isRightDirection) {
-    dashStartPos_ = owner->GetPosition();
-    dashEndPos_ = owner->GetPosition();
-    dashEndPos_.X += dashDistance_;
+    moveDir_.X = dashDistance_ / dashDuration_;
+    moveDir_.Y = 0.0f;
   } else {
-    dashStartPos_ = owner->GetPosition();
-    dashEndPos_ = owner->GetPosition();
-    dashEndPos_.X -= dashDistance_;
+    moveDir_.X = -dashDistance_ / dashDuration_;
+    moveDir_.Y = 0.0f;
   }
 }
 
@@ -328,40 +364,31 @@ void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
     return;
   }
 
-  if (curMovementState_ == MOVSTATE_KnockBack) {
-    if (curKnockBackVelocity_.X > 0) {
-      curKnockBackVelocity_.X -= airResistance_ * deltaTick;
-      curKnockBackVelocity_.Y -= gravity_ * deltaTick;
-    } else if (curKnockBackVelocity_.X <= 0) {
-      curKnockBackVelocity_.X += airResistance_ * deltaTick;
-      curKnockBackVelocity_.Y -= gravity_ * deltaTick;
-    }
+  moveDir_.X = (moveDir_.X >= 0) ? (moveDir_.X - airResistance_) : (moveDir_.X += airResistance_);
+  moveDir_.Y = (moveDir_.Y + gravity_);
 
-    const Vector& ownerPosition = pOwner->GetPosition();
-
-    Vector knockBackPosition = {
-        ownerPosition.X + curKnockBackVelocity_.X,  // X축 앞으로 이동
-        ownerPosition.Y - curKnockBackVelocity_.Y   // Y축 점프
-    };
-
-    if (knockBackPosition.Y >= startPosition_.Y) {
-      knockBackPosition.Y = startPosition_.Y;
-      curKnockBackVelocity_.Y = 0.0f;
-      if (std::fabs(curKnockBackVelocity_.X) <= knockBackMinVelocity_) {
-        curKnockBackVelocity_.X = 0;
-        curMovementState_ = MOVSTATE_Idle;
-      }
-    }
-
-    pOwner->SetPosition(knockBackPosition);
+  if (curVelocity_.X > 0.0f && moveDir_.X < 0.0f || curVelocity_.X < 0.0f && moveDir_.X > 0.0f) {
+    moveDir_.X = 0.0f;
+    curMovementState_ = MOVSTATE_Idle;
   }
+
+  curVelocity_.X = moveDir_.X * (float)deltaTick;
+  curVelocity_.Y = moveDir_.Y * (float)deltaTick;
+
+  const Vector& ownerPosition = pOwner->GetPosition();
+
+  Vector knockBackPosition = {
+      ownerPosition.X + curVelocity_.X,
+      ownerPosition.Y + curVelocity_.Y};
+
+  pOwner->SetPosition(knockBackPosition);
 }
 
 void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {
   if (isRightDirection) {
-    curKnockBackVelocity_ = {-knockBackForce.X, knockBackForce.Y};
+    moveDir_ = {-knockBackForce.X, knockBackForce.Y};
   } else {
-    curKnockBackVelocity_ = {knockBackForce.X, knockBackForce.Y};
+    moveDir_ = {knockBackForce.X, knockBackForce.Y};
   }
 
   curMovementState_ = MOVSTATE_KnockBack;
@@ -467,4 +494,25 @@ void MovementComponent::ApplyClampedWidthOffset(float clampOffset) {
 
   Vector curPosition = pOwner->GetPosition();
   pOwner->SetPosition({curPosition.X + clampOffset, curPosition.Y});
+}
+
+void MovementComponent::UpdatePreframePosition() {
+  Actor* pOwner = GetOwner();
+  if (nullptr == pOwner) {
+    return;
+  }
+  const Vector& curPosition = pOwner->GetPosition();
+  preFramePosition_ = pOwner->GetPosition();
+}
+
+bool MovementComponent::Falling() const {
+  bool result = curVelocity_.Y > 0.0f ? true : false;
+
+  return result;
+}
+
+bool MovementComponent::Rising() const {
+  bool result = curVelocity_.Y < 0.0f ? true : false;
+
+  return result;
 }

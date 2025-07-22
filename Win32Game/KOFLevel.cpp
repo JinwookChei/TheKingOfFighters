@@ -464,7 +464,7 @@ void KOFLevel::ReadyGame(unsigned long long deltaTick) {
 
 void KOFLevel::InitInProgressGame() {
   acuumDeltaTick_ = 0;
-  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
+  //backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
   HUD_->SetActive(true);
   pPlayer1_->SetControlLocked(false);
   pPlayer2_->SetControlLocked(false);

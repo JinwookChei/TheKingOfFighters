@@ -26,6 +26,8 @@ class MovementComponent final
 
   MOVEMENT_STATE GetMovementState() const;
 
+  void UpdateIdle(unsigned long long deltaTick);
+
   void UpdateMove(unsigned long long deltaTick);
 
   void Move(bool isRightDirection);
@@ -36,7 +38,9 @@ class MovementComponent final
 
   void UpdateJump(unsigned long long deltaTick);
 
-  void Jump(bool isRightDirection = true, Vector normalJumpForce = {0.0f, 75.0f});
+  void Jump();
+
+  void Jump(bool isRightDirection, const Vector& jumpForce_);
 
   void JumpForward(bool isRightDirection, bool isRunning);
 
@@ -70,6 +74,12 @@ class MovementComponent final
 
   void ApplyClampedWidthOffset(float clampOffset);
 
+  void UpdatePreframePosition();
+
+  bool Falling() const;
+
+  bool Rising() const;
+
  private:
   Vector startPosition_;
 
@@ -77,13 +87,15 @@ class MovementComponent final
 
   MOVEMENT_STATE curMovementState_;
 
+  Vector curVelocity_;
+
   // MOVE
   Vector moveDir_;
-  const float moveVelocity_ = 0.5f;
+  const float moveVelocity_ = 0.7f;
   const float runVelocity_ = 1.5f;
 
   // MOVE BACK
-  const float moveBackVelocity_ = 0.3f;
+  const float moveBackVelocity_ = 0.4f;
 
   // DASH
   float dashTimer_;
@@ -93,21 +105,21 @@ class MovementComponent final
   Vector dashEndPos_;
 
   // BACK STEP
-  float backstepTimer_;
-  const float backstepDuration_ = 170.0f;
-  const float backstepDistance_ = 280.0f;
-  const float backstepHeight_ = 110.0f;
-  Vector backstepStartPos_;
-  Vector backstepEndPos_;
+  float backStepTimer_;
+  const float backStepDuration_ = 180.0f;
+  const float backStepDistance_ = 340.0f;
+  const float backStepHeight_ = -200.0f;
+  Vector backStepStartPos_;
+  Vector backStepEndPos_;
 
   // JUMP
   bool isGrounded_;
-  const float gravity_ = 0.36f;
-  const float airResistance_ = 0.06f;
+  const float gravity_ = 0.45f;
+  const float airResistance_ = 0.09f;
 
-  Vector curJumpVelocity_;
-  const Vector fowardJumpForceInWalking_ = {0.7f, 75.0f};
-  const Vector fowardJumpForceInRunning_ = {1.1f, 75.0f};
+  const Vector normalJumpForce_ = {0.0f, -5.5f};
+  const Vector fowardJumpForceInWalking_ = {0.8f, -5.5f};
+  const Vector fowardJumpForceInRunning_ = {1.3f, -5.5f};
 
   // KNOCK BACK
   Vector curKnockBackVelocity_;
