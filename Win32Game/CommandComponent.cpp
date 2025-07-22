@@ -40,26 +40,6 @@ void CommandComponent::Tick(unsigned long long curTick) {
   }
 }
 
-bool CommandComponent::RegistCommand(std::initializer_list<CommandKey> command, std::function<void()> func) {
-  if (nullptr == pRootNode_) {
-    return false;
-  }
-
-  CommandNode* pCur;
-  pCur = pRootNode_;
-
-  for (auto iter = command.begin(); iter != command.end(); ++iter) {
-    if (nullptr == pCur->pSubNodes[*iter]) {
-      pCur->pSubNodes[*iter] = new CommandNode();
-    }
-    pCur = pCur->pSubNodes[*iter];
-  }
-
-  pCur->Task_ = func;
-
-  return true;
-}
-
 bool CommandComponent::isWaitingTask() const {
   if (nullptr != reservedTask_) {
     return true;

@@ -49,8 +49,28 @@ class CommandComponent
 
   void Tick(unsigned long long curTick) override;
 
-  bool RegistCommand(std::initializer_list<CommandKey> command, std::function<void()> func);
+  template<typename T>
+  bool RegistCommand(std::initializer_list<CommandKey> command, void (T::* funcPtr)(), T* owner) {
+      if (nullptr == pRootNode_) {
+        return false;
+      }
+    
+      CommandNode* pCur;
+      pCur = pRootNode_;
+    
+      for (auto iter = command.begin(); iter != command.end(); ++iter) {
+        if (nullptr == pCur->pSubNodes[*iter]) {
+          pCur->pSubNodes[*iter] = new CommandNode();
+        }
+        pCur = pCur->pSubNodes[*iter];
+      }
+    
+      pCur->Task_ = std::bind(funcPtr, owner);
+    
+      return true;
+  }
 
+  
   bool isWaitingTask() const;
 
   void ExcuteTask();

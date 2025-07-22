@@ -250,18 +250,18 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pSkillComponent_->RegistSkill(IORI_SKILL_Ura306shikiShika, &Iori::Ura306shikiShika, this);
 
   // COMMAND
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_1, this));
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, std::bind(&Iori::Command_1, this));
-  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, std::bind(&Iori::Command_2, this));
-  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, std::bind(&Iori::Command_3, this));
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_4, this));
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_4, this));
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_5, this));
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_5, this));
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, std::bind(&Iori::Command_6, this));
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, std::bind(&Iori::Command_6, this));
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_A}, std::bind(&Iori::Command_7, this));
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_C}, std::bind(&Iori::Command_7, this));
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, &Iori::Command_1, this);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, &Iori::Command_1, this);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, &Iori::Command_2, this);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, &Iori::Command_3, this);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, &Iori::Command_4, this);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, &Iori::Command_4, this);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, &Iori::Command_5, this);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, &Iori::Command_5, this);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, &Iori::Command_6, this);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, &Iori::Command_6, this);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_A}, &Iori::Command_7, this);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_C}, &Iori::Command_7, this);
 
   // PROJECTILE
   AttackInfo* pAttackInfo;
