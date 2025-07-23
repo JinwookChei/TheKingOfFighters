@@ -1,23 +1,7 @@
 #pragma once
+#include "AttackTable.h"
 
-struct AttackInfo;
 class ProjectileComponent;
-
-
-struct ProjectileInfo {
-
-  unsigned long long projectileTag_ = 0;
-
-  AttackInfo* pAttackInfo_ = nullptr;
-
-  Vector spawnPosition_ = {0.0f, 0.0f};
-
-  bool isDestroyOnCollision_ = false;
-
-  int miscValue_ = 0;
-
-  void* searchHandle_ = nullptr;
-};
 
 class Projectile
     : public Actor {
@@ -39,10 +23,6 @@ class Projectile
 
   void SetOwnerProjectileComponent(ProjectileComponent* ownerProjectileComponent);
 
-  ProjectileInfo GetProjectileInfo() const;
-
-  void SetProjectileInfo(const ProjectileInfo& projectileInfo);
-
   LINK_ITEM* GetProjectileLink();
 
   void UpdateCollisionBoundScale();
@@ -53,6 +33,10 @@ class Projectile
 
   void Destroy();
 
+  int MiscValue() const;
+
+  void SetMiscValue(int miscValue);
+
  protected:
   Actor* pOwner_;
 
@@ -62,7 +46,13 @@ class Projectile
 
   CollisionComponent* pCollisionBox_;
 
-  ProjectileInfo projectileInfo_;
-
   LINK_ITEM projectileLink_;
+
+  AttackInfo attackInfo_;
+
+  Vector spawnPosition_;
+
+  bool isDestroyOnCollision_;
+
+  int miscValue_;
 };

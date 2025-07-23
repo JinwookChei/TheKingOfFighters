@@ -643,12 +643,8 @@ void KOFPlayer::UpdateAttack() {
         return;
       }
 
-      if (true == pAttackInfo->isProjectileAttack_) {
-        return;
-      }
-
       pTargetPlayer->HitEvent(pAttackInfo);
-      if (true == pAttackInfo->isMultiHit) {
+      if (true == pAttackInfo->isMultiHit_) {
         CollisionReset();
       }
 

@@ -3,7 +3,6 @@
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
-#include "Attacktable.h"
 #include "ProjectileComponent.h"
 
 Projectile::Projectile()
@@ -11,7 +10,11 @@ Projectile::Projectile()
       pOwnerProjectileComponent_(nullptr),
       pRender_(nullptr),
       pCollisionBox_(nullptr),
-      projectileLink_({nullptr, nullptr, this}) {
+      projectileLink_({nullptr, nullptr, this}),
+      attackInfo_(),
+      spawnPosition_ ({0.0f, 0.0f}),
+      isDestroyOnCollision_ (false),
+      miscValue_ (0){
 }
 
 Projectile::~Projectile() {
@@ -35,9 +38,9 @@ bool Projectile::Initialize() {
 
   // POSITION
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {
-    SetPosition(pKOFPlayerOwner->GetPosition() + projectileInfo_.spawnPosition_);
+    SetPosition(pKOFPlayerOwner->GetPosition() + spawnPosition_);
   } else {
-    SetPosition(pKOFPlayerOwner->GetPosition() + Vector{-projectileInfo_.spawnPosition_.X, projectileInfo_.spawnPosition_.Y});
+    SetPosition(pKOFPlayerOwner->GetPosition() + Vector{-spawnPosition_.X, spawnPosition_.Y});
   }
 
   // COLLISION
@@ -64,14 +67,6 @@ ProjectileComponent* Projectile::GetOwnerProjectileComponent() const {
 
 void Projectile::SetOwnerProjectileComponent(ProjectileComponent* ownerProjectileComponent) {
   pOwnerProjectileComponent_ = ownerProjectileComponent;
-}
-
-ProjectileInfo Projectile::GetProjectileInfo() const {
-  return projectileInfo_;
-}
-
-void Projectile::SetProjectileInfo(const ProjectileInfo& projectileInfo) {
-  projectileInfo_ = projectileInfo;
 }
 
 LINK_ITEM* Projectile::GetProjectileLink() {
@@ -116,11 +111,7 @@ void Projectile::UpdateAttack() {
         return;
       }
 
-      if (nullptr == projectileInfo_.pAttackInfo_) {
-        return;
-      }
-
-      pTargetPlayer->HitEvent(projectileInfo_.pAttackInfo_);
+      pTargetPlayer->HitEvent(&attackInfo_);
 
       Level* pLevel = GetLevel();
       if (nullptr == pLevel) {
@@ -148,9 +139,9 @@ void Projectile::UpdateAttack() {
           (collisionSectionRightBottom.Y + collisionSectionLeftTop.Y) / 2};
 
       // 이펙트도 여기서 스폰.
-      EffectManager::Instance()->SpawnEffect(GetLevel(), projectileInfo_.pAttackInfo_->effectType_, effectPosition);
+      EffectManager::Instance()->SpawnEffect(GetLevel(), attackInfo_.effectType_, effectPosition);
 
-      if (projectileInfo_.isDestroyOnCollision_ == true) {
+      if (isDestroyOnCollision_ == true) {
         Destroy();
       }
     }
@@ -198,4 +189,12 @@ void Projectile::Destroy() {
     pOwnerProjectileComponent_->UnLinkDestroyedProjectile(&projectileLink_);
     SetDestroy();
   }
+}
+
+int Projectile::MiscValue() const {
+  return miscValue_;
+}
+
+void Projectile::SetMiscValue(int miscValue) {
+  miscValue_ = miscValue;
 }

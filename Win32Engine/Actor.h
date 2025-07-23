@@ -11,6 +11,7 @@ enum ActorGroupEngineType {
   ActorGroupEngineType_Screen,
   ActorGroupEngineType_UI,
   ActorGroupEngineType_Effect,
+  ActorGroupEngineType_Projectile,
   ActorGroupEngineType_None,
   ActorGroupEngineType_BackGround,
   ActorGroupEngineType_MAX
@@ -36,9 +37,7 @@ class Actor {
 
   JO_API virtual void BeginPlay();
 
-  JO_API virtual void Tick(unsigned long long curTick);
-
-  // JO_API wchar_t GetRenderCharacter() const;
+  JO_API virtual void Tick(unsigned long long curTick);  
 
   JO_API void SetPosition(const Vector& newPosition);
 
