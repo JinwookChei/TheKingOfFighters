@@ -12,7 +12,6 @@ IoriCommandHandler::~IoriCommandHandler() {
 }
 
 bool IoriCommandHandler::RegistCommands() {
-
   if (nullptr == pOwnerCommandComponent_) {
     return false;
   }
@@ -59,9 +58,6 @@ void IoriCommandHandler::Command_5() {
 }
 
 void IoriCommandHandler::Command_6() {
-  if (nullptr == pOwnerMPComponent_) {
-    return;
-  }
   if (0 >= pOwnerMPComponent_->SkillPoint()) {
     return;
   }
@@ -84,16 +80,16 @@ void IoriCommandHandler::Command_6() {
   pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_UltimateCasting);
   pOwnerSkillComponent_->ActivateSkill(IORI_SKILL_1211ShikiYaOtome);
   pOwnerMPComponent_->ReduceSkillPoint();
-  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, pOwnerPlayer_->GetPosition() + Vector{0.0f, -250.0f});
-  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, pOwnerPlayer_->GetPosition() + Vector{0.0f, -250.0f});
-  pKOFLevel->FreezeActors({pOwnerPlayer_->GetOpponentPlayer()}, true);
+  const Vector& ownerPosition = pOwnerPlayer_->GetPosition();
+  KOFPlayer* oppoenetPlayer = pOwnerPlayer_->GetOpponentPlayer();
+
+  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, ownerPosition + Vector{0.0f, -250.0f});
+  EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, ownerPosition + Vector{0.0f, -250.0f});
+  pKOFLevel->FreezeActors({oppoenetPlayer}, true);
   pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
 }
 
 void IoriCommandHandler::Command_7() {
-  if (nullptr == pOwnerMPComponent_) {
-    return;
-  }
   if (0 >= pOwnerMPComponent_->SkillPoint()) {
     return;
   }

@@ -18,8 +18,9 @@
 
 #include "CommandHandler.h"
 #include "IoriCommandHandler.h"
+#include "SkillHandler.h"
+#include "IoriSkillHandler.h"
 
-#define CLOSEDISTANCE 260.0f
 #define ANIMINTERVAL 35
 
 Iori::Iori() {
@@ -245,25 +246,53 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_3, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, false, 10.0f, {0.5f, -10.0f}, 140.0f);
 
   // SKILL
-  pSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &Iori::GaishikiMutan, this);
-  pSkillComponent_->RegistSkill(IORI_SKILL_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this);
-  pSkillComponent_->RegistSkill(IORI_SKILL_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this);
-  pSkillComponent_->RegistSkill(IORI_SKILL_127ShikiAoiHana, &Iori::ShikiAoiHana127, this);
-  pSkillComponent_->RegistSkill(IORI_SKILL_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this);
-  pSkillComponent_->RegistSkill(IORI_SKILL_Ura306shikiShika, &Iori::Ura306shikiShika, this);
+  //pSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &Iori::GaishikiMutan, this);
+  //pSkillComponent_->RegistSkill(IORI_SKILL_108ShikiYamiBarai, &Iori::ShikiYamiBarai108, this);
+  //pSkillComponent_->RegistSkill(IORI_SKILL_HyakushikiOniyaki, &Iori::HyakushikiOniyaki, this);
+  //pSkillComponent_->RegistSkill(IORI_SKILL_127ShikiAoiHana, &Iori::ShikiAoiHana127, this);
+  //pSkillComponent_->RegistSkill(IORI_SKILL_1211ShikiYaOtome, &Iori::ShikiYaOtome1211, this);
+  //pSkillComponent_->RegistSkill(IORI_SKILL_Ura306shikiShika, &Iori::Ura306shikiShika, this);
 
   // COMMAND
-  pCommandHandler_ = (CommandHandler*)CreateComponent<IoriCommandHandler>();
+  pCommandHandler_ = CreateComponent<IoriCommandHandler>();
   if (nullptr == pCommandHandler_) {
     __debugbreak();
     return;
   }
-  if (false == pCommandHandler_->Initialize(this, pCommandComponent_, pMovementComponent_, pSkillComponent_, pMPComponent_)) {
+  if (false == pCommandHandler_->Initialize(
+      this, 
+      pCommandComponent_, 
+      pMovementComponent_, 
+      pSkillComponent_, 
+      pMPComponent_)) {
     __debugbreak();
     return;
   }
 
   if (false == pCommandHandler_->RegistCommands()) {
+    __debugbreak();
+    return;
+  }
+
+  pSkillHandler_ = CreateComponent<IoriSkillHandler>();
+  if (nullptr == pSkillHandler_) {
+    __debugbreak();
+    return;
+  }
+  if (false == pSkillHandler_->Initialize(
+      this,
+      pSkillComponent_,
+      pRender_, 
+      pMovementComponent_, 
+      pStateComponent_, 
+      pAttackBox_, 
+      pCommandComponent_,
+      pProjectileComponent_, 
+      pMPComponent_)) {
+    __debugbreak();
+    return;
+  }
+  if (false == pSkillHandler_->RegistSkills()) {
     __debugbreak();
     return;
   }
@@ -480,7 +509,7 @@ void Iori::CompareInputBitset() {
 
     // A | DOWN
     if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00001000"))) {
-      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
@@ -490,7 +519,7 @@ void Iori::CompareInputBitset() {
 
     // B | DOWN
     if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000100"))) {
-      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
@@ -501,7 +530,7 @@ void Iori::CompareInputBitset() {
 
     // C | DOWN
     if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000010"))) {
-      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_LongRange);
@@ -512,7 +541,7 @@ void Iori::CompareInputBitset() {
 
     // D | DOWN
     if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000001"))) {
-      if (CLOSEDISTANCE > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_LongRange);
@@ -523,434 +552,5 @@ void Iori::CompareInputBitset() {
 
     UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
-  }
-}
-
-void Iori::GaishikiMutan() {
-  if (true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-
-  if (IORI_ANIMTYPE_GaishikiMutan_1 == pStateComponent_->GetCurAnimState()) {
-    if (100 <= curImageIndex && 104 >= curImageIndex) {
-      if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00001000")) ||
-          true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000010"))) {
-        pSkillComponent_->SetMiscTemp(true);
-      }
-    }
-
-    if (true == pAttackBox_->HasHit() && 105 == curImageIndex && true == pSkillComponent_->GetMiscTemp()) {
-      UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_2);
-    }
-  }
-}
-
-void Iori::ShikiYamiBarai108() {
-  if (nullptr == pRender_) {
-    return;
-  }
-
-  if (nullptr != pRender_ && true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-
-  if (prevImageIndex_ == curImageIndex) {
-    return;
-  }
-
-  if (225 == curImageIndex) {
-    Level* curLevel = GetLevel();
-    Vector curPosition = GetPosition();
-    if (FacingRight()) {
-      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {curPosition.X - 40.0f, curPosition.Y - 70.0f});
-    } else {
-      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {curPosition.X + 40.0f, curPosition.Y - 70.0f});
-    }
-  }
-
-  if (226 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_YamiBarai);
-  }
-}
-
-void Iori::HyakushikiOniyaki() {
-  if (nullptr == pRender_) {
-    return;
-  }
-
-  if (true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-
-  if (prevImageIndex_ == curImageIndex) {
-    return;
-  }
-
-  if (276 == curImageIndex) {
-    pMovementComponent_->Dash(FacingRight(), 150.0f, 150.0f);
-  }
-
-  if (281 == curImageIndex) {
-    pMovementComponent_->Jump(FacingRight(), {0.4f, -4.5f});
-    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low);
-  }
-
-  if (284 == curImageIndex) {
-    pProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High);
-  }
-}
-
-void Iori::ShikiAoiHana127() {
-  if (nullptr == pRender_) {
-    return;
-  }
-
-  if (true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-  if (prevImageIndex_ == curImageIndex) {
-    return;
-  }
-
-  if (curImageIndex == 257) {
-    pMovementComponent_->Dash(FacingRight(), 150.0f, 80.0f);
-  }
-
-  if (curImageIndex == 262) {
-    pMovementComponent_->Dash(FacingRight(), 150.0f, 80.0f);
-  }
-
-  if (curImageIndex == 269) {
-    pMovementComponent_->Jump(FacingRight(), {0.6f, 60.0f});
-  }
-
-  if (IORI_ANIMTYPE_127ShikiAoiHana_1 == pStateComponent_->GetCurAnimState()) {
-    if (257 <= curImageIndex && 260 >= curImageIndex) {
-      if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00001000")) ||
-          true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000010"))) {
-        pSkillComponent_->SetMiscTemp(true);
-      }
-
-      if (pAttackBox_->HasHit() && pSkillComponent_->GetMiscTemp() == true) {
-        UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_2);
-        pSkillComponent_->SetMiscTemp(false);
-      }
-    }
-  }
-
-  if (IORI_ANIMTYPE_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState()) {
-    if (IORI_ANIMTYPE_127ShikiAoiHana_2 == pStateComponent_->GetCurAnimState() && 264 <= curImageIndex && 267 >= curImageIndex) {
-      if (true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00001000")) ||
-          true == IsContainInputBitSet(inputDownBitSet_, std::bitset<8>("00000010"))) {
-        pSkillComponent_->SetMiscTemp(true);
-      }
-
-      if (pAttackBox_->HasHit() && true == pSkillComponent_->GetMiscTemp()) {
-        UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_3);
-      }
-    }
-  }
-}
-
-void Iori::ShikiYaOtome1211() {
-  if (nullptr == pRender_) {
-    return;
-  }
-  if (true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  Level* pLevel = GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-  if (prevImageIndex_ == curImageIndex) {
-    return;
-  }
-
-  switch (pStateComponent_->GetCurAnimState()) {
-    case PLAYER_ANIMTYPE_UltimateCasting: {
-      if (347 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_1);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_1: {
-      if (70 == curImageIndex) {
-        pKOFLevel->DefreezeActors();
-        pBackGroundMask->FadeIn(50);
-        break;
-      }
-
-      if (72 == curImageIndex) {
-        pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
-        break;
-      }
-
-      if (pAttackBox_->HasHit()) {
-        pOpponentPlayer_->SetControlLocked(true);
-        pMovementComponent_->Dash(FacingRight(), 250.0f, 1000.0f);
-        if (CLOSEDISTANCE - 100.0f > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
-          UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_2);
-          pMovementComponent_->StopDash();
-        }
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_2: {
-      if (pOpponentPlayer_->GetPosition().X - GetPosition().X <= 300.0f * FacingRightFlag()) {
-        pMovementComponent_->StopDash();
-      }
-
-      if (120 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-
-      if (122 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_3);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_3: {
-      if (90 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (92 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_4);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_4: {
-      if (135 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_5);
-        break;
-      }
-
-      if (138 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_5: {
-      if (227 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-
-      if (229 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_6);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_6: {
-      if (102 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (106 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_7);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_7: {
-      if (161 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (163 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_8);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_8: {
-      if (102 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (106 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_9);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_9: {
-      if (348 == curImageIndex) {
-        pOpponentPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_NeckGrab);
-        break;
-      }
-
-      if (349 == curImageIndex) {
-        const Vector& ioriPosition = GetPosition();
-        pOpponentPlayer_->SetPosition(ioriPosition + Vector{100.0f * FacingRightFlag(), -50.0f});
-        soundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
-        break;
-      }
-      if (351 == curImageIndex) {
-        pCommandComponent_->ExcuteTask();
-        if (true == pSkillComponent_->GetMiscTemp()) {
-          ActiveUra306shikiShika();
-        } else {
-          pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-          pKOFLevel->GetCameraTarget()->OnCameraShake(300);
-        }
-        break;
-      }
-      if (352 == curImageIndex) {
-        pOpponentPlayer_->SetControlLocked(false);
-        break;
-      }
-      break;
-    }
-    default:
-      break;
-  }
-}
-
-void Iori::ActiveUra306shikiShika() {
-  if (nullptr == pMPComponent_) {
-    return;
-  }
-  if (0 >= pMPComponent_->SkillPoint()) {
-    return;
-  }
-
-  Level* pLevel = GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
-
-  UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_1, ANIMMOD_NONE, true);
-  pSkillComponent_->ActivateSkill(IORI_SKILL_Ura306shikiShika);
-  pMPComponent_->ReduceSkillPoint();
-}
-
-void Iori::Ura306shikiShika() {
-  if (nullptr == pRender_) {
-    return;
-  }
-  if (true == pRender_->IsAnimationEnd()) {
-    pSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  Level* pLevel = GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
-
-  unsigned int curImageIndex = pRender_->GetImageIndex();
-  if (prevImageIndex_ == curImageIndex) {
-    return;
-  }
-
-  switch (pStateComponent_->GetCurAnimState()) {
-    case IORI_ANIMTYPE_Ura306shikiShika_1: {
-      if (355 == curImageIndex) {
-        EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, GetPosition() + Vector{0.0f, -250.0f});
-        EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, GetPosition() + Vector{0.0f, -250.0f});
-        pKOFLevel->FreezeActors({this, pOpponentPlayer_}, false, 500);
-        pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
-      }
-      if (356 == curImageIndex) {
-        pKOFLevel->FreezeActors({pOpponentPlayer_}, true);
-      }
-      if (360 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_2);
-        pBackGroundMask->FadeIn(50.0f);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_Ura306shikiShika_2: {
-      if (363 == curImageIndex) {
-        break;
-      }
-      if (364 == curImageIndex) {
-        break;
-      }
-      if (365 == curImageIndex) {
-        break;
-      }
-      if (366 == curImageIndex) {
-        pAttackBox_->ResetHit();
-        pKOFLevel->DefreezeActors();
-        // pOpponentPlayer_->SetControlLocked(false);
-        break;
-      }
-
-      if (370 == curImageIndex) {
-        UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_3);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_Ura306shikiShika_3: {
-      if (381 == curImageIndex) {
-        pProjectileComponent_->FireProjectile(IORI_PROJECTILE_Ura306Shiki);
-        break;
-      }
-      if (386 == curImageIndex) {
-        pOpponentPlayer_->SetControlLocked(false);
-      }
-
-      break;
-    }
-    default:
-      break;
   }
 }

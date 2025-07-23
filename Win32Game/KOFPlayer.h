@@ -4,6 +4,7 @@ class MovementComponent;
 class CommandComponent;
 class CommandHandler;
 class SkillComponent;
+class SkillHandler;
 class ProjectileComponent;
 class AttackTable;
 struct AttackInfo;
@@ -99,6 +100,12 @@ class KOFPlayer
 
   bool IsAtMapEdge() const;
 
+  const std::bitset<8>& InputPressBitSet() const;
+
+  const std::bitset<8>& InputDownBitSet() const;
+
+  const std::bitset<8>& InputUpsBitSet() const;
+
   virtual void CompareInputBitset();
 
   void ResetInputBitSet();
@@ -118,6 +125,8 @@ class KOFPlayer
   void SetControlLocked(bool bLocked);
 
   void ReceiveClampedWidthOffset(float clampOffset);
+
+    const float GetCloseDistance() const;
 
  protected:
   std::array<int, 8> playerKeySet_;
@@ -152,6 +161,8 @@ class KOFPlayer
 
   SkillComponent* pSkillComponent_;
 
+  SkillHandler* pSkillHandler_;
+
   CommandComponent* pCommandComponent_;
 
   CommandHandler* pCommandHandler_;
@@ -169,7 +180,9 @@ class KOFPlayer
   std::bitset<8> inputUpBitSet_;
 
   KOFPlayer* pOpponentPlayer_;
-
+  
+  // TODO
+  public:
   unsigned int prevImageIndex_;
 
   private:
@@ -184,4 +197,6 @@ class KOFPlayer
   bool isAtMapEdge_;
 
   bool isControlLocked_;
+
+  const float closeDistance_ = 260.0f;
 };

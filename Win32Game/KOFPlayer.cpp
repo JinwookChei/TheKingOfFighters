@@ -2,6 +2,7 @@
 #include "CommandComponent.h"
 #include "CommandHandler.h"
 #include "SkillComponent.h"
+#include "SkillHandler.h"
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "StateComponent.h"
@@ -30,6 +31,7 @@ KOFPlayer::KOFPlayer()
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
       pSkillComponent_(nullptr),
+      pSkillHandler_(nullptr),
       pCommandComponent_(nullptr),
       pCommandHandler_(nullptr),
       pProjectileComponent_(nullptr),
@@ -294,7 +296,7 @@ const MPComponent* KOFPlayer::GetMPComponent() const {
 }
 
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
-    if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
+  if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
@@ -839,6 +841,18 @@ bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
 }
 
+const std::bitset<8>& KOFPlayer::InputPressBitSet() const {
+  return inputPressBitSet_;
+}
+
+const std::bitset<8>& KOFPlayer::InputDownBitSet() const {
+  return inputDownBitSet_;
+}
+
+const std::bitset<8>& KOFPlayer::InputUpsBitSet() const {
+  return inputUpBitSet_;
+}
+
 void KOFPlayer::CompareInputBitset() {
 }
 
@@ -880,4 +894,8 @@ void KOFPlayer::ReceiveClampedWidthOffset(float clampOffset) {
   if (true == pStateComponent_->ContainPlayerState({PS_EnableClampOffset})) {
     pMovementComponent_->ApplyClampedWidthOffset(clampOffset);
   }
+}
+
+const float KOFPlayer::GetCloseDistance() const {
+  return closeDistance_;
 }
