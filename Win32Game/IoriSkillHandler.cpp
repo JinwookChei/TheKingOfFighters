@@ -65,9 +65,9 @@ void IoriSkillHandler::ShikiYamiBarai108() {
     Level* curLevel = pOwnerPlayer_->GetLevel();
     Vector curPosition = pOwnerPlayer_->GetPosition();
     if (pOwnerPlayer_->FacingRight()) {
-      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {curPosition.X - 40.0f, curPosition.Y - 70.0f});
+      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {curPosition.X - 40.0f, curPosition.Y - 280.0f});
     } else {
-      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {curPosition.X + 40.0f, curPosition.Y - 70.0f});
+      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {curPosition.X + 40.0f, curPosition.Y - 280.0f});
     }
   }
 

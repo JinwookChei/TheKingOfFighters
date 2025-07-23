@@ -59,7 +59,7 @@ bool YamiBarai::Initialize() {
   attackInfo_.freezeTime_ = 140.0f;
   attackInfo_.isMultiHit_ = false;
   attackInfo_.knockBackForce_ = {1.5f, 0.0f};
-  spawnPosition_ = {180.0f, 50.0f};
+  spawnPosition_ = {180.0f, 0.0f};
   isDestroyOnCollision_ = true;
 
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {

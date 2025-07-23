@@ -194,14 +194,14 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
     return;
   }
 
-  // INPUT BIT SET
-  ResetInputBitSet();
-
   // OPPONENT PLAYER
   if (nullptr == opponentPlayer) {
     return;
   }
   pOpponentPlayer_ = opponentPlayer;
+
+  // INPUT BIT SET
+  ResetInputBitSet();
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -780,10 +780,10 @@ void KOFPlayer::UpdatePrevAnimationIndex() {
   }
   unsigned int curImageIndex = pRender_->GetImageIndex();
 
-  // if (curImageIndex != prevImageIndex_) {
-  //   prevImageIndex_ = curImageIndex;
-  //   CollisionReset();
-  // }
+   if (curImageIndex != prevImageIndex_) {
+     prevImageIndex_ = curImageIndex;
+     //CollisionReset();
+   }
 }
 
 Vector KOFPlayer::CharacterScale() const {

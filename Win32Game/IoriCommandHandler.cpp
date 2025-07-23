@@ -35,7 +35,6 @@ bool IoriCommandHandler::RegistCommands() {
 void IoriCommandHandler::Command_1() {
   pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_108ShikiYamiBarai);
   pOwnerSkillComponent_->ActivateSkill(IORI_SKILL_108ShikiYamiBarai);
-  
 }
 
 void IoriCommandHandler::Command_2() {
