@@ -12,9 +12,9 @@ Projectile::Projectile()
       pCollisionBox_(nullptr),
       projectileLink_({nullptr, nullptr, this}),
       attackInfo_(),
-      spawnPosition_ ({0.0f, 0.0f}),
-      isDestroyOnCollision_ (false),
-      miscValue_ (0){
+      spawnPosition_({0.0f, 0.0f}),
+      isDestroyOnCollision_(false),
+      miscValue_(0) {
 }
 
 Projectile::~Projectile() {
@@ -24,7 +24,6 @@ void Projectile::BeginPlay() {
 }
 
 void Projectile::Tick(unsigned long long curTick) {
-
 }
 
 bool Projectile::Initialize() {
@@ -160,10 +159,12 @@ bool Projectile::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetCollision_Top)) {
-    *outTargetCollision = pTargetCollision_Top;
-    pTargetCollision_Top->MarkAsHit();
-    pCollisionBox_->MarkAsHit();
-    return true;
+    if (pOwner_ != pTargetCollision_Top->GetOwner()) {
+      *outTargetCollision = pTargetCollision_Top;
+      pTargetCollision_Top->MarkAsHit();
+      pCollisionBox_->MarkAsHit();
+      return true;
+    }
   }
 
   CollisionComponent* pTargetCollision_Bottom = nullptr;
@@ -174,10 +175,12 @@ bool Projectile::CheckAttackCollision(CollisionComponent** outTargetCollision) {
                       .myCollisionType = CollisionType::CollisionType_Rect,
                   },
                   &pTargetCollision_Bottom)) {
-    *outTargetCollision = pTargetCollision_Bottom;
-    pTargetCollision_Bottom->MarkAsHit();
-    pCollisionBox_->MarkAsHit();
-    return true;
+    if (pOwner_ != pTargetCollision_Bottom->GetOwner()) {
+      *outTargetCollision = pTargetCollision_Bottom;
+      pTargetCollision_Bottom->MarkAsHit();
+      pCollisionBox_->MarkAsHit();
+      return true;
+    }
   }
 
   *outTargetCollision = nullptr;

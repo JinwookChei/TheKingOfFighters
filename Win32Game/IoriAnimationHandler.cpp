@@ -11,7 +11,6 @@ IoriAnimationHandler::~IoriAnimationHandler() {
 }
 
 void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
-  //UpdatePrevImageIndex();
 
   if (PLAYER_ANIMTYPE_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
     if (true == pOwnerMovementComponent_->IsFalling()) {

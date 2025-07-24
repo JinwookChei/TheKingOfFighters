@@ -12,5 +12,5 @@ class HyakushikiOniyaki
   bool Initialize() override;
 
  private:
-  float velocityY_;
+  Vector velocity_;
 };

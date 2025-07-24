@@ -4,7 +4,7 @@
 #include "HyakushikiOniyaki.h"
 
 HyakushikiOniyaki::HyakushikiOniyaki()
-    : velocityY_(0.0f) {
+    : velocity_({0.0f, 0.0f}) {
 }
 
 HyakushikiOniyaki::~HyakushikiOniyaki() {
@@ -15,7 +15,7 @@ void HyakushikiOniyaki::Tick(unsigned long long deltaTick) {
     Destroy();
   }
 
-  SetPosition({GetPosition().X, GetPosition().Y + velocityY_ * deltaTick});
+  SetPosition({GetPosition().X + velocity_.X * deltaTick, GetPosition().Y + velocity_.Y * deltaTick});
 
   UpdateCollisionBoundScale();
 
@@ -47,20 +47,24 @@ bool HyakushikiOniyaki::Initialize() {
     spawnPosition_ = {50.0f, -30.0f};
     if (true == pKOFPlayerOwner->PlayerOnLeft()) {
       pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 292, 301, 20, false, 292);
+      velocity_ = {0.4f, -1.5f};
     } else {
       pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 292, 301, 20, false, 292);
+      velocity_ = {-0.4f, -1.5f};
     }
   } else {
     spawnPosition_ = {-80.0f, -200.0f};
     if (true == pKOFPlayerOwner->PlayerOnLeft()) {
       pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 302, 311, 20, false, 302);
+      velocity_ = {0.4f, -1.5f};
     } else {
       pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 302, 311, 20, false, 302);
+      velocity_ = {-0.4f, -1.5f};
     }
   }
 
   pRender_->ChangeAnimation(1);
-  velocityY_ = -1.5f;
+
 
   if (false == Projectile::Initialize()) {
     return false;

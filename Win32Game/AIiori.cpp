@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "AnimationHandler.h"
 #include "CommandComponent.h"
 #include "SkillComponent.h"
 #include "ProjectileComponent.h"
@@ -94,7 +95,7 @@ void AIiori::Tick(unsigned long long deltaTick) {
     pSkillComponent_->UpdateActiveSkill();
   }
 
-  //UpdatePrevAnimationIndex();
+  pAnimationHandler_->UpdatePrevImageIndex();
 }
 
 void AIiori::Idle() {

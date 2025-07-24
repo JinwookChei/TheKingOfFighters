@@ -73,7 +73,7 @@
     <Filter Include="Contents\KOF\Actor\PLayer\Iori">
       <UniqueIdentifier>{bc843fc2-420e-411d-a2a7-f394fe0e5a15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\KOF\Actor\PLayer\Iori\Projectiles">
+    <Filter Include="Contents\KOF\Actor\PLayer\Iori\IoriProjectiles">
       <UniqueIdentifier>{c6b22c19-4954-489b-8e5f-6b8e08fae6bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -241,13 +241,13 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
     <ClCompile Include="HyakushikiOniyaki.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClCompile>
     <ClCompile Include="Ura306Shiki.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClCompile>
     <ClCompile Include="YamiBarai.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClCompile>
     <ClCompile Include="IoriAnimationHandler.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
@@ -423,13 +423,13 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
     <ClInclude Include="HyakushikiOniyaki.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClInclude>
     <ClInclude Include="Ura306Shiki.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClInclude>
     <ClInclude Include="YamiBarai.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClInclude>
     <ClInclude Include="IoriAnimationHandler.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
