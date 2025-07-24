@@ -245,8 +245,8 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   } else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-    pMovementComponent_->KnockBack(PlayerOnLeft(), {35.0f, 50.0f});
-    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Jump, ANIMMOD_NONE, true);
+    pMovementComponent_->KnockBack(PlayerOnLeft(), {3.0f, -5.0f});
+    UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpUp, ANIMMOD_NONE, true);
   } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
@@ -716,17 +716,6 @@ void KOFPlayer::CollisionReset() {
   pPushBox_->ResetHit();
   pGrabBox_->ResetHit();
 }
-
-//void KOFPlayer::UpdatePrevAnimationIndex() {
-//  if (nullptr == pRender_) {
-//    return;
-//  }
-//  unsigned int curImageIndex = pRender_->GetImageIndex();
-//
-//   if (curImageIndex != prevImageIndex_) {
-//     prevImageIndex_ = curImageIndex;
-//   }
-//}
 
 Vector KOFPlayer::CharacterScale() const {
   return characterScale_;

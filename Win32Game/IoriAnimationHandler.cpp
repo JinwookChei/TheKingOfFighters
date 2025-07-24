@@ -68,6 +68,21 @@ void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
       }
     }
   }
+
+
+  if (PLAYER_ANIMTYPE_Hit_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
+    if (true == pOwnerRenderer_->IsAnimationEnd()) {
+      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpDown, curAnimationModifier_, true);
+    }
+    if (true == pOwnerMovementComponent_->IsOnGround()) {
+      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+    }
+  }
+  if (PLAYER_ANIMTYPE_Hit_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
+    if (true == pOwnerMovementComponent_->IsOnGround()) {
+      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+    }
+  }
 }
 
 bool IoriAnimationHandler::RegistAnimations() {
@@ -109,7 +124,8 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_HitLow, IMGTYPE_IoriImage, 563, 567, ANIMINTERVAL, false, 563);
   CallCreateAnimation(PLAYER_ANIMTYPE_HitStrong, IMGTYPE_IoriImage, 594, 607, ANIMINTERVAL, false, 594);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Seat, IMGTYPE_IoriImage, 552, 556, ANIMINTERVAL, false, 552);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Jump, IMGTYPE_IoriImage, {557 /*, 558*/, 80, 81, 82, 83, 84, 85}, {80, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL}, false, 557);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpUp, IMGTYPE_IoriImage, {595}, 160, false, 595);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpDown, IMGTYPE_IoriImage, 80, 85, ANIMINTERVAL, false, 82);
   CallCreateAnimation(PLAYER_ANIMTYPE_NeckGrab, IMGTYPE_IoriImage, 572, 575, 200, false, 572);
   CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_IoriImage, 223, 230, ANIMINTERVAL, false, 223);
   CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);

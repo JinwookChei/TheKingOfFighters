@@ -82,7 +82,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitLow, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HitStrong, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Seat, SOUNDTYPE_None);
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Jump, SOUNDTYPE_None);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_JumpUp, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_NeckGrab, SOUNDTYPE_COMMON_Hit01);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_UltimateCasting, SOUNDTYPE_IORI_1211ShikiYaOtome01);
   pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_GaishikiMutan_1, SOUNDTYPE_IORI_Kiai_Light01);
@@ -134,7 +134,8 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, {PS_Hit}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, {PS_Hit}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Seat, {PS_Hit, PS_Seat}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Jump, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_JumpUp, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_JumpDown, {PS_Hit}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_NeckGrab, {PS_Hit}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, {PS_Attack}, false);
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, {PS_Attack}, false);

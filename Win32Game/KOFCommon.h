@@ -75,7 +75,8 @@ enum PLAYER_ANIM_TYPE : unsigned long long {
   PLAYER_ANIMTYPE_HitLow,
   PLAYER_ANIMTYPE_HitStrong,
   PLAYER_ANIMTYPE_Hit_Seat,
-  PLAYER_ANIMTYPE_Hit_Jump,
+  PLAYER_ANIMTYPE_Hit_JumpUp,
+  PLAYER_ANIMTYPE_Hit_JumpDown,
   PLAYER_ANIMTYPE_NeckGrab,
   PLAYER_ANIMTYPE_UltimateCasting,
   PLAYER_ANIMTYPE_Max
