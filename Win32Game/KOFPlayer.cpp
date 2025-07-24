@@ -40,7 +40,6 @@ KOFPlayer::KOFPlayer()
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
       isPlayer1_(true),
-      //prevImageIndex_(0),
       isPlayerOnLeft_(true),
       isFacingRight_(true),
       isAtMapEdge_(false),
@@ -85,7 +84,6 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     pSkillComponent_->UpdateActiveSkill();
   }
 
-  //UpdatePrevAnimationIndex();
   pAnimationHandler_->UpdatePrevImageIndex();
 }
 

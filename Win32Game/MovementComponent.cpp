@@ -355,7 +355,7 @@ void MovementComponent::Dash(bool isRightDirection, float dashDuration, float da
 }
 
 void MovementComponent::StopDash() {
-  curMovementState_ = MOVSTATE_Dash;
+  curMovementState_ = MOVSTATE_Idle;
 }
 
 void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
@@ -363,11 +363,15 @@ void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
   if (nullptr == pOwner) {
     return;
   }
+  if (moveDir_.X > 0) {
+    moveDir_.X = max(0.0f, moveDir_.X - airResistance_);
+  } else if (moveDir_.X < 0) {
+    moveDir_.X = min(0.0f, moveDir_.X + airResistance_);
+  }
 
-  moveDir_.X = (moveDir_.X >= 0) ? (moveDir_.X - airResistance_) : (moveDir_.X += airResistance_);
-  moveDir_.Y = (moveDir_.Y + gravity_);
+  moveDir_.Y += gravity_;
 
-  if (curVelocity_.X > 0.0f && moveDir_.X < 0.0f || curVelocity_.X < 0.0f && moveDir_.X > 0.0f) {
+  if ((curVelocity_.X > 0.0f && moveDir_.X < 0.0f) || (curVelocity_.X < 0.0f && moveDir_.X > 0.0f)) {
     moveDir_.X = 0.0f;
     curMovementState_ = MOVSTATE_Idle;
   }
@@ -375,13 +379,11 @@ void MovementComponent::UpdateKnockBack(unsigned long long deltaTick) {
   curVelocity_.X = moveDir_.X * (float)deltaTick;
   curVelocity_.Y = moveDir_.Y * (float)deltaTick;
 
-  const Vector& ownerPosition = pOwner->GetPosition();
+  Vector ownerPosition = pOwner->GetPosition();
+  ownerPosition.X += curVelocity_.X;
+  ownerPosition.Y += curVelocity_.Y;
 
-  Vector knockBackPosition = {
-      ownerPosition.X + curVelocity_.X,
-      ownerPosition.Y + curVelocity_.Y};
-
-  pOwner->SetPosition(knockBackPosition);
+  pOwner->SetPosition(ownerPosition);
 }
 
 void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBackForce) {

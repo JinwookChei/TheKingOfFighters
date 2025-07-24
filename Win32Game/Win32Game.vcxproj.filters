@@ -76,6 +76,9 @@
     <Filter Include="Contents\KOF\Actor\PLayer\Iori\IoriProjectiles">
       <UniqueIdentifier>{c6b22c19-4954-489b-8e5f-6b8e08fae6bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Actor\PLayer\Iori\IoriHandler">
+      <UniqueIdentifier>{c007baea-9089-41b5-ad63-58facadccdac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -228,14 +231,8 @@
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
-    <ClCompile Include="IoriCommandHandler.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
-    </ClCompile>
     <ClCompile Include="SkillHandler.cpp">
       <Filter>Contents\KOF\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="IoriSkillHandler.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
     <ClCompile Include="AnimationHandler.cpp">
       <Filter>Contents\KOF\Component</Filter>
@@ -249,8 +246,14 @@
     <ClCompile Include="YamiBarai.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClCompile>
+    <ClCompile Include="IoriSkillHandler.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="IoriCommandHandler.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
+    </ClCompile>
     <ClCompile Include="IoriAnimationHandler.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,14 +413,8 @@
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
-    <ClInclude Include="IoriCommandHandler.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
-    </ClInclude>
     <ClInclude Include="SkillHandler.h">
       <Filter>Contents\KOF\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="IoriSkillHandler.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
     <ClInclude Include="AnimationHandler.h">
       <Filter>Contents\KOF\Component</Filter>
@@ -431,8 +428,14 @@
     <ClInclude Include="YamiBarai.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClInclude>
+    <ClInclude Include="IoriSkillHandler.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="IoriCommandHandler.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
+    </ClInclude>
     <ClInclude Include="IoriAnimationHandler.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -206,10 +206,10 @@ void IoriSkillHandler::ShikiYaOtome1211() {
       }
 
       if (pOwnerAttackCollision_->HasHit()) {
+        pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(true);
         pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 250.0f, 1000.0f);
 
-        if (pOwnerPlayer_->GetCloseDistance() - 100.0f > std::fabs(pOwnerPlayer_->GetPosition().X - pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X)) {
-          pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(true);
+        if (160.0f > std::fabs(pOwnerPlayer_->GetPosition().X - pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X)) {
           pOwnerMovementComponent_->StopDash();
           pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_2);
         }
@@ -218,10 +218,6 @@ void IoriSkillHandler::ShikiYaOtome1211() {
       break;
     }
     case IORI_ANIMTYPE_1211ShikiYaOtome_2: {
-      if (pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X - pOwnerPlayer_->GetPosition().X <= 300.0f * pOwnerPlayer_->FacingRightFlag()) {
-        pOwnerMovementComponent_->StopDash();
-      }
-
       if (120 == curImageIndex) {
         pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
         break;

@@ -51,8 +51,6 @@ class KOFPlayer
 
   void CollisionReset();
 
-  //void UpdatePrevAnimationIndex();
-
   virtual Vector CharacterScale() const;
 
   virtual void SetCharacterScale(const Vector& scale);

@@ -2,7 +2,7 @@
 #include "AnimationHandler.h"
 #include "IoriAnimationHandler.h"
 
-#define ANIMINTERVAL 30
+#define ANIMINTERVAL 35
 
 IoriAnimationHandler::IoriAnimationHandler() {
 }
@@ -11,22 +11,61 @@ IoriAnimationHandler::~IoriAnimationHandler() {
 }
 
 void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
-
-  if (PLAYER_ANIMTYPE_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
-    if (true == pOwnerMovementComponent_->IsFalling()) {
-      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
+  if (true == pOwnerStateComponent_->ContainPlayerState({PS_Jump})) {
+    if (PLAYER_ANIMTYPE_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerMovementComponent_->IsFalling()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
+      }
     }
-  }
-
-  if (PLAYER_ANIMTYPE_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
-    if (true == pOwnerMovementComponent_->IsOnGround()) {
-      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
+    if (PLAYER_ANIMTYPE_HeavyKick_Jump == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        if (true == pOwnerMovementComponent_->IsFalling()) {
+          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
+        }
+      }
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
+      }
     }
-  }
-
-  if (PLAYER_ANIMTYPE_JumpLand == pOwnerStateComponent_->GetCurAnimState()) {
-    if (true == pOwnerRenderer_->IsAnimationEnd()) {
-      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+    if (PLAYER_ANIMTYPE_HeavyPunch_Jump == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        if (true == pOwnerMovementComponent_->IsFalling()) {
+          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
+        }
+      }
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_LightKick_Jump == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        if (true == pOwnerMovementComponent_->IsFalling()) {
+          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
+        }
+      }
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_LightPunch_Jump == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        if (true == pOwnerMovementComponent_->IsFalling()) {
+          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
+        }
+      }
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_JumpLand == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+      }
     }
   }
 }
@@ -63,7 +102,7 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Seat, IMGTYPE_IoriImage, 172, 180, ANIMINTERVAL, false, 172);
   CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Seat, IMGTYPE_IoriImage, 192, 197, ANIMINTERVAL, false, 192);
   CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_Jump, IMGTYPE_IoriImage, 213, 218, ANIMINTERVAL, false, 213);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Jump, IMGTYPE_IoriImage, 204, 205, ANIMINTERVAL, false, 204);
+  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Jump, IMGTYPE_IoriImage, {204, 204, 205, 205}, ANIMINTERVAL, false, 204);
   CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Jump, IMGTYPE_IoriImage, 206, 212, ANIMINTERVAL, false, 206);
   CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Jump, IMGTYPE_IoriImage, 198, 203, ANIMINTERVAL, false, 198);
   CallCreateAnimation(PLAYER_ANIMTYPE_HitHigh, IMGTYPE_IoriImage, 557, 562, ANIMINTERVAL, false, 557);
