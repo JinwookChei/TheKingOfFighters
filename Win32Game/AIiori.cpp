@@ -94,7 +94,7 @@ void AIiori::Tick(unsigned long long deltaTick) {
     pSkillComponent_->UpdateActiveSkill();
   }
 
-  UpdatePrevAnimationIndex();
+  //UpdatePrevAnimationIndex();
 }
 
 void AIiori::Idle() {

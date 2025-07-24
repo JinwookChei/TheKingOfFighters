@@ -46,7 +46,7 @@ class MovementComponent final
 
   void UpdateGroundedState();
 
-  bool GetIsGround() const;
+  bool IsOnGround() const;
 
   void UpdateBackStep(unsigned long long deltaTick);
 
@@ -76,9 +76,9 @@ class MovementComponent final
 
   void UpdatePreframePosition();
 
-  bool Falling() const;
+  bool IsFalling() const;
 
-  bool Rising() const;
+  bool IsRising() const;
 
  private:
   Vector startPosition_;
@@ -113,7 +113,7 @@ class MovementComponent final
   Vector backStepEndPos_;
 
   // JUMP
-  bool isGrounded_;
+  bool isOnGrounded_;
   const float gravity_ = 0.45f;
   const float airResistance_ = 0.09f;
 

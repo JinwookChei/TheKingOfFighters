@@ -64,9 +64,6 @@
     <Filter Include="Contents\KOF\Actor\Projectile">
       <UniqueIdentifier>{0aa567c6-a5b6-4c45-963a-33a144b06ca0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\KOF\Actor\Projectile\Iori">
-      <UniqueIdentifier>{4f933bb1-baf3-4775-999a-712e14cbcf2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameInstance">
       <UniqueIdentifier>{ead86b14-5935-4b08-ae2f-386da4a2b385}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,9 @@
     </Filter>
     <Filter Include="Contents\KOF\Actor\PLayer\Iori">
       <UniqueIdentifier>{bc843fc2-420e-411d-a2a7-f394fe0e5a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\KOF\Actor\PLayer\Iori\Projectiles">
+      <UniqueIdentifier>{c6b22c19-4954-489b-8e5f-6b8e08fae6bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,12 +195,6 @@
     <ClCompile Include="Projectile.cpp">
       <Filter>Contents\KOF\Actor\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="YamiBarai.cpp">
-      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
-    </ClCompile>
-    <ClCompile Include="HyakushikiOniyaki.cpp">
-      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
-    </ClCompile>
     <ClCompile Include="SoundTable.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
@@ -228,9 +222,6 @@
     <ClCompile Include="SkillPoint.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Ura306Shiki.cpp">
-      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
-    </ClCompile>
     <ClCompile Include="CommandHandler.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
@@ -244,6 +235,21 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
     <ClCompile Include="IoriSkillHandler.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationHandler.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="HyakushikiOniyaki.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Ura306Shiki.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="YamiBarai.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="IoriAnimationHandler.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
   </ItemGroup>
@@ -371,12 +377,6 @@
     <ClInclude Include="Projectile.h">
       <Filter>Contents\KOF\Actor\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="YamiBarai.h">
-      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
-    </ClInclude>
-    <ClInclude Include="HyakushikiOniyaki.h">
-      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
-    </ClInclude>
     <ClInclude Include="SoundTable.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
@@ -404,9 +404,6 @@
     <ClInclude Include="SkillPoint.h">
       <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Ura306Shiki.h">
-      <Filter>Contents\KOF\Actor\Projectile\Iori</Filter>
-    </ClInclude>
     <ClInclude Include="CommandHandler.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
@@ -420,6 +417,21 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
     <ClInclude Include="IoriSkillHandler.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationHandler.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="HyakushikiOniyaki.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Ura306Shiki.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="YamiBarai.h">
+      <Filter>Contents\KOF\Actor\PLayer\Iori\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="IoriAnimationHandler.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
   </ItemGroup>

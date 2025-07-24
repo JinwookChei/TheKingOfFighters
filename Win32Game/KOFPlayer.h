@@ -1,5 +1,6 @@
 #pragma once
 
+class AnimationHandler;
 class MovementComponent;
 class CommandComponent;
 class CommandHandler;
@@ -28,33 +29,7 @@ class KOFPlayer
 
   virtual void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
 
-  void CallCreateAnimation(
-      unsigned long long animationTag,
-      unsigned long long imageIndex,
-      unsigned int startIndex,
-      unsigned int endIndex,
-      unsigned long long interval,
-      bool loop,
-      unsigned long long loopStartFrame);
-
-  void CallCreateAnimation(
-      unsigned long long animationTag,
-      unsigned long long imageIndex,
-      const std::vector<unsigned int>&indices,
-      unsigned long long interval,
-      bool loop,
-      unsigned long long loopStartFrame);
-
-  void CallCreateAnimation(
-      unsigned long long animationTag,
-      unsigned long long imageIndex,
-      const std::vector<unsigned int>& indices,
-      const std::vector<unsigned long long> intervals,
-      bool loop,
-      unsigned long long loopStartFrame);
-      
-
-  void UpdateAnimState(unsigned long long animState, PLAYER_ANIM_MODIFIER modifier = ANIMMOD_NONE, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
+  void UpdateAnimState(unsigned long long animState, unsigned long long modifier = ANIMMOD_NONE, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
 
   const HealthComponent* GetHealthComponent() const;
 
@@ -76,7 +51,7 @@ class KOFPlayer
 
   void CollisionReset();
 
-  void UpdatePrevAnimationIndex();
+  //void UpdatePrevAnimationIndex();
 
   virtual Vector CharacterScale() const;
 
@@ -133,6 +108,8 @@ class KOFPlayer
 
   ImageRenderer* pRender_;
 
+  AnimationHandler* pAnimationHandler_;
+
   ImageRenderer* pUI_;
 
   SoundChannel soundChannel_;
@@ -183,12 +160,10 @@ class KOFPlayer
   
   // TODO
   public:
-  unsigned int prevImageIndex_;
+  //unsigned int prevImageIndex_;
 
   private:
   bool isPlayer1_;
-
-  unsigned long long animState_;
 
   bool isPlayerOnLeft_;
 

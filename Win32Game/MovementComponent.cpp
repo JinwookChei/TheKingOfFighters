@@ -27,7 +27,7 @@ MovementComponent::MovementComponent()
       backStepStartPos_({0.0f, 0.0f}),
       backStepEndPos_({0.0f, 0.0f}),
       // JUMP
-      isGrounded_(true),
+      isOnGrounded_(true),
       // KNOCK BACK
       curKnockBackVelocity_({0.0f, 0.0f}),
       // PUSH
@@ -90,7 +90,7 @@ MOVEMENT_STATE MovementComponent::GetMovementState() const {
 }
 
 void MovementComponent::UpdateIdle(unsigned long long deltaTick) {
-  if (true == isGrounded_) {
+  if (true == isOnGrounded_) {
     curVelocity_ = {0.0f, 0.0f};
     moveDir_ = {0.0f, 0.0f};
   } else {
@@ -132,7 +132,7 @@ void MovementComponent::UpdateMove(unsigned long long deltaTick) {
 }
 
 void MovementComponent::Move(bool isRightDirection) {
-  if (false == isGrounded_) {
+  if (false == isOnGrounded_) {
     return;
   }
   curMovementState_ = MOVSTATE_Move;
@@ -145,7 +145,7 @@ void MovementComponent::Move(bool isRightDirection) {
 }
 
 void MovementComponent::MoveBack(bool isRightDirection) {
-  if (false == isGrounded_) {
+  if (false == isOnGrounded_) {
     return;
   }
 
@@ -159,7 +159,7 @@ void MovementComponent::MoveBack(bool isRightDirection) {
 }
 
 void MovementComponent::Run(bool isRightDirection) {
-  if (false == isGrounded_) {
+  if (false == isOnGrounded_) {
     return;
   }
 
@@ -204,21 +204,21 @@ void MovementComponent::UpdateJump(unsigned long long deltaTick) {
 }
 
 void MovementComponent::Jump() {
-  if (isGrounded_) {
+  if (isOnGrounded_) {
     curMovementState_ = MOVSTATE_Jump;
     moveDir_ = normalJumpForce_;
   }
 }
 
 void MovementComponent::Jump(bool isRightDirection, const Vector& jumpForce_) {
-  if (isGrounded_) {
+  if (isOnGrounded_) {
     curMovementState_ = MOVSTATE_Jump;
     moveDir_ = isRightDirection ? jumpForce_ : Vector{-jumpForce_.X, jumpForce_.Y};
   }
 }
 
 void MovementComponent::JumpForward(bool isRightDirection, bool isRunning) {
-  if (isGrounded_) {
+  if (isOnGrounded_) {
     curMovementState_ = MOVSTATE_Jump;
     if (isRightDirection) {
       if (isRunning) {
@@ -243,15 +243,15 @@ void MovementComponent::UpdateGroundedState() {
   }
   const Vector& curPosition = pOwner->GetPosition();
   if (startPosition_.Y - curPosition.Y <= 0.0f) {
-    isGrounded_ = true;
+    isOnGrounded_ = true;
     pOwner->SetPosition({curPosition.X, startPosition_.Y});
   } else {
-    isGrounded_ = false;
+    isOnGrounded_ = false;
   }
 }
 
-bool MovementComponent::GetIsGround() const {
-  return isGrounded_;
+bool MovementComponent::IsOnGround() const {
+  return isOnGrounded_;
 }
 
 void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
@@ -283,7 +283,7 @@ void MovementComponent::UpdateBackStep(unsigned long long deltaTick) {
 }
 
 void MovementComponent::BackStep(bool isRightDirection) {
-  if (false == isGrounded_) {
+  if (false == isOnGrounded_) {
     return;
   }
 
@@ -331,7 +331,7 @@ void MovementComponent::UpdateDash(unsigned long long deltaTick) {
 }
 
 void MovementComponent::Dash(bool isRightDirection, float dashDuration, float dashDistance) {
-  if (false == isGrounded_) {
+  if (false == isOnGrounded_) {
     return;
   }
 
@@ -505,13 +505,13 @@ void MovementComponent::UpdatePreframePosition() {
   preFramePosition_ = pOwner->GetPosition();
 }
 
-bool MovementComponent::Falling() const {
+bool MovementComponent::IsFalling() const {
   bool result = curVelocity_.Y > 0.0f ? true : false;
 
   return result;
 }
 
-bool MovementComponent::Rising() const {
+bool MovementComponent::IsRising() const {
   bool result = curVelocity_.Y < 0.0f ? true : false;
 
   return result;

@@ -16,12 +16,12 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
+#include "AnimationHandler.h"
+#include "IoriAnimationHandler.h"
 #include "CommandHandler.h"
 #include "IoriCommandHandler.h"
 #include "SkillHandler.h"
 #include "IoriSkillHandler.h"
-
-#define ANIMINTERVAL 35
 
 Iori::Iori() {
 }
@@ -43,73 +43,22 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SetCharacterScale(pImage->GetScale(7) * pRender_->GetLocalScale());
 
   // ANIM
-  CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_IoriImage, 0, 15, ANIMINTERVAL, true, 7);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Idle, IMGTYPE_IoriImage, 7, 15, ANIMINTERVAL, true, 7);
-  CallCreateAnimation(PLAYER_ANIMTYPE_SeatDown, IMGTYPE_IoriImage, 16, 23, ANIMINTERVAL, true, 18);
-  CallCreateAnimation(PLAYER_ANIMTYPE_SeatUp, IMGTYPE_IoriImage, 24, 25, ANIMINTERVAL, false, 24);
-  CallCreateAnimation(PLAYER_ANIMTYPE_FrontWalk, IMGTYPE_IoriImage, 27, 34, ANIMINTERVAL, true, 27);
-  CallCreateAnimation(PLAYER_ANIMTYPE_BackWalk, IMGTYPE_IoriImage, 35, 44, ANIMINTERVAL, true, 35);
-  CallCreateAnimation(PLAYER_ANIMTYPE_BackStep, IMGTYPE_IoriImage, 45, 48, ANIMINTERVAL, false, 45);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Run, IMGTYPE_IoriImage, 49, 57, ANIMINTERVAL, true, 51);
-  CallCreateAnimation(PLAYER_ANIMTYPE_RunEnd, IMGTYPE_IoriImage, 58, 60, ANIMINTERVAL, false, 59);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Jump, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  // CallCreateAnimation(PLAYER_ANIMTYPE_JumpStart, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  // CallCreateAnimation(PLAYER_ANIMTYPE_JumpIdle, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  // CallCreateAnimation(PLAYER_ANIMTYPE_Jump, IMGTYPE_IoriImage, 61, 69, ANIMINTERVAL, false, 61);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Dash, IMGTYPE_IoriImage, 70, 77, ANIMINTERVAL, false, 70);
-  CallCreateAnimation(PLAYER_ANIMTYPE_RollingBack, IMGTYPE_IoriImage, 78, 87, ANIMINTERVAL, false, 78);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Guard, IMGTYPE_IoriImage, 541, 541, ANIMINTERVAL, false, 541);
-  CallCreateAnimation(PLAYER_ANIMTYPE_GuardEnd, IMGTYPE_IoriImage, 542, 543, ANIMINTERVAL, false, 542);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Guard_Seat, IMGTYPE_IoriImage, 548, 548, ANIMINTERVAL, false, 548);
-  CallCreateAnimation(PLAYER_ANIMTYPE_GuardEnd_Seat, IMGTYPE_IoriImage, 549, 549, ANIMINTERVAL, false, 549);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_CloseRange, IMGTYPE_IoriImage, 136, 144, ANIMINTERVAL, false, 136);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_CloseRange, IMGTYPE_IoriImage, 123, 127, ANIMINTERVAL, false, 123);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, IMGTYPE_IoriImage, 128, 135, ANIMINTERVAL, false, 128);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_CloseRange, IMGTYPE_IoriImage, 118, 122, ANIMINTERVAL, false, 118);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_LongRange, IMGTYPE_IoriImage, 108, 117, ANIMINTERVAL, false, 108);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_LongRange, IMGTYPE_IoriImage, 94, 98, ANIMINTERVAL, false, 94);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_LongRange, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_LongRange, IMGTYPE_IoriImage, 88, 93, ANIMINTERVAL, false, 88);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_Seat, IMGTYPE_IoriImage, 181, 191, ANIMINTERVAL, false, 181);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Seat, IMGTYPE_IoriImage, 165, 171, ANIMINTERVAL, false, 165);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Seat, IMGTYPE_IoriImage, 172, 180, ANIMINTERVAL, false, 172);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Seat, IMGTYPE_IoriImage, 192, 197, ANIMINTERVAL, false, 192);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_Jump, IMGTYPE_IoriImage, 213, 218, ANIMINTERVAL, false, 213);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Jump, IMGTYPE_IoriImage, 204, 205, ANIMINTERVAL, false, 204);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Jump, IMGTYPE_IoriImage, 206, 212, ANIMINTERVAL, false, 206);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Jump, IMGTYPE_IoriImage, 198, 203, ANIMINTERVAL, false, 198);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HitHigh, IMGTYPE_IoriImage, 557, 562, ANIMINTERVAL, false, 557);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HitLow, IMGTYPE_IoriImage, 563, 567, ANIMINTERVAL, false, 563);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HitStrong, IMGTYPE_IoriImage, 594, 607, ANIMINTERVAL, false, 594);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Seat, IMGTYPE_IoriImage, 552, 556, ANIMINTERVAL, false, 552);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Jump, IMGTYPE_IoriImage, {557 /*, 558*/, 80, 81, 82, 83, 84, 85}, {80, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL, ANIMINTERVAL}, false, 557);
-  CallCreateAnimation(PLAYER_ANIMTYPE_NeckGrab, IMGTYPE_IoriImage, 572, 575, 200, false, 572);
-  CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_IoriImage, 223, 230, ANIMINTERVAL, false, 223);
-  CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_2, IMGTYPE_IoriImage, 160, 164, ANIMINTERVAL, false, 160);
-  CallCreateAnimation(IORI_ANIMTYPE_Shinigami, IMGTYPE_IoriImage, 145, 156, ANIMINTERVAL, false, 145);
-  CallCreateAnimation(IORI_ANIMTYPE_HyakushikiOniyaki, IMGTYPE_IoriImage, 276, 291, ANIMINTERVAL, false, 276);
-  CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_1, IMGTYPE_IoriImage, 255, 261, ANIMINTERVAL, false, 255);
-  CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_2, IMGTYPE_IoriImage, 262, 268, ANIMINTERVAL, false, 262);
-  CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_3, IMGTYPE_IoriImage, 269, 275, ANIMINTERVAL, false, 269);
-  CallCreateAnimation(PLAYER_ANIMTYPE_UltimateCasting, IMGTYPE_IoriImage, 344, 347, 120, false, 344);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_1, IMGTYPE_IoriImage, 70, 77, 20, false, 70);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_2, IMGTYPE_IoriImage, 118, 122, 20, false, 118);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_3, IMGTYPE_IoriImage, 88, 92, 20, false, 88);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_4, IMGTYPE_IoriImage, 128, 135, 20, false, 128);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_5, IMGTYPE_IoriImage, 223, 229, 20, false, 223);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_6, IMGTYPE_IoriImage, 99, 106, 20, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_7, IMGTYPE_IoriImage, 159, 163, 20, false, 159);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_IoriImage, 99, 107, 20, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_IoriImage, 347, 352, 200, false, 347);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_IoriImage, 353, 360, 20, false, 353);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 20, false, 161);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
+  pAnimationHandler_ = CreateComponent<IoriAnimationHandler>();
+  if (nullptr == pAnimationHandler_) {
+    return;
+  }
+  if (false == pAnimationHandler_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_)) {
+    return;
+  }
+
+  if (false == pAnimationHandler_->RegistAnimations()) {
+    return;
+  }
 
   UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
 
   // SOUND
-  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Jump, SOUNDTYPE_COMMON_Jump01);
+  pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_JumpUp, SOUNDTYPE_COMMON_Jump01);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Run, SOUNDTYPE_COMMON_FootStep);
   pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_108ShikiYamiBarai, SOUNDTYPE_IORI_108ShikiYamiBarai);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Dash, SOUNDTYPE_IORI_Dash);
@@ -156,7 +105,9 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, {PS_Move}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, {PS_Run}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_None}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, {PS_Jump}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpUp, {PS_Jump}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpDown, {PS_Jump}, true);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpLand, {PS_Jump}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Dash, {PS_Rolling}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_RollingBack, {PS_Rolling}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Guard, {PS_Guard}, false);
@@ -243,49 +194,27 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 5.0f, {0.5f, -10.0f}, 100.0f);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_3, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 10.0f, {0.5f, -10.0f}, 140.0f);
 
-
   // COMMAND
   pCommandHandler_ = CreateComponent<IoriCommandHandler>();
   if (nullptr == pCommandHandler_) {
-    __debugbreak();
     return;
   }
-  if (false == pCommandHandler_->Initialize(
-      this, 
-      pCommandComponent_, 
-      pMovementComponent_, 
-      pSkillComponent_, 
-      pMPComponent_)) {
-    __debugbreak();
+  if (false == pCommandHandler_->Initialize(this, pCommandComponent_, pMovementComponent_, pSkillComponent_, pMPComponent_)) {
     return;
   }
-
   if (false == pCommandHandler_->RegistCommands()) {
-    __debugbreak();
     return;
   }
 
   // SKILL
   pSkillHandler_ = CreateComponent<IoriSkillHandler>();
   if (nullptr == pSkillHandler_) {
-    __debugbreak();
     return;
   }
-  if (false == pSkillHandler_->Initialize(
-      this,
-      pSkillComponent_,
-      pRender_, 
-      pMovementComponent_, 
-      pStateComponent_, 
-      pAttackBox_, 
-      pCommandComponent_,
-      pProjectileComponent_, 
-      pMPComponent_)) {
-    __debugbreak();
+  if (false == pSkillHandler_->Initialize(this, pSkillComponent_, pRender_,pAnimationHandler_, pMovementComponent_, pStateComponent_, pAttackBox_, pCommandComponent_, pProjectileComponent_, pMPComponent_)) {
     return;
   }
   if (false == pSkillHandler_->RegistSkills()) {
-    __debugbreak();
     return;
   }
 }
@@ -313,10 +242,16 @@ void Iori::CompareInputBitset() {
       return;
     }
 
-    if (true == pRender_->IsAnimationEnd()) {
+
+    // if (true == pRender_->IsAnimationEnd()) {
+    //  UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+    //  return;
+    //}
+
+    /*if (true == pAnimationHandler_->IsAnimationEnd()) {
       UpdateAnimState(PLAYER_ANIMTYPE_Idle);
       return;
-    }
+    }*/
     return;
   }
 
@@ -422,12 +357,12 @@ void Iori::CompareInputBitset() {
     // RIGHT UP | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00110000"))) {
       if (true == pStateComponent_->ContainPlayerState({PS_Run})) {
-        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
         pMovementComponent_->JumpForward(FacingRight(), true);
         pGhostEffect_->On();
         return;
       } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+        UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
         pMovementComponent_->JumpForward(FacingRight(), false);
         return;
       }
@@ -435,14 +370,14 @@ void Iori::CompareInputBitset() {
 
     // LEFT UP | PRESS
     if (true == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("10010000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+      UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
       pMovementComponent_->JumpForward(!FacingRight(), false);
       return;
     }
 
     // UP | PRESS
     if (true == IsContainInputBitSet(inputPressBitSet_, std::bitset<8>("00010000"))) {
-      UpdateAnimState(PLAYER_ANIMTYPE_Jump);
+      UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
       pMovementComponent_->Jump();
       return;
     }

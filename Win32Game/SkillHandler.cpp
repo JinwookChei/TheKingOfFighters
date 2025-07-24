@@ -7,6 +7,7 @@ SkillHandler::SkillHandler()
     : pOwnerPlayer_(nullptr),
       pOwnerSkillComponent_(nullptr),
       pOwnerRenderer_(nullptr),
+      pOwnerAnimationHandler_(nullptr),
       pOwnerMovementComponent_(nullptr),
       pOwnerStateComponent_(nullptr),
       pOwnerAttackCollision_(nullptr),
@@ -21,6 +22,7 @@ SkillHandler::~SkillHandler() {
 bool SkillHandler::Initialize(KOFPlayer* ownerPlayer,
                               SkillComponent* ownerSkillComponent,
                               ImageRenderer* ownerRenderer,
+                              AnimationHandler* pAnimationHandler,
                               MovementComponent* ownerMovementComponent,
                               StateComponent* ownerStateComponent,
                               CollisionComponent* ownerAttackCollision,
@@ -34,6 +36,9 @@ bool SkillHandler::Initialize(KOFPlayer* ownerPlayer,
     return false;
   }
   if (nullptr == ownerRenderer) {
+    return false;
+  }
+  if (nullptr == pAnimationHandler) {
     return false;
   }
   if (nullptr == ownerMovementComponent) {
@@ -60,6 +65,8 @@ bool SkillHandler::Initialize(KOFPlayer* ownerPlayer,
   pOwnerSkillComponent_ = ownerSkillComponent;
 
   pOwnerRenderer_ = ownerRenderer;
+
+  pOwnerAnimationHandler_ = pAnimationHandler;
 
   pOwnerMovementComponent_ = ownerMovementComponent;
 

@@ -50,13 +50,14 @@ void IoriSkillHandler::GaishikiMutan() {
 }
 
 void IoriSkillHandler::ShikiYamiBarai108() {
+
   if (true == pOwnerRenderer_->IsAnimationEnd()) {
     pOwnerSkillComponent_->DeactivateSkill();
     return;
   }
 
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
-  unsigned int prevImageIndex = pOwnerPlayer_->prevImageIndex_;
+  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
   if (prevImageIndex == curImageIndex) {
     return;
   }
@@ -82,8 +83,8 @@ void IoriSkillHandler::HyakushikiOniyaki() {
     return;
   }
 
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
-  unsigned int prevImageIndex = pOwnerPlayer_->prevImageIndex_;
+  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
   if (prevImageIndex == curImageIndex) {
     return;
   }
@@ -108,8 +109,9 @@ void IoriSkillHandler::ShikiAoiHana127() {
     return;
   }
 
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
-  unsigned int prevImageIndex = pOwnerPlayer_->prevImageIndex_;
+
+  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
   if (prevImageIndex == curImageIndex) {
     return;
   }
@@ -177,8 +179,8 @@ void IoriSkillHandler::ShikiYaOtome1211() {
     return;
   }
 
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
-  unsigned int prevImageIndex = pOwnerPlayer_->prevImageIndex_;
+  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
   if (prevImageIndex == curImageIndex) {
     return;
   }
@@ -383,8 +385,8 @@ void IoriSkillHandler::Ura306shikiShika() {
     return;
   }
 
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
-  unsigned int prevImageIndex = pOwnerPlayer_->prevImageIndex_;
+  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
   if (prevImageIndex == curImageIndex) {
     return;
   }
@@ -420,7 +422,6 @@ void IoriSkillHandler::Ura306shikiShika() {
       if (366 == curImageIndex) {
         pOwnerAttackCollision_->ResetHit();
         pKOFLevel->DefreezeActors();
-        // pOpponentPlayer_->SetControlLocked(false);
         break;
       }
 

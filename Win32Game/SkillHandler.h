@@ -1,5 +1,6 @@
 #pragma once
 #include "KOFPlayer.h"
+#include "AnimationHandler.h"
 #include "SkillComponent.h"
 #include "StateComponent.h"
 #include "ProjectileComponent.h"
@@ -16,6 +17,7 @@ class SkillHandler
   bool Initialize(KOFPlayer* ownerPlayer,
                   SkillComponent* ownerSkillComponent,
                   ImageRenderer* ownerRenderer,
+                  AnimationHandler* pAnimationHandler,
                   MovementComponent* ownerMovementComponent,
                   StateComponent* ownerStateComponent,
                   CollisionComponent* ownerAttackCollision,
@@ -31,6 +33,8 @@ class SkillHandler
   SkillComponent* pOwnerSkillComponent_;
 
   ImageRenderer* pOwnerRenderer_;
+
+  AnimationHandler* pOwnerAnimationHandler_;
 
   MovementComponent* pOwnerMovementComponent_;
 
