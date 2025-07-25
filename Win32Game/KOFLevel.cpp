@@ -47,6 +47,7 @@ KOFLevel::~KOFLevel() {
 }
 
 void KOFLevel::BeginPlay() {
+
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
 
   // MOUSE

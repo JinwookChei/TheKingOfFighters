@@ -209,7 +209,7 @@ void IoriSkillHandler::ShikiYaOtome1211() {
         pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(true);
         pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 250.0f, 1000.0f);
 
-        if (160.0f > std::fabs(pOwnerPlayer_->GetPosition().X - pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X)) {
+        if (180.0f > std::fabs(pOwnerPlayer_->GetPosition().X - pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X)) {
           pOwnerMovementComponent_->StopDash();
           pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_2);
         }
@@ -305,7 +305,7 @@ void IoriSkillHandler::ShikiYaOtome1211() {
 
       if (349 == curImageIndex) {
         const Vector& ioriPosition = pOwnerPlayer_->GetPosition();
-        const Vector& targetPosition = ioriPosition + Vector{100.0f * pOwnerPlayer_->FacingRightFlag(), -50.0f};
+        const Vector& targetPosition = ioriPosition + Vector{50.0f * pOwnerPlayer_->FacingRightFlag(), -30.0f};
         pOwnerPlayer_->GetOpponentPlayer()->SetPosition(targetPosition);
         // soundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
         SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
@@ -375,12 +375,12 @@ void IoriSkillHandler::Ura306shikiShika() {
   if (nullptr == pKOFLevel) {
     return;
   }
-
+  
   ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
   if (nullptr == pBackGroundMask) {
     return;
   }
-
+     
   unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
   unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
   if (prevImageIndex == curImageIndex) {
@@ -395,8 +395,9 @@ void IoriSkillHandler::Ura306shikiShika() {
         pKOFLevel->FreezeActors({pOwnerPlayer_, pOwnerPlayer_->GetOpponentPlayer()}, false, 500);
         pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
       }
-      if (356 == curImageIndex) {
+      if (357 == curImageIndex) {
         pKOFLevel->FreezeActors({pOwnerPlayer_->GetOpponentPlayer()}, true);
+
       }
       if (360 == curImageIndex) {
         pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_2);
@@ -407,20 +408,10 @@ void IoriSkillHandler::Ura306shikiShika() {
     }
     case IORI_ANIMTYPE_Ura306shikiShika_2: {
       if (363 == curImageIndex) {
+        //pKOFLevel->DefreezeActors();
         break;
       }
-      if (364 == curImageIndex) {
-        break;
-      }
-      if (365 == curImageIndex) {
-        break;
-      }
-      if (366 == curImageIndex) {
-        pOwnerAttackCollision_->ResetHit();
-        pKOFLevel->DefreezeActors();
-        break;
-      }
-
+      
       if (370 == curImageIndex) {
         pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_3);
         break;
@@ -432,6 +423,8 @@ void IoriSkillHandler::Ura306shikiShika() {
         pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_Ura306Shiki);
         break;
       }
+
+
       if (386 == curImageIndex) {
         pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(false);
       }

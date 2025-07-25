@@ -114,7 +114,7 @@ class MovementComponent final
 
   // JUMP
   bool isOnGrounded_;
-  const float gravity_ = 0.45f;
+  const float gravity_ = 0.35f;
   const float airResistance_ = 0.09f;
 
   const Vector normalJumpForce_ = {0.0f, -5.5f};

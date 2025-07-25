@@ -393,6 +393,7 @@ void MovementComponent::KnockBack(bool isRightDirection, const Vector& knockBack
     moveDir_ = {knockBackForce.X, knockBackForce.Y};
   }
 
+  curVelocity_ = {0.0f, 0.0f};
   curMovementState_ = MOVSTATE_KnockBack;
 }
 

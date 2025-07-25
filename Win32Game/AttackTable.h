@@ -6,6 +6,7 @@ enum ATTACK_TYPE {
   ATTYPE_LowAttack,
   ATTYPE_HighAttack,
   ATTYPE_StrongAttack,
+  ATTYPE_Airborne,
   ATTYPE_Max
 };
 

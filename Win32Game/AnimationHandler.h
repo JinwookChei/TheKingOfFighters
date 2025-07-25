@@ -15,6 +15,8 @@ class AnimationHandler
 
   bool Initialize(KOFPlayer* ownerPlayer, ImageRenderer* imageRenderer_, StateComponent* stateComponent, MovementComponent* movementComponent);
 
+  virtual void Test() = 0;
+
   bool CallCreateAnimation(
       unsigned long long animationTag,
       unsigned long long imageIndex,

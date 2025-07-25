@@ -42,9 +42,9 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 23, 32, 20, true, 23);        // ->-> 뛰기
   //pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 36, 42, 50, false, 0);       // 점프
   //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 82, 89, 50, false, 0);  // 발차기
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 310, 314, 50, false, 0);  //
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 315, 319, 50, false, 0);   //
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE),
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_High | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 310, 314, 50, false, 0);  //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Low | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE), 315, 319, 50, false, 0);   //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Strong | ANIMMOD_NONE), (IMGTYPE_ChangImage | IMGMOD_NONE),
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
@@ -58,9 +58,9 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 23, 32, 20, true, 23);        // ->-> 뛰기
   //pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 36, 42, 50, false, 0);       // 점프
   //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 82, 89, 50, false, 0);  // 발차기
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 310, 314, 50, false, 0);  //
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 315, 319, 50, false, 0);   //
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED),
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_High | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 310, 314, 50, false, 0);  //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Low | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 315, 319, 50, false, 0);   //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Strong | ANIMMOD_FLIPPED), (IMGTYPE_ChangImage | IMGMOD_FLIPPED),
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                             false, 0);
@@ -91,13 +91,13 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   /*if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 82, 89, 50, false, 0)) {
     return;
   }*/
-  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 310, 314, 50, false, 0)) {
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_High | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 310, 314, 50, false, 0)) {
     return;
   }
-  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0)) {
+  if (false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Low | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0)) {
     return;
   }
-  if( false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME),
+  if( false == pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Strong | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME),
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 50, 50, 50, 50},
                                          false, 0)) {
@@ -118,9 +118,9 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pRender_->CreateAnimation((PLAYER_ANIMTYPE_Run | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 23, 32, 20, true, 23);        // ->-> 뛰기
   //pRender_->CreateAnimation((PLAYER_ANIMTYPE_Jump | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 36, 42, 50, false, 0);       // 점프
   //pRender_->CreateAnimation((PLAYER_ANIMTYPE_HeavyKick | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 82, 89, 50, false, 0);  // 발차기
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitHigh | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 310, 314, 50, false, 0);  //
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitLow | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0);   //
-  pRender_->CreateAnimation((PLAYER_ANIMTYPE_HitStrong | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME),
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_High | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 310, 314, 50, false, 0);  //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Low | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME), 315, 319, 50, false, 0);   //
+  pRender_->CreateAnimation((PLAYER_ANIMTYPE_Hit_Strong | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME), (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME),
                             {339, 335, 336, 337, 338, 335, 336, 337, 338, 340, 341, 342, 343, 345, 346, 347, 348, 349, 350},
                             {30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 50, 50, 50, 50},
                             false, 0);
@@ -139,9 +139,9 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_Move}, false);
   //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, {PS_Jump}, false);
   //pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, {PS_Attack}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitHigh, {PS_Hit}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitLow, {PS_Hit}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_HitStrong, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_High, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Low, {PS_Hit}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Strong, {PS_Hit}, false);
 
   // DAMAGE
   //pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});

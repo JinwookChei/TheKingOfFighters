@@ -31,14 +31,14 @@ bool Ura306Shiki::Initialize() {
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
 
-  attackInfo_.attackType_ = ATTYPE_LowAttack;
+  attackInfo_.attackType_ = ATTYPE_Airborne;
   attackInfo_.damage_ = {10.0f};
   attackInfo_.effectType_ = EFTYPE_Hit_2;
   attackInfo_.elementType_ = ELMTTYPE_BlueFlame;
   attackInfo_.freezeTime_ = 140.0f;
   attackInfo_.isMultiHit_ = true;
-  attackInfo_.knockBackForce_ = {1.5f, 2.0f};
-  spawnPosition_ = {400.0f, -300.0f};
+  attackInfo_.knockBackForce_ = {2.0f, -9.0f};
+  spawnPosition_ = {400.0f, 0.0f};
   isDestroyOnCollision_ = false;
 
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {

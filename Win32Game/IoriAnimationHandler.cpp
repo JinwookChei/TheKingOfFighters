@@ -67,22 +67,50 @@ void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
         pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
       }
     }
+    return;
   }
 
+  if (true == pOwnerStateComponent_->ContainPlayerState({ PS_Hit })) {
+    if (PLAYER_ANIMTYPE_Hit_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpDown, curAnimationModifier_, true);
+      }
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_Hit_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+      }
+    }
 
-  if (PLAYER_ANIMTYPE_Hit_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
-    if (true == pOwnerRenderer_->IsAnimationEnd()) {
-      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpDown, curAnimationModifier_, true);
+    if (PLAYER_ANIMTYPE_Hit_AirborneUp == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerMovementComponent_->IsFalling()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneDown, curAnimationModifier_, true);
+      }
+      
     }
-    if (true == pOwnerMovementComponent_->IsOnGround()) {
-      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+    if (PLAYER_ANIMTYPE_Hit_AirborneDown == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerMovementComponent_->IsOnGround()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneLand, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_Hit_AirborneLand == pOwnerStateComponent_->GetCurAnimState()) {
+        if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneGetUp, curAnimationModifier_, true);
+      }
+    }
+    if (PLAYER_ANIMTYPE_Hit_AirborneGetUp == pOwnerStateComponent_->GetCurAnimState()) {
+      if (true == pOwnerRenderer_->IsAnimationEnd()) {
+        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
+      }
     }
   }
-  if (PLAYER_ANIMTYPE_Hit_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
-    if (true == pOwnerMovementComponent_->IsOnGround()) {
-      pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
-    }
-  }
+  
+}
+
+void IoriAnimationHandler::Test() {
 }
 
 bool IoriAnimationHandler::RegistAnimations() {
@@ -120,9 +148,13 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Jump, IMGTYPE_IoriImage, {204, 204, 205, 205}, ANIMINTERVAL, false, 204);
   CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Jump, IMGTYPE_IoriImage, 206, 212, ANIMINTERVAL, false, 206);
   CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Jump, IMGTYPE_IoriImage, 198, 203, ANIMINTERVAL, false, 198);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HitHigh, IMGTYPE_IoriImage, 557, 562, ANIMINTERVAL, false, 557);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HitLow, IMGTYPE_IoriImage, 563, 567, ANIMINTERVAL, false, 563);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HitStrong, IMGTYPE_IoriImage, 594, 607, ANIMINTERVAL, false, 594);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_High, IMGTYPE_IoriImage, 557, 562, ANIMINTERVAL, false, 557);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Low, IMGTYPE_IoriImage, 563, 567, ANIMINTERVAL, false, 563);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Strong, IMGTYPE_IoriImage, 594, 607, ANIMINTERVAL, false, 594);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_AirborneUp, IMGTYPE_IoriImage, 594, 597, ANIMINTERVAL, false, 594);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_AirborneDown, IMGTYPE_IoriImage, 608, 608, ANIMINTERVAL, false, 608);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_AirborneLand, IMGTYPE_IoriImage, {609, 610, 611, 611, 611, 611, 611, 611}, ANIMINTERVAL, false, 609);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Hit_AirborneGetUp, IMGTYPE_IoriImage, 612, 615, ANIMINTERVAL, false, 612);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Seat, IMGTYPE_IoriImage, 552, 556, ANIMINTERVAL, false, 552);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpUp, IMGTYPE_IoriImage, {595}, 160, false, 595);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpDown, IMGTYPE_IoriImage, 80, 85, ANIMINTERVAL, false, 82);
@@ -137,16 +169,16 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_3, IMGTYPE_IoriImage, 269, 275, ANIMINTERVAL, false, 269);
   CallCreateAnimation(PLAYER_ANIMTYPE_UltimateCasting, IMGTYPE_IoriImage, 344, 347, 120, false, 344);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_1, IMGTYPE_IoriImage, 70, 77, 20, false, 70);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_2, IMGTYPE_IoriImage, 118, 122, 20, false, 118);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_3, IMGTYPE_IoriImage, 88, 92, 20, false, 88);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_4, IMGTYPE_IoriImage, 128, 135, 20, false, 128);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_5, IMGTYPE_IoriImage, 223, 229, 20, false, 223);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_6, IMGTYPE_IoriImage, 99, 106, 20, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_7, IMGTYPE_IoriImage, 159, 163, 20, false, 159);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_IoriImage, 99, 107, 20, false, 99);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_2, IMGTYPE_IoriImage, 118, 122, 16, false, 118);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_3, IMGTYPE_IoriImage, 88, 92, 16, false, 88);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_4, IMGTYPE_IoriImage, 128, 135, 16, false, 128);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_5, IMGTYPE_IoriImage, 223, 229, 16, false, 223);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_6, IMGTYPE_IoriImage, 99, 106, 16, false, 99);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_7, IMGTYPE_IoriImage, 159, 163, 16, false, 159);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_IoriImage, 99, 107, 16, false, 99);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_IoriImage, 347, 352, 200, false, 347);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_IoriImage, 353, 360, 20, false, 353);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 20, false, 161);
+  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_IoriImage, 353, 360, 16, false, 353);
+  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 30, false, 161);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
   return true;
 }
