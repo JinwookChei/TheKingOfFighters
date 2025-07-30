@@ -296,11 +296,6 @@ void Iori::CompareInputBitset() {
     return;
   }
 
-  if (pStateComponent_->EqualPlayerState({PS_Hit})) {
-    return;
-  }
-
-
   // IDLE Guard
   if (pStateComponent_->EqualPlayerState({PS_Guard})) {
     if (false == pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
