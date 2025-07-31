@@ -11,107 +11,11 @@ IoriAnimationHandler::~IoriAnimationHandler() {
 }
 
 void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
-  if (true == pOwnerStateComponent_->ContainPlayerState({PS_Jump})) {
-    if (PLAYER_ANIMTYPE_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerMovementComponent_->IsFalling()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_HeavyKick_Jump == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        if (true == pOwnerMovementComponent_->IsFalling()) {
-          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
-        }
-      }
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_HeavyPunch_Jump == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        if (true == pOwnerMovementComponent_->IsFalling()) {
-          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
-        }
-      }
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_LightKick_Jump == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        if (true == pOwnerMovementComponent_->IsFalling()) {
-          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
-        }
-      }
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_LightPunch_Jump == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        if (true == pOwnerMovementComponent_->IsFalling()) {
-          pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpDown, curAnimationModifier_, true);
-        }
-      }
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_JumpLand, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_JumpLand == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
-      }
-    }
-    return;
-  }
+  InitCondition();
 
-  if (true == pOwnerStateComponent_->ContainPlayerState({ PS_Hit })) {
-    if (PLAYER_ANIMTYPE_Hit_JumpUp == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpDown, curAnimationModifier_, true);
-      }
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_Hit_JumpDown == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
-      }
-    }
-
-    if (PLAYER_ANIMTYPE_Hit_AirborneUp == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerMovementComponent_->IsFalling()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneDown, curAnimationModifier_, true);
-      }
-      
-    }
-    if (PLAYER_ANIMTYPE_Hit_AirborneDown == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerMovementComponent_->IsOnGround()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneLand, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_Hit_AirborneLand == pOwnerStateComponent_->GetCurAnimState()) {
-        if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneGetUp, curAnimationModifier_, true);
-      }
-    }
-    if (PLAYER_ANIMTYPE_Hit_AirborneGetUp == pOwnerStateComponent_->GetCurAnimState()) {
-      if (true == pOwnerRenderer_->IsAnimationEnd()) {
-        pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle, curAnimationModifier_, true);
-      }
-    }
-  }
-  
+  UpdateAnimation();
 }
 
-void IoriAnimationHandler::Test() {
-}
 
 bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_IoriImage, 0, 15, ANIMINTERVAL, true, 7);
@@ -180,5 +84,43 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_IoriImage, 353, 360, 16, false, 353);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 30, false, 161);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
+
+  RegistAnimTransition(PLAYER_ANIMTYPE_JumpUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_JumpDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  RegistAnimTransition(PLAYER_ANIMTYPE_JumpLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
+
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_Hit_AirborneDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Hit_AirborneLand);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_AirborneGetUp);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneGetUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+
+  RegistAnimTransition(PLAYER_ANIMTYPE_BackStep, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_RunEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Dash, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_RollingBack, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  
   return true;
 }
+

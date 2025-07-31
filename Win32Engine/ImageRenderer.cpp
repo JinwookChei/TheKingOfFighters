@@ -6,11 +6,11 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
     return indices_[curFrame_];
   }
 
-  if (loop_ == true) {
-    isEnd_ = true;
-  } else {
-    isEnd_ = false;
-  }
+  //if (loop_ == true) {
+  //  isEnd_ = true;
+  //} else {
+  //  isEnd_ = false;
+  //}
 
   curTime_ -= curTick;
   if (curTime_ <= 0) {

@@ -8,17 +8,26 @@ AnimationHandler::AnimationHandler()
       pOwnerMovementComponent_(nullptr),
       curAnimationState_(PLAYER_ANIMTYPE_None),
       curAnimationModifier_(ANIMMOD_NONE),
-      prevImageIndex_(0) {
+      prevImageIndex_(0),
+      animTransitionTable_(),
+      transCondition_(TRANSITION_CONDITION::None) {
 }
 
 AnimationHandler::~AnimationHandler() {
+  for (HashTableIterator iter = animTransitionTable_.begin(); iter != animTransitionTable_.end();) {
+    AttackInfo* pDel = (AttackInfo*)*iter;
+    iter = animTransitionTable_.erase(iter);
+
+    delete pDel;
+  }
+
+  animTransitionTable_.Cleanup();
 }
 
 void AnimationHandler::BeginPlay() {
 }
 
 void AnimationHandler::Tick(unsigned long long deltaTick) {
-
 }
 
 bool AnimationHandler::Initialize(KOFPlayer* ownerPlayer, ImageRenderer* imageRenderer_, StateComponent* stateComponent, MovementComponent* movementComponent) {
@@ -39,7 +48,9 @@ bool AnimationHandler::Initialize(KOFPlayer* ownerPlayer, ImageRenderer* imageRe
   pOwnerRenderer_ = imageRenderer_;
   pOwnerStateComponent_ = stateComponent;
   pOwnerMovementComponent_ = movementComponent;
-  return true;
+
+  bool ret = animTransitionTable_.Initialize(8, 8);
+  return ret;
 }
 
 bool AnimationHandler::CallCreateAnimation(
@@ -148,4 +159,107 @@ unsigned int AnimationHandler::CurrentImageIndex() const {
 
 unsigned int AnimationHandler::PrevImageIndex() const {
   return prevImageIndex_;
+}
+
+bool AnimationHandler::RegistAnimTransition(unsigned long long curAnimState, unsigned int transCondition1, bool equalCondition1, unsigned long long nextAnimState1, unsigned int transCondition2, bool equalCondition2, unsigned long long nextAnimState2, unsigned int transCondition3, bool equalCondition3, unsigned long long nextAnimState3) {
+  AnimTransitionRule* pFind;
+  if (0 != animTransitionTable_.Select((void**)&pFind, 1, &curAnimState, 8)) {
+    return false;
+  }
+
+  AnimTransitionRule* pInfo = new AnimTransitionRule;
+  pInfo->curAnimState_ = curAnimState;
+
+  pInfo->transCondition1_ = transCondition1;
+  pInfo->equalCondition1_ = equalCondition1;
+  pInfo->nextAnimState1_ = nextAnimState1;
+
+  pInfo->transCondition2_ = transCondition2;
+  pInfo->equalCondition2_ = equalCondition2;
+  pInfo->nextAnimState2_ = nextAnimState2;
+
+  pInfo->transCondition3_ = transCondition3;
+  pInfo->equalCondition3_ = equalCondition3;
+  pInfo->nextAnimState3_ = nextAnimState3;
+
+  pInfo->searchHandle_ = animTransitionTable_.Insert(pInfo, &pInfo->curAnimState_, 8);
+
+  return nullptr != pInfo->searchHandle_;
+}
+
+void AnimationHandler::InitCondition() {
+  transCondition_ = TRANSITION_CONDITION::None;
+
+  if (pOwnerRenderer_->IsAnimationEnd()) {
+    transCondition_ |= TRANSITION_CONDITION::AnimationEnd;
+  }
+  if (pOwnerMovementComponent_->IsRising()) {
+    transCondition_ |= TRANSITION_CONDITION::MovementRising;
+  }
+  if (pOwnerMovementComponent_->IsFalling()) {
+    transCondition_ |= TRANSITION_CONDITION::MovementFalling;
+  }
+  if (pOwnerMovementComponent_->IsOnGround()) {
+    transCondition_ |= TRANSITION_CONDITION::MovementOnGround;
+  }
+}
+
+void AnimationHandler::UpdateAnimation() {
+  AnimTransitionRule* pInfo;
+  unsigned long long curAnim = pOwnerStateComponent_->GetCurAnimState();
+  if (0 == animTransitionTable_.Select((void**)&pInfo, 1, &curAnim, 8)) {
+    return;
+  }
+
+  if (nullptr == pInfo) {
+    return;
+  }
+
+  unsigned int transCondition = pInfo->transCondition1_;
+  if (transCondition == None) {
+    return;
+  }
+  if (pInfo->equalCondition1_) {
+    if (0 == (transCondition ^ transCondition_)) {
+      pOwnerPlayer_->UpdateAnimState(pInfo->nextAnimState1_, curAnimationModifier_, true);
+      return;
+    }
+  } else {
+    if (transCondition == (transCondition & transCondition_)) {
+      pOwnerPlayer_->UpdateAnimState(pInfo->nextAnimState1_, curAnimationModifier_, true);
+      return;
+    }
+  }
+
+  transCondition = pInfo->transCondition2_;
+  if (transCondition == None) {
+    return;
+  }
+  if (pInfo->equalCondition2_) {
+    if (0 == (transCondition ^ transCondition_)) {
+      pOwnerPlayer_->UpdateAnimState(pInfo->nextAnimState2_, curAnimationModifier_, true);
+      return;
+    }
+  } else {
+    if (transCondition == (transCondition & transCondition_)) {
+      pOwnerPlayer_->UpdateAnimState(pInfo->nextAnimState2_, curAnimationModifier_, true);
+      return;
+    }
+  }
+
+  transCondition = pInfo->transCondition3_;
+  if (transCondition == None) {
+    return;
+  }
+  if (pInfo->equalCondition3_) {
+    if (0 == (transCondition ^ transCondition_)) {
+      pOwnerPlayer_->UpdateAnimState(pInfo->nextAnimState3_, curAnimationModifier_, true);
+      return;
+    }
+  } else {
+    if (transCondition == (transCondition & transCondition_)) {
+      pOwnerPlayer_->UpdateAnimState(pInfo->nextAnimState3_, curAnimationModifier_, true);
+      return;
+    }
+  }
 }

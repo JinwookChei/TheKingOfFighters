@@ -65,7 +65,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   if (false == IsControlLocked()) {
     UpdateCommand();
 
-    if (true == pRender_->IsAnimationEnd()) {
+    if (true == pStateComponent_->CanInput()) {
       pCommandComponent_->ExcuteTask();
     }
 
@@ -73,7 +73,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
     UpdateInput();
 
-    if (true == pStateComponent_->CanInput() || true == pRender_->IsAnimationEnd()) {
+    if (true == pStateComponent_->CanInput()) {
       CompareInputBitset();
     }
 
@@ -83,8 +83,6 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
     pSkillComponent_->UpdateActiveSkill();
   }
-
-  pAnimationHandler_->Test();
 
   pAnimationHandler_->UpdatePrevImageIndex();
 }

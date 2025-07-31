@@ -101,19 +101,19 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_StartPos, {PS_None}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, {PS_Idle}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, {PS_Seat}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, {PS_None}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, {PS_Idle}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, {PS_Move}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, {PS_Move}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, {PS_Move}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, {PS_Run}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_None}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_Idle}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpUp, {PS_Jump}, true);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpDown, {PS_Jump}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpLand, {PS_Jump}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_JumpLand, {PS_Idle}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Dash, {PS_Rolling}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_RollingBack, {PS_Rolling}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Guard, {PS_Guard}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_GuardEnd, {PS_None}, false);
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_GuardEnd, {PS_Idle}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Guard_Seat, {PS_Guard, PS_Seat}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_GuardEnd_Seat, {PS_Seat}, false);
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick_CloseRange, {PS_Attack, PS_EnableClampOffset}, false);
@@ -451,7 +451,6 @@ void Iori::CompareInputBitset() {
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_LongRange);
       }
-
       return;
     }
 

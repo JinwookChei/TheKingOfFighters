@@ -10,8 +10,6 @@ class IoriAnimationHandler
 
   void Tick(unsigned long long deltaTick) override;
 
-  void Test() override;
-
   bool RegistAnimations() override;
   
 };
