@@ -205,7 +205,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 }
 
-
 void KOFPlayer::UpdateAnimState(unsigned long long animState, unsigned long long modifier /* = ANIMMOD_NONE*/, bool isForce, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   if (true == PlayerOnLeft()) {
     isFacingRight_ = true;
@@ -238,28 +237,22 @@ const MPComponent* KOFPlayer::GetMPComponent() const {
 }
 
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
-  if (true == pStateComponent_->ContainPlayerState({PS_Guard}))
-  {
+  if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
 
-  } 
-  else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) 
-  {
+  } else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
     pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     pMovementComponent_->KnockBack(PlayerOnLeft(), {3.0f, -5.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpUp, ANIMMOD_NONE, true);
-  } 
-  else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) 
-  {
+  } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
     pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
     pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
     UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat, ANIMMOD_NONE, true);
-  }
-  else {
+  } else {
     pHealthComponent_->TakeDamage(damageInfo->damage_);
     pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
     switch (damageInfo->attackType_) {
@@ -315,7 +308,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
           UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneUp, ANIMMOD_NONE, true);
         }
         pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-      }break;
+      } break;
       default:
         break;
     }
@@ -611,7 +604,6 @@ void KOFPlayer::UpdateAttack() {
 
       pTargetPlayer->HitEvent(pAttackInfo);
 
-
       pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 
       // Calculate Effect Position.
@@ -810,12 +802,25 @@ void KOFPlayer::ResetInputBitSet() {
   inputUpBitSet_.reset();
 }
 
-bool KOFPlayer::IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
+bool KOFPlayer::IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const {
   return myBitSet == compareTarget;
 }
 
-bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) {
+bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const {
   return (myBitSet & compareTarget) == compareTarget;
+}
+
+bool KOFPlayer::IsNoKeyInput() const {
+  if (false == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000"))) {
+    return false;
+  }
+  if (false == IsEqualInputBitSet(inputDownBitSet_, std::bitset<8>("00000000"))) {
+    return false;
+  }
+  if (false == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
+    return false;
+  }
+  return true;
 }
 
 KOFPlayer* KOFPlayer::GetOpponentPlayer() const {

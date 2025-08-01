@@ -4,7 +4,9 @@
 
 enum MOVEMENT_STATE {
   MOVSTATE_Idle = 0,
-  MOVSTATE_Move,
+  MOVSTATE_Walk,
+  MOVSTATE_WalkBack,
+  MOVSTATE_Run,
   MOVSTATE_Dash,
   MOVSTATE_BackStep,
   MOVSTATE_Jump,
@@ -30,9 +32,9 @@ class MovementComponent final
 
   void UpdateMove(unsigned long long deltaTick);
 
-  void Move(bool isRightDirection);
+  void Walk(bool isRightDirection);
 
-  void MoveBack(bool isRightDirection);
+  void WalkBack(bool isRightDirection);
 
   void Run(bool isRightDirection);
 

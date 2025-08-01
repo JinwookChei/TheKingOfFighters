@@ -202,6 +202,10 @@ void AnimationHandler::InitCondition() {
   if (pOwnerMovementComponent_->IsOnGround()) {
     transCondition_ |= TRANSITION_CONDITION::MovementOnGround;
   }
+  if (false == pOwnerPlayer_->GetOpponentPlayer()->GetPlayerStateComponent()->ContainPlayerState({ PS_Attack }))
+  {
+    transCondition_ |= TRANSITION_CONDITION::OpponentPlayerAttackFinished;
+  }
 }
 
 void AnimationHandler::UpdateAnimation() {

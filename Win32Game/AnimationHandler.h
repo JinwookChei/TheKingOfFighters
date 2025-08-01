@@ -9,6 +9,7 @@ enum TRANSITION_CONDITION : unsigned int {
   MovementRising = 1 << 1,
   MovementFalling = 1 << 2,
   MovementOnGround = 1 << 3,
+  OpponentPlayerAttackFinished = 1 << 4
 };
 
 struct AnimTransitionRule {

@@ -3,6 +3,7 @@
 #include "IoriAnimationHandler.h"
 
 #define ANIMINTERVAL 35
+//#define ANIMINTERVAL 300
 
 IoriAnimationHandler::IoriAnimationHandler() {
 }
@@ -20,7 +21,8 @@ void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
 bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_IoriImage, 0, 15, ANIMINTERVAL, true, 7);
   CallCreateAnimation(PLAYER_ANIMTYPE_Idle, IMGTYPE_IoriImage, 7, 15, ANIMINTERVAL, true, 7);
-  CallCreateAnimation(PLAYER_ANIMTYPE_SeatDown, IMGTYPE_IoriImage, 16, 23, ANIMINTERVAL, true, 18);
+  CallCreateAnimation(PLAYER_ANIMTYPE_SeatDown, IMGTYPE_IoriImage, 16, 17, ANIMINTERVAL, false, 16);
+  CallCreateAnimation(PLAYER_ANIMTYPE_Seat, IMGTYPE_IoriImage, 18, 23, ANIMINTERVAL, true, 18);
   CallCreateAnimation(PLAYER_ANIMTYPE_SeatUp, IMGTYPE_IoriImage, 24, 25, ANIMINTERVAL, false, 24);
   CallCreateAnimation(PLAYER_ANIMTYPE_FrontWalk, IMGTYPE_IoriImage, 27, 34, ANIMINTERVAL, true, 27);
   CallCreateAnimation(PLAYER_ANIMTYPE_BackWalk, IMGTYPE_IoriImage, 35, 44, ANIMINTERVAL, true, 35);
@@ -85,29 +87,28 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 30, false, 161);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
 
+
   RegistAnimTransition(PLAYER_ANIMTYPE_JumpUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_JumpDown);
   RegistAnimTransition(PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
   RegistAnimTransition(PLAYER_ANIMTYPE_JumpLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-
   RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
   RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
   RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
   RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-
-  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
-
-  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_Hit_AirborneDown);
-  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Hit_AirborneLand);
-  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_AirborneGetUp);
-  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneGetUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-
+  RegistAnimTransition(PLAYER_ANIMTYPE_SeatDown, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_SeatUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_BackStep, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_RunEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_Dash, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_RollingBack, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Guard, (TRANSITION_CONDITION::OpponentPlayerAttackFinished), false, PLAYER_ANIMTYPE_GuardEnd);
   RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Guard_Seat, (TRANSITION_CONDITION::OpponentPlayerAttackFinished), false, PLAYER_ANIMTYPE_GuardEnd_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
   RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
@@ -116,11 +117,21 @@ bool IoriAnimationHandler::RegistAnimations() {
   RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_High, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Low, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Strong, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_Hit_AirborneDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Hit_AirborneLand);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_AirborneGetUp);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneGetUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+
   return true;
 }
 

@@ -83,9 +83,11 @@ class KOFPlayer
 
   void ResetInputBitSet();
 
-  bool IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
+  bool IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const;
 
-  bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget);
+  bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const;
+
+  bool IsNoKeyInput() const;
 
   KOFPlayer* GetOpponentPlayer() const;
 

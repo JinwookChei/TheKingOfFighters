@@ -47,7 +47,13 @@ void MovementComponent::Tick(unsigned long long deltaTick) {
     case MOVSTATE_Idle:
       UpdateIdle(deltaTick);
       break;
-    case MOVSTATE_Move:
+    case MOVSTATE_Walk:
+      UpdateMove(deltaTick);
+      break;
+    case MOVSTATE_WalkBack:
+      UpdateMove(deltaTick);
+      break;
+    case MOVSTATE_Run:
       UpdateMove(deltaTick);
       break;
     case MOVSTATE_Dash:
@@ -108,7 +114,7 @@ void MovementComponent::UpdateIdle(unsigned long long deltaTick) {
 }
 
 void MovementComponent::UpdateMove(unsigned long long deltaTick) {
-  if (curMovementState_ != MOVSTATE_Move) {
+  if (curMovementState_ != MOVSTATE_Walk && curMovementState_ != MOVSTATE_Run && curMovementState_ != MOVSTATE_WalkBack) {
     return;
   }
 
@@ -131,11 +137,11 @@ void MovementComponent::UpdateMove(unsigned long long deltaTick) {
   moveDir_ = {0.0f, 0.0f};
 }
 
-void MovementComponent::Move(bool isRightDirection) {
+void MovementComponent::Walk(bool isRightDirection) {
   if (false == isOnGrounded_) {
     return;
   }
-  curMovementState_ = MOVSTATE_Move;
+  curMovementState_ = MOVSTATE_Walk;
 
   if (isRightDirection) {
     moveDir_ = Vector::Right * moveVelocity_;
@@ -144,12 +150,12 @@ void MovementComponent::Move(bool isRightDirection) {
   }
 }
 
-void MovementComponent::MoveBack(bool isRightDirection) {
+void MovementComponent::WalkBack(bool isRightDirection) {
   if (false == isOnGrounded_) {
     return;
   }
 
-  curMovementState_ = MOVSTATE_Move;
+  curMovementState_ = MOVSTATE_WalkBack;
 
   if (isRightDirection) {
     moveDir_ = Vector::Left * moveBackVelocity_;
@@ -163,7 +169,7 @@ void MovementComponent::Run(bool isRightDirection) {
     return;
   }
 
-  curMovementState_ = MOVSTATE_Move;
+  curMovementState_ = MOVSTATE_Run;
 
   if (isRightDirection) {
     moveDir_ = Vector::Right * runVelocity_;
