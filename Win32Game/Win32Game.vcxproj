@@ -164,6 +164,7 @@
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="GameInstance.cpp" />
+    <ClCompile Include="InputController.cpp" />
     <ClCompile Include="IoriAnimationHandler.cpp" />
     <ClCompile Include="IoriCommandHandler.cpp" />
     <ClCompile Include="IoriSkillHandler.cpp" />
@@ -205,6 +206,7 @@
     <ClCompile Include="GhostEffect.cpp" />
     <ClCompile Include="SkillHandler.cpp" />
     <ClCompile Include="SkillPoint.cpp" />
+    <ClCompile Include="SkillTest.cpp" />
     <ClCompile Include="SoundTable.cpp" />
     <ClCompile Include="Ura306Shiki.cpp" />
     <ClCompile Include="YamiBarai.cpp" />
@@ -228,6 +230,7 @@
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="GameInstance.h" />
+    <ClInclude Include="InputController.h" />
     <ClInclude Include="IoriAnimationHandler.h" />
     <ClInclude Include="IoriCommandHandler.h" />
     <ClInclude Include="IoriSkillHandler.h" />
@@ -269,6 +272,7 @@
     <ClInclude Include="GhostEffect.h" />
     <ClInclude Include="SkillHandler.h" />
     <ClInclude Include="SkillPoint.h" />
+    <ClInclude Include="SkillTest.h" />
     <ClInclude Include="SoundTable.h" />
     <ClInclude Include="Ura306Shiki.h" />
     <ClInclude Include="YamiBarai.h" />

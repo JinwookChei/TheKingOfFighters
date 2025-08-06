@@ -27,26 +27,26 @@ bool IoriSkillHandler::RegistSkills() {
 }
 
 void IoriSkillHandler::GaishikiMutan() {
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
-    pOwnerSkillComponent_->DeactivateSkill();
-    return;
-  }
+  //if (true == pOwnerRenderer_->IsAnimationEnd()) {
+  //  pOwnerSkillComponent_->DeactivateSkill();
+  //  return;
+  //}
 
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
+  //unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
 
-  if (IORI_ANIMTYPE_GaishikiMutan_1 == pOwnerStateComponent_->GetCurAnimState()) {
-    if (100 <= curImageIndex && 104 >= curImageIndex) {
-      const std::bitset<8>& downBitSet = pOwnerPlayer_->InputDownBitSet();
-      if (true == pOwnerPlayer_->IsContainInputBitSet(downBitSet, std::bitset<8>("00001000")) ||
-          true == pOwnerPlayer_->IsContainInputBitSet(downBitSet, std::bitset<8>("00000010"))) {
-        pOwnerSkillComponent_->SetMiscTemp(true);
-      }
-    }
+  //if (IORI_ANIMTYPE_GaishikiMutan_1 == pOwnerStateComponent_->GetCurAnimState()) {
+  //  if (100 <= curImageIndex && 104 >= curImageIndex) {
+  //    const std::bitset<8>& downBitSet = pOwnerPlayer_->InputDownBitSet();
+  //    if (true == pOwnerPlayer_->IsContainInputBitSet(downBitSet, std::bitset<8>("00001000")) ||
+  //        true == pOwnerPlayer_->IsContainInputBitSet(downBitSet, std::bitset<8>("00000010"))) {
+  //      pOwnerSkillComponent_->SetMiscTemp(true);
+  //    }
+  //  }   
 
-    if (true == pOwnerAttackCollision_->HasHit() && 105 == curImageIndex && true == pOwnerSkillComponent_->GetMiscTemp()) {
-      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_2);
-    }
-  }
+  //  if (true == pOwnerAttackCollision_->HasHit() && 105 == curImageIndex && true == pOwnerSkillComponent_->GetMiscTemp()) {
+  //    pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_2);
+  //  }
+  //}
 }
 
 void IoriSkillHandler::ShikiYamiBarai108() {
@@ -104,7 +104,7 @@ void IoriSkillHandler::HyakushikiOniyaki() {
 }
 
 void IoriSkillHandler::ShikiAoiHana127() {
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
+  /*if (true == pOwnerRenderer_->IsAnimationEnd()) {
     pOwnerSkillComponent_->DeactivateSkill();
     return;
   }
@@ -155,7 +155,7 @@ void IoriSkillHandler::ShikiAoiHana127() {
         pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_127ShikiAoiHana_3);
       }
     }
-  }
+  }*/
 }
 
 void IoriSkillHandler::ShikiYaOtome1211() {
@@ -307,7 +307,6 @@ void IoriSkillHandler::ShikiYaOtome1211() {
         const Vector& ioriPosition = pOwnerPlayer_->GetPosition();
         const Vector& targetPosition = ioriPosition + Vector{50.0f * pOwnerPlayer_->FacingRightFlag(), -30.0f};
         pOwnerPlayer_->GetOpponentPlayer()->SetPosition(targetPosition);
-        // soundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
         SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
         break;
       }

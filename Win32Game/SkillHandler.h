@@ -8,6 +8,52 @@
 #include "CommandComponent.h"
 #include "MPComponent.h"
 
+//enum SKILL_EVENT : unsigned int {
+//    MovementJump = 0,
+//    MovementDash,
+//  MovementStopDash,
+//  SpwanEffect,
+//  FireProjectile,
+//  CommandExcute,
+//  SetPostionOppenentPlayer,
+//  LockControlOppenentPlayer,
+//  UnLockControlOppenentPlayer,
+//  FreezeOppenentPlayer,
+//  DefreezePlayers,
+//  CameraShake,
+//  FadeIn,
+//  FadeOut,
+//  FadeInout,
+//  SoundPlay,
+//  
+//
+//};
+//
+//struct SkillEvent {
+//  unsigned long long imageIndex_ = 0;
+//
+//  std::vector<SKILL_EVENT> events_;
+//};
+//
+//struct SkillState
+//{
+//  unsigned long long animState_ = 0;
+//  
+//  unsigned int transCondition_ = 0;
+//
+//  std::vector<SkillEvent> events;
+//};
+//
+//struct SkillData
+//{
+//  unsigned long long skillTag_ = 0;
+//
+//  std::vector<SkillState> skillStates_;
+//
+//};
+
+
+
 class SkillHandler
     : public ActorComponent {
  public:

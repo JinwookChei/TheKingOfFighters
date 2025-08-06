@@ -255,6 +255,12 @@
     <ClCompile Include="IoriAnimationHandler.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
+    <ClCompile Include="SkillTest.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -436,6 +442,12 @@
     </ClInclude>
     <ClInclude Include="IoriAnimationHandler.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillTest.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InputController.h">
+      <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

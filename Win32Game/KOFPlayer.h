@@ -1,5 +1,6 @@
 #pragma once
 
+class InputController;
 class AnimationHandler;
 class MovementComponent;
 class CommandComponent;
@@ -15,6 +16,10 @@ class MPComponent;
 class StateComponent;
 class HitHandlerComponent;
 class GhostEffect;
+
+
+class SkillTest;
+
 
 class KOFPlayer
     : public Player {
@@ -35,10 +40,6 @@ class KOFPlayer
 
   const MPComponent* GetMPComponent() const;
 
-  virtual void UpdateInput();
-
-  void UpdateCommand();
-
   void UpdateCollisionBoundScale();
 
   void UpdateAttack();
@@ -57,6 +58,8 @@ class KOFPlayer
 
   void PushOverlappingPlayer();
 
+  bool IsPlayer1() const;
+
   void SetPlayerOnLeft(bool isPlayerOnLeft);
 
   bool PlayerOnLeft() const;
@@ -73,21 +76,7 @@ class KOFPlayer
 
   bool IsAtMapEdge() const;
 
-  const std::bitset<8>& InputPressBitSet() const;
-
-  const std::bitset<8>& InputDownBitSet() const;
-
-  const std::bitset<8>& InputUpsBitSet() const;
-
   virtual void CompareInputBitset();
-
-  void ResetInputBitSet();
-
-  bool IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const;
-
-  bool IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const;
-
-  bool IsNoKeyInput() const;
 
   KOFPlayer* GetOpponentPlayer() const;
 
@@ -101,14 +90,15 @@ class KOFPlayer
 
   void ReceiveClampedWidthOffset(float clampOffset);
 
-    const float GetCloseDistance() const;
+  const float GetCloseDistance() const;
 
  protected:
-  std::array<int, 8> playerKeySet_;
 
   ImageRenderer* pRender_;
 
   AnimationHandler* pAnimationHandler_;
+
+  InputController* pInputController_;
 
   ImageRenderer* pUI_;
 
@@ -150,17 +140,9 @@ class KOFPlayer
 
   Vector characterScale_;
 
-  std::bitset<8> inputPressBitSet_;
-
-  std::bitset<8> inputDownBitSet_;
-
-  std::bitset<8> inputUpBitSet_;
-
   KOFPlayer* pOpponentPlayer_;
   
-  // TODO
-  public:
-  //unsigned int prevImageIndex_;
+  SkillTest* skillTest_;
 
   private:
   bool isPlayer1_;

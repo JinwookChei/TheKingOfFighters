@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AnimationHandler.h"
 #include "CommandComponent.h"
+#include "InputController.h"
 #include "CommandHandler.h"
 #include "SkillComponent.h"
 #include "SkillHandler.h"
@@ -16,8 +17,12 @@
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
 
+
+
+#include "SkillTest.h"
+
 KOFPlayer::KOFPlayer()
-    : playerKeySet_(),
+    : pInputController_(nullptr),
       pRender_(nullptr),
       pAnimationHandler_(nullptr),
       pUI_(nullptr),
@@ -44,7 +49,8 @@ KOFPlayer::KOFPlayer()
       isFacingRight_(true),
       isAtMapEdge_(false),
       pOpponentPlayer_(nullptr),
-      isControlLocked_(false) {
+      isControlLocked_(false),
+      skillTest_ (nullptr){
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -63,15 +69,15 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   }
 
   if (false == IsControlLocked()) {
-    UpdateCommand();
+    pInputController_->UpdateCommand();
 
     if (true == pStateComponent_->CanInput()) {
       pCommandComponent_->ExcuteTask();
     }
 
-    ResetInputBitSet();
+    pInputController_->ResetInputBitSet();
 
-    UpdateInput();
+    pInputController_->UpdateInput();
 
     if (true == pStateComponent_->CanInput()) {
       CompareInputBitset();
@@ -81,7 +87,8 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
       pStateComponent_->AddState({PS_Attack});
     }
 
-    pSkillComponent_->UpdateActiveSkill();
+    skillTest_->UpdateSkill();
+    //pSkillComponent_->UpdateActiveSkill();
   }
 
   pAnimationHandler_->UpdatePrevImageIndex();
@@ -91,14 +98,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   SetPosition(position);
   SetUseCameraposition(useCameraPosition);
   isPlayer1_ = isPlayer1;
-
-  if (true == isPlayer1_) {
-    playerKeySet_ = {'A', 'S', 'Z', 'X', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
-    // playerKeySet_ = {'1', '2', '3', '4', VK_UP, VK_RIGHT, VK_DOWN, VK_LEFT};  // D C B A UP RIGHT DONW LEFT
-  } else {
-    playerKeySet_ = {'E', 'R', 'D', 'F', 'I', 'L', 'K', 'J'};  // D C B A UP RIGHT DONW LEFT
-    // playerKeySet_ = {'1', '2', '3', '4', 'S', 'C', 'X', 'Z'};  // D C B A UP RIGHT DONW LEFT
-  }
 
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
@@ -174,6 +173,10 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pCommandComponent_ = CreateComponent<CommandComponent>();
   pCommandComponent_->SetTimeOutThreshold(150, 400);
 
+  // INPUT
+  pInputController_ = CreateComponent<InputController>();
+  pInputController_->Initialize(this, pCommandComponent_);
+
   // PROJECTILE
   pProjectileComponent_ = CreateComponent<ProjectileComponent>();
   if (false == pProjectileComponent_->Initialize(GetLevel())) {
@@ -193,7 +196,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pOpponentPlayer_ = opponentPlayer;
 
   // INPUT BIT SET
-  ResetInputBitSet();
+  //ResetInputBitSet();
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -203,6 +206,13 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pAttackBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Red});
   pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
+
+
+  
+  skillTest_ = CreateComponent<SkillTest>();
+  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_)){
+    return;
+  }
 }
 
 void KOFPlayer::UpdateAnimState(unsigned long long animState, unsigned long long modifier /* = ANIMMOD_NONE*/, bool isForce, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
@@ -325,179 +335,6 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
     }
 
     pKOFLevel->InitEndGame();
-  }
-}
-
-void KOFPlayer::UpdateInput() {
-  // InputBitSet :
-  // Left : 10000000
-  // Down : 01000000
-  // Right: 00100000
-  // Up :   00010000
-  // A  :   00001000
-  // B  :   00000100
-  // C  :   00000010
-  // D  :   00000001
-
-  bool anyKeyActive = false;
-  for (int key : playerKeySet_) {
-    if (InputManager::Instance()->IsPress(key) ||
-        InputManager::Instance()->IsDown(key) ||
-        InputManager::Instance()->IsUp(key)) {
-      anyKeyActive = true;
-      break;
-    }
-  }
-
-  if (false == anyKeyActive) {
-    return;
-  }
-
-  // LEFT
-  if (InputManager::Instance()->IsPress(playerKeySet_[7])) {
-    if (PlayerOnLeft()) {
-      inputPressBitSet_.set(7);
-    } else {
-      inputPressBitSet_.set(5);
-    }
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[7])) {
-    if (PlayerOnLeft()) {
-      inputDownBitSet_.set(7);
-    } else {
-      inputDownBitSet_.set(5);
-    }
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[7])) {
-    if (PlayerOnLeft()) {
-      inputUpBitSet_.set(7);
-    } else {
-      inputUpBitSet_.set(5);
-    }
-  }
-  // DOWN
-  if (InputManager::Instance()->IsPress(playerKeySet_[6])) {
-    inputPressBitSet_.set(6);
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[6])) {
-    inputDownBitSet_.set(6);
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[6])) {
-    inputUpBitSet_.set(6);
-  }
-  // RIGHT
-  if (InputManager::Instance()->IsPress(playerKeySet_[5])) {
-    if (PlayerOnLeft()) {
-      inputPressBitSet_.set(5);
-    } else {
-      inputPressBitSet_.set(7);
-    }
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[5])) {
-    if (PlayerOnLeft()) {
-      inputDownBitSet_.set(5);
-    } else {
-      inputDownBitSet_.set(7);
-    }
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[5])) {
-    if (PlayerOnLeft()) {
-      inputUpBitSet_.set(5);
-    } else {
-      inputUpBitSet_.set(7);
-    }
-  }
-  // UP
-  if (InputManager::Instance()->IsPress(playerKeySet_[4])) {
-    inputPressBitSet_.set(4);
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[4])) {
-    inputDownBitSet_.set(4);
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[4])) {
-    inputUpBitSet_.set(4);
-  }
-  // A
-  if (InputManager::Instance()->IsPress(playerKeySet_[3])) {
-    inputPressBitSet_.set(3);
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[3])) {
-    inputDownBitSet_.set(3);
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[3])) {
-    inputUpBitSet_.set(3);
-  }
-  // B
-  if (InputManager::Instance()->IsPress(playerKeySet_[2])) {
-    inputPressBitSet_.set(2);
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[2])) {
-    inputDownBitSet_.set(2);
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[2])) {
-    inputUpBitSet_.set(2);
-  }
-  // C
-  if (InputManager::Instance()->IsPress(playerKeySet_[1])) {
-    inputPressBitSet_.set(1);
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[1])) {
-    inputDownBitSet_.set(1);
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[1])) {
-    inputUpBitSet_.set(1);
-  }
-  // D
-  if (InputManager::Instance()->IsPress(playerKeySet_[0])) {
-    inputPressBitSet_.set(0);
-  }
-  if (InputManager::Instance()->IsDown(playerKeySet_[0])) {
-    inputDownBitSet_.set(0);
-  }
-  if (InputManager::Instance()->IsUp(playerKeySet_[0])) {
-    inputUpBitSet_.set(0);
-  }
-}
-
-void KOFPlayer::UpdateCommand() {
-  if (InputManager::Instance()->IsDown(playerKeySet_[7])) {
-    if (PlayerOnLeft()) {
-      pCommandComponent_->JumpNode(CK_Left);
-    } else {
-      pCommandComponent_->JumpNode(CK_Right);
-    }
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[6])) {
-    pCommandComponent_->JumpNode(CK_Down);
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[5])) {
-    if (PlayerOnLeft()) {
-      pCommandComponent_->JumpNode(CK_Right);
-    } else {
-      pCommandComponent_->JumpNode(CK_Left);
-    }
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[4])) {
-    pCommandComponent_->JumpNode(CK_Up);
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[3])) {
-    pCommandComponent_->JumpNode(CK_A);
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[2])) {
-    pCommandComponent_->JumpNode(CK_B);
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[1])) {
-    pCommandComponent_->JumpNode(CK_C);
-  }
-
-  if (InputManager::Instance()->IsDown(playerKeySet_[0])) {
-    pCommandComponent_->JumpNode(CK_D);
   }
 }
 
@@ -741,6 +578,10 @@ void KOFPlayer::SetCharacterScale(const Vector& scale) {
 void KOFPlayer::PushOverlappingPlayer() {
 }
 
+bool KOFPlayer::IsPlayer1() const {
+  return isPlayer1_;
+}
+
 void KOFPlayer::SetPlayerOnLeft(bool isPlayerOnLeft) {
   isPlayerOnLeft_ = isPlayerOnLeft;
 }
@@ -781,46 +622,7 @@ bool KOFPlayer::IsAtMapEdge() const {
   return isAtMapEdge_;
 }
 
-const std::bitset<8>& KOFPlayer::InputPressBitSet() const {
-  return inputPressBitSet_;
-}
-
-const std::bitset<8>& KOFPlayer::InputDownBitSet() const {
-  return inputDownBitSet_;
-}
-
-const std::bitset<8>& KOFPlayer::InputUpsBitSet() const {
-  return inputUpBitSet_;
-}
-
 void KOFPlayer::CompareInputBitset() {
-}
-
-void KOFPlayer::ResetInputBitSet() {
-  inputPressBitSet_.reset();
-  inputDownBitSet_.reset();
-  inputUpBitSet_.reset();
-}
-
-bool KOFPlayer::IsEqualInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const {
-  return myBitSet == compareTarget;
-}
-
-bool KOFPlayer::IsContainInputBitSet(const std::bitset<8>& myBitSet, const std::bitset<8>& compareTarget) const {
-  return (myBitSet & compareTarget) == compareTarget;
-}
-
-bool KOFPlayer::IsNoKeyInput() const {
-  if (false == IsEqualInputBitSet(inputPressBitSet_, std::bitset<8>("00000000"))) {
-    return false;
-  }
-  if (false == IsEqualInputBitSet(inputDownBitSet_, std::bitset<8>("00000000"))) {
-    return false;
-  }
-  if (false == IsEqualInputBitSet(inputUpBitSet_, std::bitset<8>("00000000"))) {
-    return false;
-  }
-  return true;
 }
 
 KOFPlayer* KOFPlayer::GetOpponentPlayer() const {

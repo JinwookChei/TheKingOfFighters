@@ -76,6 +76,7 @@ bool AnimationHandler::CallCreateAnimation(
   if (false == pOwnerRenderer_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
     return false;
   }
+  return true;
 }
 
 bool AnimationHandler::CallCreateAnimation(
@@ -100,6 +101,8 @@ bool AnimationHandler::CallCreateAnimation(
   if (false == pOwnerRenderer_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, interval, loop, loopStartFrame)) {
     return false;
   }
+
+  return true;
 }
 
 bool AnimationHandler::CallCreateAnimation(
@@ -124,6 +127,8 @@ bool AnimationHandler::CallCreateAnimation(
   if (false == pOwnerRenderer_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, intervals, loop, loopStartFrame)) {
     return false;
   }
+
+  return true;
 }
 
 unsigned long long AnimationHandler::CurrentAnimationState() const {
