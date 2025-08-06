@@ -229,14 +229,12 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
 
   SkillEvent EventA;
   EventA.evnetType_ = SkillEvent_SetMiscTempTrue;
-  EventA.conditionTypes_.push_back(SkillEventCondition_CheckInputDownA);
-
+  EventA.conditionTypes_.push_back(SkillEventCondition_CheckInputDownD);
   SkillEvent EventB;
   EventB.evnetType_ = SkillEvent_SetMiscTempTrue;
   EventB.conditionTypes_.push_back(SkillEventCondition_CheckInputDownC);
-
   SkillFrame FrameA;
-  FrameA.startIndex_ = 100;
+  FrameA.startIndex_ = 101;
   FrameA.endIndex_ = 104;
   FrameA.events.push_back(EventA);
   FrameA.events.push_back(EventB);
@@ -244,27 +242,17 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SkillEvent EventC;
   EventC.evnetType_ = SkillEvent_UpdateSkillState;
   EventC.eventParams_.push_back(1);
-  EventC.conditionTypes_.push_back(SkillEventCondition_HasAttackCollition);
   EventC.conditionTypes_.push_back(SkillEventCondition_MiscTempTrue);
-
+  EventC.conditionTypes_.push_back(SkillEventCondition_HasAttackCollition);
   SkillFrame FrameB;
   FrameB.startIndex_ = 105;
   FrameB.endIndex_ = 105;
   FrameB.events.push_back(EventC);
 
-  SkillEvent EventD;
-  EventD.evnetType_ = SkillEvent_DeactiveSkill;
-  EventD.eventParams_;
-  EventD.conditionTypes_.push_back(SkillEventCondition_None);
-
-  SkillFrame FrameC;
-  FrameA.startIndex_ = 107;
-  FrameA.endIndex_ = 107;
-  FrameA.events.push_back(EventD);
-
   SkillState mutan_1;
   mutan_1.animState_ = IORI_ANIMTYPE_GaishikiMutan_1;
   mutan_1.frames_.push_back(FrameA);
+  mutan_1.frames_.push_back(FrameB);
 
   SkillState mutan_2;
   mutan_2.animState_ = IORI_ANIMTYPE_GaishikiMutan_2;
@@ -279,22 +267,22 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
 void Iori::CompareInputBitset() {
   if (pStateComponent_->EqualPlayerState({PS_Jump})) {
     // A | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00001000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A})) {
       UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Jump);
       return;
     }
     // B | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000100"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B})) {
       UpdateAnimState(PLAYER_ANIMTYPE_LightKick_Jump);
       return;
     }
     // C | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000010"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_C})) {
       UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_Jump);
       return;
     }
     // D | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000001"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_D})) {
       UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_Jump);
       return;
     }
@@ -303,34 +291,34 @@ void Iori::CompareInputBitset() {
 
   if (pStateComponent_->ContainPlayerState({PS_Seat})) {
     // LEFT | PRESS
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("10000000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_Left})) {
       if (pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
         UpdateAnimState(PLAYER_ANIMTYPE_Guard_Seat);
         return;
       }
     }
     // A | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00001000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A})) {
       UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Seat);
       return;
     }
     // B | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000100"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B})) {
       UpdateAnimState(PLAYER_ANIMTYPE_LightKick_Seat);
       return;
     }
     // C | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000010"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_C})) {
       UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_Seat);
       return;
     }
     // D | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000001"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_D})) {
       UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_Seat);
       return;
     }
     // DOWN | PRESS
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("01000000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Down})) {
       UpdateAnimState(PLAYER_ANIMTYPE_Seat, ANIMMOD_NONE, false);
       return;
     }
@@ -339,28 +327,26 @@ void Iori::CompareInputBitset() {
   }
 
   if (pStateComponent_->ContainPlayerState({PS_Run})) {
-    if (false == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("00100000"))) {
+    if (false == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right})) {
       UpdateAnimState(PLAYER_ANIMTYPE_RunEnd);
       return;
     }
   }
 
   // IDLE
-  if (true == pInputController_->IsEqualInputBitSet(INPUT_PRESS, std::bitset<8>("00000000")) &&
-      true == pInputController_->IsEqualInputBitSet(INPUT_DOWN, std::bitset<8>("00000000")) &&
-      true == pInputController_->IsEqualInputBitSet(INPUT_UP, std::bitset<8>("00000000"))) {
+  if (true == pInputController_->IsNoKeyInput()) {
     UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
   } else {
     // LEFT | PRESS Contain
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("10000000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Left})) {
       if (pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
         UpdateAnimState(PLAYER_ANIMTYPE_Guard);
         return;
       }
     }
     // RIGHT | PRESS
-    if (true == pInputController_->IsEqualInputBitSet(INPUT_PRESS, std::bitset<8>("00100000"))) {
+    if (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Press, {KEY_Right})) {
       if (true == pStateComponent_->ContainPlayerState({PS_Run})) {
         pMovementComponent_->Run(FacingRight());
         return;
@@ -371,19 +357,19 @@ void Iori::CompareInputBitset() {
       }
     }
     // LEFT | PRESS Equal
-    if (true == pInputController_->IsEqualInputBitSet(INPUT_PRESS, std::bitset<8>("10000000"))) {
+    if (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Press, {KEY_Left})) {
       UpdateAnimState(PLAYER_ANIMTYPE_BackWalk);
       pMovementComponent_->WalkBack(FacingRight());
       return;
     }
     // DOWN | PRESS
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("01000000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Down})) {
       UpdateAnimState(PLAYER_ANIMTYPE_SeatDown);
       return;
     }
 
     // RIGHT UP | PRESS
-    if (true == pInputController_->IsEqualInputBitSet(INPUT_PRESS, std::bitset<8>("00110000"))) {
+    if (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Press, {KEY_Right, KEY_Up})) {
       if (true == pStateComponent_->ContainPlayerState({PS_Run})) {
         UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
         pMovementComponent_->JumpForward(FacingRight(), true);
@@ -397,22 +383,22 @@ void Iori::CompareInputBitset() {
     }
 
     // LEFT UP | PRESS
-    if (true == pInputController_->IsEqualInputBitSet(INPUT_PRESS, std::bitset<8>("10010000"))) {
+    if (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Press, {KEY_Left, KEY_Up})) {
       UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
       pMovementComponent_->JumpForward(!FacingRight(), false);
       return;
     }
 
     // UP | PRESS
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("00010000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Up})) {
       UpdateAnimState(PLAYER_ANIMTYPE_JumpUp);
       pMovementComponent_->Jump();
       return;
     }
 
     // A B LEFT | PRESS
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("10000000")) &&
-        true == pInputController_->IsEqualInputBitSet(INPUT_DOWN, std::bitset<8>("00001100"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Left, KEY_A}) &&
+        true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_Left, KEY_B})) {
       UpdateAnimState((PLAYER_ANIMTYPE_RollingBack));
       pMovementComponent_->Dash(!FacingRight(), 300.0f, 400.0f);
       pGhostEffect_->On();
@@ -420,7 +406,7 @@ void Iori::CompareInputBitset() {
     }
 
     // A B | PRESS
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00001100"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A, KEY_B})) {
       UpdateAnimState((PLAYER_ANIMTYPE_Dash));
       pMovementComponent_->Dash(FacingRight(), 300.0f, 500.0f);
       pGhostEffect_->On();
@@ -428,24 +414,24 @@ void Iori::CompareInputBitset() {
     }
 
     // RIGHT | PRESS - A | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("00100000")) &&
-        (true == pInputController_->IsEqualInputBitSet(INPUT_DOWN, std::bitset<8>("00001000")) ||
-         true == pInputController_->IsEqualInputBitSet(INPUT_DOWN, std::bitset<8>("00000010")))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
+        (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}) ||
+         true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C}))) {
       UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_1);
       pSkillComponent_->ActivateSkill(IORI_SKILL_GaishikiMutan);
       return;
     }
 
     // RIGHT | PRESS - B | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_PRESS, std::bitset<8>("00100000")) && 
-        true == pInputController_->IsEqualInputBitSet(INPUT_DOWN, std::bitset<8>("00000100"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
+        true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_B})) {
       UpdateAnimState(IORI_ANIMTYPE_Shinigami);
       pSkillComponent_->ActivateSkill(IORI_SKILL_Shinigami);
       return;
     }
 
     // A | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00001000"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A})) {
       if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
       } else {
@@ -455,7 +441,7 @@ void Iori::CompareInputBitset() {
     }
 
     // B | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000100"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B})) {
       if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
       } else {
@@ -465,7 +451,7 @@ void Iori::CompareInputBitset() {
     }
 
     // C | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000010"))) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_C})) {
       if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_CloseRange);
       } else {
@@ -475,17 +461,17 @@ void Iori::CompareInputBitset() {
     }
 
     // D | DOWN
-    if (true == pInputController_->IsContainInputBitSet(INPUT_DOWN, std::bitset<8>("00000001"))) {
-      //if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
-      //  UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_CloseRange);
-      //} else {
-      //  UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_LongRange);
-      //}
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_D})) {
+       /*if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+         UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_CloseRange);
+       } else {
+         UpdateAnimState(PLAYER_ANIMTYPE_HeavyKick_LongRange);
+       }*/
       skillTest_->ActiveSkill(SkillType::TEST);
       return;
     }
 
-    //UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+    // UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
   }
 }

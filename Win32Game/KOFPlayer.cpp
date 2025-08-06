@@ -87,7 +87,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
       pStateComponent_->AddState({PS_Attack});
     }
 
-    skillTest_->UpdateSkill();
+    //skillTest_->UpdateSkill();
     //pSkillComponent_->UpdateActiveSkill();
   }
 
@@ -210,7 +210,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   
   skillTest_ = CreateComponent<SkillTest>();
-  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_)){
+  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_, pInputController_, pAttackBox_)){
     return;
   }
 }

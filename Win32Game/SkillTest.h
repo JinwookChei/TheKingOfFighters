@@ -41,7 +41,7 @@ enum SkillEventConditionType : unsigned int {
 struct SkillEvent {
   SkillEventType evnetType_ = SkillEvent_None;
 
-  std::vector<int> eventParams_;
+  std::vector<float> eventParams_;
 
   std::vector<SkillEventConditionType> conditionTypes_;
 };
@@ -79,7 +79,12 @@ class SkillTest
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool Initialize(KOFPlayer* pOwnerPlayer, ImageRenderer* pRenderer, MovementComponent* pMovementComponent);
+  bool Initialize(
+      KOFPlayer* pOwnerPlayer,
+      ImageRenderer* pRenderer,
+      MovementComponent* pMovementComponent,
+      InputController* pInputController,
+      CollisionComponent* pAttackCollision);
 
   bool RegistSkill(Skill skill);
 
@@ -88,21 +93,53 @@ class SkillTest
   void ActiveSkill(unsigned long long skillTag);
 
   // -------------- Action -------------
-  void ExcuteAction(SkillEventType eventType, const std::vector<int>& params);
+  void ExcuteAction(SkillEventType eventType, const std::vector<float>& params);
 
   void DeActiveSkill();
-  
-  void ChangeSkillState(const std::vector<int>& params);
 
-  void ExcuteJump(const std::vector<int>& params);
+  void ChangeSkillState(const std::vector<float>& params);
+
+  void ExcuteJump(const std::vector<float>& params);
+
+  void ExcuteDash(const std::vector<float>& params);
+
+  void ExcuteDashStop(const std::vector<float>& params);
+
+  void ExcuteSpawEffect(const std::vector<float>& params);
+
+  void ExcuteFireProjectile(const std::vector<float>& params);
+
+  void ExcuteCommand(const std::vector<float>& params);
+
+  void SetPositionOppenentPlayer(const std::vector<float>& params);
+
+  void LockControlOppenentPlayer(const std::vector<float>& params);
+
+  void UnLockControlOppenentPlayer(const std::vector<float>& params);
+
+  void FreezeOppenentPlayer(const std::vector<float>& params);
+
+  void DefreezePlayers(const std::vector<float>& params);
+
+  void ExcuteCameraShake(const std::vector<float>& params);
+
+  void ExcuteFadeIn(const std::vector<float>& params);
+
+  void ExcuteFadeOut(const std::vector<float>& params);
+
+  void ExcuteFadeInout(const std::vector<float>& params);
+
+  void ExcuteSoundPlay(const std::vector<float>& params);
+
+  void ExcuteSetMiscTempTrue(const std::vector<float>& params);
+
   // -------------- Action End-------------
-
 
   // -------------- Condition -------------
   bool CheckEventCondition(SkillEventConditionType eventCondition) const;
 
+  bool GetMiscTemp() const;
   // -------------- Condition End-------------
-  
 
  private:
   KOFPlayer* pOwnerPlayer_;
@@ -110,6 +147,10 @@ class SkillTest
   ImageRenderer* pOwnerRenderer_;
 
   MovementComponent* pOwnerMovementConponent_;
+
+  InputController* pOwnerInputController_;
+
+  CollisionComponent* pOwnerAttackCollision_;
 
   HashTable skillTable_;
 
