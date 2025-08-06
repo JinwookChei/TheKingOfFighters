@@ -210,7 +210,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   
   skillTest_ = CreateComponent<SkillTest>();
-  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_, pInputController_, pAttackBox_)){
+  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_, pInputController_, pAttackBox_, pProjectileComponent_)){
     return;
   }
 }

@@ -130,8 +130,9 @@ enum IORI_SKILL {
   IORI_SKILL_Max
 };
 
-enum PROJECTILE_TYPE {
-  IORI_PROJECTILE_YamiBarai = 0,
+enum PROJECTILE_TYPE : unsigned long long{
+  IORI_PROJECTILE_None = 0,
+  IORI_PROJECTILE_YamiBarai,
   IORI_PROJECTILE_HyakushikiOniyaki_Low,
   IORI_PROJECTILE_HyakushikiOniyaki_High,
   IORI_PROJECTILE_Ura306Shiki,

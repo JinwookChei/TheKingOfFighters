@@ -1,10 +1,14 @@
 #pragma once
 
-enum SkillType : unsigned long long {
-  TEST = 1ULL,
+enum SKILL_TYPE : unsigned long long {
+  Skill_1 = 1ULL,
+  Skill_2,
+  Skill_3,
+  Skill_4,
+  Skill_5
 };
 
-enum SkillEventType : unsigned int {
+enum SKILL_EVENT_TYPE : unsigned int {
   SkillEvent_None = 0,
   SkillEvent_DeactiveSkill,
   SkillEvent_UpdateSkillState,
@@ -27,7 +31,7 @@ enum SkillEventType : unsigned int {
   SkillEvent_SetMiscTempTrue
 };
 
-enum SkillEventConditionType : unsigned int {
+enum SKILL_EVENT_CONDITION_TYPE : unsigned int {
   SkillEventCondition_None = 0,
   SkillEventCondition_AnimationEnd,
   SkillEventCondition_CheckInputDownA,
@@ -38,12 +42,39 @@ enum SkillEventConditionType : unsigned int {
   SkillEventCondition_MiscTempTrue,
 };
 
+struct SkillEvnetParams {
+  unsigned int changeStateIndex_ = 0;
+
+  union{
+    EFFECT_TYPE effectType_ = EFFECT_TYPE::EFTYPE_None;
+
+    PROJECTILE_TYPE projectileType_;
+  };
+  
+  union {
+    Vector jumpForce_{0.0f, 0.0f};
+    Vector spawnEffectPos_;
+    struct {
+      float dashDuration_;
+      float dashDistance_;
+      float pad1_;
+      float pad2_;
+    };
+  };
+};
+
 struct SkillEvent {
-  SkillEventType evnetType_ = SkillEvent_None;
+  SKILL_EVENT_TYPE evnetType_ = SkillEvent_None;
 
-  std::vector<float> eventParams_;
+  bool hasExecuted_ = false;
 
-  std::vector<SkillEventConditionType> conditionTypes_;
+  SkillEvnetParams eventParams_;
+
+  std::vector<SKILL_EVENT_CONDITION_TYPE> conditionTypes_;
+
+  void ResetHasExecutedFlag() {
+    hasExecuted_ = false;
+  }
 };
 
 struct SkillFrame {
@@ -63,7 +94,7 @@ struct SkillState {
 struct Skill {
   unsigned long long skillTag_ = 0;
 
-  std::vector<SkillState> animStates_;
+  std::vector<SkillState> skillStates_;
 
   void* searchHandle_ = nullptr;
 };
@@ -84,7 +115,8 @@ class SkillTest
       ImageRenderer* pRenderer,
       MovementComponent* pMovementComponent,
       InputController* pInputController,
-      CollisionComponent* pAttackCollision);
+      CollisionComponent* pAttackCollision,
+      ProjectileComponent* pProjectileComponent);
 
   bool RegistSkill(Skill skill);
 
@@ -92,54 +124,56 @@ class SkillTest
 
   void ActiveSkill(unsigned long long skillTag);
 
-  // -------------- Action -------------
-  void ExcuteAction(SkillEventType eventType, const std::vector<float>& params);
+  void ResetEventExcutedFlags(Skill* pSkill);
+
+  // -------------- Skill Evnet -------------
+  void ExcuteAction(SKILL_EVENT_TYPE eventType, const SkillEvnetParams& params);
 
   void DeActiveSkill();
 
-  void ChangeSkillState(const std::vector<float>& params);
+  void ChangeSkillState(const SkillEvnetParams& params);
 
-  void ExcuteJump(const std::vector<float>& params);
+  void ExcuteJump(const SkillEvnetParams& params);
 
-  void ExcuteDash(const std::vector<float>& params);
+  void ExcuteDash(const SkillEvnetParams& params);
 
-  void ExcuteDashStop(const std::vector<float>& params);
+  void ExcuteDashStop(const SkillEvnetParams& params);
 
-  void ExcuteSpawEffect(const std::vector<float>& params);
+  void ExcuteSpawnEffect(const SkillEvnetParams& params);
 
-  void ExcuteFireProjectile(const std::vector<float>& params);
+  void ExcuteFireProjectile(const SkillEvnetParams& params);
 
-  void ExcuteCommand(const std::vector<float>& params);
+  void ExcuteCommand(const SkillEvnetParams& params);
 
-  void SetPositionOppenentPlayer(const std::vector<float>& params);
+  void SetPositionOppenentPlayer(const SkillEvnetParams& params);
 
-  void LockControlOppenentPlayer(const std::vector<float>& params);
+  void LockControlOppenentPlayer(const SkillEvnetParams& params);
 
-  void UnLockControlOppenentPlayer(const std::vector<float>& params);
+  void UnLockControlOppenentPlayer(const SkillEvnetParams& params);
 
-  void FreezeOppenentPlayer(const std::vector<float>& params);
+  void FreezeOppenentPlayer(const SkillEvnetParams& params);
 
-  void DefreezePlayers(const std::vector<float>& params);
+  void DefreezePlayers(const SkillEvnetParams& params);
 
-  void ExcuteCameraShake(const std::vector<float>& params);
+  void ExcuteCameraShake(const SkillEvnetParams& params);
 
-  void ExcuteFadeIn(const std::vector<float>& params);
+  void ExcuteFadeIn(const SkillEvnetParams& params);
 
-  void ExcuteFadeOut(const std::vector<float>& params);
+  void ExcuteFadeOut(const SkillEvnetParams& params);
 
-  void ExcuteFadeInout(const std::vector<float>& params);
+  void ExcuteFadeInout(const SkillEvnetParams& params);
 
-  void ExcuteSoundPlay(const std::vector<float>& params);
+  void ExcuteSoundPlay(const SkillEvnetParams& params);
 
-  void ExcuteSetMiscTempTrue(const std::vector<float>& params);
+  void ExcuteSetMiscTempTrue(const SkillEvnetParams& params);
 
-  // -------------- Action End-------------
+  // -------------- Skill Evnet End-------------
 
-  // -------------- Condition -------------
-  bool CheckEventCondition(SkillEventConditionType eventCondition) const;
+  // -------------- Skill Condition -------------
+  bool CheckEventCondition(SKILL_EVENT_CONDITION_TYPE eventCondition) const;
 
   bool GetMiscTemp() const;
-  // -------------- Condition End-------------
+  // -------------- Skill Condition End-------------
 
  private:
   KOFPlayer* pOwnerPlayer_;
@@ -152,11 +186,13 @@ class SkillTest
 
   CollisionComponent* pOwnerAttackCollision_;
 
+  ProjectileComponent* pOwnerProjectileComponent_;
+
   HashTable skillTable_;
 
   Skill* activeSkill_;
 
-  size_t currentAnimStateIndex_ = 0;
+  unsigned int curSkillStateIndex_ = 0;
 
   bool miscTemp_;
 };

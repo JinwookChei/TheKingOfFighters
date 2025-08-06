@@ -3,6 +3,7 @@
 #include "SkillTest.h"
 #include "MovementComponent.h"
 #include "InputController.h"
+#include "ProjectileComponent.h"
 
 SkillTest::SkillTest()
     : pOwnerPlayer_(nullptr),
@@ -10,7 +11,9 @@ SkillTest::SkillTest()
       pOwnerMovementConponent_(nullptr),
       pOwnerInputController_(nullptr),
       pOwnerAttackCollision_(nullptr),
+      pOwnerProjectileComponent_(nullptr),
       activeSkill_(nullptr),
+      curSkillStateIndex_(0),
       miscTemp_(false) {
 }
 
@@ -37,7 +40,8 @@ bool SkillTest::Initialize(
     ImageRenderer* pRenderer,
     MovementComponent* pMovementComponent,
     InputController* pInputController,
-    CollisionComponent* pAttackCollision) {
+    CollisionComponent* pAttackCollision,
+    ProjectileComponent* pProjectileComponent) {
   if (nullptr == pOwnerPlayer) {
     return false;
   }
@@ -53,12 +57,16 @@ bool SkillTest::Initialize(
   if (nullptr == pAttackCollision) {
     return false;
   }
+  if (nullptr == pProjectileComponent) {
+    return false;
+  }
 
   pOwnerPlayer_ = pOwnerPlayer;
   pOwnerRenderer_ = pRenderer;
   pOwnerMovementConponent_ = pMovementComponent;
   pOwnerInputController_ = pInputController;
   pOwnerAttackCollision_ = pAttackCollision;
+  pOwnerProjectileComponent_ = pProjectileComponent;
 
   return skillTable_.Initialize(8, 8);
 }
@@ -71,7 +79,7 @@ bool SkillTest::RegistSkill(Skill skill) {
 
   Skill* pInfo = new Skill;
   pInfo->skillTag_ = skill.skillTag_;
-  pInfo->animStates_ = skill.animStates_;
+  pInfo->skillStates_ = skill.skillStates_;
   const void* c = &pInfo->skillTag_;
   pInfo->searchHandle_ = skillTable_.Insert(pInfo, &pInfo->skillTag_, 8);
 
@@ -83,13 +91,12 @@ void SkillTest::UpdateSkill() {
     return;
   }
 
-  if (true == pOwnerRenderer_->IsAnimationEnd())
-  {
+  if (true == pOwnerRenderer_->IsAnimationEnd()) {
     DeActiveSkill();
     return;
   }
 
-  SkillState* pCurState = &activeSkill_->animStates_[currentAnimStateIndex_];
+  SkillState* pCurState = &activeSkill_->skillStates_[curSkillStateIndex_];
 
   std::vector<SkillFrame>* pCurSkillFrame = &pCurState->frames_;
 
@@ -102,18 +109,22 @@ void SkillTest::UpdateSkill() {
     if (curImageIndex >= startIndex && curImageIndex <= endIndex) {
       std::vector<SkillEvent>* pEvents = &(*pCurSkillFrame)[i].events;
       for (int j = 0; j < pEvents->size(); ++j) {
-        std::vector<SkillEventConditionType>* conditions = &(*pEvents)[j].conditionTypes_;
-        bool b = true;
+        if (true == (*pEvents)[j].hasExecuted_) {
+          continue;
+        }
+        std::vector<SKILL_EVENT_CONDITION_TYPE>* conditions = &(*pEvents)[j].conditionTypes_;
+        bool conditionFlag = true;
         for (int k = 0; k < conditions->size(); ++k) {
-          SkillEventConditionType conditionType = (*conditions)[k];
+          SKILL_EVENT_CONDITION_TYPE conditionType = (*conditions)[k];
           bool ret = CheckEventCondition(conditionType);
           if (false == ret) {
-            b = false;
+            conditionFlag = false;
             break;
           }
         }
-        if (true == b) {
+        if (true == conditionFlag) {
           ExcuteAction((*pEvents)[j].evnetType_, (*pEvents)[j].eventParams_);
+          (*pEvents)[j].hasExecuted_ = true;
         }
       }
     }
@@ -126,18 +137,33 @@ void SkillTest::ActiveSkill(unsigned long long skillTag) {
     return;
   }
 
+  ResetEventExcutedFlags(pInfo);
+
   activeSkill_ = pInfo;
 
-  currentAnimStateIndex_ = 0;
+  curSkillStateIndex_ = 0;
 
   miscTemp_ = false;
 
-  unsigned long long animState = activeSkill_->animStates_[currentAnimStateIndex_].animState_;
+  unsigned long long animState = activeSkill_->skillStates_[curSkillStateIndex_].animState_;
 
   pOwnerPlayer_->UpdateAnimState(animState);
 }
 
-void SkillTest::ExcuteAction(SkillEventType eventType, const std::vector<float>& params) {
+void SkillTest::ResetEventExcutedFlags(Skill* pSkill) {
+  if (nullptr == pSkill) {
+    return;
+  }
+  for (int i = 0; i < pSkill->skillStates_.size(); ++i) {
+    for (int j = 0; j < pSkill->skillStates_[i].frames_.size(); ++j) {
+      for (int k = 0; k < pSkill->skillStates_[i].frames_[j].events.size(); ++k) {
+        pSkill->skillStates_[i].frames_[j].events[k].ResetHasExecutedFlag();
+      }
+    }
+  }
+}
+
+void SkillTest::ExcuteAction(SKILL_EVENT_TYPE eventType, const SkillEvnetParams& params) {
   switch (eventType) {
     case SkillEvent_None:
       break;
@@ -157,7 +183,7 @@ void SkillTest::ExcuteAction(SkillEventType eventType, const std::vector<float>&
       ExcuteDashStop(params);
       break;
     case SkillEvent_SpawnEffect:
-      ExcuteSpawEffect(params);
+      ExcuteSpawnEffect(params);
       break;
     case SkillEvent_FireProjectile:
       ExcuteFireProjectile(params);
@@ -208,109 +234,109 @@ void SkillTest::DeActiveSkill() {
 
   activeSkill_ = nullptr;
 
-  currentAnimStateIndex_ = 0;
+  curSkillStateIndex_ = 0;
 
   miscTemp_ = false;
 }
 
-void SkillTest::ChangeSkillState(const std::vector<float>& params) {
+void SkillTest::ChangeSkillState(const SkillEvnetParams& params) {
   if (nullptr == activeSkill_) {
     DeActiveSkill();
     return;
   }
 
-  if (1 < params.size()) {
+  unsigned int skillStateIndex = params.changeStateIndex_;
+  if (skillStateIndex >= activeSkill_->skillStates_.size()) {
     return;
   }
 
-  int skillStateIndex = params[0];
+  curSkillStateIndex_ = skillStateIndex;
 
-  if (skillStateIndex >= activeSkill_->animStates_.size()) {
-    return;
-  }
-
-  currentAnimStateIndex_ = skillStateIndex;
-
-  unsigned long long animState = activeSkill_->animStates_[currentAnimStateIndex_].animState_;
+  unsigned long long animState = activeSkill_->skillStates_[curSkillStateIndex_].animState_;
 
   pOwnerPlayer_->UpdateAnimState(animState);
 
   miscTemp_ = false;
 }
 
-void SkillTest::ExcuteJump(const std::vector<float>& params) {
-  if (2 < params.size()) {
-    DeActiveSkill();
-    return;
-  }
-
+void SkillTest::ExcuteJump(const SkillEvnetParams& params) {
   bool facingRight = pOwnerPlayer_->FacingRight();
-  Vector jumpForce;
-  jumpForce.X = params[0];
-  jumpForce.Y = params[1];
+  Vector jumpForce = params.jumpForce_;
   pOwnerMovementConponent_->Jump(facingRight, jumpForce);
 }
 
-void SkillTest::ExcuteDash(const std::vector<float>& params) {
-  if (2 < params.size()) {
-    DeActiveSkill();
-    return;
-  }
+void SkillTest::ExcuteDash(const SkillEvnetParams& params) {
   bool facingRight = pOwnerPlayer_->FacingRight();
-  float dashDuration = params[0];
-  float dashDistance = params[1];
+  float dashDuration = params.dashDuration_;
+  float dashDistance = params.dashDistance_;
 
   pOwnerMovementConponent_->Dash(facingRight, dashDuration, dashDistance);
 }
 
-void SkillTest::ExcuteDashStop(const std::vector<float>& params) {
+void SkillTest::ExcuteDashStop(const SkillEvnetParams& params) {
   pOwnerMovementConponent_->StopDash();
 }
 
-void SkillTest::ExcuteSpawEffect(const std::vector<float>& params) {
+void SkillTest::ExcuteSpawnEffect(const SkillEvnetParams& params) {
+  Level* curLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == curLevel) {
+    return;
+  }
+
+  EFFECT_TYPE effectType = params.effectType_;
+  Vector playerPosition = pOwnerPlayer_->GetPosition();
+  Vector spawnPositionOffset = params.spawnEffectPos_;
+
+  if (pOwnerPlayer_->FacingRight()) {
+    EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {playerPosition.X - spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
+  } else {
+    EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {playerPosition.X + spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
+  }
 }
 
-void SkillTest::ExcuteFireProjectile(const std::vector<float>& params) {
+void SkillTest::ExcuteFireProjectile(const SkillEvnetParams& params) {
+  PROJECTILE_TYPE projectileType = params.projectileType_;
+  pOwnerProjectileComponent_->FireProjectile(projectileType);
 }
 
-void SkillTest::ExcuteCommand(const std::vector<float>& params) {
+void SkillTest::ExcuteCommand(const SkillEvnetParams& params) {
 }
 
-void SkillTest::SetPositionOppenentPlayer(const std::vector<float>& params) {
+void SkillTest::SetPositionOppenentPlayer(const SkillEvnetParams& params) {
 }
 
-void SkillTest::LockControlOppenentPlayer(const std::vector<float>& params) {
+void SkillTest::LockControlOppenentPlayer(const SkillEvnetParams& params) {
 }
 
-void SkillTest::UnLockControlOppenentPlayer(const std::vector<float>& params) {
+void SkillTest::UnLockControlOppenentPlayer(const SkillEvnetParams& params) {
 }
 
-void SkillTest::FreezeOppenentPlayer(const std::vector<float>& params) {
+void SkillTest::FreezeOppenentPlayer(const SkillEvnetParams& params) {
 }
 
-void SkillTest::DefreezePlayers(const std::vector<float>& params) {
+void SkillTest::DefreezePlayers(const SkillEvnetParams& params) {
 }
 
-void SkillTest::ExcuteCameraShake(const std::vector<float>& params) {
+void SkillTest::ExcuteCameraShake(const SkillEvnetParams& params) {
 }
 
-void SkillTest::ExcuteFadeIn(const std::vector<float>& params) {
+void SkillTest::ExcuteFadeIn(const SkillEvnetParams& params) {
 }
 
-void SkillTest::ExcuteFadeOut(const std::vector<float>& params) {
+void SkillTest::ExcuteFadeOut(const SkillEvnetParams& params) {
 }
 
-void SkillTest::ExcuteFadeInout(const std::vector<float>& params) {
+void SkillTest::ExcuteFadeInout(const SkillEvnetParams& params) {
 }
 
-void SkillTest::ExcuteSoundPlay(const std::vector<float>& params) {
+void SkillTest::ExcuteSoundPlay(const SkillEvnetParams& params) {
 }
 
-void SkillTest::ExcuteSetMiscTempTrue(const std::vector<float>& params) {
+void SkillTest::ExcuteSetMiscTempTrue(const SkillEvnetParams& params) {
   miscTemp_ = true;
 }
 
-bool SkillTest::CheckEventCondition(SkillEventConditionType eventCondition) const {
+bool SkillTest::CheckEventCondition(SKILL_EVENT_CONDITION_TYPE eventCondition) const {
   switch (eventCondition) {
     case SkillEventCondition_None:
       return true;

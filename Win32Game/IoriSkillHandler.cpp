@@ -50,7 +50,6 @@ void IoriSkillHandler::GaishikiMutan() {
 }
 
 void IoriSkillHandler::ShikiYamiBarai108() {
-
   if (true == pOwnerRenderer_->IsAnimationEnd()) {
     pOwnerSkillComponent_->DeactivateSkill();
     return;
