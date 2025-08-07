@@ -1,7 +1,8 @@
 #pragma once
 
 enum SKILL_TYPE : unsigned int {
-  SKILL_1 = 0,
+  SKILL_0 = 0,
+  SKILL_1,
   SKILL_2,
   SKILL_3,
   SKILL_4,
@@ -71,15 +72,25 @@ struct SkillFrameActionParams {
       float pad1_;
       float pad2_;
     };
+    struct {
+      float fadeDuration_;
+      float pad1_;
+      float pad2_;
+      float pad3_;
+    };
   };
+};
+
+struct SkillFrameActionData {
+  SKILL_FRAME_ACTION_TYPE actionType_ = SKILL_FRAME_ACTION_None;
+
+  SkillFrameActionParams actionParams_;
 };
 
 struct SkillFrameAction {
   std::vector<SKILL_FRAME_ACTION_CONDITION_TYPE> actionConditions_;
 
-  SKILL_FRAME_ACTION_TYPE actionType_ = SKILL_FRAME_ACTION_None;
-
-  SkillFrameActionParams actionParams_;
+  std::vector<SkillFrameActionData> actionDatas;
 
   bool HasExecuted() const {
     return hasExecuted_;
@@ -100,7 +111,7 @@ struct SkillFrame {
 
   unsigned long long endIndex_ = 0;
 
-  std::vector<SkillFrameAction> actions;
+  std::vector<SkillFrameAction> actions_;
 };
 
 struct SkillState {

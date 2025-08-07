@@ -115,7 +115,7 @@ void SkillTest::UpdateSkill() {
     unsigned long long endIndex = (*pCurSkillFrame)[i].endIndex_;
 
     if (curImageIndex >= startIndex && curImageIndex <= endIndex) {
-      std::vector<SkillFrameAction>* pActions = &(*pCurSkillFrame)[i].actions;
+      std::vector<SkillFrameAction>* pActions = &(*pCurSkillFrame)[i].actions_;
       for (int j = 0; j < pActions->size(); ++j) {
         if (true == (*pActions)[j].HasExecuted()) {
           continue;
@@ -131,7 +131,10 @@ void SkillTest::UpdateSkill() {
           }
         }
         if (true == conditionFlag) {
-          ExcuteSkillFrameAction((*pActions)[j].actionType_, (*pActions)[j].actionParams_);
+          std::vector<SkillFrameActionData>* actionDatas = &(*pActions)[j].actionDatas;
+          for (int l = 0; l < actionDatas->size(); ++l) {
+            ExcuteSkillFrameAction((*actionDatas)[l].actionType_, (*actionDatas)[l].actionParams_);
+          }
           (*pActions)[j].SetHasExcuted(true);
         }
       }
@@ -177,8 +180,8 @@ void SkillTest::ResetEventExcutedFlags(Skill* pSkill) {
   }
   for (int i = 0; i < pSkill->skillStates_.size(); ++i) {
     for (int j = 0; j < pSkill->skillStates_[i].frames_.size(); ++j) {
-      for (int k = 0; k < pSkill->skillStates_[i].frames_[j].actions.size(); ++k) {
-        pSkill->skillStates_[i].frames_[j].actions[k].ResetHasExecutedFlag();
+      for (int k = 0; k < pSkill->skillStates_[i].frames_[j].actions_.size(); ++k) {
+        pSkill->skillStates_[i].frames_[j].actions_[k].ResetHasExecutedFlag();
       }
     }
   }
@@ -213,6 +216,14 @@ bool SkillTest::HasSkillPoint() const {
 }
 
 void SkillTest::ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction) {
+  switch (castAction) {
+    case SKILL_CAST_ACTION_None:
+      break;
+    case SKILL_CAST_ACTION_ReduceSkillPoint:
+      break;
+    default:
+      break;
+  }
 }
 
 bool SkillTest::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition) const {
