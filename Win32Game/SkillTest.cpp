@@ -120,11 +120,12 @@ void SkillTest::UpdateSkill() {
         if (true == (*pActions)[j].HasExecuted()) {
           continue;
         }
-        std::vector<SKILL_FRAME_ACTION_CONDITION_TYPE>* conditions = &(*pActions)[j].actionConditions_;
+        std::vector<SkillFrameActionConditionData>* conditionDatas = &(*pActions)[j].conditionDatas_;
         bool conditionFlag = true;
-        for (int k = 0; k < conditions->size(); ++k) {
-          SKILL_FRAME_ACTION_CONDITION_TYPE conditionType = (*conditions)[k];
-          bool ret = CheckFrameActionCondition(conditionType);
+        for (int k = 0; k < conditionDatas->size(); ++k) {
+          SKILL_FRAME_ACTION_CONDITION_TYPE conditionType = (*conditionDatas)[k].conditionType_;
+          SkillFrameActionConditionParams condtionParams = (*conditionDatas)[k].actionParams_;
+          bool ret = CheckFrameActionCondition(conditionType, condtionParams);
           if (false == ret) {
             conditionFlag = false;
             break;
@@ -226,7 +227,7 @@ void SkillTest::ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction) {
   }
 }
 
-bool SkillTest::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition) const {
+bool SkillTest::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition, const SkillFrameActionConditionParams& params) const {
   switch (actionCondition) {
     case SKILL_FRAME_ACTION_COND_None:
       return true;
@@ -235,22 +236,25 @@ bool SkillTest::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE acti
       return pOwnerRenderer_->IsAnimationEnd();
       break;
     case SKILL_FRAME_ACTION_COND_CheckInputDownA:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_A});
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A});
       break;
     case SKILL_FRAME_ACTION_COND_CheckInputDownB:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_B});
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B});
       break;
     case SKILL_FRAME_ACTION_COND_CheckInputDownC:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_C});
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_C});
       break;
     case SKILL_FRAME_ACTION_COND_CheckInputDownD:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_D});
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_D});
       break;
     case SKILL_FRAME_ACTION_COND_HasAttackCollition:
       return pOwnerAttackCollision_->HasHit();
       break;
     case SKILL_FRAME_ACTION_COND_IsStateMiscFlagTrue:
       return GetCurStateMiscFlag();
+      break;
+    case SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold:
+      return IsOpponentWithinDistanceThresHold(params);
       break;
     default:
       break;
@@ -264,6 +268,11 @@ bool SkillTest::GetCurStateMiscFlag() const {
     return false;
   }
   return executingSkill_->skillStates_[curSkillStateIndex_].MiscFlag();
+}
+
+bool SkillTest::IsOpponentWithinDistanceThresHold(const SkillFrameActionConditionParams& params) const {
+
+  return false;
 }
 
 void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params) {

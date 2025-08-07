@@ -29,6 +29,7 @@ enum SKILL_FRAME_ACTION_CONDITION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_COND_CheckInputDownD,
   SKILL_FRAME_ACTION_COND_HasAttackCollition,
   SKILL_FRAME_ACTION_COND_IsStateMiscFlagTrue,
+  SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold
 };
 
 enum SKILL_FRAME_ACTION_TYPE : unsigned int {
@@ -81,6 +82,16 @@ struct SkillFrameActionParams {
   };
 };
 
+struct SkillFrameActionConditionParams {
+  float opponentDistanceThreshold = 0.0f;
+};
+
+struct SkillFrameActionConditionData {
+  SKILL_FRAME_ACTION_CONDITION_TYPE conditionType_ = SKILL_FRAME_ACTION_COND_None;
+
+  SkillFrameActionConditionParams actionParams_;
+};
+
 struct SkillFrameActionData {
   SKILL_FRAME_ACTION_TYPE actionType_ = SKILL_FRAME_ACTION_None;
 
@@ -88,7 +99,7 @@ struct SkillFrameActionData {
 };
 
 struct SkillFrameAction {
-  std::vector<SKILL_FRAME_ACTION_CONDITION_TYPE> actionConditions_;
+  std::vector<SkillFrameActionConditionData> conditionDatas_;
 
   std::vector<SkillFrameActionData> actionDatas;
 
@@ -187,9 +198,11 @@ class SkillTest
 
 
   // -------------- Skill Condition -------------------
-  bool CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition) const;
+  bool CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition, const SkillFrameActionConditionParams& params) const;
 
   bool GetCurStateMiscFlag() const;
+ 
+  bool IsOpponentWithinDistanceThresHold(const SkillFrameActionConditionParams& params) const;
   // --------------------------------------------------
   
   // -------------- Skill Frame Action -------------
