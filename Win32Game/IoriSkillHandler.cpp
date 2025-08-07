@@ -50,56 +50,56 @@ void IoriSkillHandler::GaishikiMutan() {
 }
 
 void IoriSkillHandler::ShikiYamiBarai108() {
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
-    pOwnerSkillComponent_->DeactivateSkill();
-    return;
-  }
+  //if (true == pOwnerRenderer_->IsAnimationEnd()) {
+  //  pOwnerSkillComponent_->DeactivateSkill();
+  //  return;
+  //}
 
-  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
-  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
-  if (prevImageIndex == curImageIndex) {
-    return;
-  }
+  //unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  //unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
+  //if (prevImageIndex == curImageIndex) {
+  //  return;
+  //}
 
-  if (225 == curImageIndex) {
-    Level* curLevel = pOwnerPlayer_->GetLevel();
-    Vector curPosition = pOwnerPlayer_->GetPosition();
-    if (pOwnerPlayer_->FacingRight()) {
-      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {curPosition.X - 40.0f, curPosition.Y - 280.0f});
-    } else {
-      EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {curPosition.X + 40.0f, curPosition.Y - 280.0f});
-    }
-  }
+  //if (225 == curImageIndex) {
+  //  Level* curLevel = pOwnerPlayer_->GetLevel();
+  //  Vector curPosition = pOwnerPlayer_->GetPosition();
+  //  if (pOwnerPlayer_->FacingRight()) {
+  //    EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {curPosition.X - 40.0f, curPosition.Y - 280.0f});
+  //  } else {
+  //    EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {curPosition.X + 40.0f, curPosition.Y - 280.0f});
+  //  }
+  //}
 
-  if (226 == curImageIndex) {
-    pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_YamiBarai);
-  }
+  //if (226 == curImageIndex) {
+  //  pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_YamiBarai);
+  //}
 }
 
 void IoriSkillHandler::HyakushikiOniyaki() {
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
-    pOwnerSkillComponent_->DeactivateSkill();
-    return;
-  }
+  //if (true == pOwnerRenderer_->IsAnimationEnd()) {
+  //  pOwnerSkillComponent_->DeactivateSkill();
+  //  return;
+  //}
 
-  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
-  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
-  if (prevImageIndex == curImageIndex) {
-    return;
-  }
+  //unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  //unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
+  //if (prevImageIndex == curImageIndex) {
+  //  return;
+  //}
 
-  if (276 == curImageIndex) {
-    pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 150.0f, 150.0f);
-  }
+  //if (276 == curImageIndex) {
+  //  pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 150.0f, 150.0f);
+  //}
 
-  if (281 == curImageIndex) {
-    pOwnerMovementComponent_->Jump(pOwnerPlayer_->FacingRight(), {0.4f, -4.5f});
-    pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low);
-  }
+  //if (281 == curImageIndex) {
+  //  pOwnerMovementComponent_->Jump(pOwnerPlayer_->FacingRight(), {0.4f, -4.5f});
+  //  pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_Low);
+  //}
 
-  if (284 == curImageIndex) {
-    pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High);
-  }
+  //if (284 == curImageIndex) {
+  //  pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_HyakushikiOniyaki_High);
+  //}
 }
 
 void IoriSkillHandler::ShikiAoiHana127() {
@@ -158,176 +158,176 @@ void IoriSkillHandler::ShikiAoiHana127() {
 }
 
 void IoriSkillHandler::ShikiYaOtome1211() {
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
-    pOwnerSkillComponent_->DeactivateSkill();
-    return;
-  }
+  //if (true == pOwnerRenderer_->IsAnimationEnd()) {
+  //  pOwnerSkillComponent_->DeactivateSkill();
+  //  return;
+  //}
 
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
+  //Level* pLevel = pOwnerPlayer_->GetLevel();
+  //if (nullptr == pLevel) {
+  //  return;
+  //}
 
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
+  //KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  //if (nullptr == pKOFLevel) {
+  //  return;
+  //}
 
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
+  //ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  //if (nullptr == pBackGroundMask) {
+  //  return;
+  //}
 
-  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
-  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
-  if (prevImageIndex == curImageIndex) {
-    return;
-  }
+  //unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+  //unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
+  //if (prevImageIndex == curImageIndex) {
+  //  return;
+  //}
 
-  switch (pOwnerStateComponent_->GetCurAnimState()) {
-    case PLAYER_ANIMTYPE_UltimateCasting: {
-      if (347 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_1);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_1: {
-      if (70 == curImageIndex) {
-        pKOFLevel->DefreezeActors();
-        pBackGroundMask->FadeIn(50);
-        break;
-      }
+  //switch (pOwnerStateComponent_->GetCurAnimState()) {
+  //  case PLAYER_ANIMTYPE_UltimateCasting: {
+  //    if (347 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_1);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_1: {
+  //    if (70 == curImageIndex) {
+  //      pKOFLevel->DefreezeActors();
+  //      pBackGroundMask->FadeIn(50);
+  //      break;
+  //    }
 
-      if (72 == curImageIndex) {
-        pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 250.0f, 1000.0f);
-        break;
-      }
+  //    if (72 == curImageIndex) {
+  //      pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 250.0f, 1000.0f);
+  //      break;
+  //    }
 
-      if (pOwnerAttackCollision_->HasHit()) {
-        pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(true);
-        pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 250.0f, 1000.0f);
+  //    if (pOwnerAttackCollision_->HasHit()) {
+  //      pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(true);
+  //      pOwnerMovementComponent_->Dash(pOwnerPlayer_->FacingRight(), 250.0f, 1000.0f);
 
-        if (180.0f > std::fabs(pOwnerPlayer_->GetPosition().X - pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X)) {
-          pOwnerMovementComponent_->StopDash();
-          pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_2);
-        }
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_2: {
-      if (120 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
+  //      if (180.0f > std::fabs(pOwnerPlayer_->GetPosition().X - pOwnerPlayer_->GetOpponentPlayer()->GetPosition().X)) {
+  //        pOwnerMovementComponent_->StopDash();
+  //        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_2);
+  //      }
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_2: {
+  //    if (120 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
 
-      if (122 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_3);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_3: {
-      if (90 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (92 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_4);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_4: {
-      if (135 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_5);
-        break;
-      }
+  //    if (122 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_3);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_3: {
+  //    if (90 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
+  //    if (92 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_4);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_4: {
+  //    if (135 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_5);
+  //      break;
+  //    }
 
-      if (138 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_5: {
-      if (227 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
+  //    if (138 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_5: {
+  //    if (227 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
 
-      if (229 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_6);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_6: {
-      if (102 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (106 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_7);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_7: {
-      if (161 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (163 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_8);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_8: {
-      if (102 == curImageIndex) {
-        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-        break;
-      }
-      if (106 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_9);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_1211ShikiYaOtome_9: {
-      if (348 == curImageIndex) {
-        pOwnerPlayer_->GetOpponentPlayer()->UpdateAnimState(PLAYER_ANIMTYPE_NeckGrab);
-        break;
-      }
+  //    if (229 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_6);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_6: {
+  //    if (102 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
+  //    if (106 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_7);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_7: {
+  //    if (161 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
+  //    if (163 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_8);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_8: {
+  //    if (102 == curImageIndex) {
+  //      pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //      break;
+  //    }
+  //    if (106 == curImageIndex) {
+  //      pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_1211ShikiYaOtome_9);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  case IORI_ANIMTYPE_1211ShikiYaOtome_9: {
+  //    if (348 == curImageIndex) {
+  //      pOwnerPlayer_->GetOpponentPlayer()->UpdateAnimState(PLAYER_ANIMTYPE_NeckGrab);
+  //      break;
+  //    }
 
-      if (349 == curImageIndex) {
-        const Vector& ioriPosition = pOwnerPlayer_->GetPosition();
-        const Vector& targetPosition = ioriPosition + Vector{50.0f * pOwnerPlayer_->FacingRightFlag(), -30.0f};
-        pOwnerPlayer_->GetOpponentPlayer()->SetPosition(targetPosition);
-        SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
-        break;
-      }
-      if (351 == curImageIndex) {
-        pOwnerCommandComponent_->ExcuteTask();
-        if (true == pOwnerSkillComponent_->GetMiscTemp()) {
-          ActiveUra306shikiShika();
-        } else {
-          pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
-          pKOFLevel->GetCameraTarget()->OnCameraShake(300);
-        }
-        break;
-      }
-      if (352 == curImageIndex) {
-        pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(false);
-        break;
-      }
-      break;
-    }
-    default:
-      break;
-  }
+  //    if (349 == curImageIndex) {
+  //      const Vector& ioriPosition = pOwnerPlayer_->GetPosition();
+  //      const Vector& targetPosition = ioriPosition + Vector{50.0f * pOwnerPlayer_->FacingRightFlag(), -30.0f};
+  //      pOwnerPlayer_->GetOpponentPlayer()->SetPosition(targetPosition);
+  //      SoundManager::Instance()->SoundPlay(SOUNDTYPE_IORI_1211ShikiYaOtome03);
+  //      break;
+  //    }
+  //    if (351 == curImageIndex) {
+  //      pOwnerCommandComponent_->ExcuteTask();
+  //      if (true == pOwnerSkillComponent_->GetMiscTemp()) {
+  //        ActiveUra306shikiShika();
+  //      } else {
+  //        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);
+  //        pKOFLevel->GetCameraTarget()->OnCameraShake(300);
+  //      }
+  //      break;
+  //    }
+  //    if (352 == curImageIndex) {
+  //      pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(false);
+  //      break;
+  //    }
+  //    break;
+  //  }
+  //  default:
+  //    break;
+  //}
 }
 
 void IoriSkillHandler::ActiveUra306shikiShika() {

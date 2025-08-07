@@ -4,6 +4,7 @@
 #include "MovementComponent.h"
 #include "InputController.h"
 #include "ProjectileComponent.h"
+#include "MPComponent.h"
 
 SkillTest::SkillTest()
     : pOwnerPlayer_(nullptr),
@@ -12,9 +13,9 @@ SkillTest::SkillTest()
       pOwnerInputController_(nullptr),
       pOwnerAttackCollision_(nullptr),
       pOwnerProjectileComponent_(nullptr),
-      activeSkill_(nullptr),
-      curSkillStateIndex_(0),
-      miscTemp_(false) {
+      pOwnerMPComponent_(nullptr),
+      executingSkill_(nullptr),
+      curSkillStateIndex_(0) {
 }
 
 SkillTest::~SkillTest() {
@@ -41,7 +42,8 @@ bool SkillTest::Initialize(
     MovementComponent* pMovementComponent,
     InputController* pInputController,
     CollisionComponent* pAttackCollision,
-    ProjectileComponent* pProjectileComponent) {
+    ProjectileComponent* pProjectileComponent,
+    MPComponent* pMPComponent) {
   if (nullptr == pOwnerPlayer) {
     return false;
   }
@@ -60,6 +62,9 @@ bool SkillTest::Initialize(
   if (nullptr == pProjectileComponent) {
     return false;
   }
+  if (nullptr == pMPComponent) {
+    return false;
+  }
 
   pOwnerPlayer_ = pOwnerPlayer;
   pOwnerRenderer_ = pRenderer;
@@ -67,6 +72,7 @@ bool SkillTest::Initialize(
   pOwnerInputController_ = pInputController;
   pOwnerAttackCollision_ = pAttackCollision;
   pOwnerProjectileComponent_ = pProjectileComponent;
+  pOwnerMPComponent_ = pMPComponent;
 
   return skillTable_.Initialize(8, 8);
 }
@@ -80,6 +86,8 @@ bool SkillTest::RegistSkill(Skill skill) {
   Skill* pInfo = new Skill;
   pInfo->skillTag_ = skill.skillTag_;
   pInfo->skillStates_ = skill.skillStates_;
+  pInfo->castCondition_ = skill.castCondition_;
+  pInfo->castAction_ = skill.castAction_;
   const void* c = &pInfo->skillTag_;
   pInfo->searchHandle_ = skillTable_.Insert(pInfo, &pInfo->skillTag_, 8);
 
@@ -87,7 +95,7 @@ bool SkillTest::RegistSkill(Skill skill) {
 }
 
 void SkillTest::UpdateSkill() {
-  if (nullptr == activeSkill_) {
+  if (nullptr == executingSkill_) {
     return;
   }
 
@@ -96,7 +104,7 @@ void SkillTest::UpdateSkill() {
     return;
   }
 
-  SkillState* pCurState = &activeSkill_->skillStates_[curSkillStateIndex_];
+  SkillState* pCurState = &executingSkill_->skillStates_[curSkillStateIndex_];
 
   std::vector<SkillFrame>* pCurSkillFrame = &pCurState->frames_;
 
@@ -107,47 +115,60 @@ void SkillTest::UpdateSkill() {
     unsigned long long endIndex = (*pCurSkillFrame)[i].endIndex_;
 
     if (curImageIndex >= startIndex && curImageIndex <= endIndex) {
-      std::vector<SkillEvent>* pEvents = &(*pCurSkillFrame)[i].events;
-      for (int j = 0; j < pEvents->size(); ++j) {
-        if (true == (*pEvents)[j].hasExecuted_) {
+      std::vector<SkillFrameAction>* pActions = &(*pCurSkillFrame)[i].actions;
+      for (int j = 0; j < pActions->size(); ++j) {
+        if (true == (*pActions)[j].HasExecuted()) {
           continue;
         }
-        std::vector<SKILL_EVENT_CONDITION_TYPE>* conditions = &(*pEvents)[j].conditionTypes_;
+        std::vector<SKILL_FRAME_ACTION_CONDITION_TYPE>* conditions = &(*pActions)[j].actionConditions_;
         bool conditionFlag = true;
         for (int k = 0; k < conditions->size(); ++k) {
-          SKILL_EVENT_CONDITION_TYPE conditionType = (*conditions)[k];
-          bool ret = CheckEventCondition(conditionType);
+          SKILL_FRAME_ACTION_CONDITION_TYPE conditionType = (*conditions)[k];
+          bool ret = CheckFrameActionCondition(conditionType);
           if (false == ret) {
             conditionFlag = false;
             break;
           }
         }
         if (true == conditionFlag) {
-          ExcuteAction((*pEvents)[j].evnetType_, (*pEvents)[j].eventParams_);
-          (*pEvents)[j].hasExecuted_ = true;
+          ExcuteSkillFrameAction((*pActions)[j].actionType_, (*pActions)[j].actionParams_);
+          (*pActions)[j].SetHasExcuted(true);
         }
       }
     }
   }
 }
 
-void SkillTest::ActiveSkill(unsigned long long skillTag) {
+void SkillTest::ExecuteSkill(unsigned long long skillTag) {
+  if (true == IsSkillExecuting()) {
+    return;
+  }
+
   Skill* pInfo;
   if (0 == skillTable_.Select((void**)&pInfo, 1, &skillTag, 8)) {
     return;
   }
 
+  SKILL_CASTING_CONDITION_TYPE executeCondition = pInfo->castCondition_;
+  if (false == CheckCastingCondition(executeCondition)) {
+    return;
+  }
+  
+  ResetStateMiscFlags(pInfo);
+
   ResetEventExcutedFlags(pInfo);
 
-  activeSkill_ = pInfo;
+  executingSkill_ = pInfo;
 
   curSkillStateIndex_ = 0;
 
-  miscTemp_ = false;
-
-  unsigned long long animState = activeSkill_->skillStates_[curSkillStateIndex_].animState_;
+  unsigned long long animState = executingSkill_->skillStates_[curSkillStateIndex_].animState_;
 
   pOwnerPlayer_->UpdateAnimState(animState);
+}
+
+bool SkillTest::IsSkillExecuting() {
+  return nullptr != executingSkill_;
 }
 
 void SkillTest::ResetEventExcutedFlags(Skill* pSkill) {
@@ -156,73 +177,144 @@ void SkillTest::ResetEventExcutedFlags(Skill* pSkill) {
   }
   for (int i = 0; i < pSkill->skillStates_.size(); ++i) {
     for (int j = 0; j < pSkill->skillStates_[i].frames_.size(); ++j) {
-      for (int k = 0; k < pSkill->skillStates_[i].frames_[j].events.size(); ++k) {
-        pSkill->skillStates_[i].frames_[j].events[k].ResetHasExecutedFlag();
+      for (int k = 0; k < pSkill->skillStates_[i].frames_[j].actions.size(); ++k) {
+        pSkill->skillStates_[i].frames_[j].actions[k].ResetHasExecutedFlag();
       }
     }
   }
 }
 
-void SkillTest::ExcuteAction(SKILL_EVENT_TYPE eventType, const SkillEvnetParams& params) {
-  switch (eventType) {
-    case SkillEvent_None:
+void SkillTest::ResetStateMiscFlags(Skill* pSkill) {
+  if (nullptr == pSkill) {
+    return;
+  }
+  for (int i = 0; i < pSkill->skillStates_.size(); ++i) {
+    pSkill->skillStates_[i].SetMiscFlag(false);
+  }
+}
+
+bool SkillTest::CheckCastingCondition(SKILL_CASTING_CONDITION_TYPE castCondition) {
+  switch (castCondition) {
+    case SKILL_CAST_COND_None:
+      return true;
       break;
-    case SkillEvent_DeactiveSkill:
+    case SKILL_CAST_COND_HasSkillPoint:
+      return HasSkillPoint();
+      break;
+    default:
+      break;
+  }
+
+  return true;
+}
+
+bool SkillTest::HasSkillPoint() const {
+  return 1 <= pOwnerMPComponent_->SkillPoint();
+}
+
+void SkillTest::ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction) {
+}
+
+bool SkillTest::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition) const {
+  switch (actionCondition) {
+    case SKILL_FRAME_ACTION_COND_None:
+      return true;
+      break;
+    case SKILL_FRAME_ACTION_COND_AnimationEnd:
+      return pOwnerRenderer_->IsAnimationEnd();
+      break;
+    case SKILL_FRAME_ACTION_COND_CheckInputDownA:
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_A});
+      break;
+    case SKILL_FRAME_ACTION_COND_CheckInputDownB:
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_B});
+      break;
+    case SKILL_FRAME_ACTION_COND_CheckInputDownC:
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_C});
+      break;
+    case SKILL_FRAME_ACTION_COND_CheckInputDownD:
+      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_D});
+      break;
+    case SKILL_FRAME_ACTION_COND_HasAttackCollition:
+      return pOwnerAttackCollision_->HasHit();
+      break;
+    case SKILL_FRAME_ACTION_COND_IsStateMiscFlagTrue:
+      return GetCurStateMiscFlag();
+      break;
+    default:
+      break;
+  }
+
+  return false;
+}
+
+bool SkillTest::GetCurStateMiscFlag() const {
+  if (nullptr == executingSkill_) {
+    return false;
+  }
+  return executingSkill_->skillStates_[curSkillStateIndex_].MiscFlag();
+}
+
+void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params) {
+  switch (actionType) {
+    case SKILL_FRAME_ACTION_None:
+      break;
+    case SKILL_FRAME_ACTION_DeactiveSkill:
       DeActiveSkill();
       break;
-    case SkillEvent_UpdateSkillState:
+    case SKILL_FRAME_ACTION_UpdateSkillState:
       ChangeSkillState(params);
       break;
-    case SkillEvent_MovementJump:
+    case SKILL_FRAME_ACTION_MovementJump:
       ExcuteJump(params);
       break;
-    case SkillEvent_MovementDash:
+    case SKILL_FRAME_ACTION_MovementDash:
       ExcuteDash(params);
       break;
-    case SkillEvent_MovementStopDash:
+    case SKILL_FRAME_ACTION_MovementStopDash:
       ExcuteDashStop(params);
       break;
-    case SkillEvent_SpawnEffect:
+    case SKILL_FRAME_ACTION_SpawnEffect:
       ExcuteSpawnEffect(params);
       break;
-    case SkillEvent_FireProjectile:
+    case SKILL_FRAME_ACTION_FireProjectile:
       ExcuteFireProjectile(params);
       break;
-    case SkillEvent_CommandExecute:
+    case SKILL_FRAME_ACTION_CommandExecute:
       ExcuteCommand(params);
       break;
-    case SkillEvent_SetPostionOppenentPlayer:
+    case SKILL_FRAME_ACTION_SetPostionOppenentPlayer:
       SetPositionOppenentPlayer(params);
       break;
-    case SkillEvent_LockControlOppenentPlayer:
+    case SKILL_FRAME_ACTION_LockControlOppenentPlayer:
       LockControlOppenentPlayer(params);
       break;
-    case SkillEvent_UnLockControlOppenentPlayer:
+    case SKILL_FRAME_ACTION_UnLockControlOppenentPlayer:
       UnLockControlOppenentPlayer(params);
       break;
-    case SkillEvent_FreezeOppenentPlayer:
+    case SKILL_FRAME_ACTION_FreezeOppenentPlayer:
       FreezeOppenentPlayer(params);
       break;
-    case SkillEvent_DefreezePlayers:
+    case SKILL_FRAME_ACTION_DefreezePlayers:
       DefreezePlayers(params);
       break;
-    case SkillEvent_CameraShake:
+    case SKILL_FRAME_ACTION_CameraShake:
       ExcuteCameraShake(params);
       break;
-    case SkillEvent_FadeIn:
+    case SKILL_FRAME_ACTION_FadeIn:
       ExcuteFadeIn(params);
       break;
-    case SkillEvent_FadeOut:
+    case SKILL_FRAME_ACTION_FadeOut:
       ExcuteFadeOut(params);
       break;
-    case SkillEvent_FadeInout:
+    case SKILL_FRAME_ACTION_FadeInout:
       ExcuteFadeInout(params);
       break;
-    case SkillEvent_SoundPlay:
+    case SKILL_FRAME_ACTION_SoundPlay:
       ExcuteSoundPlay(params);
       break;
-    case SkillEvent_SetMiscTempTrue:
-      ExcuteSetMiscTempTrue(params);
+    case SKILL_FRAME_ACTION_SetCurStateMiscFlagTrue:
+      SetCurStateMiscFlagTrue(params);
       break;
     default:
       break;
@@ -231,41 +323,34 @@ void SkillTest::ExcuteAction(SKILL_EVENT_TYPE eventType, const SkillEvnetParams&
 
 void SkillTest::DeActiveSkill() {
   pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_Idle);
-
-  activeSkill_ = nullptr;
-
-  curSkillStateIndex_ = 0;
-
-  miscTemp_ = false;
+  executingSkill_ = nullptr;
 }
 
-void SkillTest::ChangeSkillState(const SkillEvnetParams& params) {
-  if (nullptr == activeSkill_) {
+void SkillTest::ChangeSkillState(const SkillFrameActionParams& params) {
+  if (nullptr == executingSkill_) {
     DeActiveSkill();
     return;
   }
 
   unsigned int skillStateIndex = params.changeStateIndex_;
-  if (skillStateIndex >= activeSkill_->skillStates_.size()) {
+  if (skillStateIndex >= executingSkill_->skillStates_.size()) {
     return;
   }
 
   curSkillStateIndex_ = skillStateIndex;
 
-  unsigned long long animState = activeSkill_->skillStates_[curSkillStateIndex_].animState_;
+  unsigned long long animState = executingSkill_->skillStates_[curSkillStateIndex_].animState_;
 
   pOwnerPlayer_->UpdateAnimState(animState);
-
-  miscTemp_ = false;
 }
 
-void SkillTest::ExcuteJump(const SkillEvnetParams& params) {
+void SkillTest::ExcuteJump(const SkillFrameActionParams& params) {
   bool facingRight = pOwnerPlayer_->FacingRight();
   Vector jumpForce = params.jumpForce_;
   pOwnerMovementConponent_->Jump(facingRight, jumpForce);
 }
 
-void SkillTest::ExcuteDash(const SkillEvnetParams& params) {
+void SkillTest::ExcuteDash(const SkillFrameActionParams& params) {
   bool facingRight = pOwnerPlayer_->FacingRight();
   float dashDuration = params.dashDuration_;
   float dashDistance = params.dashDistance_;
@@ -273,11 +358,11 @@ void SkillTest::ExcuteDash(const SkillEvnetParams& params) {
   pOwnerMovementConponent_->Dash(facingRight, dashDuration, dashDistance);
 }
 
-void SkillTest::ExcuteDashStop(const SkillEvnetParams& params) {
+void SkillTest::ExcuteDashStop(const SkillFrameActionParams& params) {
   pOwnerMovementConponent_->StopDash();
 }
 
-void SkillTest::ExcuteSpawnEffect(const SkillEvnetParams& params) {
+void SkillTest::ExcuteSpawnEffect(const SkillFrameActionParams& params) {
   Level* curLevel = pOwnerPlayer_->GetLevel();
   if (nullptr == curLevel) {
     return;
@@ -294,81 +379,47 @@ void SkillTest::ExcuteSpawnEffect(const SkillEvnetParams& params) {
   }
 }
 
-void SkillTest::ExcuteFireProjectile(const SkillEvnetParams& params) {
+void SkillTest::ExcuteFireProjectile(const SkillFrameActionParams& params) {
   PROJECTILE_TYPE projectileType = params.projectileType_;
   pOwnerProjectileComponent_->FireProjectile(projectileType);
 }
 
-void SkillTest::ExcuteCommand(const SkillEvnetParams& params) {
+void SkillTest::ExcuteCommand(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::SetPositionOppenentPlayer(const SkillEvnetParams& params) {
+void SkillTest::SetPositionOppenentPlayer(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::LockControlOppenentPlayer(const SkillEvnetParams& params) {
+void SkillTest::LockControlOppenentPlayer(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::UnLockControlOppenentPlayer(const SkillEvnetParams& params) {
+void SkillTest::UnLockControlOppenentPlayer(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::FreezeOppenentPlayer(const SkillEvnetParams& params) {
+void SkillTest::FreezeOppenentPlayer(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::DefreezePlayers(const SkillEvnetParams& params) {
+void SkillTest::DefreezePlayers(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::ExcuteCameraShake(const SkillEvnetParams& params) {
+void SkillTest::ExcuteCameraShake(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::ExcuteFadeIn(const SkillEvnetParams& params) {
+void SkillTest::ExcuteFadeIn(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::ExcuteFadeOut(const SkillEvnetParams& params) {
+void SkillTest::ExcuteFadeOut(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::ExcuteFadeInout(const SkillEvnetParams& params) {
+void SkillTest::ExcuteFadeInout(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::ExcuteSoundPlay(const SkillEvnetParams& params) {
+void SkillTest::ExcuteSoundPlay(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::ExcuteSetMiscTempTrue(const SkillEvnetParams& params) {
-  miscTemp_ = true;
-}
-
-bool SkillTest::CheckEventCondition(SKILL_EVENT_CONDITION_TYPE eventCondition) const {
-  switch (eventCondition) {
-    case SkillEventCondition_None:
-      return true;
-      break;
-    case SkillEventCondition_AnimationEnd:
-      return pOwnerRenderer_->IsAnimationEnd();
-      break;
-    case SkillEventCondition_CheckInputDownA:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_A});
-      break;
-    case SkillEventCondition_CheckInputDownB:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_B});
-      break;
-    case SkillEventCondition_CheckInputDownC:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_C});
-      break;
-    case SkillEventCondition_CheckInputDownD:
-      return pOwnerInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_D});
-      break;
-    case SkillEventCondition_HasAttackCollition:
-      return pOwnerAttackCollision_->HasHit();
-      break;
-    case SkillEventCondition_MiscTempTrue:
-      return GetMiscTemp();
-      break;
-    default:
-      break;
+void SkillTest::SetCurStateMiscFlagTrue(const SkillFrameActionParams& params) {
+  if (nullptr == executingSkill_) {
+    return;
   }
-
-  return false;
-}
-
-bool SkillTest::GetMiscTemp() const {
-  return miscTemp_;
+  executingSkill_->skillStates_[curSkillStateIndex_].SetMiscFlag(true);
 }

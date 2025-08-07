@@ -1,56 +1,67 @@
 #pragma once
 
-enum SKILL_TYPE : unsigned long long {
-  Skill_1 = 1ULL,
-  Skill_2,
-  Skill_3,
-  Skill_4,
-  Skill_5
+enum SKILL_TYPE : unsigned int {
+  SKILL_1 = 0,
+  SKILL_2,
+  SKILL_3,
+  SKILL_4,
+  SKILL_5,
+  SKILL_6
 };
 
-enum SKILL_EVENT_TYPE : unsigned int {
-  SkillEvent_None = 0,
-  SkillEvent_DeactiveSkill,
-  SkillEvent_UpdateSkillState,
-  SkillEvent_MovementJump,
-  SkillEvent_MovementDash,
-  SkillEvent_MovementStopDash,
-  SkillEvent_SpawnEffect,
-  SkillEvent_FireProjectile,
-  SkillEvent_CommandExecute,
-  SkillEvent_SetPostionOppenentPlayer,
-  SkillEvent_LockControlOppenentPlayer,
-  SkillEvent_UnLockControlOppenentPlayer,
-  SkillEvent_FreezeOppenentPlayer,
-  SkillEvent_DefreezePlayers,
-  SkillEvent_CameraShake,
-  SkillEvent_FadeIn,
-  SkillEvent_FadeOut,
-  SkillEvent_FadeInout,
-  SkillEvent_SoundPlay,
-  SkillEvent_SetMiscTempTrue
+enum SKILL_CASTING_CONDITION_TYPE : unsigned int {
+  SKILL_CAST_COND_None = 0,
+  SKILL_CAST_COND_HasSkillPoint,
 };
 
-enum SKILL_EVENT_CONDITION_TYPE : unsigned int {
-  SkillEventCondition_None = 0,
-  SkillEventCondition_AnimationEnd,
-  SkillEventCondition_CheckInputDownA,
-  SkillEventCondition_CheckInputDownB,
-  SkillEventCondition_CheckInputDownC,
-  SkillEventCondition_CheckInputDownD,
-  SkillEventCondition_HasAttackCollition,
-  SkillEventCondition_MiscTempTrue,
+enum SKILL_CASTING_ACTION_TYPE : unsigned int {
+  SKILL_CAST_ACTION_None = 0,
+  SKILL_CAST_ACTION_ReduceSkillPoint
 };
 
-struct SkillEvnetParams {
+enum SKILL_FRAME_ACTION_CONDITION_TYPE : unsigned int {
+  SKILL_FRAME_ACTION_COND_None = 0,
+  SKILL_FRAME_ACTION_COND_AnimationEnd,
+  SKILL_FRAME_ACTION_COND_CheckInputDownA,
+  SKILL_FRAME_ACTION_COND_CheckInputDownB,
+  SKILL_FRAME_ACTION_COND_CheckInputDownC,
+  SKILL_FRAME_ACTION_COND_CheckInputDownD,
+  SKILL_FRAME_ACTION_COND_HasAttackCollition,
+  SKILL_FRAME_ACTION_COND_IsStateMiscFlagTrue,
+};
+
+enum SKILL_FRAME_ACTION_TYPE : unsigned int {
+  SKILL_FRAME_ACTION_None = 0,
+  SKILL_FRAME_ACTION_DeactiveSkill,
+  SKILL_FRAME_ACTION_UpdateSkillState,
+  SKILL_FRAME_ACTION_MovementJump,
+  SKILL_FRAME_ACTION_MovementDash,
+  SKILL_FRAME_ACTION_MovementStopDash,
+  SKILL_FRAME_ACTION_SpawnEffect,
+  SKILL_FRAME_ACTION_FireProjectile,
+  SKILL_FRAME_ACTION_CommandExecute,
+  SKILL_FRAME_ACTION_SetPostionOppenentPlayer,
+  SKILL_FRAME_ACTION_LockControlOppenentPlayer,
+  SKILL_FRAME_ACTION_UnLockControlOppenentPlayer,
+  SKILL_FRAME_ACTION_FreezeOppenentPlayer,
+  SKILL_FRAME_ACTION_DefreezePlayers,
+  SKILL_FRAME_ACTION_CameraShake,
+  SKILL_FRAME_ACTION_FadeIn,
+  SKILL_FRAME_ACTION_FadeOut,
+  SKILL_FRAME_ACTION_FadeInout,
+  SKILL_FRAME_ACTION_SoundPlay,
+  SKILL_FRAME_ACTION_SetCurStateMiscFlagTrue
+};
+
+struct SkillFrameActionParams {
   unsigned int changeStateIndex_ = 0;
 
-  union{
+  union {
     EFFECT_TYPE effectType_ = EFFECT_TYPE::EFTYPE_None;
 
     PROJECTILE_TYPE projectileType_;
   };
-  
+
   union {
     Vector jumpForce_{0.0f, 0.0f};
     Vector spawnEffectPos_;
@@ -63,18 +74,25 @@ struct SkillEvnetParams {
   };
 };
 
-struct SkillEvent {
-  SKILL_EVENT_TYPE evnetType_ = SkillEvent_None;
+struct SkillFrameAction {
+  std::vector<SKILL_FRAME_ACTION_CONDITION_TYPE> actionConditions_;
 
-  bool hasExecuted_ = false;
+  SKILL_FRAME_ACTION_TYPE actionType_ = SKILL_FRAME_ACTION_None;
 
-  SkillEvnetParams eventParams_;
+  SkillFrameActionParams actionParams_;
 
-  std::vector<SKILL_EVENT_CONDITION_TYPE> conditionTypes_;
-
+  bool HasExecuted() const {
+    return hasExecuted_;
+  }
+  void SetHasExcuted(bool flag) {
+    hasExecuted_ = flag;
+  }
   void ResetHasExecutedFlag() {
     hasExecuted_ = false;
   }
+
+ private:
+  bool hasExecuted_ = false;
 };
 
 struct SkillFrame {
@@ -82,17 +100,32 @@ struct SkillFrame {
 
   unsigned long long endIndex_ = 0;
 
-  std::vector<SkillEvent> events;
+  std::vector<SkillFrameAction> actions;
 };
 
 struct SkillState {
   unsigned long long animState_ = 0;
 
   std::vector<SkillFrame> frames_;
+
+  bool MiscFlag() const {
+    return miscFlag_;
+  }
+
+  void SetMiscFlag(bool flag) {
+    miscFlag_ = flag;
+  }
+
+ private:
+  bool miscFlag_ = false;
 };
 
 struct Skill {
   unsigned long long skillTag_ = 0;
+
+  SKILL_CASTING_CONDITION_TYPE castCondition_ = SKILL_CAST_COND_None;
+
+  SKILL_CASTING_ACTION_TYPE castAction_ = SKILL_CAST_ACTION_None;
 
   std::vector<SkillState> skillStates_;
 
@@ -116,64 +149,80 @@ class SkillTest
       MovementComponent* pMovementComponent,
       InputController* pInputController,
       CollisionComponent* pAttackCollision,
-      ProjectileComponent* pProjectileComponent);
+      ProjectileComponent* pProjectileComponent,
+      MPComponent* pMPComponent);
 
   bool RegistSkill(Skill skill);
 
   void UpdateSkill();
 
-  void ActiveSkill(unsigned long long skillTag);
+  void ExecuteSkill(unsigned long long skillTag);
+
+  bool IsSkillExecuting();
 
   void ResetEventExcutedFlags(Skill* pSkill);
 
-  // -------------- Skill Evnet -------------
-  void ExcuteAction(SKILL_EVENT_TYPE eventType, const SkillEvnetParams& params);
+  void ResetStateMiscFlags(Skill* pSkill);
+
+  // -------------- Skill Casting Condition Check -----
+  bool CheckCastingCondition(SKILL_CASTING_CONDITION_TYPE castCondition);
+
+  bool HasSkillPoint() const;
+  // --------------------------------------------------
+
+  // -------------- Skill Casting Action --------------
+  void ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction);
+  // --------------------------------------------------
+
+
+  // -------------- Skill Condition -------------------
+  bool CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition) const;
+
+  bool GetCurStateMiscFlag() const;
+  // --------------------------------------------------
+  
+  // -------------- Skill Frame Action -------------
+  void ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params);
 
   void DeActiveSkill();
 
-  void ChangeSkillState(const SkillEvnetParams& params);
+  void ChangeSkillState(const SkillFrameActionParams& params);
 
-  void ExcuteJump(const SkillEvnetParams& params);
+  void ExcuteJump(const SkillFrameActionParams& params);
 
-  void ExcuteDash(const SkillEvnetParams& params);
+  void ExcuteDash(const SkillFrameActionParams& params);
 
-  void ExcuteDashStop(const SkillEvnetParams& params);
+  void ExcuteDashStop(const SkillFrameActionParams& params);
 
-  void ExcuteSpawnEffect(const SkillEvnetParams& params);
+  void ExcuteSpawnEffect(const SkillFrameActionParams& params);
 
-  void ExcuteFireProjectile(const SkillEvnetParams& params);
+  void ExcuteFireProjectile(const SkillFrameActionParams& params);
 
-  void ExcuteCommand(const SkillEvnetParams& params);
+  void ExcuteCommand(const SkillFrameActionParams& params);
 
-  void SetPositionOppenentPlayer(const SkillEvnetParams& params);
+  void SetPositionOppenentPlayer(const SkillFrameActionParams& params);
 
-  void LockControlOppenentPlayer(const SkillEvnetParams& params);
+  void LockControlOppenentPlayer(const SkillFrameActionParams& params);
 
-  void UnLockControlOppenentPlayer(const SkillEvnetParams& params);
+  void UnLockControlOppenentPlayer(const SkillFrameActionParams& params);
 
-  void FreezeOppenentPlayer(const SkillEvnetParams& params);
+  void FreezeOppenentPlayer(const SkillFrameActionParams& params);
 
-  void DefreezePlayers(const SkillEvnetParams& params);
+  void DefreezePlayers(const SkillFrameActionParams& params);
 
-  void ExcuteCameraShake(const SkillEvnetParams& params);
+  void ExcuteCameraShake(const SkillFrameActionParams& params);
 
-  void ExcuteFadeIn(const SkillEvnetParams& params);
+  void ExcuteFadeIn(const SkillFrameActionParams& params);
 
-  void ExcuteFadeOut(const SkillEvnetParams& params);
+  void ExcuteFadeOut(const SkillFrameActionParams& params);
 
-  void ExcuteFadeInout(const SkillEvnetParams& params);
+  void ExcuteFadeInout(const SkillFrameActionParams& params);
 
-  void ExcuteSoundPlay(const SkillEvnetParams& params);
+  void ExcuteSoundPlay(const SkillFrameActionParams& params);
 
-  void ExcuteSetMiscTempTrue(const SkillEvnetParams& params);
+  void SetCurStateMiscFlagTrue(const SkillFrameActionParams& params);
 
-  // -------------- Skill Evnet End-------------
-
-  // -------------- Skill Condition -------------
-  bool CheckEventCondition(SKILL_EVENT_CONDITION_TYPE eventCondition) const;
-
-  bool GetMiscTemp() const;
-  // -------------- Skill Condition End-------------
+  // --------------------------------------------------
 
  private:
   KOFPlayer* pOwnerPlayer_;
@@ -188,11 +237,11 @@ class SkillTest
 
   ProjectileComponent* pOwnerProjectileComponent_;
 
+  MPComponent* pOwnerMPComponent_;
+
   HashTable skillTable_;
 
-  Skill* activeSkill_;
+  Skill* executingSkill_;
 
   unsigned int curSkillStateIndex_ = 0;
-
-  bool miscTemp_;
 };
