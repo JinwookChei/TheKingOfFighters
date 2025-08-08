@@ -35,22 +35,23 @@ enum SKILL_FRAME_ACTION_CONDITION_TYPE : unsigned int {
 enum SKILL_FRAME_ACTION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_None = 0,
   SKILL_FRAME_ACTION_DeactiveSkill,
-  SKILL_FRAME_ACTION_UpdateSkillState,
+  SKILL_FRAME_ACTION_ChangeSkillState,
   SKILL_FRAME_ACTION_MovementJump,
   SKILL_FRAME_ACTION_MovementDash,
   SKILL_FRAME_ACTION_MovementStopDash,
   SKILL_FRAME_ACTION_SpawnEffect,
   SKILL_FRAME_ACTION_FireProjectile,
   SKILL_FRAME_ACTION_CommandExecute,
-  SKILL_FRAME_ACTION_SetPostionOppenentPlayer,
-  SKILL_FRAME_ACTION_LockControlOppenentPlayer,
-  SKILL_FRAME_ACTION_UnLockControlOppenentPlayer,
-  SKILL_FRAME_ACTION_FreezeOppenentPlayer,
+  SKILL_FRAME_ACTION_ChangeOpponentAnimState,
+  SKILL_FRAME_ACTION_SetPostionOpponentPlayer,
+  SKILL_FRAME_ACTION_LockControlOpponentPlayer,
+  SKILL_FRAME_ACTION_UnLockControlOpponentPlayer,
+  SKILL_FRAME_ACTION_FreezeOpponentPlayer,
   SKILL_FRAME_ACTION_DefreezePlayers,
   SKILL_FRAME_ACTION_CameraShake,
   SKILL_FRAME_ACTION_FadeIn,
   SKILL_FRAME_ACTION_FadeOut,
-  SKILL_FRAME_ACTION_FadeInout,
+  SKILL_FRAME_ACTION_FadeInOut,
   SKILL_FRAME_ACTION_SoundPlay,
   SKILL_FRAME_ACTION_SetCurStateMiscFlagTrue
 };
@@ -58,26 +59,37 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
 struct SkillFrameActionParams {
   unsigned int changeStateIndex_ = 0;
 
+  bool isInfiniteFreeze_;
+
   union {
-    EFFECT_TYPE effectType_ = EFFECT_TYPE::EFTYPE_None;
+    unsigned long long freezeDuration_ = 0;
+
+    unsigned long long cameraShakeDuration_;
+
+    unsigned long long fadeDuration_;
+
+    unsigned long long opponentAnimState_;
+  };
+
+  union {
+    IMAGE_TYPE fadeImageType_;
+
+    EFFECT_TYPE effectType_;
 
     PROJECTILE_TYPE projectileType_;
+
+    SOUND_TYPE soundType_;
   };
 
   union {
     Vector jumpForce_{0.0f, 0.0f};
     Vector spawnEffectPos_;
+    Vector opponentForcedPosition_;
     struct {
       float dashDuration_;
       float dashDistance_;
-      float pad1_;
-      float pad2_;
-    };
-    struct {
-      float fadeDuration_;
-      float pad1_;
-      float pad2_;
-      float pad3_;
+      float dashPad1_;
+      float dashPad2_;
     };
   };
 };
@@ -89,7 +101,7 @@ struct SkillFrameActionConditionParams {
 struct SkillFrameActionConditionData {
   SKILL_FRAME_ACTION_CONDITION_TYPE conditionType_ = SKILL_FRAME_ACTION_COND_None;
 
-  SkillFrameActionConditionParams actionParams_;
+  SkillFrameActionConditionParams conditionParams_;
 };
 
 struct SkillFrameActionData {
@@ -101,7 +113,7 @@ struct SkillFrameActionData {
 struct SkillFrameAction {
   std::vector<SkillFrameActionConditionData> conditionDatas_;
 
-  std::vector<SkillFrameActionData> actionDatas;
+  std::vector<SkillFrameActionData> actionDatas_;
 
   bool HasExecuted() const {
     return hasExecuted_;
@@ -194,6 +206,8 @@ class SkillTest
 
   // -------------- Skill Casting Action --------------
   void ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction);
+
+  void ReduceSkillPoint();
   // --------------------------------------------------
 
 
@@ -224,13 +238,15 @@ class SkillTest
 
   void ExcuteCommand(const SkillFrameActionParams& params);
 
-  void SetPositionOppenentPlayer(const SkillFrameActionParams& params);
+  void ChangeOpponentAnimState(const SkillFrameActionParams& params);
 
-  void LockControlOppenentPlayer(const SkillFrameActionParams& params);
+  void SetPositionOpponentPlayer(const SkillFrameActionParams& params);
 
-  void UnLockControlOppenentPlayer(const SkillFrameActionParams& params);
+  void LockControlOpponentPlayer(const SkillFrameActionParams& params);
 
-  void FreezeOppenentPlayer(const SkillFrameActionParams& params);
+  void UnLockControlOpponentPlayer(const SkillFrameActionParams& params);
+
+  void FreezeOpponentPlayer(const SkillFrameActionParams& params);
 
   void DefreezePlayers(const SkillFrameActionParams& params);
 
@@ -240,7 +256,7 @@ class SkillTest
 
   void ExcuteFadeOut(const SkillFrameActionParams& params);
 
-  void ExcuteFadeInout(const SkillFrameActionParams& params);
+  void ExcuteFadeInOut(const SkillFrameActionParams& params);
 
   void ExcuteSoundPlay(const SkillFrameActionParams& params);
 

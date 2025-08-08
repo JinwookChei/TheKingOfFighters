@@ -5,6 +5,9 @@
 #include "InputController.h"
 #include "ProjectileComponent.h"
 #include "MPComponent.h"
+#include "ScreenMask.h"
+#include "KOFLevel.h"
+#include "CameraTarget.h"
 
 SkillTest::SkillTest()
     : pOwnerPlayer_(nullptr),
@@ -99,11 +102,6 @@ void SkillTest::UpdateSkill() {
     return;
   }
 
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
-    DeActiveSkill();
-    return;
-  }
-
   SkillState* pCurState = &executingSkill_->skillStates_[curSkillStateIndex_];
 
   std::vector<SkillFrame>* pCurSkillFrame = &pCurState->frames_;
@@ -124,7 +122,7 @@ void SkillTest::UpdateSkill() {
         bool conditionFlag = true;
         for (int k = 0; k < conditionDatas->size(); ++k) {
           SKILL_FRAME_ACTION_CONDITION_TYPE conditionType = (*conditionDatas)[k].conditionType_;
-          SkillFrameActionConditionParams condtionParams = (*conditionDatas)[k].actionParams_;
+          SkillFrameActionConditionParams condtionParams = (*conditionDatas)[k].conditionParams_;
           bool ret = CheckFrameActionCondition(conditionType, condtionParams);
           if (false == ret) {
             conditionFlag = false;
@@ -132,7 +130,7 @@ void SkillTest::UpdateSkill() {
           }
         }
         if (true == conditionFlag) {
-          std::vector<SkillFrameActionData>* actionDatas = &(*pActions)[j].actionDatas;
+          std::vector<SkillFrameActionData>* actionDatas = &(*pActions)[j].actionDatas_;
           for (int l = 0; l < actionDatas->size(); ++l) {
             ExcuteSkillFrameAction((*actionDatas)[l].actionType_, (*actionDatas)[l].actionParams_);
           }
@@ -140,6 +138,11 @@ void SkillTest::UpdateSkill() {
         }
       }
     }
+  }
+
+  if (true == pOwnerRenderer_->IsAnimationEnd()) {
+    DeActiveSkill();
+    return;
   }
 }
 
@@ -157,7 +160,7 @@ void SkillTest::ExecuteSkill(unsigned long long skillTag) {
   if (false == CheckCastingCondition(executeCondition)) {
     return;
   }
-  
+
   ResetStateMiscFlags(pInfo);
 
   ResetEventExcutedFlags(pInfo);
@@ -221,10 +224,15 @@ void SkillTest::ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction) {
     case SKILL_CAST_ACTION_None:
       break;
     case SKILL_CAST_ACTION_ReduceSkillPoint:
+      ReduceSkillPoint();
       break;
     default:
       break;
   }
+}
+
+void SkillTest::ReduceSkillPoint() {
+  pOwnerMPComponent_->ReduceSkillPoint();
 }
 
 bool SkillTest::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition, const SkillFrameActionConditionParams& params) const {
@@ -271,8 +279,13 @@ bool SkillTest::GetCurStateMiscFlag() const {
 }
 
 bool SkillTest::IsOpponentWithinDistanceThresHold(const SkillFrameActionConditionParams& params) const {
+  float opponentDistanceThreshold = params.opponentDistanceThreshold;
 
-  return false;
+  Vector ownerPosition = pOwnerPlayer_->GetPosition();
+
+  Vector opponetPosition = pOwnerPlayer_->GetOpponentPlayer()->GetPosition();
+
+  return opponentDistanceThreshold > std::fabs(ownerPosition.X - opponetPosition.X);
 }
 
 void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params) {
@@ -282,7 +295,7 @@ void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const
     case SKILL_FRAME_ACTION_DeactiveSkill:
       DeActiveSkill();
       break;
-    case SKILL_FRAME_ACTION_UpdateSkillState:
+    case SKILL_FRAME_ACTION_ChangeSkillState:
       ChangeSkillState(params);
       break;
     case SKILL_FRAME_ACTION_MovementJump:
@@ -303,17 +316,20 @@ void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const
     case SKILL_FRAME_ACTION_CommandExecute:
       ExcuteCommand(params);
       break;
-    case SKILL_FRAME_ACTION_SetPostionOppenentPlayer:
-      SetPositionOppenentPlayer(params);
+    case SKILL_FRAME_ACTION_ChangeOpponentAnimState:
+      ChangeOpponentAnimState(params);
       break;
-    case SKILL_FRAME_ACTION_LockControlOppenentPlayer:
-      LockControlOppenentPlayer(params);
+    case SKILL_FRAME_ACTION_SetPostionOpponentPlayer:
+      SetPositionOpponentPlayer(params);
       break;
-    case SKILL_FRAME_ACTION_UnLockControlOppenentPlayer:
-      UnLockControlOppenentPlayer(params);
+    case SKILL_FRAME_ACTION_LockControlOpponentPlayer:
+      LockControlOpponentPlayer(params);
       break;
-    case SKILL_FRAME_ACTION_FreezeOppenentPlayer:
-      FreezeOppenentPlayer(params);
+    case SKILL_FRAME_ACTION_UnLockControlOpponentPlayer:
+      UnLockControlOpponentPlayer(params);
+      break;
+    case SKILL_FRAME_ACTION_FreezeOpponentPlayer:
+      FreezeOpponentPlayer(params);
       break;
     case SKILL_FRAME_ACTION_DefreezePlayers:
       DefreezePlayers(params);
@@ -327,8 +343,8 @@ void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const
     case SKILL_FRAME_ACTION_FadeOut:
       ExcuteFadeOut(params);
       break;
-    case SKILL_FRAME_ACTION_FadeInout:
-      ExcuteFadeInout(params);
+    case SKILL_FRAME_ACTION_FadeInOut:
+      ExcuteFadeInOut(params);
       break;
     case SKILL_FRAME_ACTION_SoundPlay:
       ExcuteSoundPlay(params);
@@ -393,9 +409,9 @@ void SkillTest::ExcuteSpawnEffect(const SkillFrameActionParams& params) {
   Vector spawnPositionOffset = params.spawnEffectPos_;
 
   if (pOwnerPlayer_->FacingRight()) {
-    EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_NONE), {playerPosition.X - spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
+    EffectManager::Instance()->SpawnEffect(curLevel, (effectType | EFMOD_NONE), {playerPosition.X + spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
   } else {
-    EffectManager::Instance()->SpawnEffect(curLevel, (EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED), {playerPosition.X + spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
+    EffectManager::Instance()->SpawnEffect(curLevel, (effectType | EFMOD_FLIPPED), {playerPosition.X - spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
   }
 }
 
@@ -407,34 +423,204 @@ void SkillTest::ExcuteFireProjectile(const SkillFrameActionParams& params) {
 void SkillTest::ExcuteCommand(const SkillFrameActionParams& params) {
 }
 
-void SkillTest::SetPositionOppenentPlayer(const SkillFrameActionParams& params) {
+void SkillTest::ChangeOpponentAnimState(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+
+  unsigned long long opponentAnimState = params.opponentAnimState_;
+
+  opponentPlayer->UpdateAnimState(opponentAnimState);
 }
 
-void SkillTest::LockControlOppenentPlayer(const SkillFrameActionParams& params) {
+void SkillTest::SetPositionOpponentPlayer(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+
+  const Vector& opponentForcedPos = params.opponentForcedPosition_;
+
+  const Vector& ownerPosition = pOwnerPlayer_->GetPosition();
+
+  const Vector& opponentPosition = ownerPosition + Vector{opponentForcedPos.X * pOwnerPlayer_->FacingRightFlag(), opponentForcedPos.Y};
+
+  opponentPlayer->SetPosition(opponentPosition);
 }
 
-void SkillTest::UnLockControlOppenentPlayer(const SkillFrameActionParams& params) {
+void SkillTest::LockControlOpponentPlayer(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+  opponentPlayer->SetControlLocked(true);
 }
 
-void SkillTest::FreezeOppenentPlayer(const SkillFrameActionParams& params) {
+void SkillTest::UnLockControlOpponentPlayer(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+  opponentPlayer->SetControlLocked(false);
+}
+
+void SkillTest::FreezeOpponentPlayer(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+
+  bool isInfinite = params.isInfiniteFreeze_;
+
+  unsigned long long duration = params.freezeDuration_;
+
+  pKOFLevel->FreezeActors({opponentPlayer}, isInfinite, duration);
 }
 
 void SkillTest::DefreezePlayers(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+  pKOFLevel->DefreezeActors();
 }
 
 void SkillTest::ExcuteCameraShake(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+  CameraTarget* pCameraTarget = pKOFLevel->GetCameraTarget();
+  if (nullptr == pCameraTarget) {
+    return;
+  }
+  unsigned long long cameraShakeDuration = params.cameraShakeDuration_;
+
+  pCameraTarget->OnCameraShake(cameraShakeDuration);
 }
 
 void SkillTest::ExcuteFadeIn(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  if (nullptr == pBackGroundMask) {
+    return;
+  }
+
+  unsigned long long fadeDuration = params.fadeDuration_;
+
+  pBackGroundMask->FadeIn(fadeDuration);
 }
 
 void SkillTest::ExcuteFadeOut(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  if (nullptr == pBackGroundMask) {
+    return;
+  }
+
+  IMAGE_TYPE fadeImageType = params.fadeImageType_;
+
+  unsigned long long fadeDuration = params.fadeDuration_;
+
+  pBackGroundMask->FadeOut(fadeImageType, fadeDuration);
 }
 
-void SkillTest::ExcuteFadeInout(const SkillFrameActionParams& params) {
+void SkillTest::ExcuteFadeInOut(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  if (nullptr == pBackGroundMask) {
+    return;
+  }
+
+  IMAGE_TYPE fadeImageType = params.fadeImageType_;
+
+  unsigned long long fadeDuration = params.fadeDuration_;
+
+  pBackGroundMask->FadeInOut(fadeImageType, fadeDuration);
 }
 
 void SkillTest::ExcuteSoundPlay(const SkillFrameActionParams& params) {
+  SOUND_TYPE soundType_ = params.soundType_;
+
+  SoundManager::Instance()->SoundPlay(soundType_);
 }
 
 void SkillTest::SetCurStateMiscFlagTrue(const SkillFrameActionParams& params) {

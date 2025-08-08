@@ -26,7 +26,7 @@ void ScreenMask::BeginPlay() {
 void ScreenMask::Tick(unsigned long long curTick) {
   fadeTimer_ += curTick;
 
-  float addTemp = curTick / fadeDuration_;
+  float addTemp = curTick / (float)fadeDuration_;
 
   if (onFadeIn_) {
     alpha_ -= addTemp;
@@ -51,7 +51,7 @@ void ScreenMask::Tick(unsigned long long curTick) {
   pRender_->SetAlpha(alpha_);
 }
 
-void ScreenMask::FadeIn(float fadeDuration) {
+void ScreenMask::FadeIn(unsigned long long fadeDuration) {
   if (IsActive() == false) {
     return;
   }
@@ -61,7 +61,7 @@ void ScreenMask::FadeIn(float fadeDuration) {
   onFadeIn_ = true;
 }
 
-void ScreenMask::FadeOut(IMAGE_TYPE image, float fadeDuration) {
+void ScreenMask::FadeOut(IMAGE_TYPE image, unsigned long long fadeDuration) {
   if (onFadeOut_ == true) {
     alpha_ = 0.0f;
   }
@@ -73,7 +73,7 @@ void ScreenMask::FadeOut(IMAGE_TYPE image, float fadeDuration) {
   onFadeIn_ = false;
 }
 
-void ScreenMask::FadeInOut(IMAGE_TYPE image, float fadeInOutDuration) {
+void ScreenMask::FadeInOut(IMAGE_TYPE image, unsigned long long fadeInOutDuration) {
   FadeOut(image, fadeInOutDuration);
   onFadeInOut_ = true;
 }

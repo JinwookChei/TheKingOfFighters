@@ -11,11 +11,11 @@ class ScreenMask
 
   void Tick(unsigned long long curTick) override;
 
-  void FadeIn(float fadeDuration);
+  void FadeIn(unsigned long long fadeDuration);
 
-  void FadeOut(IMAGE_TYPE image, float fadeDuration);
+  void FadeOut(IMAGE_TYPE image, unsigned long long fadeDuration);
 
-  void FadeInOut(IMAGE_TYPE image, float fadeInOutDuration);
+  void FadeInOut(IMAGE_TYPE image, unsigned long long fadeInOutDuration);
 
   void InitAlpha(float alpha);
 
@@ -24,9 +24,9 @@ class ScreenMask
  private:
   ImageRenderer* pRender_;
 
-  float fadeDuration_;
+  unsigned long long fadeDuration_;
 
-  float fadeTimer_;
+  unsigned long long fadeTimer_;
 
   float alpha_;
 
