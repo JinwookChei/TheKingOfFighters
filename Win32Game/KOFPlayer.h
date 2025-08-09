@@ -14,6 +14,7 @@ class SoundTable;
 class HealthComponent;
 class MPComponent;
 class StateComponent;
+class RestrictionComponent;
 class HitHandlerComponent;
 class GhostEffect;
 
@@ -115,6 +116,8 @@ class KOFPlayer
   MPComponent* pMPComponent_;
 
   StateComponent* pStateComponent_;
+
+  RestrictionComponent* pRestrictionComponent_;
 
   CollisionComponent* pHitBoxTop_;
 

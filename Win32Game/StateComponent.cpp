@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StateComponent.h"
+#include "RestrictionComponent.h"
 
 StateComponent::StateComponent() {
 }
@@ -26,7 +27,7 @@ void StateComponent::BeginPlay() {
 void StateComponent::Tick(unsigned long long deltaTick) {
 }
 
-bool StateComponent::RegistState(unsigned long long stateTag, std::initializer_list<PLAYER_STATE> playerStateList, bool canInput) {
+bool StateComponent::RegistState(unsigned long long stateTag, std::initializer_list<PLAYER_STATE_TYPE> playerStateList /*, bool canInput*/) {
   State* pFind = nullptr;
 
   if (0 != stateTable_.Select((void**)&pFind, 1, &stateTag, 8)) {
@@ -35,7 +36,7 @@ bool StateComponent::RegistState(unsigned long long stateTag, std::initializer_l
 
   State* pState = new State;
   pState->stateTag_ = stateTag;
-  pState->canInput_ = canInput;
+  //pState->canInput_ = canInput;
 
   std::bitset<PS_Max> temp;
   for (auto state : playerStateList) {
@@ -56,11 +57,11 @@ void StateComponent::ChangeState(unsigned long long stateTag) {
 
   curState_.stateTag_ = pState->stateTag_;
   curState_.playerStateBitset_ = pState->playerStateBitset_;
-  curState_.canInput_ = pState->canInput_;
+  //curState_.canInput_ = pState->canInput_;
   curState_.searchHandle_ = pState->searchHandle_;
 }
 
-void StateComponent::AddState(std::initializer_list<PLAYER_STATE> playerStateList) {
+void StateComponent::AddState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList) {
   for (auto state : playerStateList) {
     curState_.playerStateBitset_.set(state);
   }
@@ -74,7 +75,7 @@ unsigned long long StateComponent::GetCurAnimState() const {
   return curState_.stateTag_;
 }
 
-bool StateComponent::EqualPlayerState(std::initializer_list<PLAYER_STATE> playerStateList) {
+bool StateComponent::EqualPlayerState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList) {
   std::bitset<PS_Max> temp;
   for (auto state : playerStateList) {
     temp.set(state);
@@ -82,7 +83,7 @@ bool StateComponent::EqualPlayerState(std::initializer_list<PLAYER_STATE> player
   return curState_.playerStateBitset_ == temp;
 }
 
-bool StateComponent::ContainPlayerState(std::initializer_list<PLAYER_STATE> playerStateList) {
+bool StateComponent::ContainPlayerState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList) {
   for (auto state : playerStateList) {
     if (curState_.playerStateBitset_.test(state)) {
       return true;
@@ -91,10 +92,6 @@ bool StateComponent::ContainPlayerState(std::initializer_list<PLAYER_STATE> play
   return false;
 }
 
-// PLAYERSTATE StateComponent::GetPlayerState() const {
-//   return curState_.playerState_;
-// }
-
-bool StateComponent::CanInput() const {
-  return curState_.canInput_;
-}
+//bool StateComponent::CanInput() const {
+//  return curState_.canInput_;
+//}

@@ -8,7 +8,7 @@ AnimationHandler::AnimationHandler()
       pOwnerMovementComponent_(nullptr),
       curAnimationState_(PLAYER_ANIMTYPE_None),
       curAnimationModifier_(ANIMMOD_NONE),
-      prevImageIndex_(0),
+      //prevImageIndex_(0),
       animTransitionTable_(),
       transCondition_(TRANSITION_CONDITION::None) {
 }
@@ -145,25 +145,6 @@ unsigned long long AnimationHandler::CurrentAnimationModifier() const {
 
 void AnimationHandler::SetCurrentAnimationModifier(unsigned long long animationModifier) {
   curAnimationModifier_ = animationModifier;
-}
-
-void AnimationHandler::UpdatePrevImageIndex() {
-  if (nullptr == pOwnerRenderer_) {
-    return;
-  }
-
-  unsigned int curImageIndex = pOwnerRenderer_->GetImageIndex();
-  if (curImageIndex != prevImageIndex_) {
-    prevImageIndex_ = curImageIndex;
-  }
-}
-
-unsigned int AnimationHandler::CurrentImageIndex() const {
-  return pOwnerRenderer_->GetImageIndex();
-}
-
-unsigned int AnimationHandler::PrevImageIndex() const {
-  return prevImageIndex_;
 }
 
 bool AnimationHandler::RegistAnimTransition(unsigned long long curAnimState, unsigned int transCondition1, bool equalCondition1, unsigned long long nextAnimState1, unsigned int transCondition2, bool equalCondition2, unsigned long long nextAnimState2, unsigned int transCondition3, bool equalCondition3, unsigned long long nextAnimState3) {

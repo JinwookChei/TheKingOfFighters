@@ -99,7 +99,9 @@ class ImageRenderer
 
   JO_API bool ChangeAnimation(unsigned long long animationTag, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
 
-  JO_API bool IsAnimationEnd();
+  JO_API bool IsAnimationEnd() const;
+
+  JO_API bool HasIndexChange() const;
 
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
@@ -108,6 +110,8 @@ class ImageRenderer
   IImage* image_;
 
   unsigned int imageIndex_;
+
+  bool hasIndexChanged_;
 
   LINK_ITEM sceneLink_;
 

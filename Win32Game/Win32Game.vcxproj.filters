@@ -261,6 +261,9 @@
     <ClCompile Include="InputController.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
+    <ClCompile Include="RestrictionComponent.cpp">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -447,6 +450,9 @@
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
     <ClInclude Include="InputController.h">
+      <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RestrictionComponent.h">
       <Filter>Contents\KOF\Component</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,6 +32,7 @@ KOFPlayer::KOFPlayer()
       pHealthComponent_(nullptr),
       pMPComponent_(nullptr),
       pStateComponent_(nullptr),
+      pRestrictionComponent_(nullptr),
       pHitBoxTop_(nullptr),
       pHitBoxBottom_(nullptr),
       pAttackBox_(nullptr),
@@ -71,27 +72,22 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   if (false == IsControlLocked()) {
     pInputController_->UpdateCommand();
 
-    if (true == pStateComponent_->CanInput()) {
-      pCommandComponent_->ExcuteTask();
-    }
+    //if (true == pStateComponent_->CanInput()) {
+    //  pCommandComponent_->ExcuteTask();
+    //}
 
     pInputController_->ResetInputBitSet();
 
     pInputController_->UpdateInput();
 
-    if (true == pStateComponent_->CanInput()) {
-      CompareInputBitset();
-    }
+    //if (true == pStateComponent_->CanInput()) {
+    //  CompareInputBitset();
+    //}
 
     if (pProjectileComponent_->GetActiveProjectilesCount() > 0) {
       pStateComponent_->AddState({PS_Attack});
     }
-
-    //skillTest_->UpdateSkill();
-    //pSkillComponent_->UpdateActiveSkill();
   }
-
-  pAnimationHandler_->UpdatePrevImageIndex();
 }
 
 void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
@@ -155,6 +151,11 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (false == pStateComponent_->Initialize()) {
     return;
   }
+
+  // RESTRICKTION
+  pRestrictionComponent_ = CreateComponent<RestrictionComponent>();
+
+  
 
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
@@ -411,9 +412,7 @@ void KOFPlayer::UpdateAttack() {
   }
 
   if (true == pAttackInfo->isMultiHit_) {
-    unsigned int curImageIndex = pAnimationHandler_->CurrentImageIndex();
-    unsigned int prevImageIndex = pAnimationHandler_->PrevImageIndex();
-    if (curImageIndex != prevImageIndex) {
+    if (true == pRender_->HasIndexChange()) {
       pAttackBox_->ResetHit();
     }
   }

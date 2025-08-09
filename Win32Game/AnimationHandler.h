@@ -84,12 +84,6 @@ class AnimationHandler
 
   void SetCurrentAnimationModifier(unsigned long long animationModifier);
 
-  void UpdatePrevImageIndex();
-
-  unsigned int CurrentImageIndex() const;
-
-  unsigned int PrevImageIndex() const;
-
   bool RegistAnimTransition(
       unsigned long long curAnimState,
       unsigned int transCondition1, bool equalCondition1, unsigned long long nextAnimState1,
@@ -114,7 +108,7 @@ class AnimationHandler
 
   unsigned long long curAnimationModifier_;
 
-  unsigned int prevImageIndex_;
+  //unsigned int prevImageIndex_;
 
   HashTable animTransitionTable_;
 

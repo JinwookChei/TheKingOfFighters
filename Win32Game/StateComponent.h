@@ -2,7 +2,7 @@
 #include <bitset>
 #include <initializer_list>
 
-enum PLAYER_STATE {
+enum PLAYER_STATE_TYPE : unsigned int{
   PS_None = 0,
   PS_Idle,
   PS_Move,
@@ -24,7 +24,7 @@ struct State {
 
   std::bitset<PS_Max> playerStateBitset_;
 
-  bool canInput_ = true;
+  //bool canInput_ = true;
 
   void* searchHandle_ = nullptr;
 };
@@ -42,21 +42,21 @@ class StateComponent
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool RegistState(unsigned long long stateTag, std::initializer_list<PLAYER_STATE> playerStateList, bool canInput);
+  bool RegistState(unsigned long long stateTag, std::initializer_list<PLAYER_STATE_TYPE> playerStateList /*, bool canInput*/);
 
   void ChangeState(unsigned long long stateTag);
 
-  void AddState(std::initializer_list<PLAYER_STATE> playerStateList);
+  void AddState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList);
 
   State GetCurState() const;
 
   unsigned long long GetCurAnimState() const;
 
-  bool EqualPlayerState(std::initializer_list<PLAYER_STATE> playerStateList);
+  bool EqualPlayerState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList);
 
-  bool ContainPlayerState(std::initializer_list<PLAYER_STATE> playerStateList);
+  bool ContainPlayerState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList);
 
-  bool CanInput() const;
+  //bool CanInput() const;
 
  private:
   State curState_;

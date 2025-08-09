@@ -40,6 +40,7 @@ unsigned int AnimationInfo::Update(unsigned long long curTick) {
 ImageRenderer::ImageRenderer()
     : image_(nullptr),
       imageIndex_(0),
+      hasIndexChanged_(false),
       imageRenderType_(ImageRenderType::Center),
       sceneLink_({nullptr, nullptr, this}),
       renderActorLink_({nullptr, nullptr, this}),
@@ -82,7 +83,13 @@ void ImageRenderer::Tick(unsigned long long curTick) {
     }
 
     image_ = pCurAnimInfo_->image_;
-    imageIndex_ = pCurAnimInfo_->Update(curTick);
+    unsigned int tempIndex = pCurAnimInfo_->Update(curTick);
+
+    hasIndexChanged_ = false;
+    if (tempIndex != imageIndex_) {
+      imageIndex_ = tempIndex;
+      hasIndexChanged_ = true;
+    }
 
     if (nullptr != image_) {
       image_->AddRef();
@@ -336,12 +343,16 @@ bool ImageRenderer::ChangeAnimation(unsigned long long animationTag, bool isForc
   return true;
 }
 
-bool ImageRenderer::IsAnimationEnd() {
+bool ImageRenderer::IsAnimationEnd() const {
   if (nullptr == pCurAnimInfo_) {
     return false;
   }
 
   return pCurAnimInfo_->isEnd_;
+}
+
+JO_API bool ImageRenderer::HasIndexChange() const {
+  return hasIndexChanged_;
 }
 
 void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {

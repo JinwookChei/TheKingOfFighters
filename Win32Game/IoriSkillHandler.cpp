@@ -331,105 +331,105 @@ void IoriSkillHandler::ShikiYaOtome1211() {
 }
 
 void IoriSkillHandler::ActiveUra306shikiShika() {
-  if (nullptr == pOwnerMPComponent_) {
-    return;
-  }
-  if (0 >= pOwnerMPComponent_->SkillPoint()) {
-    return;
-  }
+  //if (nullptr == pOwnerMPComponent_) {
+  //  return;
+  //}
+  //if (0 >= pOwnerMPComponent_->SkillPoint()) {
+  //  return;
+  //}
 
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
+  //Level* pLevel = pOwnerPlayer_->GetLevel();
+  //if (nullptr == pLevel) {
+  //  return;
+  //}
 
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
+  //KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  //if (nullptr == pKOFLevel) {
+  //  return;
+  //}
 
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
+  //ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+  //if (nullptr == pBackGroundMask) {
+  //  return;
+  //}
 
-  pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_1, ANIMMOD_NONE, true);
-  pOwnerSkillComponent_->ActivateSkill(IORI_SKILL_Ura306shikiShika);
-  pOwnerMPComponent_->ReduceSkillPoint();
+  //pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_1, ANIMMOD_NONE, true);
+  //pOwnerSkillComponent_->ActivateSkill(IORI_SKILL_Ura306shikiShika);
+  //pOwnerMPComponent_->ReduceSkillPoint();
 }
 
 void IoriSkillHandler::Ura306shikiShika() {
-  if (true == pOwnerRenderer_->IsAnimationEnd()) {
-    pOwnerSkillComponent_->DeactivateSkill();
-    return;
-  }
-
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-  
-  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
-  if (nullptr == pBackGroundMask) {
-    return;
-  }
-     
-  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
-  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
-  if (prevImageIndex == curImageIndex) {
-    return;
-  }
-
-  switch (pOwnerStateComponent_->GetCurAnimState()) {
-    case IORI_ANIMTYPE_Ura306shikiShika_1: {
-      if (355 == curImageIndex) {
-        EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, pOwnerPlayer_->GetPosition() + Vector{0.0f, -250.0f});
-        EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, pOwnerPlayer_->GetPosition() + Vector{0.0f, -250.0f});
-        pKOFLevel->FreezeActors({pOwnerPlayer_, pOwnerPlayer_->GetOpponentPlayer()}, false, 500);
-        pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
-      }
-      if (357 == curImageIndex) {
-        pKOFLevel->FreezeActors({pOwnerPlayer_->GetOpponentPlayer()}, true);
-
-      }
-      if (360 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_2);
-        pBackGroundMask->FadeIn(50.0f);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_Ura306shikiShika_2: {
-      if (363 == curImageIndex) {
-        //pKOFLevel->DefreezeActors();
-        break;
-      }
-      
-      if (370 == curImageIndex) {
-        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_3);
-        break;
-      }
-      break;
-    }
-    case IORI_ANIMTYPE_Ura306shikiShika_3: {
-      if (381 == curImageIndex) {
-        pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_Ura306Shiki);
-        break;
-      }
-
-
-      if (386 == curImageIndex) {
-        pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(false);
-      }
-
-      break;
-    }
-    default:
-      break;
-  }
+//  if (true == pOwnerRenderer_->IsAnimationEnd()) {
+//    pOwnerSkillComponent_->DeactivateSkill();
+//    return;
+//  }
+//
+//  Level* pLevel = pOwnerPlayer_->GetLevel();
+//  if (nullptr == pLevel) {
+//    return;
+//  }
+//
+//  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+//  if (nullptr == pKOFLevel) {
+//    return;
+//  }
+//  
+//  ScreenMask* pBackGroundMask = pKOFLevel->GetBackGroundMask();
+//  if (nullptr == pBackGroundMask) {
+//    return;
+//  }
+//     
+//  unsigned int curImageIndex = pOwnerAnimationHandler_->CurrentImageIndex();
+//  unsigned int prevImageIndex = pOwnerAnimationHandler_->PrevImageIndex();
+//  if (prevImageIndex == curImageIndex) {
+//    return;
+//  }
+//
+//  switch (pOwnerStateComponent_->GetCurAnimState()) {
+//    case IORI_ANIMTYPE_Ura306shikiShika_1: {
+//      if (355 == curImageIndex) {
+//        EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, pOwnerPlayer_->GetPosition() + Vector{0.0f, -250.0f});
+//        EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, pOwnerPlayer_->GetPosition() + Vector{0.0f, -250.0f});
+//        pKOFLevel->FreezeActors({pOwnerPlayer_, pOwnerPlayer_->GetOpponentPlayer()}, false, 500);
+//        pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
+//      }
+//      if (357 == curImageIndex) {
+//        pKOFLevel->FreezeActors({pOwnerPlayer_->GetOpponentPlayer()}, true);
+//
+//      }
+//      if (360 == curImageIndex) {
+//        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_2);
+//        pBackGroundMask->FadeIn(50.0f);
+//        break;
+//      }
+//      break;
+//    }
+//    case IORI_ANIMTYPE_Ura306shikiShika_2: {
+//      if (363 == curImageIndex) {
+//        //pKOFLevel->DefreezeActors();
+//        break;
+//      }
+//      
+//      if (370 == curImageIndex) {
+//        pOwnerPlayer_->UpdateAnimState(IORI_ANIMTYPE_Ura306shikiShika_3);
+//        break;
+//      }
+//      break;
+//    }
+//    case IORI_ANIMTYPE_Ura306shikiShika_3: {
+//      if (381 == curImageIndex) {
+//        pOwnerProjectileComponent_->FireProjectile(IORI_PROJECTILE_Ura306Shiki);
+//        break;
+//      }
+//
+//
+//      if (386 == curImageIndex) {
+//        pOwnerPlayer_->GetOpponentPlayer()->SetControlLocked(false);
+//      }
+//
+//      break;
+//    }
+//    default:
+//      break;
+//  }
 }
