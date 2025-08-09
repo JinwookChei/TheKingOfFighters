@@ -40,6 +40,8 @@ class RestrictionComponent
 
   bool ContainFinalRestrict(std::initializer_list<PLAYER_RESTRICT_TYPE> compareRestrictList);
 
+  bool CanInput() const;
+
  private:
 
   Restriction animStateRestrict_;

@@ -85,10 +85,6 @@ class KOFPlayer
 
   MovementComponent* GetMovementComponent() const;
 
-  bool IsControlLocked() const;
-
-  void SetControlLocked(bool bLocked);
-
   void ReceiveClampedWidthOffset(float clampOffset);
 
   const float GetCloseDistance() const;
@@ -155,8 +151,6 @@ class KOFPlayer
   bool isFacingRight_;
 
   bool isAtMapEdge_;
-
-  bool isControlLocked_;
 
   const float closeDistance_ = 260.0f;
 };

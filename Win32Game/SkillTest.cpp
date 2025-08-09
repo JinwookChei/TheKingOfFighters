@@ -463,7 +463,7 @@ void SkillTest::LockControlOpponentPlayer(const SkillFrameActionParams& params) 
   if (nullptr == opponentPlayer) {
     return;
   }
-  opponentPlayer->SetControlLocked(true);
+  //opponentPlayer->SetControlLocked(true);
 }
 
 void SkillTest::UnLockControlOpponentPlayer(const SkillFrameActionParams& params) {
@@ -474,7 +474,7 @@ void SkillTest::UnLockControlOpponentPlayer(const SkillFrameActionParams& params
   if (nullptr == opponentPlayer) {
     return;
   }
-  opponentPlayer->SetControlLocked(false);
+  //opponentPlayer->SetControlLocked(false);
 }
 
 void SkillTest::FreezeOpponentPlayer(const SkillFrameActionParams& params) {

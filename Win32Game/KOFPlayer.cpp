@@ -51,7 +51,7 @@ KOFPlayer::KOFPlayer()
       isFacingRight_(true),
       isAtMapEdge_(false),
       pOpponentPlayer_(nullptr),
-      isControlLocked_(false),
+      //isControlLocked_(false),
       skillTest_ (nullptr){
 }
 
@@ -70,25 +70,24 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     UpdateAttack();
   }
 
-  if (false == IsControlLocked()) {
+  //if (false == IsControlLocked()) {
     pInputController_->UpdateCommand();
 
-    //if (true == pStateComponent_->CanInput()) {
-    //  pCommandComponent_->ExcuteTask();
-    //}
+    if (true == pRestrictionComponent_->CanInput()) {
+    pCommandComponent_->ExcuteTask();
+    }
 
     pInputController_->ResetInputBitSet();
 
     pInputController_->UpdateInput();
 
-    //if (true == pStateComponent_->CanInput()) {
-    //  CompareInputBitset();
-    //}
+    if (true == pRestrictionComponent_->CanInput()) {
+    CompareInputBitset();
+    }
 
     if (pProjectileComponent_->GetActiveProjectilesCount() > 0) {
       pStateComponent_->AddState({PS_Attack});
     }
-  }
 }
 
 void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
@@ -98,7 +97,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
-  // pRender_->SetImageRenderType(ImageRenderType::Center);
   pRender_->SetImageRenderType(ImageRenderType::Bottom);
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
@@ -233,6 +231,7 @@ void KOFPlayer::UpdateAnimState(unsigned long long animState, unsigned long long
   }
 
   pStateComponent_->ChangeState(animState);
+  pRestrictionComponent_->ChangeAnimStateRestrict(animState);
 
   SoundInfo* pSoundInfo;
   if (true == pSoundTable_->SearchSoundInfo(animState, &pSoundInfo)) {
@@ -637,14 +636,6 @@ StateComponent* KOFPlayer::GetPlayerStateComponent() const {
 
 MovementComponent* KOFPlayer::GetMovementComponent() const {
   return pMovementComponent_;
-}
-
-bool KOFPlayer::IsControlLocked() const {
-  return isControlLocked_;
-}
-
-void KOFPlayer::SetControlLocked(bool bLocked) {
-  isControlLocked_ = bLocked;
 }
 
 void KOFPlayer::ReceiveClampedWidthOffset(float clampOffset) {

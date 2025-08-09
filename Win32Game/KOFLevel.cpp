@@ -434,8 +434,8 @@ void KOFLevel::InitReadyGame() {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
   screenBoundaryWidth_ = backbufferScale.X - pPlayer1_->CharacterScale().HalfX() - pPlayer2_->CharacterScale().HalfX();
 
-  pPlayer1_->SetControlLocked(true);
-  pPlayer2_->SetControlLocked(true);
+  //pPlayer1_->SetControlLocked(true);
+  //pPlayer2_->SetControlLocked(true);
 
   pScreenMask_->InitAlpha(1.0f);
   pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 0.0f);
@@ -467,8 +467,8 @@ void KOFLevel::InitInProgressGame() {
   acuumDeltaTick_ = 0;
   //backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
   HUD_->SetActive(true);
-  pPlayer1_->SetControlLocked(false);
-  pPlayer2_->SetControlLocked(false);
+  //pPlayer1_->SetControlLocked(false);
+  //pPlayer2_->SetControlLocked(false);
 
   gameStatus_ = GAMESTATUS_GameInProgress;
 }
