@@ -85,11 +85,11 @@ bool StateComponent::EqualPlayerState(std::initializer_list<PLAYER_STATE_TYPE> p
 
 bool StateComponent::ContainPlayerState(std::initializer_list<PLAYER_STATE_TYPE> playerStateList) {
   for (auto state : playerStateList) {
-    if (curState_.playerStateBitset_.test(state)) {
-      return true;
+    if (false == curState_.playerStateBitset_.test(state)) {
+      return false;
     }
   }
-  return false;
+  return true;
 }
 
 //bool StateComponent::CanInput() const {

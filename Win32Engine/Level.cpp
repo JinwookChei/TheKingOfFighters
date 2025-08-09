@@ -12,7 +12,8 @@ Level::Level()
       actorGroupHead_(nullptr),
       actorGroupTail_(nullptr),
       collisionGroupHead_(nullptr),
-      collisionGroupTail_(nullptr) {
+      collisionGroupTail_(nullptr),
+      nextActorId_(1) {
 }
 
 Level::~Level() {
@@ -257,6 +258,8 @@ void Level::SpawnActorInternal(Actor* actor, unsigned int actorGroup /*= 0xfffff
   actor->SetLevel(this);
   actor->SetActorGroup(actorGroup);
   actor->OnBeginPlay();
+  actor->actorId_ = nextActorId_;
+  ++nextActorId_;
 
   if (actor->GetActorGroup() == ActorGroupEngineType::ActorGroupEngineType_Invalid) {
     actor->SetActorGroup(ActorGroupEngineType::ActorGroupEngineType_None);

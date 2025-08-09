@@ -22,7 +22,8 @@ Actor::Actor()
       enableTick_(true),
       isDestroy_(false),
       collisionTag_(0),
-      actorGroup_(ActorGroupEngineType::ActorGroupEngineType_Invalid) {
+      actorGroup_(ActorGroupEngineType::ActorGroupEngineType_Invalid),
+      actorId_ (0){
   link_.prev_ = nullptr;
   link_.next_ = nullptr;
   link_.item_ = this;
@@ -181,6 +182,10 @@ void Actor::SetActorGroup(unsigned int actorGroup) {
 
 Level* Actor::GetLevel() {
   return currentLevel_;
+}
+
+unsigned long long Actor::ActorId() {
+  return actorId_;
 }
 
 void Actor::Render(IRenderTexture* renderTexture) const {

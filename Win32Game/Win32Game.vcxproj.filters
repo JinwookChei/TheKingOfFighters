@@ -264,6 +264,9 @@
     <ClCompile Include="RestrictionComponent.cpp">
       <Filter>Contents\KOF\Component</Filter>
     </ClCompile>
+    <ClCompile Include="RestrictionManager.cpp">
+      <Filter>Contents\KOF\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -454,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="RestrictionComponent.h">
       <Filter>Contents\KOF\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RestrictionManager.h">
+      <Filter>Contents\KOF\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

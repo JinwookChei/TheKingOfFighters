@@ -14,6 +14,8 @@ RestrictionComponent::~RestrictionComponent() {
   }
 
   animStateRestrictTable_.Cleanup();
+
+  GRestrictionManager->Instance()->UnregistComponent(GetOwner()->ActorId());
 }
 
 void RestrictionComponent::BeginPlay() {
@@ -24,7 +26,14 @@ void RestrictionComponent::Tick(unsigned long long deltaTick) {
 }
 
 bool RestrictionComponent::Initialize() {
-  return animStateRestrictTable_.Initialize(8, 8);
+
+  if (false == GRestrictionManager->Instance()->RegistComponent(GetOwner()->ActorId(), this)) {
+    return false;
+  }
+  if (false == animStateRestrictTable_.Initialize(8, 8)) {
+    return false;
+  }
+  return true;
 }
 
 bool RestrictionComponent::RegistAnimStateRestrict(unsigned long long restrictTag, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList) {
@@ -74,9 +83,9 @@ bool RestrictionComponent::EqualFinalRestrict(std::initializer_list<PLAYER_RESTR
 
 bool RestrictionComponent::ContainFinalRestrict(std::initializer_list<PLAYER_RESTRICT_TYPE> compareRestrictList) {
   for (auto restrict : compareRestrictList) {
-    if (finalRestrict_.restrictBitset_.test(restrict)) {
-      return true;
+    if (false == finalRestrict_.restrictBitset_.test(restrict)) {
+      return false;
     }
   }
-  return false;
+  return true;
 }

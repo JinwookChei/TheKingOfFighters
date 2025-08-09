@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -172,6 +172,7 @@
     <ClCompile Include="MPComponent.cpp" />
     <ClCompile Include="Notification.cpp" />
     <ClCompile Include="RestrictionComponent.cpp" />
+    <ClCompile Include="RestrictionManager.cpp" />
     <ClCompile Include="ScreenMask.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CameraTarget.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="MPComponent.h" />
     <ClInclude Include="Notification.h" />
     <ClInclude Include="RestrictionComponent.h" />
+    <ClInclude Include="RestrictionManager.h" />
     <ClInclude Include="ScreenMask.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CameraTarget.h" />

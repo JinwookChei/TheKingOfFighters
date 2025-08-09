@@ -94,4 +94,6 @@ class Level {
 
   LINK_ITEM* collisionGroupHead_;
   LINK_ITEM* collisionGroupTail_;
+
+  unsigned long long nextActorId_;
 };

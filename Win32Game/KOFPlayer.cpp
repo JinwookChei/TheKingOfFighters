@@ -8,6 +8,7 @@
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "StateComponent.h"
+#include "RestrictionComponent.h"
 #include "AttackTable.h"
 #include "SoundTable.h"
 #include "HealthComponent.h"
@@ -154,8 +155,10 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
 
   // RESTRICKTION
   pRestrictionComponent_ = CreateComponent<RestrictionComponent>();
+  if (false == pRestrictionComponent_->Initialize()) {
+    return;
+  }
 
-  
 
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);

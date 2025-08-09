@@ -9,10 +9,10 @@ struct BUCKET_DESC {
 };
 
 struct BUCKET_ITEM {
-  const void* item_;         // value
-  BUCKET_DESC* bucketDesc_;  // 버킷 아이템을 가지고 있는 버킷
-  LINK_ITEM link_;           // 버킷의 링크드리스트 링크
-  unsigned int keySize_;     // key size
+  const void* item_;         
+  BUCKET_DESC* bucketDesc_;  
+  LINK_ITEM link_;           
+  unsigned int keySize_;     
   char keyData_[1];
 };
 
@@ -22,9 +22,9 @@ class HashTableIterator {
  public:
   MATH_API HashTableIterator(unsigned int maxBucketCount, unsigned int currentBucketCount, BUCKET_DESC* bucketDescTable, LINK_ITEM* current);
 
-  MATH_API HashTableIterator& operator++();  // ++전위
+  MATH_API HashTableIterator& operator++();
 
-  MATH_API HashTableIterator operator++(int);  // 후위++
+  MATH_API HashTableIterator operator++(int);
 
   MATH_API bool operator==(const HashTableIterator& other);
 
@@ -70,7 +70,6 @@ class HashTable final {
   MATH_API HashTableIterator end();
 
  private:
-  // 리턴은 해시테이블의 인덱스를 리턴한다.
   unsigned int CreateKey(const void* pData, unsigned int keySize, unsigned int bucketCount);
 
   BUCKET_DESC* bucketDescTable_;

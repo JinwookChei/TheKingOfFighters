@@ -45,9 +45,12 @@
 #include <Win32Engine/TimeManager.h>
 
 #include "GameInstance.h"
+#include "RestrictionManager.h"
 #include "KOFCommon.h"
 #include "Types.h"
 
 extern EngineCore* GEngineCore;
 
 extern GameInstance* GGameInstance;
+
+extern RestrictionManager* GRestrictionManager;

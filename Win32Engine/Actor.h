@@ -90,6 +90,8 @@ class Actor {
 
   JO_API Level* GetLevel();
 
+  JO_API unsigned long long ActorId();
+
  protected:
   void OnBeginPlay();
 
@@ -144,4 +146,6 @@ class Actor {
   int collisionTag_;
 
   unsigned int actorGroup_;
+
+  unsigned long long actorId_;
 };

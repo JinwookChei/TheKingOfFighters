@@ -1,4 +1,6 @@
 #pragma once
+#include "RestrictionManager.h"
+
 enum PLAYER_RESTRICT_TYPE : unsigned int {
   PR_LockInput,
   PR_LockAnimTrans,
@@ -16,6 +18,8 @@ struct Restriction {
 class RestrictionComponent
     : public ActorComponent {
  public:
+  friend class RestrictionManager;
+
   RestrictionComponent();
 
   ~RestrictionComponent() override;
@@ -37,6 +41,7 @@ class RestrictionComponent
   bool ContainFinalRestrict(std::initializer_list<PLAYER_RESTRICT_TYPE> compareRestrictList);
 
  private:
+
   Restriction animStateRestrict_;
 
   Restriction externRestrict_;

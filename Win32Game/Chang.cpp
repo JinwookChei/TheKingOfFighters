@@ -129,19 +129,19 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   // STATE
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, {PS_Idle}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, {PS_Seat}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, {PS_Seat}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, {PS_Move}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, {PS_Move}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, {PS_Move}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, {PS_Move}, true);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_Move}, false);
-  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, {PS_Jump}, false);
-  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, {PS_Attack}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_High, {PS_Hit}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Low, {PS_Hit}, false);
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Strong, {PS_Hit}, false);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Idle, {PS_Idle}, true);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatDown, {PS_Seat}, true);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_SeatUp, {PS_Seat}, true);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_FrontWalk, {PS_Move}, true);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackWalk, {PS_Move}, true);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_BackStep, {PS_Move}, false);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Run, {PS_Move}, true);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_RunEnd, {PS_Move}, false);
+  ////pStateComponent_->RegistState(PLAYER_ANIMTYPE_Jump, {PS_Jump}, false);
+  ////pStateComponent_->RegistState(PLAYER_ANIMTYPE_HeavyKick, {PS_Attack}, false);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_High, {PS_Hit}, false);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Low, {PS_Hit}, false);
+  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Strong, {PS_Hit}, false);
 
   // DAMAGE
   //pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {20.0f, 0.0f});
