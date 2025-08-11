@@ -38,6 +38,7 @@ void IoriCommandHandler::Command_1() {
 }
 
 void IoriCommandHandler::Command_2() {
+
   pOwnerPlayer_->UpdateAnimState(PLAYER_ANIMTYPE_BackStep);
   pOwnerMovementComponent_->BackStep((pOwnerPlayer_->FacingRight()));
 }
@@ -84,7 +85,7 @@ void IoriCommandHandler::Command_6() {
 
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_1, ownerPosition + Vector{0.0f, -250.0f});
   EffectManager::Instance()->SpawnEffect(pKOFLevel, EFTYPE_Casting_2, ownerPosition + Vector{0.0f, -250.0f});
-  pKOFLevel->FreezeActors({oppoenetPlayer}, true);
+  //pKOFLevel->FreezeActors({oppoenetPlayer}, true);
   pBackGroundMask->FadeOut(IMGTYPE_BlackBoardImage, 50.0f);
 }
 

@@ -17,6 +17,7 @@
 #include "CollisionBox.h"
 #include "Iori.h"
 
+#include "AnimFrozenManager.h"
 #include "AnimationHandler.h"
 #include "IoriAnimationHandler.h"
 #include "CommandHandler.h"
@@ -1203,18 +1204,20 @@ void Iori::CompareInputBitset() {
       // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_1);
       // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_2);
       // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_3);
-      skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_4);
+      // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_4);
       //EffectManager::Instance()->SpawnEffect(GetLevel(), (EFTYPE_Casting_1 | EFMOD_FLIPPED), {GetPosition().X, GetPosition().Y});
-      
+      ((KOFLevel*)GetLevel())->GetAnimFrozenManager()->ApplyFreeze(ActorId(), false, 100);
+      return;
     }
 
     // B | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B})) {
-      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
-        UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
-      } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
-      }
+      //if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      //  UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
+      //} else {
+      //  UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
+      //}
+      ((KOFLevel*)GetLevel())->GetAnimFrozenManager()->UnFreeze(ActorId());
       return;
     }
 

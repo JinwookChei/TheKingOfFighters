@@ -36,7 +36,7 @@ class ImageRenderer
  public:
   JO_API ImageRenderer();
 
-  JO_API ~ImageRenderer();
+  JO_API virtual ~ImageRenderer();
 
   JO_API void BeginPlay() override;
 
@@ -103,6 +103,10 @@ class ImageRenderer
 
   JO_API bool HasIndexChange() const;
 
+  JO_API void AnimFreeze();
+
+  JO_API void UnAnimFreeze();
+
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 
@@ -130,4 +134,6 @@ class ImageRenderer
   HashTable animations_;
 
   AnimationInfo* pCurAnimInfo_;
+
+  bool isAnimFrozen_;
 };

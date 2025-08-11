@@ -43,9 +43,6 @@
     <Filter Include="Contents\KOF\Actor">
       <UniqueIdentifier>{d736cefb-2e0e-44b9-b0d5-7b769727c1c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\KOF\Component">
-      <UniqueIdentifier>{20b02786-351a-49f6-8569-1ba6ed0fc6c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Contents\KOF\Actor\PLayer">
       <UniqueIdentifier>{483b5a60-e977-4c70-ae4d-51efdb5ed76e}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,12 @@
     </Filter>
     <Filter Include="Contents\KOF\Actor\PLayer\Iori\IoriHandler">
       <UniqueIdentifier>{c007baea-9089-41b5-ad63-58facadccdac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\KOF\Actor\PLayer\PlayerComponent">
+      <UniqueIdentifier>{20b02786-351a-49f6-8569-1ba6ed0fc6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\KOF\Level\LevelComponent">
+      <UniqueIdentifier>{1e8c7615-aab6-4f4d-9af8-d85837cd84e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +148,7 @@
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClCompile>
     <ClCompile Include="CommandComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="Chang.cpp">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
@@ -154,19 +157,19 @@
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClCompile>
     <ClCompile Include="ProjectileComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="CameraTarget.cpp">
       <Filter>Contents\KOF\Camera</Filter>
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="HealthBar.cpp">
       <Filter>Contents\KOF\UI</Filter>
@@ -178,19 +181,19 @@
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
     <ClCompile Include="GhostEffect.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="StateComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="SkillComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="ScreenMask.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
     <ClCompile Include="AttackTable.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="ImageEditLevel.cpp">
       <Filter>Contents\Tools</Filter>
@@ -199,7 +202,7 @@
       <Filter>Contents\KOF\Actor\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="SoundTable.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="KOFLoby.cpp">
       <Filter>Contents\KOF\Level</Filter>
@@ -214,28 +217,28 @@
       <Filter>Contents\KOF\Actor\AI</Filter>
     </ClCompile>
     <ClCompile Include="AIBehaviorStateMachine.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="MP.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
     <ClCompile Include="MPComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="SkillPoint.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
     <ClCompile Include="CommandHandler.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
     <ClCompile Include="SkillHandler.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="AnimationHandler.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="HyakushikiOniyaki.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
@@ -256,16 +259,19 @@
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
     <ClCompile Include="SkillTest.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="InputController.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="RestrictionComponent.cpp">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="RestrictionManager.cpp">
       <Filter>Contents\KOF\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimFrozenManager.cpp">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -336,7 +342,7 @@
       <Filter>Contents\Tools\ViewPort</Filter>
     </ClInclude>
     <ClInclude Include="CommandComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="Chang.h">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
@@ -345,19 +351,19 @@
       <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClInclude>
     <ClInclude Include="ProjectileComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="CameraTarget.h">
       <Filter>Contents\KOF\Camera</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
     <ClInclude Include="HealthComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="HealthBar.h">
       <Filter>Contents\KOF\UI</Filter>
@@ -372,19 +378,19 @@
       <Filter>Contents\KOF\Common</Filter>
     </ClInclude>
     <ClInclude Include="GhostEffect.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="StateComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="SkillComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="ScreenMask.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
     <ClInclude Include="AttackTable.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="ImageEditLevel.h">
       <Filter>Contents\Tools</Filter>
@@ -393,7 +399,7 @@
       <Filter>Contents\KOF\Actor\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="SoundTable.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="KOFLoby.h">
       <Filter>Contents\KOF\Level</Filter>
@@ -408,28 +414,28 @@
       <Filter>Contents\KOF\Actor\AI</Filter>
     </ClInclude>
     <ClInclude Include="AIBehaviorStateMachine.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="MP.h">
       <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
     <ClInclude Include="MPComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="SkillPoint.h">
       <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
     <ClInclude Include="CommandHandler.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
     <ClInclude Include="SkillHandler.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="AnimationHandler.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="HyakushikiOniyaki.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
@@ -450,16 +456,19 @@
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClInclude>
     <ClInclude Include="SkillTest.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="InputController.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="RestrictionComponent.h">
-      <Filter>Contents\KOF\Component</Filter>
+      <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="RestrictionManager.h">
       <Filter>Contents\KOF\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimFrozenManager.h">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

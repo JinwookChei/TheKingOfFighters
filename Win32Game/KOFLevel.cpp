@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "AnimFrozenManager.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
 #include "KOFPlayer.h"
@@ -17,6 +18,7 @@
 
 KOFLevel::KOFLevel()
     : /*channel_(nullptr),*/
+      pAnimFrozenManager_(nullptr),
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
@@ -33,11 +35,11 @@ KOFLevel::KOFLevel()
       acuumDeltaTick_(0),
       player1SpawnPostion_({0.0f, 0.0f}),
       player2SpawnPostion_({0.0f, 0.0f}),
-      OnFreezeTimer_(false),
-      isFreezeInfinite_(false),
-      freezedActors_({}),
-      freezeDuration_(0),
-      freezeTiemr_(0),
+      //OnFreezeTimer_(false),
+      //isFreezeInfinite_(false),
+      //freezedActors_({}),
+      //freezeDuration_(0),
+      //freezeTiemr_(0),
       levelLeftBoundary_(0.0f),
       levelRightBoundary_(0.0f),
       screenBoundaryWidth_(0.0f) {
@@ -49,6 +51,11 @@ KOFLevel::~KOFLevel() {
 void KOFLevel::BeginPlay() {
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
+
+  pAnimFrozenManager_ = SpawnActor<AnimFrozenManager>();
+  if (false == pAnimFrozenManager_->Initialize()) {
+    return;
+  }
 
   // MOUSE
   pMouse_ = SpawnMouse();
@@ -327,8 +334,12 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
+AnimFrozenManager* KOFLevel::GetAnimFrozenManager() const {
+  return pAnimFrozenManager_;
+}
+
 void KOFLevel::Tick(unsigned long long deltaTick) {
-  CalculateFreeze(deltaTick);
+  //CalculateFreeze(deltaTick);
 
   SwapPosition();
 
@@ -341,10 +352,8 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
       SetCollisionRender(!GetCollisionRender());
     }
     if (InputManager::Instance()->IsDown(VK_F3)) {
-      FreezeActors({pPlayer1_, pPlayer2_}, true);
     }
     if (InputManager::Instance()->IsDown(VK_F4)) {
-      DefreezeActors();
     }
   }
 
@@ -371,48 +380,48 @@ ScreenMask* KOFLevel::GetBackGroundMask() const {
   return pBackGroundMask_;
 }
 
-void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
-  DefreezeActors();
-  for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
-    if (nullptr == *iter) {
-      continue;
-    }
-
-    Actor* pActor = *iter;
-    pActor->SetEnableTick(false);
-  }
-
-  OnFreezeTimer_ = true;
-  isFreezeInfinite_ = isInfinite;
-  freezedActors_ = actors;
-  freezeDuration_ = freezeDuration;
-  freezeTiemr_ = 0;
-}
-
-void KOFLevel::DefreezeActors() {
-  for (auto iter = freezedActors_.begin(); iter != freezedActors_.end(); ++iter) {
-    if (nullptr == *iter) {
-      continue;
-    }
-
-    Actor* pActor = *iter;
-    pActor->SetEnableTick(true);
-  }
-
-  OnFreezeTimer_ = false;
-  isFreezeInfinite_ = false;
-  freezeDuration_ = 0;
-  freezeTiemr_ = 0;
-}
-
-void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
-  if (true == OnFreezeTimer_) {
-    freezeTiemr_ += deltaTick;
-    if (freezeTiemr_ >= freezeDuration_ && false == isFreezeInfinite_) {
-      DefreezeActors();
-    }
-  }
-}
+//void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
+//  DefreezeActors();
+//  for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
+//    if (nullptr == *iter) {
+//      continue;
+//    }
+//
+//    Actor* pActor = *iter;
+//    pActor->SetEnableTick(false);
+//  }
+//
+//  OnFreezeTimer_ = true;
+//  isFreezeInfinite_ = isInfinite;
+//  freezedActors_ = actors;
+//  freezeDuration_ = freezeDuration;
+//  freezeTiemr_ = 0;
+//}
+//
+//void KOFLevel::DefreezeActors() {
+//  for (auto iter = freezedActors_.begin(); iter != freezedActors_.end(); ++iter) {
+//    if (nullptr == *iter) {
+//      continue;
+//    }
+//
+//    Actor* pActor = *iter;
+//    pActor->SetEnableTick(true);
+//  }
+//
+//  OnFreezeTimer_ = false;
+//  isFreezeInfinite_ = false;
+//  freezeDuration_ = 0;
+//  freezeTiemr_ = 0;
+//}
+//
+//void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
+//  if (true == OnFreezeTimer_) {
+//    freezeTiemr_ += deltaTick;
+//    if (freezeTiemr_ >= freezeDuration_ && false == isFreezeInfinite_) {
+//      DefreezeActors();
+//    }
+//  }
+//}
 
 float KOFLevel::GetLevelLeftBoundary() const {
   return levelLeftBoundary_;

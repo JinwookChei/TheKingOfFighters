@@ -15,14 +15,14 @@ RestrictionComponent::~RestrictionComponent() {
 
   animStateRestrictTable_.Cleanup();
 
-  GRestrictionManager->Instance()->UnregistComponent(GetOwner()->ActorId());
+  RestrictionManager::Instance()->UnregistComponent(GetOwner()->ActorId());
 }
 
 void RestrictionComponent::BeginPlay() {
 }
 
 void RestrictionComponent::Tick(unsigned long long deltaTick) {
-  CalculateFinalRestrict();
+  //CalculateFinalRestrict();
 }
 
 bool RestrictionComponent::Initialize() {
@@ -67,6 +67,8 @@ void RestrictionComponent::ChangeAnimStateRestrict(unsigned long long restrictTa
   animStateRestrict_.restrictTag_ = pRestrict->restrictTag_;
   animStateRestrict_.restrictBitset_ = pRestrict->restrictBitset_;
   animStateRestrict_.searchHandle_ = pRestrict->searchHandle_;
+
+  CalculateFinalRestrict();
 }
 
 void RestrictionComponent::CalculateFinalRestrict() {

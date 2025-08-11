@@ -160,6 +160,7 @@
     <ClCompile Include="AIBehaviorStateMachine.cpp" />
     <ClCompile Include="AIiori.cpp" />
     <ClCompile Include="AnimationHandler.cpp" />
+    <ClCompile Include="AnimFrozenManager.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="AIBehaviorStateMachine.h" />
     <ClInclude Include="AIiori.h" />
     <ClInclude Include="AnimationHandler.h" />
+    <ClInclude Include="AnimFrozenManager.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="CommandHandler.h" />

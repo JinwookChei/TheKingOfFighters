@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "AnimFrozenManager.h"
 #include "AnimationHandler.h"
 #include "CommandComponent.h"
 #include "InputController.h"
@@ -17,8 +18,6 @@
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
-
-
 
 #include "SkillTest.h"
 
@@ -51,8 +50,7 @@ KOFPlayer::KOFPlayer()
       isFacingRight_(true),
       isAtMapEdge_(false),
       pOpponentPlayer_(nullptr),
-      //isControlLocked_(false),
-      skillTest_ (nullptr){
+      skillTest_(nullptr) {
 }
 
 KOFPlayer::~KOFPlayer() {
@@ -70,24 +68,24 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     UpdateAttack();
   }
 
-  //if (false == IsControlLocked()) {
-    pInputController_->UpdateCommand();
+  // if (false == IsControlLocked()) {
+  pInputController_->UpdateCommand();
 
-    if (true == pRestrictionComponent_->CanInput()) {
+  if (true == pRestrictionComponent_->CanInput()) {
     pCommandComponent_->ExcuteTask();
-    }
+  }
 
-    pInputController_->ResetInputBitSet();
+  pInputController_->ResetInputBitSet();
 
-    pInputController_->UpdateInput();
+  pInputController_->UpdateInput();
 
-    if (true == pRestrictionComponent_->CanInput()) {
+  if (true == pRestrictionComponent_->CanInput()) {
     CompareInputBitset();
-    }
+  }
 
-    if (pProjectileComponent_->GetActiveProjectilesCount() > 0) {
-      pStateComponent_->AddState({PS_Attack});
-    }
+  if (pProjectileComponent_->GetActiveProjectilesCount() > 0) {
+    pStateComponent_->AddState({PS_Attack});
+  }
 }
 
 void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) {
@@ -100,6 +98,22 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pRender_->SetImageRenderType(ImageRenderType::Bottom);
   pRender_->SetLocalScale({4.2f, 4.2f});
   pRender_->SetAlpha(1.0f);
+  Level* pLevel = GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+  AnimFrozenManager* animFrozenManager = pKOFLevel->GetAnimFrozenManager();
+  if (nullptr == animFrozenManager)
+  {
+    return;
+  }
+  // TODO : 죽었을떄 정리해야함.
+  animFrozenManager->RegistComponent(ActorId(), pRender_);
+
 
   // UI
   pUI_ = CreateImageRenderFIFO();
@@ -157,7 +171,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
     return;
   }
 
-
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
   pHitBoxBottom_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxBottom);
@@ -198,7 +211,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pOpponentPlayer_ = opponentPlayer;
 
   // INPUT BIT SET
-  //ResetInputBitSet();
+  // ResetInputBitSet();
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -209,10 +222,8 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 
-
-  
   skillTest_ = CreateComponent<SkillTest>();
-  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_, pInputController_, pAttackBox_, pProjectileComponent_, pMPComponent_)){
+  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_, pInputController_, pAttackBox_, pProjectileComponent_, pMPComponent_)) {
     return;
   }
 }
@@ -442,7 +453,7 @@ void KOFPlayer::UpdateAttack() {
 
       pTargetPlayer->HitEvent(pAttackInfo);
 
-      pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
+      //pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

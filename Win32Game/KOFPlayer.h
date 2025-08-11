@@ -17,8 +17,6 @@ class StateComponent;
 class RestrictionComponent;
 class HitHandlerComponent;
 class GhostEffect;
-
-
 class SkillTest;
 
 

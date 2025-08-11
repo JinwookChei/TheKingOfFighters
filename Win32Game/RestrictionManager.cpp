@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "RestrictionManager.h"
+#include "AnimFrozenManager.h"
 
 RestrictionManager::RestrictionManager() {
 }
@@ -45,7 +46,7 @@ bool RestrictionManager::RegistComponent(unsigned long long actorId, Restriction
 
 void RestrictionManager::UnregistComponent(unsigned long long actorId) {
   RestrictComponentInfo* pFind = nullptr;
-  if (0 != restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
+  if (0 == restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
     return;
   }
 
@@ -54,7 +55,7 @@ void RestrictionManager::UnregistComponent(unsigned long long actorId) {
 
 void RestrictionManager::ApplyExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList) {
   RestrictComponentInfo* pFind = nullptr;
-  if (0 != restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
+  if (0 == restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
     return;
   }
 
@@ -65,7 +66,7 @@ void RestrictionManager::ApplyExternalRestrict(unsigned long long actorId, std::
 
 void RestrictionManager::ResetExternalRestrict(unsigned long long actorId) {
   RestrictComponentInfo* pFind = nullptr;
-  if (0 != restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
+  if (0 == restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
     return;
   }
 
