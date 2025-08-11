@@ -160,7 +160,7 @@
     <ClCompile Include="AIBehaviorStateMachine.cpp" />
     <ClCompile Include="AIiori.cpp" />
     <ClCompile Include="AnimationHandler.cpp" />
-    <ClCompile Include="AnimFrozenManager.cpp" />
+    <ClCompile Include="AnimFreezeManager.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
@@ -169,6 +169,7 @@
     <ClCompile Include="IoriAnimationHandler.cpp" />
     <ClCompile Include="IoriCommandHandler.cpp" />
     <ClCompile Include="IoriSkillHandler.cpp" />
+    <ClCompile Include="MovementFreezeManager.cpp" />
     <ClCompile Include="MP.cpp" />
     <ClCompile Include="MPComponent.cpp" />
     <ClCompile Include="Notification.cpp" />
@@ -229,7 +230,7 @@
     <ClInclude Include="AIBehaviorStateMachine.h" />
     <ClInclude Include="AIiori.h" />
     <ClInclude Include="AnimationHandler.h" />
-    <ClInclude Include="AnimFrozenManager.h" />
+    <ClInclude Include="AnimFreezeManager.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="CommandHandler.h" />
@@ -238,6 +239,7 @@
     <ClInclude Include="IoriAnimationHandler.h" />
     <ClInclude Include="IoriCommandHandler.h" />
     <ClInclude Include="IoriSkillHandler.h" />
+    <ClInclude Include="MovementFreezeManager.h" />
     <ClInclude Include="MP.h" />
     <ClInclude Include="MPComponent.h" />
     <ClInclude Include="Notification.h" />

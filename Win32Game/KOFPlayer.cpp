@@ -1,5 +1,6 @@
 #include "stdafx.h"
-#include "AnimFrozenManager.h"
+#include "AnimFreezeManager.h"
+#include "MovementFreezeManager.h"
 #include "AnimationHandler.h"
 #include "CommandComponent.h"
 #include "InputController.h"
@@ -106,13 +107,13 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (nullptr == pKOFLevel) {
     return;
   }
-  AnimFrozenManager* animFrozenManager = pKOFLevel->GetAnimFrozenManager();
-  if (nullptr == animFrozenManager)
+  AnimFreezeManager* animFreezeManager = pKOFLevel->GetAnimFreezeManager();
+  if (nullptr == animFreezeManager)
   {
     return;
   }
   // TODO : 죽었을떄 정리해야함.
-  animFrozenManager->RegistComponent(ActorId(), pRender_);
+  animFreezeManager->RegistComponent(ActorId(), pRender_);
 
 
   // UI
@@ -134,6 +135,12 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (false == pMovementComponent_->Initialize(position)) {
     return;
   }
+
+  MovementFreezeManager* pMovementFreezeManager = pKOFLevel->GetMovementFreezeManager();
+  if (nullptr == pMovementFreezeManager) {
+    return;
+  }      
+  pMovementFreezeManager->RegistComponent(ActorId(), pMovementComponent_);
 
   // SOUND
   pSoundTable_ = CreateComponent<SoundTable>();
@@ -453,7 +460,16 @@ void KOFPlayer::UpdateAttack() {
 
       pTargetPlayer->HitEvent(pAttackInfo);
 
-      //pKOFLevel->FreezeActors({this, pTargetPlayer}, false, pAttackInfo->freezeTime_);
+      AnimFreezeManager* animFreezeManager = pKOFLevel->GetAnimFreezeManager();
+      if (nullptr != animFreezeManager) {
+        animFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
+        animFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
+      }
+      MovementFreezeManager* movementFreezeManager = pKOFLevel->GetMovementFreezeManager();
+      if (nullptr != movementFreezeManager) {
+        movementFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
+        movementFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
+      }
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {

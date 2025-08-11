@@ -270,7 +270,10 @@
     <ClCompile Include="RestrictionManager.cpp">
       <Filter>Contents\KOF\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="AnimFrozenManager.cpp">
+    <ClCompile Include="AnimFreezeManager.cpp">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementFreezeManager.cpp">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClCompile>
   </ItemGroup>
@@ -467,7 +470,10 @@
     <ClInclude Include="RestrictionManager.h">
       <Filter>Contents\KOF\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="AnimFrozenManager.h">
+    <ClInclude Include="AnimFreezeManager.h">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementFreezeManager.h">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,9 +1,9 @@
 #pragma once
-
-struct ImangeRendererInfo {
+class MovementComponent;
+struct MovementFreezeInfo {
   unsigned long long actorId_ = 0;
 
-  ImageRenderer* pImageRenderer_ = nullptr;
+  MovementComponent* pMovementComponent_ = nullptr;
 
   bool isInfinite_ = false;
 
@@ -14,12 +14,12 @@ struct ImangeRendererInfo {
   void* searchHandle_ = nullptr;
 };
 
-class AnimFrozenManager final
+class MovementFreezeManager final
     : public Actor {
  public:
-  AnimFrozenManager();
+  MovementFreezeManager();
 
-  ~AnimFrozenManager();
+  ~MovementFreezeManager();
 
   void BeginPlay() override;
 
@@ -27,16 +27,16 @@ class AnimFrozenManager final
 
   bool Initialize();
 
-  bool RegistComponent(unsigned long long actorId, ImageRenderer* pImageRenderer);
+  bool RegistComponent(unsigned long long actorId, MovementComponent* pMovementComponent);
 
   void UnregistComponent(unsigned long long actorId);
 
   void ApplyFreeze(unsigned long long actorId, bool isInfinite = true, unsigned long long duration = 0);
 
-  void UnFreeze(unsigned long long actorId);
+  void Defreeze(unsigned long long actorId);
 
  private:
-  HashTable imageRendererTable_;
+  HashTable movementFreezeTable_;
 
   std::vector<unsigned long long> frozenActors_;
 };

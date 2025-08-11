@@ -1,6 +1,7 @@
 #pragma once
 
-class AnimFrozenManager;
+class AnimFreezeManager;
+class MovementFreezeManager;
 class Mouse;
 class BackGround;
 class ScreenMask;
@@ -29,7 +30,9 @@ class KOFLevel final
 
   void SwapPosition();
 
-  AnimFrozenManager* GetAnimFrozenManager() const;
+  AnimFreezeManager* GetAnimFreezeManager() const;
+
+  MovementFreezeManager* GetMovementFreezeManager() const;
 
   CameraTarget* GetCameraTarget() const;
 
@@ -60,7 +63,9 @@ class KOFLevel final
   void EndGame(unsigned long long deltaTick);
 
  private:
-  AnimFrozenManager* pAnimFrozenManager_;
+  AnimFreezeManager* pAnimFreezeManager_;
+
+  MovementFreezeManager* pMovementFreezeManager_;
 
   SoundChannel backGroundSoundChannel_;
 

@@ -26,7 +26,15 @@ bool AttackTable::Initailize() {
   return attackTable_.Initialize(8, 8);
 }
 
-bool AttackTable::RegistAttackInfo(unsigned long long attackTableKey, ATTACK_TYPE attackType, ATTACK_ELEMENT_TYPE elementType, EFFECT_TYPE effectType, bool isMultiHit, float damage, Vector knockBackForce, float freezeTime) {
+bool AttackTable::RegistAttackInfo(
+    unsigned long long attackTableKey, 
+    ATTACK_TYPE attackType, 
+    ATTACK_ELEMENT_TYPE elementType, 
+    EFFECT_TYPE effectType, 
+    bool isMultiHit, 
+    float damage, 
+    Vector knockBackForce, 
+    unsigned long long freezeTime) {
   AttackInfo* pFind;
   if (0 != attackTable_.Select((void**)&pFind, 1, &attackTableKey, 8)) {
     return false;

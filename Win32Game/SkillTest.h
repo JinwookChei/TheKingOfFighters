@@ -47,7 +47,7 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_LockControlOpponentPlayer,
   SKILL_FRAME_ACTION_UnLockControlOpponentPlayer,
   SKILL_FRAME_ACTION_FreezeOpponentPlayer,
-  SKILL_FRAME_ACTION_DefreezePlayers,
+  SKILL_FRAME_ACTION_DefreezeOpponentPlayer,
   SKILL_FRAME_ACTION_CameraShake,
   SKILL_FRAME_ACTION_FadeIn,
   SKILL_FRAME_ACTION_FadeOut,
@@ -248,7 +248,7 @@ class SkillTest
 
   void FreezeOpponentPlayer(const SkillFrameActionParams& params);
 
-  void DefreezePlayers(const SkillFrameActionParams& params);
+  void DefreezeOpponentPlayer(const SkillFrameActionParams& params);
 
   void ExcuteCameraShake(const SkillFrameActionParams& params);
 

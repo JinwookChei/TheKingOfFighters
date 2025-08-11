@@ -8,7 +8,7 @@
 #include "ScreenMask.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
-#include "AnimFrozenManager.h"
+#include "AnimFreezeManager.h"
 
 SkillTest::SkillTest()
     : pOwnerPlayer_(nullptr),
@@ -332,8 +332,8 @@ void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const
     case SKILL_FRAME_ACTION_FreezeOpponentPlayer:
       FreezeOpponentPlayer(params);
       break;
-    case SKILL_FRAME_ACTION_DefreezePlayers:
-      DefreezePlayers(params);
+    case SKILL_FRAME_ACTION_DefreezeOpponentPlayer:
+      DefreezeOpponentPlayer(params);
       break;
     case SKILL_FRAME_ACTION_CameraShake:
       ExcuteCameraShake(params);
@@ -501,16 +501,16 @@ void SkillTest::FreezeOpponentPlayer(const SkillFrameActionParams& params) {
 
   unsigned long long duration = params.freezeDuration_;
 
-  AnimFrozenManager* animFrozenManger = pKOFLevel->GetAnimFrozenManager();
-  if (nullptr == animFrozenManger) {
+  AnimFreezeManager* animFreezeManger = pKOFLevel->GetAnimFreezeManager();
+  if (nullptr == animFreezeManger) {
     return;
   }
 
-  animFrozenManger->ApplyFreeze(opponentPlayer->ActorId(), isInfinite, duration);
+  animFreezeManger->ApplyFreeze(opponentPlayer->ActorId(), isInfinite, duration);
 
 }
 
-void SkillTest::DefreezePlayers(const SkillFrameActionParams& params) {
+void SkillTest::DefreezeOpponentPlayer(const SkillFrameActionParams& params) {
   if (nullptr == pOwnerPlayer_) {
     return;
   }
@@ -524,12 +524,17 @@ void SkillTest::DefreezePlayers(const SkillFrameActionParams& params) {
     return;
   }
 
-  AnimFrozenManager* animFrozenManger = pKOFLevel->GetAnimFrozenManager();
-  if (nullptr == animFrozenManger) {
+    KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
     return;
   }
 
-  //animFrozenManger->UnFreeze();
+  AnimFreezeManager* animFreezeManger = pKOFLevel->GetAnimFreezeManager();
+  if (nullptr == animFreezeManger) {
+    return;
+  }
+  animFreezeManger->Defreeze(opponentPlayer->ActorId());
+  
 }
 
 void SkillTest::ExcuteCameraShake(const SkillFrameActionParams& params) {

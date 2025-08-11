@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "RestrictionManager.h"
-#include "AnimFrozenManager.h"
 
 RestrictionManager::RestrictionManager() {
 }
