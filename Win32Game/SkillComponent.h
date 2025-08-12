@@ -1,10 +1,171 @@
 #pragma once
-#include <functional>
-#include "KOFPlayer.h"
 
-struct SkillInfo {
+enum SKILL_TYPE : unsigned int {
+  SKILL_0 = 0,
+  SKILL_1,
+  SKILL_2,
+  SKILL_3,
+  SKILL_4,
+  SKILL_5,
+  SKILL_6
+};
+
+enum SKILL_CASTING_CONDITION_TYPE : unsigned int {
+  SKILL_CAST_COND_None = 0,
+  SKILL_CAST_COND_HasSkillPoint,
+};
+
+enum SKILL_CASTING_ACTION_TYPE : unsigned int {
+  SKILL_CAST_ACTION_None = 0,
+  SKILL_CAST_ACTION_ReduceSkillPoint
+};
+
+enum SKILL_FRAME_ACTION_CONDITION_TYPE : unsigned int {
+  SKILL_FRAME_ACTION_COND_None = 0,
+  SKILL_FRAME_ACTION_COND_AnimationEnd,
+  SKILL_FRAME_ACTION_COND_CheckInputDownA,
+  SKILL_FRAME_ACTION_COND_CheckInputDownB,
+  SKILL_FRAME_ACTION_COND_CheckInputDownC,
+  SKILL_FRAME_ACTION_COND_CheckInputDownD,
+  SKILL_FRAME_ACTION_COND_HasAttackCollition,
+  SKILL_FRAME_ACTION_COND_IsStateMiscFlagTrue,
+  SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold
+};
+
+enum SKILL_FRAME_ACTION_TYPE : unsigned int {
+  SKILL_FRAME_ACTION_None = 0,
+  SKILL_FRAME_ACTION_DeactiveSkill,
+  SKILL_FRAME_ACTION_ChangeSkillState,
+  SKILL_FRAME_ACTION_MovementJump,
+  SKILL_FRAME_ACTION_MovementDash,
+  SKILL_FRAME_ACTION_MovementStopDash,
+  SKILL_FRAME_ACTION_SpawnEffect,
+  SKILL_FRAME_ACTION_FireProjectile,
+  SKILL_FRAME_ACTION_CommandExecute,
+  SKILL_FRAME_ACTION_ChangeOpponentAnimState,
+  SKILL_FRAME_ACTION_SetPostionOpponentPlayer,
+  SKILL_FRAME_ACTION_InflictStunOpponentPlayer,
+  SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer,
+  SKILL_FRAME_ACTION_FreezeOpponentPlayer,
+  SKILL_FRAME_ACTION_DefreezeOpponentPlayer,
+  SKILL_FRAME_ACTION_CameraShake,
+  SKILL_FRAME_ACTION_FadeIn,
+  SKILL_FRAME_ACTION_FadeOut,
+  SKILL_FRAME_ACTION_FadeInOut,
+  SKILL_FRAME_ACTION_SoundPlay,
+  SKILL_FRAME_ACTION_SetCurStateMiscFlagTrue
+};
+
+struct SkillFrameActionParams {
+  unsigned int changeStateIndex_ = 0;
+
+  bool isInfiniteFreeze_;
+
+  union {
+    unsigned long long freezeDuration_ = 0;
+
+    unsigned long long dashDuration_;
+
+    unsigned long long cameraShakeDuration_;
+
+    unsigned long long fadeDuration_;
+
+    unsigned long long opponentAnimState_;
+  };
+
+  union {
+    IMAGE_TYPE fadeImageType_;
+
+    EFFECT_TYPE effectType_;
+
+    PROJECTILE_TYPE projectileType_;
+
+    SOUND_TYPE soundType_;
+  };
+
+  union {
+    Vector jumpForce_{0.0f, 0.0f};
+    Vector spawnEffectPos_;
+    Vector opponentForcedPosition_;
+    struct {
+      float dashDistance_;
+      float dashPad0_;
+      float dashPad1_;
+      float dashPad2_;
+    };
+  };
+
+};
+
+struct SkillFrameActionConditionParams {
+  float opponentDistanceThreshold = 0.0f;
+};
+
+struct SkillFrameActionConditionData {
+  SKILL_FRAME_ACTION_CONDITION_TYPE conditionType_ = SKILL_FRAME_ACTION_COND_None;
+
+  SkillFrameActionConditionParams conditionParams_;
+};
+
+struct SkillFrameActionData {
+  SKILL_FRAME_ACTION_TYPE actionType_ = SKILL_FRAME_ACTION_None;
+
+  SkillFrameActionParams actionParams_;
+};
+
+struct SkillFrameAction {
+  std::vector<SkillFrameActionConditionData> conditionDatas_;
+
+  std::vector<SkillFrameActionData> actionDatas_;
+
+  bool HasExecuted() const {
+    return hasExecuted_;
+  }
+  void SetHasExcuted(bool flag) {
+    hasExecuted_ = flag;
+  }
+  void ResetHasExecutedFlag() {
+    hasExecuted_ = false;
+  }
+
+ private:
+  bool hasExecuted_ = false;
+};
+
+struct SkillFrame {
+  unsigned long long startIndex_ = 0;
+
+  unsigned long long endIndex_ = 0;
+
+  std::vector<SkillFrameAction> actions_;
+};
+
+struct SkillState {
+  unsigned long long animState_ = 0;
+
+  std::vector<SkillFrame> frames_;
+
+  bool MiscFlag() const {
+    return miscFlag_;
+  }
+
+  void SetMiscFlag(bool flag) {
+    miscFlag_ = flag;
+  }
+
+ private:
+  bool miscFlag_ = false;
+};
+
+struct Skill {
   unsigned long long skillTag_ = 0;
-  std::function<void()> skill_ = nullptr;
+
+  SKILL_CASTING_CONDITION_TYPE castCondition_ = SKILL_CAST_COND_None;
+
+  SKILL_CASTING_ACTION_TYPE castAction_ = SKILL_CAST_ACTION_None;
+
+  std::vector<SkillState> skillStates_;
+
   void* searchHandle_ = nullptr;
 };
 
@@ -13,51 +174,117 @@ class SkillComponent
  public:
   SkillComponent();
 
-  ~SkillComponent();
+  ~SkillComponent() override;
 
   void BeginPlay() override;
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool Initialize();
+  bool Initialize(
+      KOFPlayer* pOwnerPlayer,
+      ImageRenderer* pRenderer,
+      MovementComponent* pMovementComponent,
+      InputController* pInputController,
+      CollisionComponent* pAttackCollision,
+      ProjectileComponent* pProjectileComponent,
+      MPComponent* pMPComponent);
 
-  template <typename T>
-  bool RegistSkill(unsigned long long skillTag, void (T::*funcPtr)(), T* owner) {
-    if (nullptr == funcPtr || nullptr == owner) {
-      return false;
-    }
+  bool RegistSkill(Skill skill);
 
-    SkillInfo* pFind;
-    if (0 != skillTable_.Select((void**)&pFind, 1, &skillTag, 8)) {
-      return false;
-    }
+  void UpdateSkill();
 
-    SkillInfo* pInfo = new SkillInfo;
-    pInfo->skillTag_ = skillTag;
-    pInfo->skill_ = std::bind(funcPtr, owner);
-    pInfo->searchHandle_ = skillTable_.Insert(pInfo, &pInfo->skillTag_, 8);
+  void ExecuteSkill(unsigned long long skillTag);
 
-    return nullptr != pInfo->searchHandle_;
-  }
+  bool IsSkillExecuting();
 
-  void ActivateSkill(unsigned long long skillTag);
+  void ResetEventExcutedFlags(Skill* pSkill);
 
-  void DeactivateSkill();
+  void ResetStateMiscFlags(Skill* pSkill);
 
-  void UpdateActiveSkill() const;
+  // -------------- Skill Casting Condition Check -----
+  bool CheckCastingCondition(SKILL_CASTING_CONDITION_TYPE castCondition);
 
-  bool GetMiscTemp() const;
+  bool HasSkillPoint() const;
+  // --------------------------------------------------
 
-  void SetMiscTemp(bool temp);
+  // -------------- Skill Casting Action --------------
+  void ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction);
 
-  SkillInfo* GetCurrentActiveSkillInfo();
+  void ReduceSkillPoint();
+  // --------------------------------------------------
+
+
+  // -------------- Skill Condition -------------------
+  bool CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition, const SkillFrameActionConditionParams& params) const;
+
+  bool GetCurStateMiscFlag() const;
+ 
+  bool IsOpponentWithinDistanceThresHold(const SkillFrameActionConditionParams& params) const;
+  // --------------------------------------------------
+  
+  // -------------- Skill Frame Action -------------
+  void ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params);
+
+  void DeActiveSkill();
+
+  void ChangeSkillState(const SkillFrameActionParams& params);
+
+  void ExcuteJump(const SkillFrameActionParams& params);
+
+  void ExcuteDash(const SkillFrameActionParams& params);
+
+  void ExcuteDashStop(const SkillFrameActionParams& params);
+
+  void ExcuteSpawnEffect(const SkillFrameActionParams& params);
+
+  void ExcuteFireProjectile(const SkillFrameActionParams& params);
+
+  void ExcuteCommand(const SkillFrameActionParams& params);
+
+  void ChangeOpponentAnimState(const SkillFrameActionParams& params);
+
+  void SetPositionOpponentPlayer(const SkillFrameActionParams& params);
+
+  void InflictStunOpponentPlayer(const SkillFrameActionParams& params);
+
+  void ReleaseStunOpponentPlayer(const SkillFrameActionParams& params);
+
+  void FreezeOpponentPlayer(const SkillFrameActionParams& params);
+
+  void DefreezeOpponentPlayer(const SkillFrameActionParams& params);
+
+  void ExcuteCameraShake(const SkillFrameActionParams& params);
+
+  void ExcuteFadeIn(const SkillFrameActionParams& params);
+
+  void ExcuteFadeOut(const SkillFrameActionParams& params);
+
+  void ExcuteFadeInOut(const SkillFrameActionParams& params);
+
+  void ExcuteSoundPlay(const SkillFrameActionParams& params);
+
+  void SetCurStateMiscFlagTrue(const SkillFrameActionParams& params);
+
+  // --------------------------------------------------
 
  private:
+  KOFPlayer* pOwnerPlayer_;
+
+  ImageRenderer* pOwnerRenderer_;
+
+  MovementComponent* pOwnerMovementConponent_;
+
+  InputController* pOwnerInputController_;
+
+  CollisionComponent* pOwnerAttackCollision_;
+
+  ProjectileComponent* pOwnerProjectileComponent_;
+
+  MPComponent* pOwnerMPComponent_;
+
   HashTable skillTable_;
 
-  bool onSkillActive_;
+  Skill* executingSkill_;
 
-  bool miscTemp_;
-
-  SkillInfo* activeSkillInfo_;
+  unsigned int curSkillStateIndex_ = 0;
 };

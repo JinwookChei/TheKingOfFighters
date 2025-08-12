@@ -5,7 +5,6 @@
 #include "InputController.h"
 #include "CommandHandler.h"
 #include "SkillComponent.h"
-#include "SkillHandler.h"
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
 #include "StateComponent.h"
@@ -18,7 +17,6 @@
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
-#include "SkillTest.h"
 
 KOFPlayer::KOFPlayer()
     : pInputController_(nullptr),
@@ -38,7 +36,6 @@ KOFPlayer::KOFPlayer()
       pPushBox_(nullptr),
       pGrabBox_(nullptr),
       pSkillComponent_(nullptr),
-      pSkillHandler_(nullptr),
       pCommandComponent_(nullptr),
       pCommandHandler_(nullptr),
       pProjectileComponent_(nullptr),
@@ -89,9 +86,9 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   
   pInputController_->ResetInputBitSet();
 
-  if (true == pRestrictionComponent_->CanInput()) {
-    pInputController_->UpdateInput();
+  pInputController_->UpdateInput();
 
+  if (true == pRestrictionComponent_->CanInput()) {
     CompareInputBitset();
   }
 
@@ -189,12 +186,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pPushBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_PushBox);
   pGrabBox_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_GrabBox);
 
-  // SKILL
-  pSkillComponent_ = CreateComponent<SkillComponent>();
-  if (false == pSkillComponent_->Initialize()) {
-    return;
-  }
-
   // COMMEND
   pCommandComponent_ = CreateComponent<CommandComponent>();
   pCommandComponent_->SetTimeOutThreshold(150, 400);
@@ -233,8 +224,16 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   pPushBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::White});
   pGrabBox_->SetDebugParameter({.on_ = true, .withRectangle_ = true, .linethickness_ = 2.0f, .color_ = Color8Bit::Yellow});
 
-  skillTest_ = CreateComponent<SkillTest>();
-  if (false == skillTest_->Initialize(this, pRender_, pMovementComponent_, pInputController_, pAttackBox_, pProjectileComponent_, pMPComponent_)) {
+  //  SKILL
+  pSkillComponent_ = CreateComponent<SkillComponent>();
+  if (false == pSkillComponent_->Initialize(
+                   this,
+                   pRender_,
+                   pMovementComponent_,
+                   pInputController_,
+                   pAttackBox_,
+                   pProjectileComponent_,
+                   pMPComponent_)) {
     return;
   }
 }

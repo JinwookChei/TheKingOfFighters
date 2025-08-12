@@ -64,7 +64,7 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Seat, IMGTYPE_IoriImage, 552, 556, ANIMINTERVAL, false, 552);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpUp, IMGTYPE_IoriImage, {595}, 160, false, 595);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpDown, IMGTYPE_IoriImage, 80, 85, ANIMINTERVAL, false, 82);
-  CallCreateAnimation(PLAYER_ANIMTYPE_Grabbed, IMGTYPE_IoriImage, {557}, 150, false, 557);
+  //CallCreateAnimation(PLAYER_ANIMTYPE_Grabbed, IMGTYPE_IoriImage, {557}, 150, false, 557);
   CallCreateAnimation(PLAYER_ANIMTYPE_NeckGrabbed, IMGTYPE_IoriImage, 572, 575, 150, false, 572);
   CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_IoriImage, 223, 230, ANIMINTERVAL, false, 223);
   CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);
@@ -83,7 +83,7 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_6, IMGTYPE_IoriImage, 99, 107, 16, false, 99);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_7, IMGTYPE_IoriImage, 159, 163, 16, false, 159);
   CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_IoriImage, 99, 107, 16, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_IoriImage, 347, 352, 180, false, 347);
+  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_IoriImage, 347, 352, 140, false, 347);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_IoriImage, 353, 360, 16, false, 353);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 30, false, 161);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);

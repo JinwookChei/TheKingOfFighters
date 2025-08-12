@@ -16,12 +16,12 @@ bool IoriSkillHandler::RegistSkills() {
     return false;
   }
 
-  pOwnerSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &IoriSkillHandler::GaishikiMutan, this);
-  pOwnerSkillComponent_->RegistSkill(IORI_SKILL_108ShikiYamiBarai, &IoriSkillHandler::ShikiYamiBarai108, this);
-  pOwnerSkillComponent_->RegistSkill(IORI_SKILL_HyakushikiOniyaki, &IoriSkillHandler::HyakushikiOniyaki, this);
-  pOwnerSkillComponent_->RegistSkill(IORI_SKILL_127ShikiAoiHana, &IoriSkillHandler::ShikiAoiHana127, this);
-  pOwnerSkillComponent_->RegistSkill(IORI_SKILL_1211ShikiYaOtome, &IoriSkillHandler::ShikiYaOtome1211, this);
-  pOwnerSkillComponent_->RegistSkill(IORI_SKILL_Ura306shikiShika, &IoriSkillHandler::Ura306shikiShika, this);
+  //pOwnerSkillComponent_->RegistSkill(IORI_SKILL_GaishikiMutan, &IoriSkillHandler::GaishikiMutan, this);
+  //pOwnerSkillComponent_->RegistSkill(IORI_SKILL_108ShikiYamiBarai, &IoriSkillHandler::ShikiYamiBarai108, this);
+  //pOwnerSkillComponent_->RegistSkill(IORI_SKILL_HyakushikiOniyaki, &IoriSkillHandler::HyakushikiOniyaki, this);
+  //pOwnerSkillComponent_->RegistSkill(IORI_SKILL_127ShikiAoiHana, &IoriSkillHandler::ShikiAoiHana127, this);
+  //pOwnerSkillComponent_->RegistSkill(IORI_SKILL_1211ShikiYaOtome, &IoriSkillHandler::ShikiYaOtome1211, this);
+  //pOwnerSkillComponent_->RegistSkill(IORI_SKILL_Ura306shikiShika, &IoriSkillHandler::Ura306shikiShika, this);
 
   return true;
 }

@@ -55,9 +55,6 @@
     <Filter Include="Contents\KOF\Common">
       <UniqueIdentifier>{283e86d7-ad13-499b-9ea7-cbcaeb2230da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\KOF\Manager">
-      <UniqueIdentifier>{1fa86f26-bfbc-44c8-96d8-cb1a8250aa81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Contents\KOF\Actor\Projectile">
       <UniqueIdentifier>{0aa567c6-a5b6-4c45-963a-33a144b06ca0}</UniqueIdentifier>
     </Filter>
@@ -186,7 +183,7 @@
     <ClCompile Include="StateComponent.cpp">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
-    <ClCompile Include="SkillComponent.cpp">
+    <ClCompile Include="SkillDUMMY.cpp">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="ScreenMask.cpp">
@@ -258,7 +255,7 @@
     <ClCompile Include="IoriAnimationHandler.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
-    <ClCompile Include="SkillTest.cpp">
+    <ClCompile Include="SkillComponent.cpp">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="InputController.cpp">
@@ -389,7 +386,7 @@
     <ClInclude Include="StateComponent.h">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
-    <ClInclude Include="SkillComponent.h">
+    <ClInclude Include="SkillDUMMY.h">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="ScreenMask.h">
@@ -461,7 +458,7 @@
     <ClInclude Include="IoriAnimationHandler.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClInclude>
-    <ClInclude Include="SkillTest.h">
+    <ClInclude Include="SkillComponent.h">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="InputController.h">

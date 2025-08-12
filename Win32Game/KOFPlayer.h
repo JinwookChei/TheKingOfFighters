@@ -6,7 +6,6 @@ class MovementComponent;
 class CommandComponent;
 class CommandHandler;
 class SkillComponent;
-class SkillHandler;
 class ProjectileComponent;
 class AttackTable;
 struct AttackInfo;
@@ -124,8 +123,6 @@ class KOFPlayer
   CollisionComponent* pGrabBox_;
 
   SkillComponent* pSkillComponent_;
-
-  SkillHandler* pSkillHandler_;
 
   CommandComponent* pCommandComponent_;
 

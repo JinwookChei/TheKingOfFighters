@@ -16,17 +16,14 @@
 #include "GhostEffect.h"
 #include "CollisionBox.h"
 #include "Iori.h"
-
-//#include "AnimFrozenManager.h"
 #include "AnimationHandler.h"
 #include "IoriAnimationHandler.h"
 #include "CommandHandler.h"
 #include "IoriCommandHandler.h"
 #include "SkillHandler.h"
 #include "IoriSkillHandler.h"
-
 #include "InputController.h"
-#include "SkillTest.h"
+
 Iori::Iori() {
 }
 
@@ -146,7 +143,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_Seat, {PS_Hit, PS_Seat});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_JumpUp, {PS_Hit});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_JumpDown, {PS_Hit});
-  pStateComponent_->RegistState(PLAYER_ANIMTYPE_Grabbed, {PS_Hit});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_NeckGrabbed, {PS_Hit});
   pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, {PS_Attack});
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, {PS_Attack});
@@ -170,7 +166,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(IORI_ANIMTYPE_Ura306shikiShika_2, {PS_Attack});
   pStateComponent_->RegistState(IORI_ANIMTYPE_Ura306shikiShika_3, {PS_Attack});
 
-  // RESTRICTION 
+  // RESTRICTION
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_StartPos, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Idle, {});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_SeatDown, {PR_LockInput});
@@ -216,7 +212,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Hit_Seat, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Hit_JumpUp, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Hit_JumpDown, {PR_LockInput});
-  pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Grabbed, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_NeckGrabbed, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_108ShikiYamiBarai, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_GaishikiMutan_1, {PR_LockInput});
@@ -288,18 +283,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
     return;
   }
 
-  // SKILL
-  pSkillHandler_ = CreateComponent<IoriSkillHandler>();
-  if (nullptr == pSkillHandler_) {
-    return;
-  }
-  if (false == pSkillHandler_->Initialize(this, pSkillComponent_, pRender_, pAnimationHandler_, pMovementComponent_, pStateComponent_, pAttackBox_, pCommandComponent_, pProjectileComponent_, pMPComponent_)) {
-    return;
-  }
-  if (false == pSkillHandler_->RegistSkills()) {
-    return;
-  }
-
   // TODP : SKILL TEST
   // SKILL 0
   SkillFrameActionData SK0_ST0_FR0_AC0_Data0;
@@ -349,7 +332,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_0.castCondition_ = SKILL_CAST_COND_None;
   Skill_0.skillStates_.push_back(SK0_State0);
   Skill_0.skillStates_.push_back(SK0_State1);
-  skillTest_->RegistSkill(Skill_0);
+  pSkillComponent_->RegistSkill(Skill_0);
 
   // SKILL 1
   SkillFrameActionData SK1_ST0_FR0_AC0_Data0;
@@ -385,7 +368,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   skill_1.skillTag_ = SKILL_1;
   skill_1.castCondition_ = SKILL_CAST_COND_None;
   skill_1.skillStates_.push_back(SK1_State0);
-  skillTest_->RegistSkill(skill_1);
+  pSkillComponent_->RegistSkill(skill_1);
 
   // SKILL 2
   SkillFrameActionData SK2_ST0_FR0_AC0_Data0;
@@ -443,7 +426,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_2.skillTag_ = SKILL_2;
   Skill_2.castCondition_ = SKILL_CAST_COND_None;
   Skill_2.skillStates_.push_back(SK2_State0);
-  skillTest_->RegistSkill(Skill_2);
+  pSkillComponent_->RegistSkill(Skill_2);
 
   // SKILL 3
   SkillFrameActionData SK3_ST0_FR0_AC0_Data0;
@@ -575,455 +558,473 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_3.skillStates_.push_back(SK3_State0);
   Skill_3.skillStates_.push_back(SK3_State1);
   Skill_3.skillStates_.push_back(SK3_State2);
-  skillTest_->RegistSkill(Skill_3);
+  pSkillComponent_->RegistSkill(Skill_3);
+
 
   // SKILL 4
   SkillFrameActionData SK4_ST0_FR0_AC0_Data0;
-  SK4_ST0_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_SpawnEffect;
-  SK4_ST0_FR0_AC0_Data0.actionParams_.effectType_ = EFTYPE_Casting_1;
-  SK4_ST0_FR0_AC0_Data0.actionParams_.spawnEffectPos_ = {0.0f, -500.0f};
+  SK4_ST0_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementJump;
+  SK4_ST0_FR0_AC0_Data0.actionParams_.jumpForce_ = {1.7f, -2.3f};
   SkillFrameActionConditionData SK4_ST0_FR0_AC0_Cond0;
   SK4_ST0_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
   SkillFrameAction SK4_ST0_FR0_Action0;
-  SK4_ST0_FR0_Action0.actionDatas_.push_back(SK4_ST0_FR0_AC0_Data0);
   SK4_ST0_FR0_Action0.conditionDatas_.push_back(SK4_ST0_FR0_AC0_Cond0);
-  SkillFrameActionData SK4_ST0_FR0_AC1_Data0;
-  SK4_ST0_FR0_AC1_Data0.actionType_ = SKILL_FRAME_ACTION_SpawnEffect;
-  SK4_ST0_FR0_AC1_Data0.actionParams_.effectType_ = EFTYPE_Casting_2;
-  SK4_ST0_FR0_AC1_Data0.actionParams_.spawnEffectPos_ = {0.0f, -500.0f};
-  SkillFrameActionConditionData SK4_ST0_FR0_AC1_Cond0;
-  SK4_ST0_FR0_AC1_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST0_FR0_Action1;
-  SK4_ST0_FR0_Action1.actionDatas_.push_back(SK4_ST0_FR0_AC1_Data0);
-  SK4_ST0_FR0_Action1.conditionDatas_.push_back(SK4_ST0_FR0_AC1_Cond0);
-  SkillFrameActionData SK4_ST0_FR0_AC2_Data0;
-  SK4_ST0_FR0_AC2_Data0.actionType_ = SKILL_FRAME_ACTION_FreezeOpponentPlayer;
-  SK4_ST0_FR0_AC2_Data0.actionParams_.isInfiniteFreeze_ = true;
-  SkillFrameActionConditionData SK4_ST0_FR0_AC2_Cond0;
-  SK4_ST0_FR0_AC2_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST0_FR0_Action2;
-  SK4_ST0_FR0_Action2.actionDatas_.push_back(SK4_ST0_FR0_AC2_Data0);
-  SK4_ST0_FR0_Action2.conditionDatas_.push_back(SK4_ST0_FR0_AC2_Cond0);
-  SkillFrameActionData SK4_ST0_FR0_AC3_Data0;
-  SK4_ST0_FR0_AC3_Data0.actionType_ = SKILL_FRAME_ACTION_FadeOut;
-  SK4_ST0_FR0_AC3_Data0.actionParams_.fadeDuration_ = 50;
-  SK4_ST0_FR0_AC3_Data0.actionParams_.fadeImageType_ = IMGTYPE_BlackBoardImage;
-  SkillFrameActionConditionData SK4_ST0_FR0_AC3_Cond0;
-  SK4_ST0_FR0_AC3_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SK4_ST0_FR0_AC3_Cond0.conditionParams_;
-  SkillFrameAction SK4_ST0_FR0_Action3;
-  SK4_ST0_FR0_Action3.conditionDatas_.push_back(SK4_ST0_FR0_AC3_Cond0);
-  SK4_ST0_FR0_Action3.actionDatas_.push_back(SK4_ST0_FR0_AC3_Data0);
+  SK4_ST0_FR0_Action0.actionDatas_.push_back(SK4_ST0_FR0_AC0_Data0);
   SkillFrame SK4_ST0_Frame0;
-  SK4_ST0_Frame0.startIndex_ = 344;
-  SK4_ST0_Frame0.endIndex_ = 344;
+  SK4_ST0_Frame0.startIndex_ = 145;
+  SK4_ST0_Frame0.endIndex_ = 145;
   SK4_ST0_Frame0.actions_.push_back(SK4_ST0_FR0_Action0);
-  SK4_ST0_Frame0.actions_.push_back(SK4_ST0_FR0_Action1);
-  SK4_ST0_Frame0.actions_.push_back(SK4_ST0_FR0_Action2);
-  SK4_ST0_Frame0.actions_.push_back(SK4_ST0_FR0_Action3);
-  SkillFrameActionData SK4_ST0_FR1_AC0_Data0;
-  SK4_ST0_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST0_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 1;
-  SkillFrameActionConditionData SK4_ST0_FR1_AC0_Cond0;
-  SK4_ST0_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_AnimationEnd;
-  SkillFrameAction SK4_ST0_FR1_Action0;
-  SK4_ST0_FR1_Action0.actionDatas_.push_back(SK4_ST0_FR1_AC0_Data0);
-  SK4_ST0_FR1_Action0.conditionDatas_.push_back(SK4_ST0_FR1_AC0_Cond0);
-  SkillFrame SK4_ST0_Frame1;
-  SK4_ST0_Frame1.startIndex_ = 347;
-  SK4_ST0_Frame1.endIndex_ = 347;
-  SK4_ST0_Frame1.actions_.push_back(SK4_ST0_FR1_Action0);
   SkillState SK4_State0;
-  SK4_State0.animState_ = PLAYER_ANIMTYPE_UltimateCasting;
+  SK4_State0.animState_ = IORI_ANIMTYPE_Shinigami;
   SK4_State0.frames_.push_back(SK4_ST0_Frame0);
-  SK4_State0.frames_.push_back(SK4_ST0_Frame1);
-  SkillFrameActionData SK4_ST1_FR0_AC0_Data0;
-  SK4_ST1_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_DefreezeOpponentPlayer;
-  SK4_ST1_FR0_AC0_Data0.actionParams_;
-  SkillFrameActionConditionData SK4_ST1_FR0_AC0_Cond0;
-  SK4_ST1_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameActionData SK4_ST1_FR0_AC0_Data1;
-  SK4_ST1_FR0_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_FadeIn;
-  SK4_ST1_FR0_AC0_Data1.actionParams_.fadeDuration_= 50;
-  SkillFrameActionConditionData SK4_ST1_FR0_AC0_Cond1;
-  SK4_ST1_FR0_AC0_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST1_FR0_Action0;
-  SK4_ST1_FR0_Action0.actionDatas_.push_back(SK4_ST1_FR0_AC0_Data0);
-  SK4_ST1_FR0_Action0.conditionDatas_.push_back(SK4_ST1_FR0_AC0_Cond0);
-  SK4_ST1_FR0_Action0.actionDatas_.push_back(SK4_ST1_FR0_AC0_Data1);
-  SK4_ST1_FR0_Action0.conditionDatas_.push_back(SK4_ST1_FR0_AC0_Cond1);
-  SkillFrame SK4_ST1_Frame0;
-  SK4_ST1_Frame0.startIndex_ = 70;
-  SK4_ST1_Frame0.endIndex_ = 70;
-  SK4_ST1_Frame0.actions_.push_back(SK4_ST1_FR0_Action0);
-  SkillFrameActionData SK4_ST1_FR1_AC0_Data0;
-  SK4_ST1_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementDash;
-  SK4_ST1_FR1_AC0_Data0.actionParams_.dashDuration_ = 250.0f;
-  SK4_ST1_FR1_AC0_Data0.actionParams_.dashDistance_ = 1000.0f;
-  SkillFrameActionConditionData SK4_ST1_FR1_AC0_Cond0;
-  SK4_ST1_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST1_FR1_Action0;
-  SK4_ST1_FR1_Action0.actionDatas_.push_back(SK4_ST1_FR1_AC0_Data0);
-  SK4_ST1_FR1_Action0.conditionDatas_.push_back(SK4_ST1_FR1_AC0_Cond0);
-  SkillFrame SK4_ST1_Frame1;
-  SK4_ST1_Frame1.startIndex_ = 72;
-  SK4_ST1_Frame1.endIndex_ = 72;
-  SK4_ST1_Frame1.actions_.push_back(SK4_ST1_FR1_Action0);
+  Skill skill_4;
+  skill_4.skillTag_ = SKILL_4;
+  skill_4.castCondition_ = SKILL_CAST_COND_None;
+  skill_4.skillStates_.push_back(SK4_State0);
+  pSkillComponent_->RegistSkill(skill_4);
 
-  SkillFrameActionConditionData SK4_ST1_FR2_AC0_Cond0;
-  SK4_ST1_FR2_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_HasAttackCollition;
-  SkillFrameActionData SK4_ST1_FR2_AC0_Data0;
-  SK4_ST1_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_InflictStunOpponentPlayer;
-  SK4_ST1_FR2_AC0_Data0.actionParams_;
-  SkillFrameActionData SK4_ST1_FR2_AC0_Data1;
-  SK4_ST1_FR2_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_MovementDash;
-  SK4_ST1_FR2_AC0_Data1.actionParams_.dashDuration_ = 250.0f;
-  SK4_ST1_FR2_AC0_Data1.actionParams_.dashDistance_ = 1000.0f;
-  SkillFrameAction SK4_ST1_FR2_Action0;
-  SK4_ST1_FR2_Action0.conditionDatas_.push_back(SK4_ST1_FR2_AC0_Cond0);
-  SK4_ST1_FR2_Action0.actionDatas_.push_back(SK4_ST1_FR2_AC0_Data0);
-  SK4_ST1_FR2_Action0.actionDatas_.push_back(SK4_ST1_FR2_AC0_Data1);
-  SkillFrameActionConditionData SK4_ST1_FR2_AC1_Cond0;
-  SK4_ST1_FR2_AC1_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_HasAttackCollition;
-  SkillFrameActionConditionData SK4_ST1_FR2_AC1_Cond1;
-  SK4_ST1_FR2_AC1_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold;
-  SK4_ST1_FR2_AC1_Cond1.conditionParams_.opponentDistanceThreshold = 240.0f;
-  SkillFrameActionData SK4_ST1_FR2_AC1_Data0;
-  SK4_ST1_FR2_AC1_Data0.actionType_ = SKILL_FRAME_ACTION_MovementStopDash;
-  SkillFrameActionData SK4_ST1_FR2_AC1_Data1;
-  SK4_ST1_FR2_AC1_Data1.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST1_FR2_AC1_Data1.actionParams_.changeStateIndex_ = 2;
-  SkillFrameAction SK4_ST1_FR2_Action1;
-  SK4_ST1_FR2_Action1.conditionDatas_.push_back(SK4_ST1_FR2_AC1_Cond0);
-  SK4_ST1_FR2_Action1.conditionDatas_.push_back(SK4_ST1_FR2_AC1_Cond1);
-  SK4_ST1_FR2_Action1.actionDatas_.push_back(SK4_ST1_FR2_AC1_Data0);
-  SK4_ST1_FR2_Action1.actionDatas_.push_back(SK4_ST1_FR2_AC1_Data1);
-  SkillFrame SK4_ST1_Frame2;
-  SK4_ST1_Frame2.startIndex_ = 70;
-  SK4_ST1_Frame2.endIndex_ = 77;
-  SK4_ST1_Frame2.actions_.push_back(SK4_ST1_FR2_Action0);
-  SK4_ST1_Frame2.actions_.push_back(SK4_ST1_FR2_Action1);
-  SkillState SK4_State1;
-  SK4_State1.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_1;
-  SK4_State1.frames_.push_back(SK4_ST1_Frame0);
-  SK4_State1.frames_.push_back(SK4_ST1_Frame1);
-  SK4_State1.frames_.push_back(SK4_ST1_Frame2);
 
-  SkillFrameActionData SK4_ST2_FR0_AC0_Data0;
-  SK4_ST2_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST2_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST2_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST2_FR0_AC0_Cond0;
-  SK4_ST2_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST2_FR0_Action0;
-  SK4_ST2_FR0_Action0.actionDatas_.push_back(SK4_ST2_FR0_AC0_Data0);
-  SK4_ST2_FR0_Action0.conditionDatas_.push_back(SK4_ST2_FR0_AC0_Cond0);
-  SkillFrame SK4_ST2_Frame0;
-  SK4_ST2_Frame0.startIndex_ = 120;
-  SK4_ST2_Frame0.endIndex_ = 120;
-  SK4_ST2_Frame0.actions_.push_back(SK4_ST2_FR0_Action0);
-  SkillFrameActionData SK4_ST2_FR1_AC0_Data0;
-  SK4_ST2_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST2_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 3;
-  SkillFrameActionConditionData SK4_ST2_FR1_AC0_Cond0;
-  SK4_ST2_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST2_FR1_Action0;
-  SK4_ST2_FR1_Action0.conditionDatas_.push_back(SK4_ST2_FR1_AC0_Cond0);
-  SK4_ST2_FR1_Action0.actionDatas_.push_back(SK4_ST2_FR1_AC0_Data0);
-  SkillFrame SK4_ST2_Frame1;
-  SK4_ST2_Frame1.startIndex_ = 122;
-  SK4_ST2_Frame1.endIndex_ = 122;
-  SK4_ST2_Frame1.actions_.push_back(SK4_ST2_FR1_Action0);
-  SkillState SK4_State2;
-  SK4_State2.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_2;
-  SK4_State2.frames_.push_back(SK4_ST2_Frame0);
-  SK4_State2.frames_.push_back(SK4_ST2_Frame1);
-
-  SkillFrameActionData SK4_ST3_FR0_AC0_Data0;
-  SK4_ST3_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST3_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST3_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST3_FR0_AC0_Cond0;
-  SK4_ST3_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST3_FR0_Action0;
-  SK4_ST3_FR0_Action0.actionDatas_.push_back(SK4_ST3_FR0_AC0_Data0);
-  SK4_ST3_FR0_Action0.conditionDatas_.push_back(SK4_ST3_FR0_AC0_Cond0);
-  SkillFrame SK4_ST3_Frame0;
-  SK4_ST3_Frame0.startIndex_ = 90;
-  SK4_ST3_Frame0.endIndex_ = 90;
-  SK4_ST3_Frame0.actions_.push_back(SK4_ST3_FR0_Action0);
-  SkillFrameActionData SK4_ST3_FR1_AC0_Data0;
-  SK4_ST3_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST3_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 4;
-  SkillFrameActionConditionData SK4_ST3_FR1_AC0_Cond0;
-  SK4_ST3_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST3_FR1_Action0;
-  SK4_ST3_FR1_Action0.conditionDatas_.push_back(SK4_ST3_FR1_AC0_Cond0);
-  SK4_ST3_FR1_Action0.actionDatas_.push_back(SK4_ST3_FR1_AC0_Data0);
-  SkillFrame SK4_ST3_Frame1;
-  SK4_ST3_Frame1.startIndex_ = 92;
-  SK4_ST3_Frame1.endIndex_ = 92;
-  SK4_ST3_Frame1.actions_.push_back(SK4_ST3_FR1_Action0);
-  SkillState SK4_State3;
-  SK4_State3.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_3;
-  SK4_State3.frames_.push_back(SK4_ST3_Frame0);
-  SK4_State3.frames_.push_back(SK4_ST3_Frame1);
-
-  SkillFrameActionData SK4_ST4_FR0_AC0_Data0;
-  SK4_ST4_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST4_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST4_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST4_FR0_AC0_Cond0;
-  SK4_ST4_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST4_FR0_Action0;
-  SK4_ST4_FR0_Action0.actionDatas_.push_back(SK4_ST4_FR0_AC0_Data0);
-  SK4_ST4_FR0_Action0.conditionDatas_.push_back(SK4_ST4_FR0_AC0_Cond0);
-  SkillFrame SK4_ST4_Frame0;
-  SK4_ST4_Frame0.startIndex_ = 132;
-  SK4_ST4_Frame0.endIndex_ = 132;
-  SK4_ST4_Frame0.actions_.push_back(SK4_ST4_FR0_Action0);
-  SkillFrameActionData SK4_ST4_FR1_AC0_Data0;
-  SK4_ST4_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST4_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 5;
-  SkillFrameActionConditionData SK4_ST4_FR1_AC0_Cond0;
-  SK4_ST4_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST4_FR1_Action0;
-  SK4_ST4_FR1_Action0.conditionDatas_.push_back(SK4_ST4_FR1_AC0_Cond0);
-  SK4_ST4_FR1_Action0.actionDatas_.push_back(SK4_ST4_FR1_AC0_Data0);
-  SkillFrame SK4_ST4_Frame1;
-  SK4_ST4_Frame1.startIndex_ = 135;
-  SK4_ST4_Frame1.endIndex_ = 135;
-  SK4_ST4_Frame1.actions_.push_back(SK4_ST4_FR1_Action0);
-  SkillState SK4_State4;
-  SK4_State4.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_4;
-  SK4_State4.frames_.push_back(SK4_ST4_Frame0);
-  SK4_State4.frames_.push_back(SK4_ST4_Frame1);
-
-  SkillFrameActionData SK4_ST5_FR0_AC0_Data0;
-  SK4_ST5_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST5_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST5_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST5_FR0_AC0_Cond0;
-  SK4_ST5_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST5_FR0_Action0;
-  SK4_ST5_FR0_Action0.actionDatas_.push_back(SK4_ST5_FR0_AC0_Data0);
-  SK4_ST5_FR0_Action0.conditionDatas_.push_back(SK4_ST5_FR0_AC0_Cond0);
-  SkillFrame SK4_ST5_Frame0;
-  SK4_ST5_Frame0.startIndex_ = 227;
-  SK4_ST5_Frame0.endIndex_ = 227;
-  SK4_ST5_Frame0.actions_.push_back(SK4_ST5_FR0_Action0);
-  SkillFrameActionData SK4_ST5_FR1_AC0_Data0;
-  SK4_ST5_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST5_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 6;
-  SkillFrameActionConditionData SK4_ST5_FR1_AC0_Cond0;
-  SK4_ST5_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST5_FR1_Action0;
-  SK4_ST5_FR1_Action0.conditionDatas_.push_back(SK4_ST5_FR1_AC0_Cond0);
-  SK4_ST5_FR1_Action0.actionDatas_.push_back(SK4_ST5_FR1_AC0_Data0);
-  SkillFrame SK4_ST5_Frame1;
-  SK4_ST5_Frame1.startIndex_ = 229;
-  SK4_ST5_Frame1.endIndex_ = 229;
-  SK4_ST5_Frame1.actions_.push_back(SK4_ST5_FR1_Action0);
-  SkillState SK4_State5;
-  SK4_State5.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_5;
-  SK4_State5.frames_.push_back(SK4_ST5_Frame0);
-  SK4_State5.frames_.push_back(SK4_ST5_Frame1);
-
-  SkillFrameActionData SK4_ST6_FR0_AC0_Data0;
-  SK4_ST6_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST6_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST6_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST6_FR0_AC0_Cond0;
-  SK4_ST6_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST6_FR0_Action0;
-  SK4_ST6_FR0_Action0.actionDatas_.push_back(SK4_ST6_FR0_AC0_Data0);
-  SK4_ST6_FR0_Action0.conditionDatas_.push_back(SK4_ST6_FR0_AC0_Cond0);
-  SkillFrame SK4_ST6_Frame0;
-  SK4_ST6_Frame0.startIndex_ = 102;
-  SK4_ST6_Frame0.endIndex_ = 102;
-  SK4_ST6_Frame0.actions_.push_back(SK4_ST6_FR0_Action0);
-  SkillFrameActionData SK4_ST6_FR1_AC0_Data0;
-  SK4_ST6_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST6_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 7;
-  SkillFrameActionConditionData SK4_ST6_FR1_AC0_Cond0;
-  SK4_ST6_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST6_FR1_Action0;
-  SK4_ST6_FR1_Action0.conditionDatas_.push_back(SK4_ST6_FR1_AC0_Cond0);
-  SK4_ST6_FR1_Action0.actionDatas_.push_back(SK4_ST6_FR1_AC0_Data0);
-  SkillFrame SK4_ST6_Frame1;
-  SK4_ST6_Frame1.startIndex_ = 107;
-  SK4_ST6_Frame1.endIndex_ = 107;
-  SK4_ST6_Frame1.actions_.push_back(SK4_ST6_FR1_Action0);
-  SkillState SK4_State6;
-  SK4_State6.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_6;
-  SK4_State6.frames_.push_back(SK4_ST6_Frame0);
-  SK4_State6.frames_.push_back(SK4_ST6_Frame1);
-
-  SkillFrameActionData SK4_ST7_FR0_AC0_Data0;
-  SK4_ST7_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST7_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST7_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST7_FR0_AC0_Cond0;
-  SK4_ST7_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST7_FR0_Action0;
-  SK4_ST7_FR0_Action0.actionDatas_.push_back(SK4_ST7_FR0_AC0_Data0);
-  SK4_ST7_FR0_Action0.conditionDatas_.push_back(SK4_ST7_FR0_AC0_Cond0);
-  SkillFrame SK4_ST7_Frame0;
-  SK4_ST7_Frame0.startIndex_ = 161;
-  SK4_ST7_Frame0.endIndex_ = 161;
-  SK4_ST7_Frame0.actions_.push_back(SK4_ST7_FR0_Action0);
-  SkillFrameActionData SK4_ST7_FR1_AC0_Data0;
-  SK4_ST7_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST7_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 8;
-  SkillFrameActionConditionData SK4_ST7_FR1_AC0_Cond0;
-  SK4_ST7_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST7_FR1_Action0;
-  SK4_ST7_FR1_Action0.conditionDatas_.push_back(SK4_ST7_FR1_AC0_Cond0);
-  SK4_ST7_FR1_Action0.actionDatas_.push_back(SK4_ST7_FR1_AC0_Data0);
-  SkillFrame SK4_ST7_Frame1;
-  SK4_ST7_Frame1.startIndex_ = 163;
-  SK4_ST7_Frame1.endIndex_ = 163;
-  SK4_ST7_Frame1.actions_.push_back(SK4_ST7_FR1_Action0);
-  SkillState SK4_State7;
-  SK4_State7.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_7;
-  SK4_State7.frames_.push_back(SK4_ST7_Frame0);
-  SK4_State7.frames_.push_back(SK4_ST7_Frame1);
-
-  SkillFrameActionData SK4_ST8_FR0_AC0_Data0;
-  SK4_ST8_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST8_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST8_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST8_FR0_AC0_Cond0;
-  SK4_ST8_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST8_FR0_Action0;
-  SK4_ST8_FR0_Action0.actionDatas_.push_back(SK4_ST8_FR0_AC0_Data0);
-  SK4_ST8_FR0_Action0.conditionDatas_.push_back(SK4_ST8_FR0_AC0_Cond0);
-  SkillFrame SK4_ST8_Frame0;
-  SK4_ST8_Frame0.startIndex_ = 102;
-  SK4_ST8_Frame0.endIndex_ = 102;
-  SK4_ST8_Frame0.actions_.push_back(SK4_ST8_FR0_Action0);
-  SkillFrameActionData SK4_ST8_FR1_AC0_Data0;
-  SK4_ST8_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
-  SK4_ST8_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 9;
-  SkillFrameActionConditionData SK4_ST8_FR1_AC0_Cond0;
-  SK4_ST8_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST8_FR1_Action0;
-  SK4_ST8_FR1_Action0.conditionDatas_.push_back(SK4_ST8_FR1_AC0_Cond0);
-  SK4_ST8_FR1_Action0.actionDatas_.push_back(SK4_ST8_FR1_AC0_Data0);
-  SkillFrame SK4_ST8_Frame1;
-  SK4_ST8_Frame1.startIndex_ = 107;
-  SK4_ST8_Frame1.endIndex_ = 107;
-  SK4_ST8_Frame1.actions_.push_back(SK4_ST8_FR1_Action0);
-  SkillState SK4_State8;
-  SK4_State8.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_8;
-  SK4_State8.frames_.push_back(SK4_ST8_Frame0);
-  SK4_State8.frames_.push_back(SK4_ST8_Frame1);
-
-  SkillFrameActionData SK4_ST9_FR0_AC0_Data0;
-  SK4_ST9_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_SetPostionOpponentPlayer;
-  SK4_ST9_FR0_AC0_Data0.actionParams_.opponentForcedPosition_ = {50.0f, -40.0f};
-  SkillFrameActionConditionData SK4_ST9_FR0_AC0_Cond0;
-  SK4_ST9_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST9_FR0_Action0;
-  SK4_ST9_FR0_Action0.actionDatas_.push_back(SK4_ST9_FR0_AC0_Data0);
-  SK4_ST9_FR0_Action0.conditionDatas_.push_back(SK4_ST9_FR0_AC0_Cond0);
-  SkillFrame SK4_ST9_Frame0;
-  SK4_ST9_Frame0.startIndex_ = 348;
-  SK4_ST9_Frame0.endIndex_ = 348;
-  SK4_ST9_Frame0.actions_.push_back(SK4_ST9_FR0_Action0);
-  SkillFrameActionConditionData SK4_ST9_FR1_AC0_Cond0;
-  SK4_ST9_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameActionData SK4_ST9_FR1_AC0_Data0;
-  SK4_ST9_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_SoundPlay;
-  SK4_ST9_FR1_AC0_Data0.actionParams_.soundType_ = SOUNDTYPE_IORI_1211ShikiYaOtome03;
-  SkillFrameActionData SK4_ST9_FR1_AC0_Data1;
-  SK4_ST9_FR1_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_ChangeOpponentAnimState;
-  SK4_ST9_FR1_AC0_Data1.actionParams_.opponentAnimState_ = PLAYER_ANIMTYPE_NeckGrabbed;
-  SkillFrameAction SK4_ST9_FR1_Action0;
-  SK4_ST9_FR1_Action0.conditionDatas_.push_back(SK4_ST9_FR1_AC0_Cond0);
-  SK4_ST9_FR1_Action0.actionDatas_.push_back(SK4_ST9_FR1_AC0_Data0);
-  SK4_ST9_FR1_Action0.actionDatas_.push_back(SK4_ST9_FR1_AC0_Data1);
-  SkillFrame SK4_ST9_Frame1;
-  SK4_ST9_Frame1.startIndex_ = 349;
-  SK4_ST9_Frame1.endIndex_ = 349;
-  SK4_ST9_Frame1.actions_.push_back(SK4_ST9_FR1_Action0);
-  SkillFrameActionData SK4_ST9_FR2_AC0_Data0;
-  SK4_ST9_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
-  SK4_ST9_FR2_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
-  SK4_ST9_FR2_AC0_Data0.actionParams_.fadeDuration_ = 50;
-  SkillFrameActionConditionData SK4_ST9_FR2_AC0_Cond0;
-  SK4_ST9_FR2_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameActionData SK4_ST9_FR2_AC0_Data1;
-  SK4_ST9_FR2_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_CameraShake;
-  SK4_ST9_FR2_AC0_Data1.actionParams_.cameraShakeDuration_ = 400;
-  SkillFrameActionConditionData SK4_ST9_FR2_AC0_Cond1;
-  SK4_ST9_FR2_AC0_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST9_FR2_Action0;
-  SK4_ST9_FR2_Action0.conditionDatas_.push_back(SK4_ST9_FR2_AC0_Cond0);
-  SK4_ST9_FR2_Action0.conditionDatas_.push_back(SK4_ST9_FR2_AC0_Cond1);
-  SK4_ST9_FR2_Action0.actionDatas_.push_back(SK4_ST9_FR2_AC0_Data0);
-  SK4_ST9_FR2_Action0.actionDatas_.push_back(SK4_ST9_FR2_AC0_Data1);
-  SkillFrame SK4_ST9_Frame2;
-  SK4_ST9_Frame2.startIndex_ = 351;
-  SK4_ST9_Frame2.endIndex_ = 351;
-  SK4_ST9_Frame2.actions_.push_back(SK4_ST9_FR2_Action0);
-  SkillFrameActionData SK4_ST9_FR3_AC0_Data0;
-  SK4_ST9_FR3_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer;
-  SK4_ST9_FR3_AC0_Data0.actionParams_;
-  SkillFrameActionConditionData SK4_ST9_FR3_AC0_Cond0;
-  SK4_ST9_FR3_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  SkillFrameAction SK4_ST9_FR3_Action0;
-  SK4_ST9_FR3_Action0.conditionDatas_.push_back(SK4_ST9_FR3_AC0_Cond0);
-  SK4_ST9_FR3_Action0.actionDatas_.push_back(SK4_ST9_FR3_AC0_Data0);
-  SkillFrame SK4_ST9_Frame3;
-  SK4_ST9_Frame3.startIndex_ = 352;
-  SK4_ST9_Frame3.endIndex_ = 352;
-  SK4_ST9_Frame3.actions_.push_back(SK4_ST9_FR3_Action0);
-  SkillState SK4_State9;
-  SK4_State9.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_9;
-  SK4_State9.frames_.push_back(SK4_ST9_Frame0);
-  SK4_State9.frames_.push_back(SK4_ST9_Frame1);
-  SK4_State9.frames_.push_back(SK4_ST9_Frame2);
-  SK4_State9.frames_.push_back(SK4_ST9_Frame3);
-
-  Skill Skill_4;
-  Skill_4.skillTag_ = SKILL_4;
-  Skill_4.castCondition_ = SKILL_CAST_COND_HasSkillPoint;
-  Skill_4.castAction_ = SKILL_CAST_ACTION_ReduceSkillPoint;
-  Skill_4.skillStates_.push_back(SK4_State0);
-  Skill_4.skillStates_.push_back(SK4_State1);
-  Skill_4.skillStates_.push_back(SK4_State2);
-  Skill_4.skillStates_.push_back(SK4_State3);
-  Skill_4.skillStates_.push_back(SK4_State4);
-  Skill_4.skillStates_.push_back(SK4_State5);
-  Skill_4.skillStates_.push_back(SK4_State6);
-  Skill_4.skillStates_.push_back(SK4_State7);
-  Skill_4.skillStates_.push_back(SK4_State8);
-  Skill_4.skillStates_.push_back(SK4_State9);
-  skillTest_->RegistSkill(Skill_4);
-
-  SkillFrameActionData a;
-  a.actionType_ = SKILL_FRAME_ACTION_FadeOut;
-  a.actionParams_.fadeDuration_ = 50;
-  a.actionParams_.fadeImageType_ = IMGTYPE_BlackBoardImage;
-  SkillFrameActionConditionData b;
-  b.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  b.conditionParams_;
+  // SKILL 5
+  SkillFrameActionData SK5_ST0_FR0_AC0_Data0;
+  SK5_ST0_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_SpawnEffect;
+  SK5_ST0_FR0_AC0_Data0.actionParams_.effectType_ = EFTYPE_Casting_1;
+  SK5_ST0_FR0_AC0_Data0.actionParams_.spawnEffectPos_ = {0.0f, -500.0f};
+  SkillFrameActionConditionData SK5_ST0_FR0_AC0_Cond0;
+  SK5_ST0_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
   SkillFrameAction SK5_ST0_FR0_Action0;
-  SK5_ST0_FR0_Action0.conditionDatas_.push_back(b);
-  SK5_ST0_FR0_Action0.actionDatas_.push_back(a);
+  SK5_ST0_FR0_Action0.actionDatas_.push_back(SK5_ST0_FR0_AC0_Data0);
+  SK5_ST0_FR0_Action0.conditionDatas_.push_back(SK5_ST0_FR0_AC0_Cond0);
+  SkillFrameActionData SK5_ST0_FR0_AC1_Data0;
+  SK5_ST0_FR0_AC1_Data0.actionType_ = SKILL_FRAME_ACTION_SpawnEffect;
+  SK5_ST0_FR0_AC1_Data0.actionParams_.effectType_ = EFTYPE_Casting_2;
+  SK5_ST0_FR0_AC1_Data0.actionParams_.spawnEffectPos_ = {0.0f, -500.0f};
+  SkillFrameActionConditionData SK5_ST0_FR0_AC1_Cond0;
+  SK5_ST0_FR0_AC1_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST0_FR0_Action1;
+  SK5_ST0_FR0_Action1.actionDatas_.push_back(SK5_ST0_FR0_AC1_Data0);
+  SK5_ST0_FR0_Action1.conditionDatas_.push_back(SK5_ST0_FR0_AC1_Cond0);
+  SkillFrameActionData SK5_ST0_FR0_AC2_Data0;
+  SK5_ST0_FR0_AC2_Data0.actionType_ = SKILL_FRAME_ACTION_FreezeOpponentPlayer;
+  SK5_ST0_FR0_AC2_Data0.actionParams_.isInfiniteFreeze_ = true;
+  SkillFrameActionConditionData SK5_ST0_FR0_AC2_Cond0;
+  SK5_ST0_FR0_AC2_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST0_FR0_Action2;
+  SK5_ST0_FR0_Action2.actionDatas_.push_back(SK5_ST0_FR0_AC2_Data0);
+  SK5_ST0_FR0_Action2.conditionDatas_.push_back(SK5_ST0_FR0_AC2_Cond0);
+  SkillFrameActionData SK5_ST0_FR0_AC3_Data0;
+  SK5_ST0_FR0_AC3_Data0.actionType_ = SKILL_FRAME_ACTION_FadeOut;
+  SK5_ST0_FR0_AC3_Data0.actionParams_.fadeDuration_ = 50;
+  SK5_ST0_FR0_AC3_Data0.actionParams_.fadeImageType_ = IMGTYPE_BlackBoardImage;
+  SkillFrameActionConditionData SK5_ST0_FR0_AC3_Cond0;
+  SK5_ST0_FR0_AC3_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SK5_ST0_FR0_AC3_Cond0.conditionParams_;
+  SkillFrameAction SK5_ST0_FR0_Action3;
+  SK5_ST0_FR0_Action3.conditionDatas_.push_back(SK5_ST0_FR0_AC3_Cond0);
+  SK5_ST0_FR0_Action3.actionDatas_.push_back(SK5_ST0_FR0_AC3_Data0);
   SkillFrame SK5_ST0_Frame0;
-  SK5_ST0_Frame0.startIndex_ = 100;
-  SK5_ST0_Frame0.endIndex_ = 100;
+  SK5_ST0_Frame0.startIndex_ = 344;
+  SK5_ST0_Frame0.endIndex_ = 344;
   SK5_ST0_Frame0.actions_.push_back(SK5_ST0_FR0_Action0);
+  SK5_ST0_Frame0.actions_.push_back(SK5_ST0_FR0_Action1);
+  SK5_ST0_Frame0.actions_.push_back(SK5_ST0_FR0_Action2);
+  SK5_ST0_Frame0.actions_.push_back(SK5_ST0_FR0_Action3);
+  SkillFrameActionData SK5_ST0_FR1_AC0_Data0;
+  SK5_ST0_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST0_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 1;
+  SkillFrameActionConditionData SK5_ST0_FR1_AC0_Cond0;
+  SK5_ST0_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_AnimationEnd;
+  SkillFrameAction SK5_ST0_FR1_Action0;
+  SK5_ST0_FR1_Action0.actionDatas_.push_back(SK5_ST0_FR1_AC0_Data0);
+  SK5_ST0_FR1_Action0.conditionDatas_.push_back(SK5_ST0_FR1_AC0_Cond0);
+  SkillFrame SK5_ST0_Frame1;
+  SK5_ST0_Frame1.startIndex_ = 347;
+  SK5_ST0_Frame1.endIndex_ = 347;
+  SK5_ST0_Frame1.actions_.push_back(SK5_ST0_FR1_Action0);
   SkillState SK5_State0;
-  SK5_State0.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_8;
+  SK5_State0.animState_ = PLAYER_ANIMTYPE_UltimateCasting;
   SK5_State0.frames_.push_back(SK5_ST0_Frame0);
+  SK5_State0.frames_.push_back(SK5_ST0_Frame1);
+  SkillFrameActionData SK5_ST1_FR0_AC0_Data0;
+  SK5_ST1_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_DefreezeOpponentPlayer;
+  SK5_ST1_FR0_AC0_Data0.actionParams_;
+  SkillFrameActionConditionData SK5_ST1_FR0_AC0_Cond0;
+  SK5_ST1_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST1_FR0_AC0_Data1;
+  SK5_ST1_FR0_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_FadeIn;
+  SK5_ST1_FR0_AC0_Data1.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST1_FR0_AC0_Cond1;
+  SK5_ST1_FR0_AC0_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST1_FR0_Action0;
+  SK5_ST1_FR0_Action0.actionDatas_.push_back(SK5_ST1_FR0_AC0_Data0);
+  SK5_ST1_FR0_Action0.conditionDatas_.push_back(SK5_ST1_FR0_AC0_Cond0);
+  SK5_ST1_FR0_Action0.actionDatas_.push_back(SK5_ST1_FR0_AC0_Data1);
+  SK5_ST1_FR0_Action0.conditionDatas_.push_back(SK5_ST1_FR0_AC0_Cond1);
+  SkillFrame SK5_ST1_Frame0;
+  SK5_ST1_Frame0.startIndex_ = 70;
+  SK5_ST1_Frame0.endIndex_ = 70;
+  SK5_ST1_Frame0.actions_.push_back(SK5_ST1_FR0_Action0);
+  SkillFrameActionData SK5_ST1_FR1_AC0_Data0;
+  SK5_ST1_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementDash;
+  SK5_ST1_FR1_AC0_Data0.actionParams_.dashDuration_ = 250.0f;
+  SK5_ST1_FR1_AC0_Data0.actionParams_.dashDistance_ = 1000.0f;
+  SkillFrameActionConditionData SK5_ST1_FR1_AC0_Cond0;
+  SK5_ST1_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST1_FR1_Action0;
+  SK5_ST1_FR1_Action0.actionDatas_.push_back(SK5_ST1_FR1_AC0_Data0);
+  SK5_ST1_FR1_Action0.conditionDatas_.push_back(SK5_ST1_FR1_AC0_Cond0);
+  SkillFrame SK5_ST1_Frame1;
+  SK5_ST1_Frame1.startIndex_ = 72;
+  SK5_ST1_Frame1.endIndex_ = 72;
+  SK5_ST1_Frame1.actions_.push_back(SK5_ST1_FR1_Action0);
+  SkillFrameActionConditionData SK5_ST1_FR2_AC0_Cond0;
+  SK5_ST1_FR2_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_HasAttackCollition;
+  SkillFrameActionData SK5_ST1_FR2_AC0_Data0;
+  SK5_ST1_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_InflictStunOpponentPlayer;
+  SK5_ST1_FR2_AC0_Data0.actionParams_;
+  SkillFrameActionData SK5_ST1_FR2_AC0_Data1;
+  SK5_ST1_FR2_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_MovementDash;
+  SK5_ST1_FR2_AC0_Data1.actionParams_.dashDuration_ = 250.0f;
+  SK5_ST1_FR2_AC0_Data1.actionParams_.dashDistance_ = 1000.0f;
+  SkillFrameAction SK5_ST1_FR2_Action0;
+  SK5_ST1_FR2_Action0.conditionDatas_.push_back(SK5_ST1_FR2_AC0_Cond0);
+  SK5_ST1_FR2_Action0.actionDatas_.push_back(SK5_ST1_FR2_AC0_Data0);
+  SK5_ST1_FR2_Action0.actionDatas_.push_back(SK5_ST1_FR2_AC0_Data1);
+  SkillFrameActionConditionData SK5_ST1_FR2_AC1_Cond0;
+  SK5_ST1_FR2_AC1_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_HasAttackCollition;
+  SkillFrameActionConditionData SK5_ST1_FR2_AC1_Cond1;
+  SK5_ST1_FR2_AC1_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold;
+  SK5_ST1_FR2_AC1_Cond1.conditionParams_.opponentDistanceThreshold = 240.0f;
+  SkillFrameActionData SK5_ST1_FR2_AC1_Data0;
+  SK5_ST1_FR2_AC1_Data0.actionType_ = SKILL_FRAME_ACTION_MovementStopDash;
+  SkillFrameActionData SK5_ST1_FR2_AC1_Data1;
+  SK5_ST1_FR2_AC1_Data1.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST1_FR2_AC1_Data1.actionParams_.changeStateIndex_ = 2;
+  SkillFrameAction SK5_ST1_FR2_Action1;
+  SK5_ST1_FR2_Action1.conditionDatas_.push_back(SK5_ST1_FR2_AC1_Cond0);
+  SK5_ST1_FR2_Action1.conditionDatas_.push_back(SK5_ST1_FR2_AC1_Cond1);
+  SK5_ST1_FR2_Action1.actionDatas_.push_back(SK5_ST1_FR2_AC1_Data0);
+  SK5_ST1_FR2_Action1.actionDatas_.push_back(SK5_ST1_FR2_AC1_Data1);
+  SkillFrame SK5_ST1_Frame2;
+  SK5_ST1_Frame2.startIndex_ = 70;
+  SK5_ST1_Frame2.endIndex_ = 77;
+  SK5_ST1_Frame2.actions_.push_back(SK5_ST1_FR2_Action0);
+  SK5_ST1_Frame2.actions_.push_back(SK5_ST1_FR2_Action1);
+  SkillState SK5_State1;
+  SK5_State1.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_1;
+  SK5_State1.frames_.push_back(SK5_ST1_Frame0);
+  SK5_State1.frames_.push_back(SK5_ST1_Frame1);
+  SK5_State1.frames_.push_back(SK5_ST1_Frame2);
+
+  SkillFrameActionData SK5_ST2_FR0_AC0_Data0;
+  SK5_ST2_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST2_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST2_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST2_FR0_AC0_Cond0;
+  SK5_ST2_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST2_FR0_Action0;
+  SK5_ST2_FR0_Action0.actionDatas_.push_back(SK5_ST2_FR0_AC0_Data0);
+  SK5_ST2_FR0_Action0.conditionDatas_.push_back(SK5_ST2_FR0_AC0_Cond0);
+  SkillFrame SK5_ST2_Frame0;
+  SK5_ST2_Frame0.startIndex_ = 120;
+  SK5_ST2_Frame0.endIndex_ = 120;
+  SK5_ST2_Frame0.actions_.push_back(SK5_ST2_FR0_Action0);
+  SkillFrameActionData SK5_ST2_FR1_AC0_Data0;
+  SK5_ST2_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST2_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 3;
+  SkillFrameActionConditionData SK5_ST2_FR1_AC0_Cond0;
+  SK5_ST2_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST2_FR1_Action0;
+  SK5_ST2_FR1_Action0.conditionDatas_.push_back(SK5_ST2_FR1_AC0_Cond0);
+  SK5_ST2_FR1_Action0.actionDatas_.push_back(SK5_ST2_FR1_AC0_Data0);
+  SkillFrame SK5_ST2_Frame1;
+  SK5_ST2_Frame1.startIndex_ = 122;
+  SK5_ST2_Frame1.endIndex_ = 122;
+  SK5_ST2_Frame1.actions_.push_back(SK5_ST2_FR1_Action0);
+  SkillState SK5_State2;
+  SK5_State2.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_2;
+  SK5_State2.frames_.push_back(SK5_ST2_Frame0);
+  SK5_State2.frames_.push_back(SK5_ST2_Frame1);
+  SkillFrameActionData SK5_ST3_FR0_AC0_Data0;
+  SK5_ST3_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST3_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST3_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST3_FR0_AC0_Cond0;
+  SK5_ST3_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST3_FR0_Action0;
+  SK5_ST3_FR0_Action0.actionDatas_.push_back(SK5_ST3_FR0_AC0_Data0);
+  SK5_ST3_FR0_Action0.conditionDatas_.push_back(SK5_ST3_FR0_AC0_Cond0);
+  SkillFrame SK5_ST3_Frame0;
+  SK5_ST3_Frame0.startIndex_ = 90;
+  SK5_ST3_Frame0.endIndex_ = 90;
+  SK5_ST3_Frame0.actions_.push_back(SK5_ST3_FR0_Action0);
+  SkillFrameActionData SK5_ST3_FR1_AC0_Data0;
+  SK5_ST3_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST3_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 4;
+  SkillFrameActionConditionData SK5_ST3_FR1_AC0_Cond0;
+  SK5_ST3_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST3_FR1_Action0;
+  SK5_ST3_FR1_Action0.conditionDatas_.push_back(SK5_ST3_FR1_AC0_Cond0);
+  SK5_ST3_FR1_Action0.actionDatas_.push_back(SK5_ST3_FR1_AC0_Data0);
+  SkillFrame SK5_ST3_Frame1;
+  SK5_ST3_Frame1.startIndex_ = 92;
+  SK5_ST3_Frame1.endIndex_ = 92;
+  SK5_ST3_Frame1.actions_.push_back(SK5_ST3_FR1_Action0);
+  SkillState SK5_State3;
+  SK5_State3.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_3;
+  SK5_State3.frames_.push_back(SK5_ST3_Frame0);
+  SK5_State3.frames_.push_back(SK5_ST3_Frame1);
+
+  SkillFrameActionData SK5_ST4_FR0_AC0_Data0;
+  SK5_ST4_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST4_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST4_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST4_FR0_AC0_Cond0;
+  SK5_ST4_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST4_FR0_Action0;
+  SK5_ST4_FR0_Action0.actionDatas_.push_back(SK5_ST4_FR0_AC0_Data0);
+  SK5_ST4_FR0_Action0.conditionDatas_.push_back(SK5_ST4_FR0_AC0_Cond0);
+  SkillFrame SK5_ST4_Frame0;
+  SK5_ST4_Frame0.startIndex_ = 132;
+  SK5_ST4_Frame0.endIndex_ = 132;
+  SK5_ST4_Frame0.actions_.push_back(SK5_ST4_FR0_Action0);
+  SkillFrameActionData SK5_ST4_FR1_AC0_Data0;
+  SK5_ST4_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST4_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 5;
+  SkillFrameActionConditionData SK5_ST4_FR1_AC0_Cond0;
+  SK5_ST4_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST4_FR1_Action0;
+  SK5_ST4_FR1_Action0.conditionDatas_.push_back(SK5_ST4_FR1_AC0_Cond0);
+  SK5_ST4_FR1_Action0.actionDatas_.push_back(SK5_ST4_FR1_AC0_Data0);
+  SkillFrame SK5_ST4_Frame1;
+  SK5_ST4_Frame1.startIndex_ = 135;
+  SK5_ST4_Frame1.endIndex_ = 135;
+  SK5_ST4_Frame1.actions_.push_back(SK5_ST4_FR1_Action0);
+  SkillState SK5_State4;
+  SK5_State4.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_4;
+  SK5_State4.frames_.push_back(SK5_ST4_Frame0);
+  SK5_State4.frames_.push_back(SK5_ST4_Frame1);
+
+  SkillFrameActionData SK5_ST5_FR0_AC0_Data0;
+  SK5_ST5_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST5_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST5_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST5_FR0_AC0_Cond0;
+  SK5_ST5_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST5_FR0_Action0;
+  SK5_ST5_FR0_Action0.actionDatas_.push_back(SK5_ST5_FR0_AC0_Data0);
+  SK5_ST5_FR0_Action0.conditionDatas_.push_back(SK5_ST5_FR0_AC0_Cond0);
+  SkillFrame SK5_ST5_Frame0;
+  SK5_ST5_Frame0.startIndex_ = 227;
+  SK5_ST5_Frame0.endIndex_ = 227;
+  SK5_ST5_Frame0.actions_.push_back(SK5_ST5_FR0_Action0);
+  SkillFrameActionData SK5_ST5_FR1_AC0_Data0;
+  SK5_ST5_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST5_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 6;
+  SkillFrameActionConditionData SK5_ST5_FR1_AC0_Cond0;
+  SK5_ST5_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST5_FR1_Action0;
+  SK5_ST5_FR1_Action0.conditionDatas_.push_back(SK5_ST5_FR1_AC0_Cond0);
+  SK5_ST5_FR1_Action0.actionDatas_.push_back(SK5_ST5_FR1_AC0_Data0);
+  SkillFrame SK5_ST5_Frame1;
+  SK5_ST5_Frame1.startIndex_ = 229;
+  SK5_ST5_Frame1.endIndex_ = 229;
+  SK5_ST5_Frame1.actions_.push_back(SK5_ST5_FR1_Action0);
+  SkillState SK5_State5;
+  SK5_State5.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_5;
+  SK5_State5.frames_.push_back(SK5_ST5_Frame0);
+  SK5_State5.frames_.push_back(SK5_ST5_Frame1);
+
+  SkillFrameActionData SK5_ST6_FR0_AC0_Data0;
+  SK5_ST6_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST6_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST6_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST6_FR0_AC0_Cond0;
+  SK5_ST6_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST6_FR0_Action0;
+  SK5_ST6_FR0_Action0.actionDatas_.push_back(SK5_ST6_FR0_AC0_Data0);
+  SK5_ST6_FR0_Action0.conditionDatas_.push_back(SK5_ST6_FR0_AC0_Cond0);
+  SkillFrame SK5_ST6_Frame0;
+  SK5_ST6_Frame0.startIndex_ = 102;
+  SK5_ST6_Frame0.endIndex_ = 102;
+  SK5_ST6_Frame0.actions_.push_back(SK5_ST6_FR0_Action0);
+  SkillFrameActionData SK5_ST6_FR1_AC0_Data0;
+  SK5_ST6_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST6_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 7;
+  SkillFrameActionConditionData SK5_ST6_FR1_AC0_Cond0;
+  SK5_ST6_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST6_FR1_Action0;
+  SK5_ST6_FR1_Action0.conditionDatas_.push_back(SK5_ST6_FR1_AC0_Cond0);
+  SK5_ST6_FR1_Action0.actionDatas_.push_back(SK5_ST6_FR1_AC0_Data0);
+  SkillFrame SK5_ST6_Frame1;
+  SK5_ST6_Frame1.startIndex_ = 107;
+  SK5_ST6_Frame1.endIndex_ = 107;
+  SK5_ST6_Frame1.actions_.push_back(SK5_ST6_FR1_Action0);
+  SkillState SK5_State6;
+  SK5_State6.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_6;
+  SK5_State6.frames_.push_back(SK5_ST6_Frame0);
+  SK5_State6.frames_.push_back(SK5_ST6_Frame1);
+
+  SkillFrameActionData SK5_ST7_FR0_AC0_Data0;
+  SK5_ST7_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST7_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST7_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST7_FR0_AC0_Cond0;
+  SK5_ST7_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST7_FR0_Action0;
+  SK5_ST7_FR0_Action0.actionDatas_.push_back(SK5_ST7_FR0_AC0_Data0);
+  SK5_ST7_FR0_Action0.conditionDatas_.push_back(SK5_ST7_FR0_AC0_Cond0);
+  SkillFrame SK5_ST7_Frame0;
+  SK5_ST7_Frame0.startIndex_ = 161;
+  SK5_ST7_Frame0.endIndex_ = 161;
+  SK5_ST7_Frame0.actions_.push_back(SK5_ST7_FR0_Action0);
+  SkillFrameActionData SK5_ST7_FR1_AC0_Data0;
+  SK5_ST7_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST7_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 8;
+  SkillFrameActionConditionData SK5_ST7_FR1_AC0_Cond0;
+  SK5_ST7_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST7_FR1_Action0;
+  SK5_ST7_FR1_Action0.conditionDatas_.push_back(SK5_ST7_FR1_AC0_Cond0);
+  SK5_ST7_FR1_Action0.actionDatas_.push_back(SK5_ST7_FR1_AC0_Data0);
+  SkillFrame SK5_ST7_Frame1;
+  SK5_ST7_Frame1.startIndex_ = 163;
+  SK5_ST7_Frame1.endIndex_ = 163;
+  SK5_ST7_Frame1.actions_.push_back(SK5_ST7_FR1_Action0);
+  SkillState SK5_State7;
+  SK5_State7.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_7;
+  SK5_State7.frames_.push_back(SK5_ST7_Frame0);
+  SK5_State7.frames_.push_back(SK5_ST7_Frame1);
+  SkillFrameActionData SK5_ST8_FR0_AC0_Data0;
+  SK5_ST8_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST8_FR0_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST8_FR0_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST8_FR0_AC0_Cond0;
+  SK5_ST8_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST8_FR0_Action0;
+  SK5_ST8_FR0_Action0.actionDatas_.push_back(SK5_ST8_FR0_AC0_Data0);
+  SK5_ST8_FR0_Action0.conditionDatas_.push_back(SK5_ST8_FR0_AC0_Cond0);
+  SkillFrame SK5_ST8_Frame0;
+  SK5_ST8_Frame0.startIndex_ = 102;
+  SK5_ST8_Frame0.endIndex_ = 102;
+  SK5_ST8_Frame0.actions_.push_back(SK5_ST8_FR0_Action0);
+  SkillFrameActionData SK5_ST8_FR1_AC0_Data0;
+  SK5_ST8_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST8_FR1_AC0_Data0.actionParams_.changeStateIndex_ = 9;
+  SkillFrameActionConditionData SK5_ST8_FR1_AC0_Cond0;
+  SK5_ST8_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST8_FR1_Action0;
+  SK5_ST8_FR1_Action0.conditionDatas_.push_back(SK5_ST8_FR1_AC0_Cond0);
+  SK5_ST8_FR1_Action0.actionDatas_.push_back(SK5_ST8_FR1_AC0_Data0);
+  SkillFrame SK5_ST8_Frame1;
+  SK5_ST8_Frame1.startIndex_ = 107;
+  SK5_ST8_Frame1.endIndex_ = 107;
+  SK5_ST8_Frame1.actions_.push_back(SK5_ST8_FR1_Action0);
+  SkillState SK5_State8;
+  SK5_State8.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_8;
+  SK5_State8.frames_.push_back(SK5_ST8_Frame0);
+  SK5_State8.frames_.push_back(SK5_ST8_Frame1);
+  SkillFrameActionData SK5_ST9_FR0_AC0_Data0;
+  SK5_ST9_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_SetPostionOpponentPlayer;
+  SK5_ST9_FR0_AC0_Data0.actionParams_.opponentForcedPosition_ = {50.0f, -40.0f};
+  SkillFrameActionConditionData SK5_ST9_FR0_AC0_Cond0;
+  SK5_ST9_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST9_FR0_Action0;
+  SK5_ST9_FR0_Action0.actionDatas_.push_back(SK5_ST9_FR0_AC0_Data0);
+  SK5_ST9_FR0_Action0.conditionDatas_.push_back(SK5_ST9_FR0_AC0_Cond0);
+  SkillFrame SK5_ST9_Frame0;
+  SK5_ST9_Frame0.startIndex_ = 348;
+  SK5_ST9_Frame0.endIndex_ = 348;
+  SK5_ST9_Frame0.actions_.push_back(SK5_ST9_FR0_Action0);
+  SkillFrameActionConditionData SK5_ST9_FR1_AC0_Cond0;
+  SK5_ST9_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST9_FR1_AC0_Data0;
+  SK5_ST9_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_SoundPlay;
+  SK5_ST9_FR1_AC0_Data0.actionParams_.soundType_ = SOUNDTYPE_IORI_1211ShikiYaOtome03;
+  SkillFrameActionData SK5_ST9_FR1_AC0_Data1;
+  SK5_ST9_FR1_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_ChangeOpponentAnimState;
+  SK5_ST9_FR1_AC0_Data1.actionParams_.opponentAnimState_ = PLAYER_ANIMTYPE_NeckGrabbed;
+  SkillFrameAction SK5_ST9_FR1_Action0;
+  SK5_ST9_FR1_Action0.conditionDatas_.push_back(SK5_ST9_FR1_AC0_Cond0);
+  SK5_ST9_FR1_Action0.actionDatas_.push_back(SK5_ST9_FR1_AC0_Data0);
+  SK5_ST9_FR1_Action0.actionDatas_.push_back(SK5_ST9_FR1_AC0_Data1);
+  SkillFrame SK5_ST9_Frame1;
+  SK5_ST9_Frame1.startIndex_ = 349;
+  SK5_ST9_Frame1.endIndex_ = 349;
+  SK5_ST9_Frame1.actions_.push_back(SK5_ST9_FR1_Action0);
+  SkillFrameActionData SK5_ST9_FR2_AC0_Data0;
+  SK5_ST9_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FadeInOut;
+  SK5_ST9_FR2_AC0_Data0.actionParams_.fadeImageType_ = IMGTYPE_WhiteBoardImage;
+  SK5_ST9_FR2_AC0_Data0.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionConditionData SK5_ST9_FR2_AC0_Cond0;
+  SK5_ST9_FR2_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST9_FR2_AC0_Data1;
+  SK5_ST9_FR2_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_CameraShake;
+  SK5_ST9_FR2_AC0_Data1.actionParams_.cameraShakeDuration_ = 400;
+  SkillFrameActionConditionData SK5_ST9_FR2_AC0_Cond1;
+  SK5_ST9_FR2_AC0_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST9_FR2_Action0;
+  SK5_ST9_FR2_Action0.conditionDatas_.push_back(SK5_ST9_FR2_AC0_Cond0);
+  SK5_ST9_FR2_Action0.conditionDatas_.push_back(SK5_ST9_FR2_AC0_Cond1);
+  SK5_ST9_FR2_Action0.actionDatas_.push_back(SK5_ST9_FR2_AC0_Data0);
+  SK5_ST9_FR2_Action0.actionDatas_.push_back(SK5_ST9_FR2_AC0_Data1);
+  SkillFrame SK5_ST9_Frame2;
+  SK5_ST9_Frame2.startIndex_ = 351;
+  SK5_ST9_Frame2.endIndex_ = 351;
+  SK5_ST9_Frame2.actions_.push_back(SK5_ST9_FR2_Action0);
+  SkillFrameActionData SK5_ST9_FR3_AC0_Data0;
+  SK5_ST9_FR3_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer;
+  SK5_ST9_FR3_AC0_Data0.actionParams_;
+  SkillFrameActionConditionData SK5_ST9_FR3_AC0_Cond0;
+  SK5_ST9_FR3_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK5_ST9_FR3_Action0;
+  SK5_ST9_FR3_Action0.conditionDatas_.push_back(SK5_ST9_FR3_AC0_Cond0);
+  SK5_ST9_FR3_Action0.actionDatas_.push_back(SK5_ST9_FR3_AC0_Data0);
+  SkillFrame SK5_ST9_Frame3;
+  SK5_ST9_Frame3.startIndex_ = 352;
+  SK5_ST9_Frame3.endIndex_ = 352;
+  SK5_ST9_Frame3.actions_.push_back(SK5_ST9_FR3_Action0);
+  SkillState SK5_State9;
+  SK5_State9.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_9;
+  SK5_State9.frames_.push_back(SK5_ST9_Frame0);
+  SK5_State9.frames_.push_back(SK5_ST9_Frame1);
+  SK5_State9.frames_.push_back(SK5_ST9_Frame2);
+  SK5_State9.frames_.push_back(SK5_ST9_Frame3);
   Skill Skill_5;
   Skill_5.skillTag_ = SKILL_5;
+  Skill_5.castCondition_ = SKILL_CAST_COND_HasSkillPoint;
+  Skill_5.castAction_ = SKILL_CAST_ACTION_ReduceSkillPoint;
   Skill_5.skillStates_.push_back(SK5_State0);
-  skillTest_->RegistSkill(Skill_5);
+  Skill_5.skillStates_.push_back(SK5_State1);
+  Skill_5.skillStates_.push_back(SK5_State2);
+  Skill_5.skillStates_.push_back(SK5_State3);
+  Skill_5.skillStates_.push_back(SK5_State4);
+  Skill_5.skillStates_.push_back(SK5_State5);
+  Skill_5.skillStates_.push_back(SK5_State6);
+  Skill_5.skillStates_.push_back(SK5_State7);
+  Skill_5.skillStates_.push_back(SK5_State8);
+  Skill_5.skillStates_.push_back(SK5_State9);
+  pSkillComponent_->RegistSkill(Skill_5);
 
+  //SkillFrameActionData a;
+  //a.actionType_ = SKILL_FRAME_ACTION_FadeOut;
+  //a.actionParams_.fadeDuration_ = 50;
+  //a.actionParams_.fadeImageType_ = IMGTYPE_BlackBoardImage;
+  //SkillFrameActionConditionData b;
+  //b.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  //b.conditionParams_;
+  //SkillFrameAction SK5_ST0_FR0_Action0;
+  //SK5_ST0_FR0_Action0.conditionDatas_.push_back(b);
+  //SK5_ST0_FR0_Action0.actionDatas_.push_back(a);
+  //SkillFrame SK5_ST0_Frame0;
+  //SK5_ST0_Frame0.startIndex_ = 100;
+  //SK5_ST0_Frame0.endIndex_ = 100;
+  //SK5_ST0_Frame0.actions_.push_back(SK5_ST0_FR0_Action0);
+  //SkillState SK5_State0;
+  //SK5_State0.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_8;
+  //SK5_State0.frames_.push_back(SK5_ST0_Frame0);
+  //Skill Skill_5;
+  //Skill_5.skillTag_ = SKILL_5;
+  //Skill_5.skillStates_.push_back(SK5_State0);
+  //skillTest_->RegistSkill(Skill_5);
 }
 
 void Iori::CompareInputBitset() {
@@ -1159,8 +1160,8 @@ void Iori::CompareInputBitset() {
     }
 
     // A B LEFT | PRESS
-    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Left, KEY_A}) &&
-        true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_Left, KEY_B})) {
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Left}) &&
+        true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A, KEY_B})) {
       UpdateAnimState((PLAYER_ANIMTYPE_RollingBack));
       pMovementComponent_->Dash(!FacingRight(), 300.0f, 400.0f);
       pGhostEffect_->On();
@@ -1179,34 +1180,24 @@ void Iori::CompareInputBitset() {
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
         (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}) ||
          true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C}))) {
-      // UpdateAnimState(IORI_ANIMTYPE_GaishikiMutan_1);
-      // pSkillComponent_->ActivateSkill(IORI_SKILL_GaishikiMutan);
+      pSkillComponent_->ExecuteSkill(SKILL_0);
       return;
     }
 
     // RIGHT | PRESS - B | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
         true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_B})) {
-      // UpdateAnimState(IORI_ANIMTYPE_Shinigami);
-      // pSkillComponent_->ActivateSkill(IORI_SKILL_Shinigami);
+      pSkillComponent_->ExecuteSkill(SKILL_4);
       return;
     }
 
     // A | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A})) {
-      // if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
-      //   UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
-      // } else {
-      //   UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
-      // }
-
-
-      // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_1);
-      // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_2);
-      // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_3);
-      skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_4);
-      
-      
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
+      }
       return;
     }
 
@@ -1239,8 +1230,6 @@ void Iori::CompareInputBitset() {
       }
       return;
     }
-
-    // UpdateAnimState(PLAYER_ANIMTYPE_Idle);
     return;
   }
 }

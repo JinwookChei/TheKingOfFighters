@@ -100,15 +100,15 @@ class MovementComponent final
   const float moveBackVelocity_ = 0.4f;
 
   // DASH
-  float dashTimer_;
-  float dashDuration_;
+  unsigned long long dashTimer_;
+  unsigned long long dashDuration_;
   float dashDistance_;
   Vector dashStartPos_;
   Vector dashEndPos_;
 
   // BACK STEP
-  float backStepTimer_;
-  const float backStepDuration_ = 180.0f;
+  unsigned long long backStepTimer_;
+  const unsigned long long backStepDuration_ = 180.0f;
   const float backStepDistance_ = 340.0f;
   const float backStepHeight_ = -200.0f;
   Vector backStepStartPos_;

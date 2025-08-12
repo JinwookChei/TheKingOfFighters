@@ -24,8 +24,8 @@ void CameraTarget::Tick(unsigned long long curTick) {
     if (cameraShakeTimer_ >= cameraShakeDuration_) {
       OffCameraShake();
     } else {
-      int shakeX = (rand() % 11) - 5;
-      int shakeY = (rand() % 11) - 5;
+      int shakeX = (rand() % 21) - 10;
+      int shakeY = (rand() % 21) - 10;
       Vector curCameraPosition = GetPosition();
 
       if ((curCameraPosition.X <= cameraMinWidth_ && shakeX < 0) || curCameraPosition.X >= cameraMaxWidth_ && shakeX > 0) {
