@@ -384,49 +384,6 @@ ScreenMask* KOFLevel::GetBackGroundMask() const {
   return pBackGroundMask_;
 }
 
-//void KOFLevel::FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration) {
-//  DefreezeActors();
-//  for (auto iter = actors.begin(); iter != actors.end(); ++iter) {
-//    if (nullptr == *iter) {
-//      continue;
-//    }
-//
-//    Actor* pActor = *iter;
-//    pActor->SetEnableTick(false);
-//  }
-//
-//  OnFreezeTimer_ = true;
-//  isFreezeInfinite_ = isInfinite;
-//  freezedActors_ = actors;
-//  freezeDuration_ = freezeDuration;
-//  freezeTiemr_ = 0;
-//}
-//
-//void KOFLevel::DefreezeActors() {
-//  for (auto iter = freezedActors_.begin(); iter != freezedActors_.end(); ++iter) {
-//    if (nullptr == *iter) {
-//      continue;
-//    }
-//
-//    Actor* pActor = *iter;
-//    pActor->SetEnableTick(true);
-//  }
-//
-//  OnFreezeTimer_ = false;
-//  isFreezeInfinite_ = false;
-//  freezeDuration_ = 0;
-//  freezeTiemr_ = 0;
-//}
-//
-//void KOFLevel::CalculateFreeze(unsigned long long deltaTick) {
-//  if (true == OnFreezeTimer_) {
-//    freezeTiemr_ += deltaTick;
-//    if (freezeTiemr_ >= freezeDuration_ && false == isFreezeInfinite_) {
-//      DefreezeActors();
-//    }
-//  }
-//}
-
 float KOFLevel::GetLevelLeftBoundary() const {
   return levelLeftBoundary_;
 }

@@ -101,7 +101,7 @@ bool IoriAnimationHandler::RegistAnimations() {
   RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
   RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
   RegistAnimTransition(PLAYER_ANIMTYPE_SeatUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  RegistAnimTransition(PLAYER_ANIMTYPE_BackStep, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
+  RegistAnimTransition(PLAYER_ANIMTYPE_BackStep, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_RunEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_Dash, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_RollingBack, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);

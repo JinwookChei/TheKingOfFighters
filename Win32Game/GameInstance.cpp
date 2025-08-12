@@ -61,6 +61,8 @@ void GameInstance::LoadKOFImages() {
   guardEffectImage01Flipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\GuardEffect01.csv");
   IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\CastingEffectImage_Box.png", (IMGTYPE_CastingEffectImage | IMGMOD_NONE));
   castingEffectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\CastingEffect.csv");
+  IFileImage* castingEffectImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\CastingEffectImage_Box.png", (IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED));
+  castingEffectImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\CastingEffect.csv");
   IFileImage* playerLayerImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\PlayerLabel_Box.png", (IMGTYPE_PlayerLabel | IMGMOD_NONE));
   playerLayerImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\PlayerLabel.csv");
   IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\EffectImage_Box.png", (IMGTYPE_Effect | IMGMOD_NONE));

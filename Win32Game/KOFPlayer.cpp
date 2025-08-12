@@ -80,7 +80,9 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
   pInputController_->UpdateCommand();
 
+  
   if (true == pRestrictionComponent_->CanInput()) {
+  //if (PS_Idle == pAnimationHandler_->CurrentAnimationState()) {
     pCommandComponent_->ExcuteTask();
   }
   
