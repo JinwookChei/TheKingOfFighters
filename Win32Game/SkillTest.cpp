@@ -8,7 +8,7 @@
 #include "ScreenMask.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
-#include "AnimFreezeManager.h"
+#include "ActorFreezeManager.h"
 
 SkillTest::SkillTest()
     : pOwnerPlayer_(nullptr),
@@ -501,13 +501,12 @@ void SkillTest::FreezeOpponentPlayer(const SkillFrameActionParams& params) {
 
   unsigned long long duration = params.freezeDuration_;
 
-  AnimFreezeManager* animFreezeManger = pKOFLevel->GetAnimFreezeManager();
-  if (nullptr == animFreezeManger) {
+  ActorFreezeManager* actorFreezeManger = pKOFLevel->GetActorFreezeManager();
+  if (nullptr == actorFreezeManger) {
     return;
   }
 
-  animFreezeManger->ApplyFreeze(opponentPlayer->ActorId(), isInfinite, duration);
-
+  actorFreezeManger->ApplyFreeze(opponentPlayer->ActorId(), isInfinite, duration);
 }
 
 void SkillTest::DefreezeOpponentPlayer(const SkillFrameActionParams& params) {
@@ -529,12 +528,11 @@ void SkillTest::DefreezeOpponentPlayer(const SkillFrameActionParams& params) {
     return;
   }
 
-  AnimFreezeManager* animFreezeManger = pKOFLevel->GetAnimFreezeManager();
-  if (nullptr == animFreezeManger) {
+  ActorFreezeManager* actorFreezeManger = pKOFLevel->GetActorFreezeManager();
+  if (nullptr == actorFreezeManger) {
     return;
   }
-  animFreezeManger->Defreeze(opponentPlayer->ActorId());
-  
+  actorFreezeManger->Defreeze(opponentPlayer->ActorId());
 }
 
 void SkillTest::ExcuteCameraShake(const SkillFrameActionParams& params) {

@@ -1,7 +1,6 @@
 #pragma once
 
-class AnimFreezeManager;
-class MovementFreezeManager;
+class ActorFreezeManager;
 class Mouse;
 class BackGround;
 class ScreenMask;
@@ -30,19 +29,11 @@ class KOFLevel final
 
   void SwapPosition();
 
-  AnimFreezeManager* GetAnimFreezeManager() const;
-
-  MovementFreezeManager* GetMovementFreezeManager() const;
+  ActorFreezeManager* GetActorFreezeManager() const;
 
   CameraTarget* GetCameraTarget() const;
 
   ScreenMask* GetBackGroundMask() const;
-
-  //void FreezeActors(std::vector<Actor*> actors, bool isInfinite, unsigned long long freezeDuration = 1000);
-
-  //void DefreezeActors();
-
-  //void CalculateFreeze(unsigned long long deltaTick);
 
   float GetLevelLeftBoundary() const;
 
@@ -63,9 +54,7 @@ class KOFLevel final
   void EndGame(unsigned long long deltaTick);
 
  private:
-  AnimFreezeManager* pAnimFreezeManager_;
-
-  MovementFreezeManager* pMovementFreezeManager_;
+  ActorFreezeManager* pActorFreezeManager_;
 
   SoundChannel backGroundSoundChannel_;
 
@@ -100,16 +89,6 @@ class KOFLevel final
   Vector player1SpawnPostion_;
 
   Vector player2SpawnPostion_;
-
-  //bool OnFreezeTimer_;
-
-  //std::vector<Actor*> freezedActors_;
-
-  //bool isFreezeInfinite_;
-
-  //unsigned long long freezeDuration_;
-
-  //unsigned long long freezeTiemr_;  
 
   const float levelBoundaryMargin_ = 10.0f;
 

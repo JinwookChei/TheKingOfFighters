@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include "AnimFreezeManager.h"
-#include "MovementFreezeManager.h"
+#include "ActorFreezeManager.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
 #include "KOFPlayer.h"
@@ -18,9 +17,7 @@
 #include "KOFLoby.h"
 
 KOFLevel::KOFLevel()
-    : /*channel_(nullptr),*/
-      pAnimFreezeManager_(nullptr),
-      pMovementFreezeManager_(nullptr),
+    : pActorFreezeManager_(nullptr),
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
@@ -37,11 +34,6 @@ KOFLevel::KOFLevel()
       acuumDeltaTick_(0),
       player1SpawnPostion_({0.0f, 0.0f}),
       player2SpawnPostion_({0.0f, 0.0f}),
-      //OnFreezeTimer_(false),
-      //isFreezeInfinite_(false),
-      //freezedActors_({}),
-      //freezeDuration_(0),
-      //freezeTiemr_(0),
       levelLeftBoundary_(0.0f),
       levelRightBoundary_(0.0f),
       screenBoundaryWidth_(0.0f) {
@@ -53,13 +45,10 @@ KOFLevel::~KOFLevel() {
 void KOFLevel::BeginPlay() {
 
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
-
-  pAnimFreezeManager_ = SpawnActor<AnimFreezeManager>();
-  if (false == pAnimFreezeManager_->Initialize()) {
-    return;
-  }
-  pMovementFreezeManager_ = SpawnActor<MovementFreezeManager>();
-  if (false == pMovementFreezeManager_->Initialize()) {
+    
+  // MANAGER
+  pActorFreezeManager_ = SpawnActor<ActorFreezeManager>();
+  if (false == pActorFreezeManager_->Initialize()) {
     return;
   }
 
@@ -339,12 +328,8 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
-AnimFreezeManager* KOFLevel::GetAnimFreezeManager() const {
-  return pAnimFreezeManager_;
-}
-
-MovementFreezeManager* KOFLevel::GetMovementFreezeManager() const {
-  return pMovementFreezeManager_;
+ActorFreezeManager* KOFLevel::GetActorFreezeManager() const {
+  return pActorFreezeManager_;
 }
 
 void KOFLevel::Tick(unsigned long long deltaTick) {

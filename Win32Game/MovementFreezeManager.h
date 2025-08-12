@@ -1,4 +1,7 @@
 #pragma once
+
+// »ç¿ë X
+
 class MovementComponent;
 struct MovementFreezeInfo {
   unsigned long long actorId_ = 0;

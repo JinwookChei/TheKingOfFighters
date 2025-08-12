@@ -276,6 +276,9 @@
     <ClCompile Include="MovementFreezeManager.cpp">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClCompile>
+    <ClCompile Include="ActorFreezeManager.cpp">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -474,6 +477,9 @@
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
     <ClInclude Include="MovementFreezeManager.h">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorFreezeManager.h">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
   </ItemGroup>

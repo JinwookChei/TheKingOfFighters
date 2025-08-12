@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include "AnimFreezeManager.h"
-#include "MovementFreezeManager.h"
+#include "ActorFreezeManager.h"
 #include "AnimationHandler.h"
 #include "CommandComponent.h"
 #include "InputController.h"
@@ -55,9 +54,23 @@ KOFPlayer::KOFPlayer()
 }
 
 KOFPlayer::~KOFPlayer() {
+  Level* pLevel = GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+  ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
+  if (nullptr == actorFreezeManager) {
+    return;
+  }
+  actorFreezeManager->UnregistActor(ActorId());
 }
 
 void KOFPlayer::BeginPlay() {
+
 }
 
 void KOFPlayer::Tick(unsigned long long deltaTick) {
@@ -94,11 +107,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   SetUseCameraposition(useCameraPosition);
   isPlayer1_ = isPlayer1;
 
-  // RENDERER
-  pRender_ = CreateImageRenderFIFO();
-  pRender_->SetImageRenderType(ImageRenderType::Bottom);
-  pRender_->SetLocalScale({4.2f, 4.2f});
-  pRender_->SetAlpha(1.0f);
+  // REGIST MANAGER
   Level* pLevel = GetLevel();
   if (nullptr == pLevel) {
     return;
@@ -107,14 +116,17 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (nullptr == pKOFLevel) {
     return;
   }
-  AnimFreezeManager* animFreezeManager = pKOFLevel->GetAnimFreezeManager();
-  if (nullptr == animFreezeManager)
-  {
+  ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
+  if (nullptr == actorFreezeManager) {
     return;
   }
-  // TODO : 죽었을떄 정리해야함.
-  animFreezeManager->RegistComponent(ActorId(), pRender_);
+  actorFreezeManager->RegistActor(ActorId(), this);
 
+  // RENDERER
+  pRender_ = CreateImageRenderFIFO();
+  pRender_->SetImageRenderType(ImageRenderType::Bottom);
+  pRender_->SetLocalScale({4.2f, 4.2f});
+  pRender_->SetAlpha(1.0f);
 
   // UI
   pUI_ = CreateImageRenderFIFO();
@@ -135,12 +147,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (false == pMovementComponent_->Initialize(position)) {
     return;
   }
-
-  MovementFreezeManager* pMovementFreezeManager = pKOFLevel->GetMovementFreezeManager();
-  if (nullptr == pMovementFreezeManager) {
-    return;
-  }      
-  pMovementFreezeManager->RegistComponent(ActorId(), pMovementComponent_);
 
   // SOUND
   pSoundTable_ = CreateComponent<SoundTable>();
@@ -460,15 +466,10 @@ void KOFPlayer::UpdateAttack() {
 
       pTargetPlayer->HitEvent(pAttackInfo);
 
-      AnimFreezeManager* animFreezeManager = pKOFLevel->GetAnimFreezeManager();
-      if (nullptr != animFreezeManager) {
-        animFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
-        animFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
-      }
-      MovementFreezeManager* movementFreezeManager = pKOFLevel->GetMovementFreezeManager();
-      if (nullptr != movementFreezeManager) {
-        movementFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
-        movementFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
+      ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
+      if (nullptr != actorFreezeManager) {
+        actorFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
+        actorFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
       }
 
       // Calculate Effect Position.

@@ -173,6 +173,7 @@
     <ClCompile Include="MP.cpp" />
     <ClCompile Include="MPComponent.cpp" />
     <ClCompile Include="Notification.cpp" />
+    <ClCompile Include="ActorFreezeManager.cpp" />
     <ClCompile Include="RestrictionComponent.cpp" />
     <ClCompile Include="RestrictionManager.cpp" />
     <ClCompile Include="ScreenMask.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="MP.h" />
     <ClInclude Include="MPComponent.h" />
     <ClInclude Include="Notification.h" />
+    <ClInclude Include="ActorFreezeManager.h" />
     <ClInclude Include="RestrictionComponent.h" />
     <ClInclude Include="RestrictionManager.h" />
     <ClInclude Include="ScreenMask.h" />
