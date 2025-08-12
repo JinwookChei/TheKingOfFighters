@@ -6,7 +6,7 @@ ActorFreezeManager::ActorFreezeManager() {
 
 ActorFreezeManager::~ActorFreezeManager() {
   for (HashTableIterator iter = actorFreezeTable_.begin(); iter != actorFreezeTable_.end();) {
-    RestrictComponentInfo* pDel = (RestrictComponentInfo*)*iter;
+    ActorFreezeInfo* pDel = (ActorFreezeInfo*)*iter;
 
     iter = actorFreezeTable_.erase(iter);
 

@@ -9,7 +9,6 @@
 typedef void (*DLL_INSTANCE_PRINT)(void**, HINSTANCE, const wchar_t*);
 
 GameInstance* GGameInstance = nullptr;
-RestrictionManager* GRestrictionManager = nullptr;
 EngineCore* GEngineCore = nullptr;
 
 
@@ -66,21 +65,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     return -1;
   }
 
-  GRestrictionManager = new RestrictionManager;
-  if (false == GRestrictionManager->Initialize()) {
-    __debugbreak();
-    return -1;
-  }
-
   GEngineCore->ChangeLevel<KOFLevel>();
 
   GEngineCore->EngineLoop();
 
   delete GEngineCore;
   GEngineCore = nullptr;
-
-  delete GRestrictionManager;
-  GRestrictionManager = nullptr;
 
   delete GGameInstance;
   GGameInstance = nullptr;

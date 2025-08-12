@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "RestrictionComponent.h"
 #include "RestrictionManager.h"
 
 RestrictionManager::RestrictionManager() {
@@ -16,8 +17,10 @@ RestrictionManager::~RestrictionManager() {
   restrictComponentTable_.Cleanup();
 }
 
-RestrictionManager* RestrictionManager::Instance() {
-  return GRestrictionManager;
+void RestrictionManager::BeginPlay() {
+}
+
+void RestrictionManager::Tick(unsigned long long curTick) {
 }
 
 bool RestrictionManager::Initialize() {
@@ -35,7 +38,6 @@ bool RestrictionManager::RegistComponent(unsigned long long actorId, Restriction
   }
 
   RestrictComponentInfo* pNewInfo = new RestrictComponentInfo;
-
   pNewInfo->actorId_ = actorId;
   pNewInfo->pRestrictComponent_ = pRestrictComponent;
   pNewInfo->searchHandle_ = restrictComponentTable_.Insert(pNewInfo, &pNewInfo->actorId_, 8);
@@ -50,6 +52,7 @@ void RestrictionManager::UnregistComponent(unsigned long long actorId) {
   }
 
   restrictComponentTable_.Delete(pFind->searchHandle_);
+  delete pFind;
 }
 
 void RestrictionManager::ApplyExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList) {

@@ -267,9 +267,6 @@
     <ClCompile Include="RestrictionComponent.cpp">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
-    <ClCompile Include="RestrictionManager.cpp">
-      <Filter>Contents\KOF\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="AnimFreezeManager.cpp">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClCompile>
@@ -277,6 +274,9 @@
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClCompile>
     <ClCompile Include="ActorFreezeManager.cpp">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="RestrictionManager.cpp">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClCompile>
   </ItemGroup>
@@ -470,9 +470,6 @@
     <ClInclude Include="RestrictionComponent.h">
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
-    <ClInclude Include="RestrictionManager.h">
-      <Filter>Contents\KOF\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="AnimFreezeManager.h">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
@@ -480,6 +477,9 @@
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
     <ClInclude Include="ActorFreezeManager.h">
+      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="RestrictionManager.h">
       <Filter>Contents\KOF\Level\LevelComponent</Filter>
     </ClInclude>
   </ItemGroup>

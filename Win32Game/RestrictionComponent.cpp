@@ -1,10 +1,23 @@
 #include "stdafx.h"
+#include "KOFLevel.h"
+#include "RestrictionManager.h"
 #include "RestrictionComponent.h"
 
 RestrictionComponent::RestrictionComponent() {
 }
 
 RestrictionComponent::~RestrictionComponent() {
+  // Manager 정리
+  Level* pLevel = GetOwner()->GetLevel();
+  if (nullptr != pLevel) {
+    KOFLevel* pKOFLevel = (KOFLevel*)pLevel;
+    RestrictionManager* pRestrictManager = pKOFLevel->GetRestrictionManager();
+    if (nullptr != pRestrictManager) {
+      pRestrictManager->UnregistComponent(GetOwner()->ActorId());
+    }
+  }
+
+  // Table 정리.
   for (HashTableIterator iter = animStateRestrictTable_.begin(); iter != animStateRestrictTable_.end();) {
     Restriction* pDel = (Restriction*)*iter;
 
@@ -12,27 +25,36 @@ RestrictionComponent::~RestrictionComponent() {
 
     delete pDel;
   }
-
   animStateRestrictTable_.Cleanup();
-
-  RestrictionManager::Instance()->UnregistComponent(GetOwner()->ActorId());
 }
 
 void RestrictionComponent::BeginPlay() {
 }
 
 void RestrictionComponent::Tick(unsigned long long deltaTick) {
-  //CalculateFinalRestrict();
+  // CalculateFinalRestrict();
 }
 
 bool RestrictionComponent::Initialize() {
-
-  if (false == GRestrictionManager->Instance()->RegistComponent(GetOwner()->ActorId(), this)) {
-    return false;
-  }
   if (false == animStateRestrictTable_.Initialize(8, 8)) {
     return false;
   }
+
+  // Manager 등록
+  Level* pLevel = GetOwner()->GetLevel();
+  if (nullptr == pLevel) {
+    return false;
+  }
+  KOFLevel* pKOFLevel = (KOFLevel*)pLevel;
+  RestrictionManager* pRestrictManager = pKOFLevel->GetRestrictionManager();
+  if (nullptr == pRestrictManager) {
+    return false;
+  }
+  if (false == pRestrictManager->RegistComponent(GetOwner()->ActorId(), this)) {
+    return false;
+  }
+
+
   return true;
 }
 

@@ -7,7 +7,7 @@ MovementFreezeManager::MovementFreezeManager() {
 
 MovementFreezeManager::~MovementFreezeManager() {
   for (HashTableIterator iter = movementFreezeTable_.begin(); iter != movementFreezeTable_.end();) {
-    RestrictComponentInfo* pDel = (RestrictComponentInfo*)*iter;
+    MovementFreezeInfo* pDel = (MovementFreezeInfo*)*iter;
 
     iter = movementFreezeTable_.erase(iter);
 

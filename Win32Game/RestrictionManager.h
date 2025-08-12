@@ -1,6 +1,7 @@
 #pragma once
-#include "RestrictionComponent.h"
 
+class RestrictionComponent;
+enum PLAYER_RESTRICT_TYPE : unsigned int;
 
 struct RestrictComponentInfo {
   unsigned long long actorId_ = 0;
@@ -10,13 +11,16 @@ struct RestrictComponentInfo {
   void* searchHandle_ = nullptr;
 };
 
-class RestrictionManager final {
+class RestrictionManager final 
+: public Actor{
  public:
   RestrictionManager();
 
   ~RestrictionManager();
 
-  static RestrictionManager* Instance();
+  void BeginPlay() override;
+
+  void Tick(unsigned long long curTick) override;  
 
   bool Initialize();
 

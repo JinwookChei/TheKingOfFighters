@@ -6,7 +6,7 @@ AnimFreezeManager::AnimFreezeManager() {
 
 AnimFreezeManager::~AnimFreezeManager() {
   for (HashTableIterator iter = rendererFreezeTable_.begin(); iter != rendererFreezeTable_.end();) {
-    RestrictComponentInfo* pDel = (RestrictComponentInfo*)*iter;
+    AnimFreezeInfo* pDel = (AnimFreezeInfo*)*iter;
 
     iter = rendererFreezeTable_.erase(iter);
 

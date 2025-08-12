@@ -1,6 +1,7 @@
 #pragma once
 
 class ActorFreezeManager;
+class RestrictionManager;
 class Mouse;
 class BackGround;
 class ScreenMask;
@@ -31,6 +32,8 @@ class KOFLevel final
 
   ActorFreezeManager* GetActorFreezeManager() const;
 
+  RestrictionManager* GetRestrictionManager() const;
+
   CameraTarget* GetCameraTarget() const;
 
   ScreenMask* GetBackGroundMask() const;
@@ -55,6 +58,8 @@ class KOFLevel final
 
  private:
   ActorFreezeManager* pActorFreezeManager_;
+
+  RestrictionManager* pRestrictionManager_;
 
   SoundChannel backGroundSoundChannel_;
 

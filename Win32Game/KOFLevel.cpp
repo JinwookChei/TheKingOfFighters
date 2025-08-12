@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ActorFreezeManager.h"
+#include "RestrictionManager.h"
 #include "KOFLevel.h"
 #include "CameraTarget.h"
 #include "KOFPlayer.h"
@@ -18,6 +19,7 @@
 
 KOFLevel::KOFLevel()
     : pActorFreezeManager_(nullptr),
+      pRestrictionManager_(nullptr),
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
@@ -49,6 +51,10 @@ void KOFLevel::BeginPlay() {
   // MANAGER
   pActorFreezeManager_ = SpawnActor<ActorFreezeManager>();
   if (false == pActorFreezeManager_->Initialize()) {
+    return;
+  }
+  pRestrictionManager_ = SpawnActor<RestrictionManager>();
+  if (false == pRestrictionManager_->Initialize()) {
     return;
   }
 
@@ -330,6 +336,10 @@ void KOFLevel::SwapPosition() {
 
 ActorFreezeManager* KOFLevel::GetActorFreezeManager() const {
   return pActorFreezeManager_;
+}
+
+RestrictionManager* KOFLevel::GetRestrictionManager() const {
+  return pRestrictionManager_;
 }
 
 void KOFLevel::Tick(unsigned long long deltaTick) {
