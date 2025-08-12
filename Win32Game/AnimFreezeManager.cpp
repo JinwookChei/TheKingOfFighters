@@ -69,6 +69,8 @@ void AnimFreezeManager::UnregistComponent(unsigned long long actorId) {
   }
 
   rendererFreezeTable_.Delete(pFind->searchHandle_);
+
+  delete pFind;
 }
 
 void AnimFreezeManager::ApplyFreeze(unsigned long long actorId, bool isInfinite /* = true*/, unsigned long long duration /*= 0*/) {

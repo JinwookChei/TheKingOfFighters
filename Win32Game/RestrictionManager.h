@@ -30,6 +30,8 @@ class RestrictionManager final
 
   void ApplyExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList);
 
+  void ReleaseExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList);
+
   void ResetExternalRestrict(unsigned long long actorId);
 
  private:

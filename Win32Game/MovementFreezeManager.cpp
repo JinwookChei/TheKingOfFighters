@@ -73,6 +73,8 @@ void MovementFreezeManager::UnregistComponent(unsigned long long actorId) {
   }
 
   movementFreezeTable_.Delete(pFind->searchHandle_);
+
+  delete pFind;
 }
 
 void MovementFreezeManager::ApplyFreeze(unsigned long long actorId, bool isInfinite /*= true*/, unsigned long long duration /*= 0*/) {

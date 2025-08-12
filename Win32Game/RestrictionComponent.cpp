@@ -32,7 +32,7 @@ void RestrictionComponent::BeginPlay() {
 }
 
 void RestrictionComponent::Tick(unsigned long long deltaTick) {
-  // CalculateFinalRestrict();
+  CalculateFinalRestrict();
 }
 
 bool RestrictionComponent::Initialize() {

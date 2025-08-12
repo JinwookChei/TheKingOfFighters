@@ -79,7 +79,7 @@
     <Filter Include="Contents\KOF\Actor\PLayer\PlayerComponent">
       <UniqueIdentifier>{20b02786-351a-49f6-8569-1ba6ed0fc6c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\KOF\Level\LevelComponent">
+    <Filter Include="Contents\KOF\Level\LevelManager">
       <UniqueIdentifier>{1e8c7615-aab6-4f4d-9af8-d85837cd84e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -268,16 +268,16 @@
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="AnimFreezeManager.cpp">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClCompile>
     <ClCompile Include="MovementFreezeManager.cpp">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClCompile>
     <ClCompile Include="ActorFreezeManager.cpp">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClCompile>
     <ClCompile Include="RestrictionManager.cpp">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -471,16 +471,16 @@
       <Filter>Contents\KOF\Actor\PLayer\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="AnimFreezeManager.h">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClInclude>
     <ClInclude Include="MovementFreezeManager.h">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClInclude>
     <ClInclude Include="ActorFreezeManager.h">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClInclude>
     <ClInclude Include="RestrictionManager.h">
-      <Filter>Contents\KOF\Level\LevelComponent</Filter>
+      <Filter>Contents\KOF\Level\LevelManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -72,6 +72,7 @@ void ActorFreezeManager::UnregistActor(unsigned long long actorId) {
   }
 
   actorFreezeTable_.Delete(pFind->searchHandle_);
+  delete pFind;
 }
 
 void ActorFreezeManager::ApplyFreeze(unsigned long long actorId, bool isInfinite /*= true*/, unsigned long long duration /*= 0*/) {

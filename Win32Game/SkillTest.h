@@ -44,8 +44,8 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_CommandExecute,
   SKILL_FRAME_ACTION_ChangeOpponentAnimState,
   SKILL_FRAME_ACTION_SetPostionOpponentPlayer,
-  SKILL_FRAME_ACTION_LockControlOpponentPlayer,
-  SKILL_FRAME_ACTION_UnLockControlOpponentPlayer,
+  SKILL_FRAME_ACTION_InflictStunOpponentPlayer,
+  SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer,
   SKILL_FRAME_ACTION_FreezeOpponentPlayer,
   SKILL_FRAME_ACTION_DefreezeOpponentPlayer,
   SKILL_FRAME_ACTION_CameraShake,
@@ -92,6 +92,7 @@ struct SkillFrameActionParams {
       float dashPad2_;
     };
   };
+
 };
 
 struct SkillFrameActionConditionParams {
@@ -242,9 +243,9 @@ class SkillTest
 
   void SetPositionOpponentPlayer(const SkillFrameActionParams& params);
 
-  void LockControlOpponentPlayer(const SkillFrameActionParams& params);
+  void InflictStunOpponentPlayer(const SkillFrameActionParams& params);
 
-  void UnLockControlOpponentPlayer(const SkillFrameActionParams& params);
+  void ReleaseStunOpponentPlayer(const SkillFrameActionParams& params);
 
   void FreezeOpponentPlayer(const SkillFrameActionParams& params);
 

@@ -51,7 +51,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   if (nullptr == pAnimationHandler_) {
     return;
   }
-  if (false == pAnimationHandler_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_)) {
+  if (false == pAnimationHandler_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_, pRestrictionComponent_)) {
     return;
   }
 
@@ -673,7 +673,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SkillFrameActionConditionData SK4_ST1_FR2_AC0_Cond0;
   SK4_ST1_FR2_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_HasAttackCollition;
   SkillFrameActionData SK4_ST1_FR2_AC0_Data0;
-  SK4_ST1_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_LockControlOpponentPlayer;
+  SK4_ST1_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_InflictStunOpponentPlayer;
   SK4_ST1_FR2_AC0_Data0.actionParams_;
   SkillFrameActionData SK4_ST1_FR2_AC0_Data1;
   SK4_ST1_FR2_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_MovementDash;
@@ -968,7 +968,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK4_ST9_Frame2.endIndex_ = 351;
   SK4_ST9_Frame2.actions_.push_back(SK4_ST9_FR2_Action0);
   SkillFrameActionData SK4_ST9_FR3_AC0_Data0;
-  SK4_ST9_FR3_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_UnLockControlOpponentPlayer;
+  SK4_ST9_FR3_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer;
   SK4_ST9_FR3_AC0_Data0.actionParams_;
   SkillFrameActionConditionData SK4_ST9_FR3_AC0_Cond0;
   SK4_ST9_FR3_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
@@ -1205,19 +1205,18 @@ void Iori::CompareInputBitset() {
       // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_2);
       // skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_3);
       skillTest_->ExecuteSkill(SKILL_TYPE::SKILL_4);
-      //EffectManager::Instance()->SpawnEffect(GetLevel(), (EFTYPE_Casting_1 | EFMOD_FLIPPED), {GetPosition().X, GetPosition().Y});
-      //((KOFLevel*)GetLevel())->GetAnimFrozenManager()->ApplyFreeze(ActorId(), false, 100);
+      
+      
       return;
     }
 
     // B | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B})) {
-      //if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
-      //  UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
-      //} else {
-      //  UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
-      //}
-      //((KOFLevel*)GetLevel())->GetAnimFrozenManager()->UnFreeze(ActorId());
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
+      } else {
+        UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
+      }
       return;
     }
 

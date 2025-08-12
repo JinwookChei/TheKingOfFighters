@@ -1,14 +1,18 @@
 #include "stdafx.h"
+#include "KOFPlayer.h"
+#include "MovementComponent.h"
+#include "RestrictionComponent.h"
+#include "StateComponent.h"
 #include "AnimationHandler.h"
 
 AnimationHandler::AnimationHandler()
     : pOwnerPlayer_(nullptr),
       pOwnerRenderer_(nullptr),
       pOwnerStateComponent_(nullptr),
+      pOwnerRestrictionComponent_(nullptr),
       pOwnerMovementComponent_(nullptr),
       curAnimationState_(PLAYER_ANIMTYPE_None),
       curAnimationModifier_(ANIMMOD_NONE),
-      //prevImageIndex_(0),
       animTransitionTable_(),
       transCondition_(TRANSITION_CONDITION::None) {
 }
@@ -30,24 +34,33 @@ void AnimationHandler::BeginPlay() {
 void AnimationHandler::Tick(unsigned long long deltaTick) {
 }
 
-bool AnimationHandler::Initialize(KOFPlayer* ownerPlayer, ImageRenderer* imageRenderer_, StateComponent* stateComponent, MovementComponent* movementComponent) {
-  if (nullptr == ownerPlayer) {
+bool AnimationHandler::Initialize(
+    KOFPlayer* pOwnerPlayer,
+    ImageRenderer* pImageRenderer,
+    StateComponent* pStateComponent,
+    MovementComponent* pMovementComponent,
+    RestrictionComponent* pRestrictionComponent) {
+  if (nullptr == pOwnerPlayer) {
     return false;
   }
-  if (nullptr == imageRenderer_) {
+  if (nullptr == pImageRenderer) {
     return false;
   }
-  if (nullptr == stateComponent) {
+  if (nullptr == pStateComponent) {
     return false;
   }
-  if (nullptr == movementComponent) {
+  if (nullptr == pMovementComponent) {
+    return false;
+  }
+  if (nullptr == pRestrictionComponent) {
     return false;
   }
 
-  pOwnerPlayer_ = ownerPlayer;
-  pOwnerRenderer_ = imageRenderer_;
-  pOwnerStateComponent_ = stateComponent;
-  pOwnerMovementComponent_ = movementComponent;
+  pOwnerPlayer_ = pOwnerPlayer;
+  pOwnerRenderer_ = pImageRenderer;
+  pOwnerStateComponent_ = pStateComponent;
+  pOwnerMovementComponent_ = pMovementComponent;
+  pOwnerRestrictionComponent_ = pRestrictionComponent;
 
   bool ret = animTransitionTable_.Initialize(8, 8);
   return ret;
@@ -195,6 +208,13 @@ void AnimationHandler::InitCondition() {
 }
 
 void AnimationHandler::UpdateAnimation() {
+  if (nullptr == pOwnerRestrictionComponent_) {
+    return;
+  }
+  if (true == pOwnerRestrictionComponent_->ContainFinalRestrict({PR_LockAnimTrans})) {
+    return;
+  }
+
   AnimTransitionRule* pInfo;
   unsigned long long curAnim = pOwnerStateComponent_->GetCurAnimState();
   if (0 == animTransitionTable_.Select((void**)&pInfo, 1, &curAnim, 8)) {

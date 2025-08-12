@@ -9,6 +9,8 @@
 #include "KOFLevel.h"
 #include "CameraTarget.h"
 #include "ActorFreezeManager.h"
+#include "RestrictionComponent.h"
+#include "RestrictionManager.h"
 
 SkillTest::SkillTest()
     : pOwnerPlayer_(nullptr),
@@ -323,11 +325,11 @@ void SkillTest::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const
     case SKILL_FRAME_ACTION_SetPostionOpponentPlayer:
       SetPositionOpponentPlayer(params);
       break;
-    case SKILL_FRAME_ACTION_LockControlOpponentPlayer:
-      LockControlOpponentPlayer(params);
+    case SKILL_FRAME_ACTION_InflictStunOpponentPlayer:
+      InflictStunOpponentPlayer(params);
       break;
-    case SKILL_FRAME_ACTION_UnLockControlOpponentPlayer:
-      UnLockControlOpponentPlayer(params);
+    case SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer:
+      ReleaseStunOpponentPlayer(params);
       break;
     case SKILL_FRAME_ACTION_FreezeOpponentPlayer:
       FreezeOpponentPlayer(params);
@@ -456,7 +458,7 @@ void SkillTest::SetPositionOpponentPlayer(const SkillFrameActionParams& params) 
   opponentPlayer->SetPosition(opponentPosition);
 }
 
-void SkillTest::LockControlOpponentPlayer(const SkillFrameActionParams& params) {
+void SkillTest::InflictStunOpponentPlayer(const SkillFrameActionParams& params) {
   if (nullptr == pOwnerPlayer_) {
     return;
   }
@@ -464,10 +466,24 @@ void SkillTest::LockControlOpponentPlayer(const SkillFrameActionParams& params) 
   if (nullptr == opponentPlayer) {
     return;
   }
-  //opponentPlayer->SetControlLocked(true);
+  
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+  if (nullptr == pRestrictionManager) {
+    return;
+  }
+  pRestrictionManager->ApplyExternalRestrict(opponentPlayer->ActorId(), {PR_LockInput, PR_LockAnimTrans});
 }
 
-void SkillTest::UnLockControlOpponentPlayer(const SkillFrameActionParams& params) {
+void SkillTest::ReleaseStunOpponentPlayer(const SkillFrameActionParams& params) {
   if (nullptr == pOwnerPlayer_) {
     return;
   }
@@ -475,7 +491,21 @@ void SkillTest::UnLockControlOpponentPlayer(const SkillFrameActionParams& params
   if (nullptr == opponentPlayer) {
     return;
   }
-  //opponentPlayer->SetControlLocked(false);
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+  if (nullptr == pRestrictionManager) {
+    return;
+  }
+
+  pRestrictionManager->ReleaseExternalRestrict(opponentPlayer->ActorId(), {PR_LockInput, PR_LockAnimTrans});
 }
 
 void SkillTest::FreezeOpponentPlayer(const SkillFrameActionParams& params) {

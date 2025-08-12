@@ -66,6 +66,17 @@ void RestrictionManager::ApplyExternalRestrict(unsigned long long actorId, std::
   }
 }
 
+void RestrictionManager::ReleaseExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList) {
+  RestrictComponentInfo* pFind = nullptr;
+  if (0 == restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
+    return;
+  }
+
+  for (auto restrict : restrictList) {
+    pFind->pRestrictComponent_->externRestrict_.restrictBitset_.reset(restrict);
+  }
+}
+
 void RestrictionManager::ResetExternalRestrict(unsigned long long actorId) {
   RestrictComponentInfo* pFind = nullptr;
   if (0 == restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {

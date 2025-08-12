@@ -18,7 +18,6 @@
 #include "CollisionBox.h"
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
-
 #include "SkillTest.h"
 
 KOFPlayer::KOFPlayer()
@@ -82,18 +81,17 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
     UpdateAttack();
   }
 
-  // if (false == IsControlLocked()) {
   pInputController_->UpdateCommand();
 
   if (true == pRestrictionComponent_->CanInput()) {
     pCommandComponent_->ExcuteTask();
   }
-
+  
   pInputController_->ResetInputBitSet();
 
-  pInputController_->UpdateInput();
-
   if (true == pRestrictionComponent_->CanInput()) {
+    pInputController_->UpdateInput();
+
     CompareInputBitset();
   }
 

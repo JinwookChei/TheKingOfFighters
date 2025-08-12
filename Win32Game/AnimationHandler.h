@@ -1,7 +1,10 @@
 #pragma once
-#include "KOFPlayer.h"
-#include "StateComponent.h"
-#include "MovementComponent.h"
+
+class KOFPlayer;
+class ImageRenderer;
+class StateComponent;
+class RestrictionComponent;
+class MovementComponent;
 
 enum TRANSITION_CONDITION : unsigned int {
   None = 0,
@@ -47,7 +50,12 @@ class AnimationHandler
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool Initialize(KOFPlayer* ownerPlayer, ImageRenderer* imageRenderer_, StateComponent* stateComponent, MovementComponent* movementComponent);
+  bool Initialize(
+      KOFPlayer* pOwnerPlayer, 
+      ImageRenderer* pImageRenderer, 
+      StateComponent* pStateComponent, 
+      MovementComponent* pMovementComponent,
+      RestrictionComponent* pRestrictionComponent);
 
   bool CallCreateAnimation(
       unsigned long long animationTag,
@@ -102,13 +110,13 @@ class AnimationHandler
 
   StateComponent* pOwnerStateComponent_;
 
+  RestrictionComponent* pOwnerRestrictionComponent_;
+
   MovementComponent* pOwnerMovementComponent_;
 
   unsigned long long curAnimationState_;
 
   unsigned long long curAnimationModifier_;
-
-  //unsigned int prevImageIndex_;
 
   HashTable animTransitionTable_;
 
