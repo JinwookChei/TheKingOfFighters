@@ -3,6 +3,7 @@
 
 enum PLAYER_RESTRICT_TYPE : unsigned int {
   PR_LockInput,
+  PR_LockExecuteCommand,
   PR_LockAnimTrans,
   PR_Max
 };
@@ -41,6 +42,8 @@ class RestrictionComponent
   bool ContainFinalRestrict(std::initializer_list<PLAYER_RESTRICT_TYPE> compareRestrictList);
 
   bool CanInput() const;
+
+  bool CanExecuteCommand() const;
 
  private:
 

@@ -117,3 +117,7 @@ bool RestrictionComponent::ContainFinalRestrict(std::initializer_list<PLAYER_RES
 bool RestrictionComponent::CanInput() const {
   return !finalRestrict_.restrictBitset_.test({PR_LockInput});
 }
+
+bool RestrictionComponent::CanExecuteCommand() const {
+  return !finalRestrict_.restrictBitset_.test({PR_LockExecuteCommand});
+}
