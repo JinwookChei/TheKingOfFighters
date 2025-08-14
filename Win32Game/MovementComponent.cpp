@@ -3,6 +3,7 @@
 #include "KOFPlayer.h"
 #include "KOFLevel.h"
 #include "StateComponent.h"
+#include "RestrictionComponent.h"
 
 float CalculateParabolaHeight(float height, float duration, unsigned long long t) {
   float result = -(height / ((duration / 2.0f) * (duration / 2.0f))) * (t - (duration / 2.0f)) * (t - (duration / 2.0f)) + height;
@@ -10,7 +11,8 @@ float CalculateParabolaHeight(float height, float duration, unsigned long long t
 }
 
 MovementComponent::MovementComponent()
-    : startPosition_({0.0f, 0.0f}),
+    : pOwnerRestrictionComponent_(nullptr),
+      startPosition_({0.0f, 0.0f}),
       preFramePosition_({0.0f, 0.0f}),
       curMovementState_(MOVEMENT_STATE::MOVSTATE_Idle),
       curVelocity_({0.0f, 0.0f}),
@@ -43,6 +45,10 @@ void MovementComponent::BeginPlay() {
 }
 
 void MovementComponent::Tick(unsigned long long deltaTick) {
+  if (nullptr != pOwnerRestrictionComponent_ && true == pOwnerRestrictionComponent_->ContainFinalRestrict({PR_StopMove})) {
+    return;
+  }
+
   switch (curMovementState_) {
     case MOVSTATE_Idle:
       UpdateIdle(deltaTick);
@@ -86,7 +92,12 @@ void MovementComponent::Tick(unsigned long long deltaTick) {
   UpdatePreframePosition();
 }
 
-bool MovementComponent::Initialize(const Vector& startPosition) {
+bool MovementComponent::Initialize(RestrictionComponent* pRestrictionComponent, const Vector& startPosition) {
+  if (nullptr == pRestrictionComponent) {
+    return false;
+  }
+
+  pOwnerRestrictionComponent_ = pRestrictionComponent;
   startPosition_ = startPosition;
   return true;
 }

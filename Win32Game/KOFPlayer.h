@@ -80,6 +80,8 @@ class KOFPlayer
 
   StateComponent* GetPlayerStateComponent() const;
 
+  RestrictionComponent* GetPlayerRestrictComponent() const;
+
   MovementComponent* GetMovementComponent() const;
 
   void ReceiveClampedWidthOffset(float clampOffset);

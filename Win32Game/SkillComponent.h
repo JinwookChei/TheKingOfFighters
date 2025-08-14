@@ -44,10 +44,13 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_CommandExecute,
   SKILL_FRAME_ACTION_ChangeOpponentAnimState,
   SKILL_FRAME_ACTION_SetPostionOpponentPlayer,
-  SKILL_FRAME_ACTION_InflictStunOpponentPlayer,
+  SKILL_FRAME_ACTION_InflictRestrictionOpponentPlayer,
+  SKILL_FRAME_ACTION_ReleaseRestrictionOpponentPlayer,
+  SKILL_FRAME_ACTION_ClearRestrictionOpponentPlayer,
+  /*SKILL_FRAME_ACTION_InflictStunOpponentPlayer,
   SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer,
   SKILL_FRAME_ACTION_FreezeOpponentPlayer,
-  SKILL_FRAME_ACTION_DefreezeOpponentPlayer,
+  SKILL_FRAME_ACTION_DefreezeOpponentPlayer,*/
   SKILL_FRAME_ACTION_CameraShake,
   SKILL_FRAME_ACTION_FadeIn,
   SKILL_FRAME_ACTION_FadeOut,
@@ -57,44 +60,53 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
 };
 
 struct SkillFrameActionParams {
-  unsigned int changeStateIndex_ = 0;
-
-  bool isInfiniteFreeze_;
-
   union {
-    unsigned long long freezeDuration_ = 0;
+    struct ChangeSkillState {
+      unsigned int changeStateIndex_ = 0;
+    };
 
-    unsigned long long dashDuration_;
+    struct MovementJump {
+      Vector jumpForce_{0.0f, 0.0f};
+    };
 
-    unsigned long long cameraShakeDuration_;
+    struct MovementDash {
+      unsigned long long dashDuration_;
 
-    unsigned long long fadeDuration_;
-
-    unsigned long long opponentAnimState_;
-  };
-
-  union {
-    IMAGE_TYPE fadeImageType_;
-
-    EFFECT_TYPE effectType_;
-
-    PROJECTILE_TYPE projectileType_;
-
-    SOUND_TYPE soundType_;
-  };
-
-  union {
-    Vector jumpForce_{0.0f, 0.0f};
-    Vector spawnEffectPos_;
-    Vector opponentForcedPosition_;
-    struct {
       float dashDistance_;
-      float dashPad0_;
-      float dashPad1_;
-      float dashPad2_;
+    };
+
+    struct SpawnEffect {
+      Vector spawnEffectPos_;
+
+      EFFECT_TYPE effectType_;
+    };
+    
+    struct FireProjectile{
+      PROJECTILE_TYPE projectileType_;
+    };
+
+    struct ChangeOpponentAnimState {
+      unsigned long long opponentAnimState_;
+    };
+
+    struct SetPostionOpponentPlayer {
+      Vector opponentForcedPosition_;
+    };
+    
+    struct CameraShake {
+      unsigned long long cameraShakeDuration_;
+    };
+
+    struct Fade {
+      IMAGE_TYPE fadeImageType_;
+
+      unsigned long long fadeDuration_;
+    };
+
+    struct SoundPlay {
+      SOUND_TYPE soundType_;
     };
   };
-
 };
 
 struct SkillFrameActionConditionParams {
@@ -213,15 +225,14 @@ class SkillComponent
   void ReduceSkillPoint();
   // --------------------------------------------------
 
-
   // -------------- Skill Condition -------------------
   bool CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE actionCondition, const SkillFrameActionConditionParams& params) const;
 
   bool GetCurStateMiscFlag() const;
- 
+
   bool IsOpponentWithinDistanceThresHold(const SkillFrameActionConditionParams& params) const;
   // --------------------------------------------------
-  
+
   // -------------- Skill Frame Action -------------
   void ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params);
 
@@ -245,13 +256,16 @@ class SkillComponent
 
   void SetPositionOpponentPlayer(const SkillFrameActionParams& params);
 
-  void InflictStunOpponentPlayer(const SkillFrameActionParams& params);
+  /*void InflictStunOpponentPlayer(const SkillFrameActionParams& params);
 
   void ReleaseStunOpponentPlayer(const SkillFrameActionParams& params);
 
   void FreezeOpponentPlayer(const SkillFrameActionParams& params);
 
-  void DefreezeOpponentPlayer(const SkillFrameActionParams& params);
+  void DefreezeOpponentPlayer(const SkillFrameActionParams& params);*/
+  void InflictRestrictionOpponentPlayer(const SkillFrameActionParams& params);
+  void ReleaseRestrictionOpponentPlayer(const SkillFrameActionParams& params);
+  void ClearRestrictionOpponentPlayer(const SkillFrameActionParams& params);
 
   void ExcuteCameraShake(const SkillFrameActionParams& params);
 

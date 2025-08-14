@@ -54,7 +54,6 @@ bool RestrictionComponent::Initialize() {
     return false;
   }
 
-
   return true;
 }
 

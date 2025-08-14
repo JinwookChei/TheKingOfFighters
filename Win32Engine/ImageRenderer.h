@@ -134,6 +134,4 @@ class ImageRenderer
   HashTable animations_;
 
   AnimationInfo* pCurAnimInfo_;
-
-  bool isAnimFrozen_;
 };

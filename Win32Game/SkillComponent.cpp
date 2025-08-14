@@ -164,6 +164,9 @@ void SkillComponent::ExecuteSkill(unsigned long long skillTag) {
     return;
   }
 
+  SKILL_CASTING_ACTION_TYPE castAction = pInfo->castAction_;
+  ExcuteCastingAction(castAction);
+
   ResetStateMiscFlags(pInfo);
 
   ResetEventExcutedFlags(pInfo);
@@ -235,6 +238,9 @@ void SkillComponent::ExcuteCastingAction(SKILL_CASTING_ACTION_TYPE castAction) {
 }
 
 void SkillComponent::ReduceSkillPoint() {
+  if (nullptr == pOwnerMPComponent_) {
+    return;
+  }
   pOwnerMPComponent_->ReduceSkillPoint();
 }
 
@@ -325,18 +331,25 @@ void SkillComponent::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, 
     case SKILL_FRAME_ACTION_SetPostionOpponentPlayer:
       SetPositionOpponentPlayer(params);
       break;
-    case SKILL_FRAME_ACTION_InflictStunOpponentPlayer:
-      InflictStunOpponentPlayer(params);
+
+    case SKILL_FRAME_ACTION_InflictRestrictionOpponentPlayer:
       break;
-    case SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer:
-      ReleaseStunOpponentPlayer(params);
+    case SKILL_FRAME_ACTION_ReleaseRestrictionOpponentPlayer:
       break;
-    case SKILL_FRAME_ACTION_FreezeOpponentPlayer:
-      FreezeOpponentPlayer(params);
+    case SKILL_FRAME_ACTION_ClearRestrictionOpponentPlayer:
       break;
-    case SKILL_FRAME_ACTION_DefreezeOpponentPlayer:
-      DefreezeOpponentPlayer(params);
-      break;
+    // case SKILL_FRAME_ACTION_InflictStunOpponentPlayer:
+    //   InflictStunOpponentPlayer(params);
+    //   break;
+    // case SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer:
+    //   ReleaseStunOpponentPlayer(params);
+    //   break;
+    // case SKILL_FRAME_ACTION_FreezeOpponentPlayer:
+    //   FreezeOpponentPlayer(params);
+    //   break;
+    // case SKILL_FRAME_ACTION_DefreezeOpponentPlayer:
+    //   DefreezeOpponentPlayer(params);
+    //   break;
     case SKILL_FRAME_ACTION_CameraShake:
       ExcuteCameraShake(params);
       break;
@@ -458,111 +471,137 @@ void SkillComponent::SetPositionOpponentPlayer(const SkillFrameActionParams& par
   opponentPlayer->SetPosition(opponentPosition);
 }
 
-void SkillComponent::InflictStunOpponentPlayer(const SkillFrameActionParams& params) {
-  if (nullptr == pOwnerPlayer_) {
-    return;
-  }
-  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
-  if (nullptr == opponentPlayer) {
-    return;
-  }
+// void SkillComponent::InflictStunOpponentPlayer(const SkillFrameActionParams& params) {
+//   if (nullptr == pOwnerPlayer_) {
+//     return;
+//   }
+//   KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+//   if (nullptr == opponentPlayer) {
+//     return;
+//   }
+//
+//   Level* pLevel = pOwnerPlayer_->GetLevel();
+//   if (nullptr == pLevel) {
+//     return;
+//   }
+//   KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+//   if (nullptr == pKOFLevel) {
+//     return;
+//   }
+//
+//   RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+//   if (nullptr == pRestrictionManager) {
+//     return;
+//   }
+//   pRestrictionManager->ApplyExternalRestrict(opponentPlayer->ActorId(), {PR_LockInput, PR_LockAnimTrans});
+// }
+
+// void SkillComponent::ReleaseStunOpponentPlayer(const SkillFrameActionParams& params) {
+//   if (nullptr == pOwnerPlayer_) {
+//     return;
+//   }
+//   KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+//   if (nullptr == opponentPlayer) {
+//     return;
+//   }
+//   Level* pLevel = pOwnerPlayer_->GetLevel();
+//   if (nullptr == pLevel) {
+//     return;
+//   }
+//   KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+//   if (nullptr == pKOFLevel) {
+//     return;
+//   }
+//
+//   RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+//   if (nullptr == pRestrictionManager) {
+//     return;
+//   }
+//
+//   pRestrictionManager->ReleaseExternalRestrict(opponentPlayer->ActorId(), {PR_LockInput, PR_LockAnimTrans});
+// }
+
+// void SkillComponent::FreezeOpponentPlayer(const SkillFrameActionParams& params) {
+//   if (nullptr == pOwnerPlayer_) {
+//     return;
+//   }
+//
+//   Level* pLevel = pOwnerPlayer_->GetLevel();
+//   if (nullptr == pLevel) {
+//     return;
+//   }
+//
+//   KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+//   if (nullptr == pKOFLevel) {
+//     return;
+//   }
+//   KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+//   if (nullptr == opponentPlayer) {
+//     return;
+//   }
+//
+//   bool isInfinite = params.isInfiniteFreeze_;
+//
+//   unsigned long long duration = params.freezeDuration_;
+//
+//   //ActorFreezeManager* actorFreezeManger = pKOFLevel->GetActorFreezeManager();
+//   //if (nullptr == actorFreezeManger) {
+//   //  return;
+//   //}
+//
+//   //actorFreezeManger->ApplyFreeze(opponentPlayer->ActorId(), isInfinite, duration);
+// }
+
+// void SkillComponent::DefreezeOpponentPlayer(const SkillFrameActionParams& params) {
+//   if (nullptr == pOwnerPlayer_) {
+//     return;
+//   }
+//
+//   Level* pLevel = pOwnerPlayer_->GetLevel();
+//   if (nullptr == pLevel) {
+//     return;
+//   }
+//   KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+//   if (nullptr == pKOFLevel) {
+//     return;
+//   }
+//
+//   KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+//   if (nullptr == opponentPlayer) {
+//     return;
+//   }
+
+// ActorFreezeManager* actorFreezeManger = pKOFLevel->GetActorFreezeManager();
+// if (nullptr == actorFreezeManger) {
+//   return;
+// }
+// actorFreezeManger->Defreeze(opponentPlayer->ActorId());
+//}
+
+void SkillComponent::InflictRestrictionOpponentPlayer(const SkillFrameActionParams& params) {
+     if (nullptr == pOwnerPlayer_) {
+       return;
+     }
+     KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+     if (nullptr == opponentPlayer) {
+       return;
+     }
+     Level* pLevel = pOwnerPlayer_->GetLevel();
+     if (nullptr == pLevel) {
+       return;
+     }
+     KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+     if (nullptr == pKOFLevel) {
+       return;
+     }
   
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
+     RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+     if (nullptr == pRestrictionManager) {
+       return;
+     }
 
-  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
-  if (nullptr == pRestrictionManager) {
-    return;
-  }
-  pRestrictionManager->ApplyExternalRestrict(opponentPlayer->ActorId(), {PR_LockInput, PR_LockAnimTrans});
-}
+     //pRestrictionManager->ApplyExternalRestrict(opponentPlayer->ActorId(), params.isInfiniteFreeze_);
 
-void SkillComponent::ReleaseStunOpponentPlayer(const SkillFrameActionParams& params) {
-  if (nullptr == pOwnerPlayer_) {
-    return;
-  }
-  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
-  if (nullptr == opponentPlayer) {
-    return;
-  }
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
-  if (nullptr == pRestrictionManager) {
-    return;
-  }
-
-  pRestrictionManager->ReleaseExternalRestrict(opponentPlayer->ActorId(), {PR_LockInput, PR_LockAnimTrans});
-}
-
-void SkillComponent::FreezeOpponentPlayer(const SkillFrameActionParams& params) {
-  if (nullptr == pOwnerPlayer_) {
-    return;
-  }
-
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
-  if (nullptr == opponentPlayer) {
-    return;
-  }
-
-  bool isInfinite = params.isInfiniteFreeze_;
-
-  unsigned long long duration = params.freezeDuration_;
-
-  ActorFreezeManager* actorFreezeManger = pKOFLevel->GetActorFreezeManager();
-  if (nullptr == actorFreezeManger) {
-    return;
-  }
-
-  actorFreezeManger->ApplyFreeze(opponentPlayer->ActorId(), isInfinite, duration);
-}
-
-void SkillComponent::DefreezeOpponentPlayer(const SkillFrameActionParams& params) {
-  if (nullptr == pOwnerPlayer_) {
-    return;
-  }
-
-  Level* pLevel = pOwnerPlayer_->GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-
-    KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
-  if (nullptr == opponentPlayer) {
-    return;
-  }
-
-  ActorFreezeManager* actorFreezeManger = pKOFLevel->GetActorFreezeManager();
-  if (nullptr == actorFreezeManger) {
-    return;
-  }
-  actorFreezeManger->Defreeze(opponentPlayer->ActorId());
 }
 
 void SkillComponent::ExcuteCameraShake(const SkillFrameActionParams& params) {

@@ -18,7 +18,7 @@
 #include "KOFLoby.h"
 
 KOFLevel::KOFLevel()
-    : pActorFreezeManager_(nullptr),
+    : /*pActorFreezeManager_(nullptr),*/
       pRestrictionManager_(nullptr),
       pCamera_(nullptr),
       pMouse_(nullptr),
@@ -49,10 +49,10 @@ void KOFLevel::BeginPlay() {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
     
   // MANAGER
-  pActorFreezeManager_ = SpawnActor<ActorFreezeManager>();
-  if (false == pActorFreezeManager_->Initialize()) {
-    return;
-  }
+  //pActorFreezeManager_ = SpawnActor<ActorFreezeManager>();
+  //if (false == pActorFreezeManager_->Initialize()) {
+  //  return;
+  //}
   pRestrictionManager_ = SpawnActor<RestrictionManager>();
   if (false == pRestrictionManager_->Initialize()) {
     return;
@@ -334,9 +334,9 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
-ActorFreezeManager* KOFLevel::GetActorFreezeManager() const {
-  return pActorFreezeManager_;
-}
+//ActorFreezeManager* KOFLevel::GetActorFreezeManager() const {
+//  return pActorFreezeManager_;
+//}
 
 RestrictionManager* KOFLevel::GetRestrictionManager() const {
   return pRestrictionManager_;

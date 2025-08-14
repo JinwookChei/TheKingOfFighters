@@ -13,6 +13,7 @@
 #include "MPComponent.h"
 #include "StateComponent.h"
 #include "RestrictionComponent.h"
+#include "RestrictionManager.h"
 #include "GhostEffect.h"
 #include "CollisionBox.h"
 #include "Iori.h"
@@ -431,7 +432,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   // SKILL 3
   SkillFrameActionData SK3_ST0_FR0_AC0_Data0;
   SK3_ST0_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementDash;
-  SK3_ST0_FR0_AC0_Data0.actionParams_.dashDuration_ = 150.0f;
+  SK3_ST0_FR0_AC0_Data0.actionParams_.dashDuration_ = 150;
   SK3_ST0_FR0_AC0_Data0.actionParams_.dashDistance_ = 80.0f;
   SkillFrameActionConditionData SK3_ST0_FR0_AC0_Cond0;
   SK3_ST0_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
@@ -485,7 +486,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK3_State0.frames_.push_back(SK3_ST0_Frame2);
   SkillFrameActionData SK3_ST1_FR0_AC0_Data0;
   SK3_ST1_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementDash;
-  SK3_ST1_FR0_AC0_Data0.actionParams_.dashDuration_ = 150.0f;
+  SK3_ST1_FR0_AC0_Data0.actionParams_.dashDuration_ = 150;
   SK3_ST1_FR0_AC0_Data0.actionParams_.dashDistance_ = 80.0f;
   SkillFrameActionConditionData SK3_ST1_FR0_AC0_Cond0;
   SK3_ST1_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
@@ -663,7 +664,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK5_ST1_Frame0.actions_.push_back(SK5_ST1_FR0_Action0);
   SkillFrameActionData SK5_ST1_FR1_AC0_Data0;
   SK5_ST1_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementDash;
-  SK5_ST1_FR1_AC0_Data0.actionParams_.dashDuration_ = 250.0f;
+  SK5_ST1_FR1_AC0_Data0.actionParams_.dashDuration_ = 250;
   SK5_ST1_FR1_AC0_Data0.actionParams_.dashDistance_ = 1000.0f;
   SkillFrameActionConditionData SK5_ST1_FR1_AC0_Cond0;
   SK5_ST1_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
@@ -681,7 +682,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK5_ST1_FR2_AC0_Data0.actionParams_;
   SkillFrameActionData SK5_ST1_FR2_AC0_Data1;
   SK5_ST1_FR2_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_MovementDash;
-  SK5_ST1_FR2_AC0_Data1.actionParams_.dashDuration_ = 250.0f;
+  SK5_ST1_FR2_AC0_Data1.actionParams_.dashDuration_ = 250;
   SK5_ST1_FR2_AC0_Data1.actionParams_.dashDistance_ = 1000.0f;
   SkillFrameAction SK5_ST1_FR2_Action0;
   SK5_ST1_FR2_Action0.conditionDatas_.push_back(SK5_ST1_FR2_AC0_Cond0);
@@ -1002,27 +1003,55 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_5.skillStates_.push_back(SK5_State9);
   pSkillComponent_->RegistSkill(Skill_5);
 
-  // SkillFrameActionData a;
-  // a.actionType_ = SKILL_FRAME_ACTION_FadeOut;
-  // a.actionParams_.fadeDuration_ = 50;
-  // a.actionParams_.fadeImageType_ = IMGTYPE_BlackBoardImage;
-  // SkillFrameActionConditionData b;
-  // b.conditionType_ = SKILL_FRAME_ACTION_COND_None;
-  // b.conditionParams_;
-  // SkillFrameAction SK5_ST0_FR0_Action0;
-  // SK5_ST0_FR0_Action0.conditionDatas_.push_back(b);
-  // SK5_ST0_FR0_Action0.actionDatas_.push_back(a);
-  // SkillFrame SK5_ST0_Frame0;
-  // SK5_ST0_Frame0.startIndex_ = 100;
-  // SK5_ST0_Frame0.endIndex_ = 100;
-  // SK5_ST0_Frame0.actions_.push_back(SK5_ST0_FR0_Action0);
-  // SkillState SK5_State0;
-  // SK5_State0.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_8;
-  // SK5_State0.frames_.push_back(SK5_ST0_Frame0);
-  // Skill Skill_5;
-  // Skill_5.skillTag_ = SKILL_5;
-  // Skill_5.skillStates_.push_back(SK5_State0);
-  // skillTest_->RegistSkill(Skill_5);
+
+  SkillFrameActionData SK6_ST0_FR0_AC0_data0;
+  SK6_ST0_FR0_AC0_data0.actionType_ = SKILL_FRAME_ACTION_FreezeOpponentPlayer;
+  SK6_ST0_FR0_AC0_data0.actionParams_.isInfiniteFreeze_ = true;
+  SkillFrameActionData SK6_ST0_FR0_AC0_data1;
+  SK6_ST0_FR0_AC0_data1.actionType_ = SKILL_FRAME_ACTION_FadeOut;
+  SK6_ST0_FR0_AC0_data1.actionParams_.fadeDuration_ = 50;
+  SkillFrameActionData SK6_ST0_FR0_AC0_data2;
+  SK6_ST0_FR0_AC0_data2.actionType_ = SKILL_FRAME_ACTION_SpawnEffect;
+  SK6_ST0_FR0_AC0_data2.actionParams_.effectType_ = EFTYPE_Casting_1;
+  SK6_ST0_FR0_AC0_data2.actionParams_.spawnEffectPos_ = {0.0f, -500.0f};
+  SkillFrameActionData SK6_ST0_FR0_AC0_data3;
+  SK6_ST0_FR0_AC0_data3.actionType_ = SKILL_FRAME_ACTION_SpawnEffect;
+  SK6_ST0_FR0_AC0_data3.actionParams_.effectType_ = EFTYPE_Casting_2;
+  SK6_ST0_FR0_AC0_data3.actionParams_.spawnEffectPos_ = {0.0f, -500.0f};
+  SkillFrameActionConditionData SK6_ST0_FR0_AC0_Cond0;
+  SK6_ST0_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameAction SK6_ST0_FR0_Action0;
+  SK6_ST0_FR0_Action0.conditionDatas_.push_back(SK6_ST0_FR0_AC0_Cond0);
+  SK6_ST0_FR0_Action0.actionDatas_.push_back(SK6_ST0_FR0_AC0_data0);
+  SK6_ST0_FR0_Action0.actionDatas_.push_back(SK6_ST0_FR0_AC0_data1);
+  SK6_ST0_FR0_Action0.actionDatas_.push_back(SK6_ST0_FR0_AC0_data2);
+  SK6_ST0_FR0_Action0.actionDatas_.push_back(SK6_ST0_FR0_AC0_data3);
+  SkillFrame SK6_ST0_Frame0;
+  SK6_ST0_Frame0.startIndex_ = 353;
+  SK6_ST0_Frame0.endIndex_ = 353;
+  SK6_ST0_Frame0.actions_.push_back(SK6_ST0_FR0_Action0);
+  SkillFrameActionConditionData SK6_ST0_FR1_AC0_Cond0;
+  SK6_ST0_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST0_FR1_AC0_Data0;
+  SK6_ST0_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_DefreezeOpponentPlayer;
+  SkillFrameAction SK6_ST0_FR1_Action0;
+  SK6_ST0_FR1_Action0.conditionDatas_.push_back(SK6_ST0_FR1_AC0_Cond0);
+  SK6_ST0_FR1_Action0.actionDatas_.push_back(SK6_ST0_FR1_AC0_Data0);
+  SkillFrame SK6_ST0_Frame1;
+  SK6_ST0_Frame1.startIndex_ = 355;
+  SK6_ST0_Frame1.endIndex_ = 355;
+  SK6_ST0_Frame1.actions_.push_back(SK6_ST0_FR1_Action0);
+  SkillState SK6_State0;
+  SK6_State0.animState_ = IORI_ANIMTYPE_Ura306shikiShika_1;
+  SK6_State0.frames_.push_back(SK6_ST0_Frame0);
+  SK6_State0.frames_.push_back(SK6_ST0_Frame1);
+  Skill Skill_6;
+  Skill_6.skillTag_ = SKILL_6;
+  Skill_6.castCondition_ = SKILL_CAST_COND_HasSkillPoint;
+  Skill_6.castAction_ = SKILL_CAST_ACTION_ReduceSkillPoint;
+  Skill_6.skillStates_.push_back(SK6_State0);
+  
+
 }
 
 void Iori::CompareInputBitset() {
@@ -1191,31 +1220,39 @@ void Iori::CompareInputBitset() {
 
     // A | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A})) {
-      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
-        UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
-      } else {
-        UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
-      }
+      // if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      //   UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_CloseRange);
+      // } else {
+      //   UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
+      // }
+
+      ((KOFLevel*)GetLevel())->GetRestrictionManager()->ApplyExternalRestrict(ActorId(), {PR_StopAnim, PR_LockInput}, false, 500);
       return;
     }
 
     // B | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_B})) {
-      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      /*if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_LightKick_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
-      }
+      }*/
+      
+      //((KOFLevel*)GetLevel())->GetRestrictionManager()->ClearExternalRestrict(ActorId());
+      
+      ((KOFLevel*)GetLevel())->GetRestrictionManager()->ApplyExternalRestrict(ActorId(), {PR_StopAnim});
       return;
     }
 
     // C | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_C})) {
-      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      /*if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_LongRange);
-      }
+      }*/
+
+      ((KOFLevel*)GetLevel())->GetRestrictionManager()->ClearExternalRestrict(ActorId());
       return;
     }
 

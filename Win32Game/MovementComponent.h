@@ -1,6 +1,5 @@
 #pragma once
-#include <bitset>
-#include <initializer_list>
+class RestrictionComponent;
 
 enum MOVEMENT_STATE {
   MOVSTATE_Idle = 0,
@@ -24,7 +23,7 @@ class MovementComponent final
 
   void Tick(unsigned long long deltaTick) override;
 
-  bool Initialize(const Vector& startPosition);
+  bool Initialize(RestrictionComponent* pRestrictionComponent, const Vector& startPosition);
 
   MOVEMENT_STATE GetMovementState() const;
 
@@ -83,6 +82,8 @@ class MovementComponent final
   bool IsRising() const;
 
  private:
+  RestrictionComponent* pOwnerRestrictionComponent_;
+
   Vector startPosition_;
 
   Vector preFramePosition_;

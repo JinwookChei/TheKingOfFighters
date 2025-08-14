@@ -1,6 +1,6 @@
 #pragma once
 
-class ActorFreezeManager;
+//class ActorFreezeManager;
 class RestrictionManager;
 class Mouse;
 class BackGround;
@@ -30,7 +30,7 @@ class KOFLevel final
 
   void SwapPosition();
 
-  ActorFreezeManager* GetActorFreezeManager() const;
+  //ActorFreezeManager* GetActorFreezeManager() const;
 
   RestrictionManager* GetRestrictionManager() const;
 
@@ -57,7 +57,7 @@ class KOFLevel final
   void EndGame(unsigned long long deltaTick);
 
  private:
-  ActorFreezeManager* pActorFreezeManager_;
+  //ActorFreezeManager* pActorFreezeManager_;
 
   RestrictionManager* pRestrictionManager_;
 

@@ -11,11 +11,6 @@ IoriAnimationHandler::IoriAnimationHandler() {
 IoriAnimationHandler::~IoriAnimationHandler() {
 }
 
-void IoriAnimationHandler::Tick(unsigned long long deltaTick) {
-  InitCondition();
-
-  UpdateAnimation();
-}
 
 
 bool IoriAnimationHandler::RegistAnimations() {
@@ -64,7 +59,6 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_Seat, IMGTYPE_IoriImage, 552, 556, ANIMINTERVAL, false, 552);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpUp, IMGTYPE_IoriImage, {595}, 160, false, 595);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpDown, IMGTYPE_IoriImage, 80, 85, ANIMINTERVAL, false, 82);
-  //CallCreateAnimation(PLAYER_ANIMTYPE_Grabbed, IMGTYPE_IoriImage, {557}, 150, false, 557);
   CallCreateAnimation(PLAYER_ANIMTYPE_NeckGrabbed, IMGTYPE_IoriImage, 572, 575, 150, false, 572);
   CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_IoriImage, 223, 230, ANIMINTERVAL, false, 223);
   CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);

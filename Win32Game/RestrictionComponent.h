@@ -1,10 +1,12 @@
 #pragma once
-#include "RestrictionManager.h"
+//#include "RestrictionManager.h"
 
 enum PLAYER_RESTRICT_TYPE : unsigned int {
   PR_LockInput,
   PR_LockExecuteCommand,
   PR_LockAnimTrans,
+  PR_StopAnim,
+  PR_StopMove,
   PR_Max
 };
 

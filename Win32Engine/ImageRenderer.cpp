@@ -48,8 +48,7 @@ ImageRenderer::ImageRenderer()
       angle_(0.0f),
       transparentColor_(Color8Bit::White),
       isAlpha_(false),
-      pCurAnimInfo_(nullptr),
-      isAnimFrozen_(false) {
+      pCurAnimInfo_(nullptr){
   animations_.Initialize(8, 8);
 }
 
@@ -85,14 +84,8 @@ void ImageRenderer::Tick(unsigned long long curTick) {
 
     image_ = pCurAnimInfo_->image_;
 
-    unsigned int tempIndex;
-    if (true == isAnimFrozen_) {
-      tempIndex = imageIndex_;
-    }
-    else {
-      tempIndex = pCurAnimInfo_->Update(curTick);
-    }
-    
+    unsigned int tempIndex = pCurAnimInfo_->Update(curTick);
+
     hasIndexChanged_ = false;
     if (tempIndex != imageIndex_) {
       imageIndex_ = tempIndex;
@@ -361,14 +354,6 @@ bool ImageRenderer::IsAnimationEnd() const {
 
 bool ImageRenderer::HasIndexChange() const {
   return hasIndexChanged_;
-}
-
-void ImageRenderer::AnimFreeze() {
-  isAnimFrozen_ = true;
-}
-
-void ImageRenderer::UnAnimFreeze() {
-  isAnimFrozen_ = false;
 }
 
 void ImageRenderer::DebugRender(IRenderTexture* renderTexture) {

@@ -9,6 +9,7 @@
 #include "MovementComponent.h"
 #include "StateComponent.h"
 #include "RestrictionComponent.h"
+#include "RestrictionManager.h"
 #include "AttackTable.h"
 #include "SoundTable.h"
 #include "HealthComponent.h"
@@ -58,11 +59,6 @@ KOFPlayer::~KOFPlayer() {
   if (nullptr == pKOFLevel) {
     return;
   }
-  ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
-  if (nullptr == actorFreezeManager) {
-    return;
-  }
-  actorFreezeManager->UnregistActor(ActorId());
 }
 
 void KOFPlayer::BeginPlay() {
@@ -103,21 +99,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   SetUseCameraposition(useCameraPosition);
   isPlayer1_ = isPlayer1;
 
-  // REGIST MANAGER
-  Level* pLevel = GetLevel();
-  if (nullptr == pLevel) {
-    return;
-  }
-  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-  if (nullptr == pKOFLevel) {
-    return;
-  }
-  ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
-  if (nullptr == actorFreezeManager) {
-    return;
-  }
-  actorFreezeManager->RegistActor(ActorId(), this);
-
   // RENDERER
   pRender_ = CreateImageRenderFIFO();
   pRender_->SetImageRenderType(ImageRenderType::Bottom);
@@ -136,12 +117,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
     pUI_->SetImage(youUiPlayer, 0);
   } else {
     pUI_->SetImage(youUiPlayer, 2);
-  }
-
-  // MOVEMENT
-  pMovementComponent_ = CreateComponent<MovementComponent>();
-  if (false == pMovementComponent_->Initialize(position)) {
-    return;
   }
 
   // SOUND
@@ -179,6 +154,13 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (false == pRestrictionComponent_->Initialize()) {
     return;
   }
+
+  // MOVEMENT
+  pMovementComponent_ = CreateComponent<MovementComponent>();
+  if (false == pMovementComponent_->Initialize(pRestrictionComponent_, position)) {
+    return;
+  }
+
 
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
@@ -464,11 +446,17 @@ void KOFPlayer::UpdateAttack() {
 
       pTargetPlayer->HitEvent(pAttackInfo);
 
-      ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
-      if (nullptr != actorFreezeManager) {
-        actorFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
-        actorFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
+      RestrictionManager* restrictManager = pKOFLevel->GetRestrictionManager();
+      if (nullptr != restrictManager) {
+        restrictManager->ApplyExternalRestrict(ActorId(), {PR_LockInput, PR_StopAnim, PR_StopMove}, false, pAttackInfo->freezeTime_);
+        restrictManager->ApplyExternalRestrict(pTargetPlayer->ActorId(), {PR_LockInput, PR_StopAnim, PR_StopMove}, false, pAttackInfo->freezeTime_);
       }
+
+      //ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
+      //if (nullptr != actorFreezeManager) {
+      //  actorFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
+      //  actorFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
+      //}
 
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {
@@ -658,6 +646,10 @@ KOFPlayer* KOFPlayer::GetOpponentPlayer() const {
 
 StateComponent* KOFPlayer::GetPlayerStateComponent() const {
   return pStateComponent_;
+}
+
+RestrictionComponent* KOFPlayer::GetPlayerRestrictComponent() const {
+  return pRestrictionComponent_;
 }
 
 MovementComponent* KOFPlayer::GetMovementComponent() const {

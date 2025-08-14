@@ -32,6 +32,17 @@ void AnimationHandler::BeginPlay() {
 }
 
 void AnimationHandler::Tick(unsigned long long deltaTick) {
+  if (true == pOwnerRestrictionComponent_->ContainFinalRestrict({PR_StopAnim})) {
+    pOwnerRenderer_->SetEnableTick(false);
+  } else {
+    pOwnerRenderer_->SetEnableTick(true);
+  }
+
+  InitCondition();
+
+  if (false == pOwnerRestrictionComponent_->ContainFinalRestrict({ PR_LockAnimTrans })) {
+    UpdateAnimation();
+  }
 }
 
 bool AnimationHandler::Initialize(
