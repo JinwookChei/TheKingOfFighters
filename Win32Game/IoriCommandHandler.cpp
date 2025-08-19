@@ -58,16 +58,5 @@ void IoriCommandHandler::Command_6() {
 }
 
 void IoriCommandHandler::Command_7() {
-  if (0 >= pOwnerMPComponent_->SkillPoint()) {
-    return;
-  }
-
-  /*SkillInfo* pCurSkillInfo = pOwnerSkillComponent_->GetCurrentActiveSkillInfo();
-  if (nullptr == pCurSkillInfo) {
-    return;
-  }
-
-  if (IORI_SKILL_1211ShikiYaOtome == pCurSkillInfo->skillTag_) {
-    pOwnerSkillComponent_->SetMiscTemp(true);
-  }*/
+  pOwnerCommandComponent_->TurnOnMisc();
 }

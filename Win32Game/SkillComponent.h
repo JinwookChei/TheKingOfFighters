@@ -48,23 +48,19 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_InflictRestrictionOpponentPlayer,
   SKILL_FRAME_ACTION_ReleaseRestrictionOpponentPlayer,
   SKILL_FRAME_ACTION_ClearRestrictionOpponentPlayer,
-  /*SKILL_FRAME_ACTION_InflictStunOpponentPlayer,
-  SKILL_FRAME_ACTION_ReleaseStunOpponentPlayer,
-  SKILL_FRAME_ACTION_FreezeOpponentPlayer,
-  SKILL_FRAME_ACTION_DefreezeOpponentPlayer,*/
   SKILL_FRAME_ACTION_CameraShake,
   SKILL_FRAME_ACTION_FadeIn,
   SKILL_FRAME_ACTION_FadeOut,
   SKILL_FRAME_ACTION_FadeInOut,
   SKILL_FRAME_ACTION_SoundPlay,
-  SKILL_FRAME_ACTION_SetCurStateMiscFlagTrue
+  SKILL_FRAME_ACTION_SetCurStateMiscFlagTrue,
+  SKILL_FRAME_ACTION_ExecuteNextSkill
 };
 
 struct SkillFrameActionParams {
   SkillFrameActionParams()
       : Restriction{0}
   {
-    // memset(this, 0, sizeof(SkillFrameActionParams));
   }
   union {
     struct {
@@ -121,6 +117,10 @@ struct SkillFrameActionParams {
       std::bitset<PR_Max> restrictions_;
 
     } Restriction;
+    
+    struct{
+      unsigned long long skillTag_;
+    } NextSkill;
   };
 };
 
@@ -271,13 +271,6 @@ class SkillComponent
 
   void SetPositionOpponentPlayer(const SkillFrameActionParams& params);
 
-  /*void InflictStunOpponentPlayer(const SkillFrameActionParams& params);
-
-  void ReleaseStunOpponentPlayer(const SkillFrameActionParams& params);
-
-  void FreezeOpponentPlayer(const SkillFrameActionParams& params);
-
-  void DefreezeOpponentPlayer(const SkillFrameActionParams& params);*/
   void InflictRestrictionOpponentPlayer(const SkillFrameActionParams& params);
 
   void ReleaseRestrictionOpponentPlayer(const SkillFrameActionParams& params);
@@ -295,6 +288,8 @@ class SkillComponent
   void ExcuteSoundPlay(const SkillFrameActionParams& params);
 
   void SetCurStateMiscFlagTrue(const SkillFrameActionParams& params);
+
+  void ExecuteNextSkill(const SkillFrameActionParams& params);
 
   // --------------------------------------------------
 

@@ -452,12 +452,6 @@ void KOFPlayer::UpdateAttack() {
         restrictManager->ApplyExternalRestrict(pTargetPlayer->ActorId(), {PR_LockInput, PR_StopAnim, PR_StopMove}, false, pAttackInfo->freezeTime_);
       }
 
-      //ActorFreezeManager* actorFreezeManager = pKOFLevel->GetActorFreezeManager();
-      //if (nullptr != actorFreezeManager) {
-      //  actorFreezeManager->ApplyFreeze(ActorId(), false, pAttackInfo->freezeTime_);
-      //  actorFreezeManager->ApplyFreeze(pTargetPlayer->ActorId(), false, pAttackInfo->freezeTime_);
-      //}
-
       // Calculate Effect Position.
       Vector collisionSectionLeftTop = {
           pAttackBox_->GetCollisionInfo().Left() > pTargetCollision->GetCollisionInfo().Left() ? pAttackBox_->GetCollisionInfo().Left() : pTargetCollision->GetCollisionInfo().Left(),

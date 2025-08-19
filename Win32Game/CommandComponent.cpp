@@ -9,7 +9,8 @@ CommandComponent::CommandComponent()
       inputTimeThreshold_(0),
       reservedTaskTimeout_(0),
       reservedTaskTimeThreshold_(0),
-      reservedTask_(nullptr) {
+      reservedTask_(nullptr),
+      isMiscOn_ (false){
   for (int i = 0; i < CommandKey::CK_MAX; ++i) {
     pRootNode_->pSubNodes[i] = new CommandNode();
   }
@@ -90,6 +91,15 @@ void CommandComponent::ResetNode() {
     return;
   }
 
+  TurnOffMisc();
   pCurNode_ = pRootNode_;
   inputTimeout_ = 0;
+}
+
+void CommandComponent::TurnOnMisc() {
+  isMiscOn_ = true;
+}
+
+void CommandComponent::TurnOffMisc() {
+    isMiscOn_ = false;
 }

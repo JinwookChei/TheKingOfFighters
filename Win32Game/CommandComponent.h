@@ -80,6 +80,10 @@ class CommandComponent
 
   void ResetNode();
 
+  void TurnOnMisc();
+
+  void TurnOffMisc();
+
  private:
   CommandNode* const pRootNode_;
 
@@ -94,4 +98,6 @@ class CommandComponent
   unsigned long long reservedTaskTimeThreshold_;
 
   std::function<void()> reservedTask_;
+
+  bool isMiscOn_;
 };
