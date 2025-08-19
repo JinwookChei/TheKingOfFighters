@@ -2,7 +2,7 @@
 //#include "RestrictionManager.h"
 
 enum PLAYER_RESTRICT_TYPE : unsigned int {
-  PR_LockInput,
+  PR_LockInput = 0,
   PR_LockExecuteCommand,
   PR_LockAnimTrans,
   PR_StopAnim,

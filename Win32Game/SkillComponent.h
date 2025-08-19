@@ -1,4 +1,5 @@
 #pragma once
+#include "RestrictionComponent.h"
 
 enum SKILL_TYPE : unsigned int {
   SKILL_0 = 0,
@@ -60,52 +61,66 @@ enum SKILL_FRAME_ACTION_TYPE : unsigned int {
 };
 
 struct SkillFrameActionParams {
+  SkillFrameActionParams()
+      : Restriction{0}
+  {
+    // memset(this, 0, sizeof(SkillFrameActionParams));
+  }
   union {
-    struct ChangeSkillState {
-      unsigned int changeStateIndex_ = 0;
-    };
+    struct {
+      unsigned int changeStateIndex_;
+    } ChangeSkillState;
 
-    struct MovementJump {
-      Vector jumpForce_{0.0f, 0.0f};
-    };
+    struct {
+      Vector jumpForce_;
+    } MovementJump;
 
-    struct MovementDash {
+    struct {
       unsigned long long dashDuration_;
 
       float dashDistance_;
-    };
+    } MovementDash;
 
-    struct SpawnEffect {
+    struct {
       Vector spawnEffectPos_;
 
       EFFECT_TYPE effectType_;
-    };
-    
-    struct FireProjectile{
+    } SpawnEffect;
+
+    struct {
       PROJECTILE_TYPE projectileType_;
-    };
+    } FireProjectile;
 
-    struct ChangeOpponentAnimState {
+    struct {
       unsigned long long opponentAnimState_;
-    };
+    } ChangeOpponentAnimState;
 
-    struct SetPostionOpponentPlayer {
+    struct {
       Vector opponentForcedPosition_;
-    };
-    
-    struct CameraShake {
-      unsigned long long cameraShakeDuration_;
-    };
+    } SetPostionOpponentPlayer;
 
-    struct Fade {
+    struct {
+      unsigned long long cameraShakeDuration_;
+    } CameraShake;
+
+    struct {
       IMAGE_TYPE fadeImageType_;
 
       unsigned long long fadeDuration_;
-    };
+    } Fade;
 
-    struct SoundPlay {
+    struct {
       SOUND_TYPE soundType_;
-    };
+    } SoundPlay;
+
+    struct {
+      bool isInfinite_;
+
+      unsigned long long restrictDuration_;
+
+      std::bitset<PR_Max> restrictions_;
+
+    } Restriction;
   };
 };
 
@@ -264,7 +279,9 @@ class SkillComponent
 
   void DefreezeOpponentPlayer(const SkillFrameActionParams& params);*/
   void InflictRestrictionOpponentPlayer(const SkillFrameActionParams& params);
+
   void ReleaseRestrictionOpponentPlayer(const SkillFrameActionParams& params);
+
   void ClearRestrictionOpponentPlayer(const SkillFrameActionParams& params);
 
   void ExcuteCameraShake(const SkillFrameActionParams& params);

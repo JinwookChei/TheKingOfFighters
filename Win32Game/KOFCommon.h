@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 enum IMAGE_TYPE : unsigned long long {
+  IMGTYPE_None = 0ULL,
   IMGTYPE_MouseImage = 1ULL,
   IMGTYPE_LogoImage,
   IMGTYPE_PressEnter,

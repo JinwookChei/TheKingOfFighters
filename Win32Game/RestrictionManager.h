@@ -43,11 +43,19 @@ class RestrictionManager final
 
   void ApplyExternalRestrict(
 	  unsigned long long actorId, 
-	  std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList, 
+	  std::vector<PLAYER_RESTRICT_TYPE> restrictList, 
 	  bool isInfinite = true, 
 	  unsigned long long duration = 0);
 
-  void ReleaseExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList);
+    void ApplyExternalRestrict(
+      unsigned long long actorId,
+      const std::bitset<PR_Max>& restrictList,
+      bool isInfinite = true,
+      unsigned long long duration = 0);
+
+  void ReleaseExternalRestrict(unsigned long long actorId, std::vector<PLAYER_RESTRICT_TYPE> restrictList);
+
+    void ReleaseExternalRestrict(unsigned long long actorId, const std::bitset<PR_Max>& restrictList);
 
   void ClearExternalRestrict(unsigned long long actorId);
 

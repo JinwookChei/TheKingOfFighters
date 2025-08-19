@@ -83,7 +83,7 @@ void RestrictionManager::UnregistComponent(unsigned long long actorId) {
 
 void RestrictionManager::ApplyExternalRestrict(
     unsigned long long actorId,
-    std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList,
+    std::vector<PLAYER_RESTRICT_TYPE> restrictList,
     bool isInfinite /*= true*/,
     unsigned long long duration /*= 0*/) {
   RestrictComponentInfo* pFind = nullptr;
@@ -105,12 +105,35 @@ void RestrictionManager::ApplyExternalRestrict(
   activeRestrictions_.push_back(activeInfo);
 }
 
-void RestrictionManager::ReleaseExternalRestrict(unsigned long long actorId, std::initializer_list<PLAYER_RESTRICT_TYPE> restrictList) {
+void RestrictionManager::ApplyExternalRestrict(unsigned long long actorId, const std::bitset<PR_Max>& restrictList, bool isInfinite, unsigned long long duration) {
+  RestrictComponentInfo* pFind = nullptr;
+  if (0 == restrictComponentTable_.Select((void**)&pFind, 1, &actorId, 8)) {
+    return;
+  }
+
+  ActiveRestrictionInfo activeInfo;
+  activeInfo.actorId_ = actorId;
+  activeInfo.pRestrictComponent_ = pFind->pRestrictComponent_;
+  activeInfo.restrictBitset_ = restrictList;
+  activeInfo.isInfinite_ = isInfinite;
+  activeInfo.duration_ = duration;
+  activeRestrictions_.push_back(activeInfo);
+}
+
+void RestrictionManager::ReleaseExternalRestrict(unsigned long long actorId, std::vector<PLAYER_RESTRICT_TYPE> restrictList) {
   for (auto& item : activeRestrictions_) {
     if (item.actorId_ == actorId) {
       for (auto type : restrictList) {
         item.restrictBitset_.reset(type);
       }
+    }
+  }
+}
+
+void RestrictionManager::ReleaseExternalRestrict(unsigned long long actorId, const std::bitset<PR_Max>& restrictList) {
+  for (auto& item : activeRestrictions_) {
+    if (item.actorId_ == actorId) {
+      item.restrictBitset_ &= (~restrictList);
     }
   }
 }

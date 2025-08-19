@@ -333,10 +333,13 @@ void SkillComponent::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, 
       break;
 
     case SKILL_FRAME_ACTION_InflictRestrictionOpponentPlayer:
+      InflictRestrictionOpponentPlayer(params);
       break;
     case SKILL_FRAME_ACTION_ReleaseRestrictionOpponentPlayer:
+      ReleaseRestrictionOpponentPlayer(params);
       break;
     case SKILL_FRAME_ACTION_ClearRestrictionOpponentPlayer:
+      ClearRestrictionOpponentPlayer(params);
       break;
     // case SKILL_FRAME_ACTION_InflictStunOpponentPlayer:
     //   InflictStunOpponentPlayer(params);
@@ -384,7 +387,7 @@ void SkillComponent::ChangeSkillState(const SkillFrameActionParams& params) {
     return;
   }
 
-  unsigned int skillStateIndex = params.changeStateIndex_;
+  unsigned int skillStateIndex = params.ChangeOpponentAnimState.opponentAnimState_;
   if (skillStateIndex >= executingSkill_->skillStates_.size()) {
     return;
   }
@@ -398,14 +401,14 @@ void SkillComponent::ChangeSkillState(const SkillFrameActionParams& params) {
 
 void SkillComponent::ExcuteJump(const SkillFrameActionParams& params) {
   bool facingRight = pOwnerPlayer_->FacingRight();
-  Vector jumpForce = params.jumpForce_;
+  Vector jumpForce = params.MovementJump.jumpForce_;
   pOwnerMovementConponent_->Jump(facingRight, jumpForce);
 }
 
 void SkillComponent::ExcuteDash(const SkillFrameActionParams& params) {
   bool facingRight = pOwnerPlayer_->FacingRight();
-  float dashDuration = params.dashDuration_;
-  float dashDistance = params.dashDistance_;
+  float dashDuration = params.MovementDash.dashDuration_;
+  float dashDistance = params.MovementDash.dashDistance_;
 
   pOwnerMovementConponent_->Dash(facingRight, dashDuration, dashDistance);
 }
@@ -420,9 +423,9 @@ void SkillComponent::ExcuteSpawnEffect(const SkillFrameActionParams& params) {
     return;
   }
 
-  EFFECT_TYPE effectType = params.effectType_;
+  EFFECT_TYPE effectType = params.SpawnEffect.effectType_;
   Vector playerPosition = pOwnerPlayer_->GetPosition();
-  Vector spawnPositionOffset = params.spawnEffectPos_;
+  Vector spawnPositionOffset = params.SpawnEffect.spawnEffectPos_;
 
   if (pOwnerPlayer_->FacingRight()) {
     EffectManager::Instance()->SpawnEffect(curLevel, (effectType | EFMOD_NONE), {playerPosition.X + spawnPositionOffset.X, playerPosition.Y + spawnPositionOffset.Y});
@@ -432,7 +435,7 @@ void SkillComponent::ExcuteSpawnEffect(const SkillFrameActionParams& params) {
 }
 
 void SkillComponent::ExcuteFireProjectile(const SkillFrameActionParams& params) {
-  PROJECTILE_TYPE projectileType = params.projectileType_;
+  PROJECTILE_TYPE projectileType = params.FireProjectile.projectileType_;
   pOwnerProjectileComponent_->FireProjectile(projectileType);
 }
 
@@ -448,7 +451,7 @@ void SkillComponent::ChangeOpponentAnimState(const SkillFrameActionParams& param
     return;
   }
 
-  unsigned long long opponentAnimState = params.opponentAnimState_;
+  unsigned long long opponentAnimState = params.ChangeOpponentAnimState.opponentAnimState_;
 
   opponentPlayer->UpdateAnimState(opponentAnimState);
 }
@@ -462,7 +465,7 @@ void SkillComponent::SetPositionOpponentPlayer(const SkillFrameActionParams& par
     return;
   }
 
-  const Vector& opponentForcedPos = params.opponentForcedPosition_;
+  const Vector& opponentForcedPos = params.SetPostionOpponentPlayer.opponentForcedPosition_;
 
   const Vector& ownerPosition = pOwnerPlayer_->GetPosition();
 
@@ -579,29 +582,85 @@ void SkillComponent::SetPositionOpponentPlayer(const SkillFrameActionParams& par
 //}
 
 void SkillComponent::InflictRestrictionOpponentPlayer(const SkillFrameActionParams& params) {
-     if (nullptr == pOwnerPlayer_) {
-       return;
-     }
-     KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
-     if (nullptr == opponentPlayer) {
-       return;
-     }
-     Level* pLevel = pOwnerPlayer_->GetLevel();
-     if (nullptr == pLevel) {
-       return;
-     }
-     KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-     if (nullptr == pKOFLevel) {
-       return;
-     }
-  
-     RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
-     if (nullptr == pRestrictionManager) {
-       return;
-     }
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
 
-     //pRestrictionManager->ApplyExternalRestrict(opponentPlayer->ActorId(), params.isInfiniteFreeze_);
+  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+  if (nullptr == pRestrictionManager) {
+    return;
+  }
 
+  bool isInfinite = params.Restriction.isInfinite_;
+  unsigned long long restrictDuration = params.Restriction.restrictDuration_;
+  const std::bitset<PR_Max>& restrictions = params.Restriction.restrictions_;
+
+  pRestrictionManager->ApplyExternalRestrict(opponentPlayer->ActorId(), restrictions, isInfinite, restrictDuration);
+}
+
+void SkillComponent::ReleaseRestrictionOpponentPlayer(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+  if (nullptr == pRestrictionManager) {
+    return;
+  }
+
+  //std::vector<PLAYER_RESTRICT_TYPE> restrictions = params.Restriction.restrictions_;
+  const std::bitset<PR_Max>& restrictions = params.Restriction.restrictions_;
+
+  pRestrictionManager->ReleaseExternalRestrict(opponentPlayer->ActorId(), restrictions);
+}
+
+void SkillComponent::ClearRestrictionOpponentPlayer(const SkillFrameActionParams& params) {
+  if (nullptr == pOwnerPlayer_) {
+    return;
+  }
+  KOFPlayer* opponentPlayer = pOwnerPlayer_->GetOpponentPlayer();
+  if (nullptr == opponentPlayer) {
+    return;
+  }
+  Level* pLevel = pOwnerPlayer_->GetLevel();
+  if (nullptr == pLevel) {
+    return;
+  }
+  KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
+  if (nullptr == pKOFLevel) {
+    return;
+  }
+
+  RestrictionManager* pRestrictionManager = pKOFLevel->GetRestrictionManager();
+  if (nullptr == pRestrictionManager) {
+    return;
+  }
+
+  pRestrictionManager->ClearExternalRestrict(opponentPlayer->ActorId());
 }
 
 void SkillComponent::ExcuteCameraShake(const SkillFrameActionParams& params) {
@@ -621,7 +680,7 @@ void SkillComponent::ExcuteCameraShake(const SkillFrameActionParams& params) {
   if (nullptr == pCameraTarget) {
     return;
   }
-  unsigned long long cameraShakeDuration = params.cameraShakeDuration_;
+  unsigned long long cameraShakeDuration = params.CameraShake.cameraShakeDuration_;
 
   pCameraTarget->OnCameraShake(cameraShakeDuration);
 }
@@ -645,7 +704,7 @@ void SkillComponent::ExcuteFadeIn(const SkillFrameActionParams& params) {
     return;
   }
 
-  unsigned long long fadeDuration = params.fadeDuration_;
+  unsigned long long fadeDuration = params.Fade.fadeDuration_;
 
   pBackGroundMask->FadeIn(fadeDuration);
 }
@@ -669,9 +728,9 @@ void SkillComponent::ExcuteFadeOut(const SkillFrameActionParams& params) {
     return;
   }
 
-  IMAGE_TYPE fadeImageType = params.fadeImageType_;
+  IMAGE_TYPE fadeImageType = params.Fade.fadeImageType_;
 
-  unsigned long long fadeDuration = params.fadeDuration_;
+  unsigned long long fadeDuration = params.Fade.fadeDuration_;
 
   pBackGroundMask->FadeOut(fadeImageType, fadeDuration);
 }
@@ -695,15 +754,15 @@ void SkillComponent::ExcuteFadeInOut(const SkillFrameActionParams& params) {
     return;
   }
 
-  IMAGE_TYPE fadeImageType = params.fadeImageType_;
+  IMAGE_TYPE fadeImageType = params.Fade.fadeImageType_;
 
-  unsigned long long fadeDuration = params.fadeDuration_;
+  unsigned long long fadeDuration = params.Fade.fadeDuration_;
 
   pBackGroundMask->FadeInOut(fadeImageType, fadeDuration);
 }
 
 void SkillComponent::ExcuteSoundPlay(const SkillFrameActionParams& params) {
-  SOUND_TYPE soundType_ = params.soundType_;
+  SOUND_TYPE soundType_ = params.SoundPlay.soundType_;
 
   SoundManager::Instance()->SoundPlay(soundType_);
 }
