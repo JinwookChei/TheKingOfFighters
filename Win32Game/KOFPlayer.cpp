@@ -70,6 +70,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
   CheckPushCollision();
 
+
   if (true == pStateComponent_->ContainPlayerState({PS_Attack})) {
     UpdateAttack();
   }
@@ -214,6 +215,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
                    pRender_,
                    pMovementComponent_,
                    pInputController_,
+                   pCommandComponent_,
                    pAttackBox_,
                    pProjectileComponent_,
                    pMPComponent_)) {
@@ -413,6 +415,15 @@ void KOFPlayer::UpdateCollisionBoundScale() {
 void KOFPlayer::UpdateAttack() {
   AttackInfo* pAttackInfo;
   unsigned long long animState = pAnimationHandler_->CurrentAnimationState();
+
+  //////////////////
+  if (353 == pRender_->GetImageIndex()) {
+    int a = 10;
+  }
+  if (66 == animState) {
+    int b = 10;
+  }
+  ///////////////////
   if (false == pAttackTable_->SearchAttackInfo(animState, &pAttackInfo)) {
     return;
   }

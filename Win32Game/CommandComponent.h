@@ -80,6 +80,8 @@ class CommandComponent
 
   void ResetNode();
 
+  bool IsMiscOn() const; 
+
   void TurnOnMisc();
 
   void TurnOffMisc();

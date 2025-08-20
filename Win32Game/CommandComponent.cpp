@@ -96,6 +96,10 @@ void CommandComponent::ResetNode() {
   inputTimeout_ = 0;
 }
 
+bool CommandComponent::IsMiscOn() const {
+  return isMiscOn_;
+}
+
 void CommandComponent::TurnOnMisc() {
   isMiscOn_ = true;
 }

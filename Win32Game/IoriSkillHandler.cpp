@@ -311,7 +311,7 @@ void IoriSkillHandler::ShikiYaOtome1211() {
   //    }
   //    if (351 == curImageIndex) {
   //      pOwnerCommandComponent_->ExcuteTask();
-  //      if (true == pOwnerSkillComponent_->GetMiscTemp()) {
+  //      if (true == pOwnerSkillComponent_->GetMiscTemp()) {   
   //        ActiveUra306shikiShika();
   //      } else {
   //        pBackGroundMask->FadeInOut(IMGTYPE_WhiteBoardImage, 50);

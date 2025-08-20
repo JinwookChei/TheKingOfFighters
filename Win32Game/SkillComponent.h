@@ -30,7 +30,8 @@ enum SKILL_FRAME_ACTION_CONDITION_TYPE : unsigned int {
   SKILL_FRAME_ACTION_COND_CheckInputDownD,
   SKILL_FRAME_ACTION_COND_HasAttackCollition,
   SKILL_FRAME_ACTION_COND_IsStateMiscFlagTrue,
-  SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold
+  SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold,
+  SKILL_FRAME_ACTION_COND_IsCommandMiscOn
 };
 
 enum SKILL_FRAME_ACTION_TYPE : unsigned int {
@@ -212,6 +213,7 @@ class SkillComponent
       ImageRenderer* pRenderer,
       MovementComponent* pMovementComponent,
       InputController* pInputController,
+      CommandComponent* pCommandComponent,
       CollisionComponent* pAttackCollision,
       ProjectileComponent* pProjectileComponent,
       MPComponent* pMPComponent);
@@ -220,7 +222,7 @@ class SkillComponent
 
   void UpdateSkill();
 
-  void ExecuteSkill(unsigned long long skillTag);
+  void ExecuteSkill(unsigned long long skillTag, bool isForce = false);
 
   bool IsSkillExecuting();
 
@@ -246,6 +248,8 @@ class SkillComponent
   bool GetCurStateMiscFlag() const;
 
   bool IsOpponentWithinDistanceThresHold(const SkillFrameActionConditionParams& params) const;
+
+  bool IsCommandMiscOn(const SkillFrameActionConditionParams& params) const;
   // --------------------------------------------------
 
   // -------------- Skill Frame Action -------------
@@ -301,6 +305,8 @@ class SkillComponent
   MovementComponent* pOwnerMovementConponent_;
 
   InputController* pOwnerInputController_;
+
+  CommandComponent* pOwnerCommandComponent_;
 
   CollisionComponent* pOwnerAttackCollision_;
 

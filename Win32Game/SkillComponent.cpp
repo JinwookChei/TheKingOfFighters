@@ -3,6 +3,7 @@
 #include "SkillComponent.h"
 #include "MovementComponent.h"
 #include "InputController.h"
+#include "CommandComponent.h"
 #include "ProjectileComponent.h"
 #include "MPComponent.h"
 #include "ScreenMask.h"
@@ -47,6 +48,7 @@ bool SkillComponent::Initialize(
     ImageRenderer* pRenderer,
     MovementComponent* pMovementComponent,
     InputController* pInputController,
+    CommandComponent* pCommandComponent,
     CollisionComponent* pAttackCollision,
     ProjectileComponent* pProjectileComponent,
     MPComponent* pMPComponent) {
@@ -62,6 +64,10 @@ bool SkillComponent::Initialize(
   if (nullptr == pInputController) {
     return false;
   }
+  if (nullptr == pCommandComponent) {
+    return false;
+  }
+
   if (nullptr == pAttackCollision) {
     return false;
   }
@@ -76,6 +82,7 @@ bool SkillComponent::Initialize(
   pOwnerRenderer_ = pRenderer;
   pOwnerMovementConponent_ = pMovementComponent;
   pOwnerInputController_ = pInputController;
+  pOwnerCommandComponent_ = pCommandComponent;
   pOwnerAttackCollision_ = pAttackCollision;
   pOwnerProjectileComponent_ = pProjectileComponent;
   pOwnerMPComponent_ = pMPComponent;
@@ -149,8 +156,8 @@ void SkillComponent::UpdateSkill() {
   }
 }
 
-void SkillComponent::ExecuteSkill(unsigned long long skillTag) {
-  if (true == IsSkillExecuting()) {
+void SkillComponent::ExecuteSkill(unsigned long long skillTag, bool isForce /*= false*/) {
+  if (false == isForce && true == IsSkillExecuting()) {
     return;
   }
 
@@ -177,7 +184,7 @@ void SkillComponent::ExecuteSkill(unsigned long long skillTag) {
 
   unsigned long long animState = executingSkill_->skillStates_[curSkillStateIndex_].animState_;
 
-  pOwnerPlayer_->UpdateAnimState(animState);
+  pOwnerPlayer_->UpdateAnimState(animState, IMGMOD_NONE, true);
 }
 
 bool SkillComponent::IsSkillExecuting() {
@@ -273,6 +280,9 @@ bool SkillComponent::CheckFrameActionCondition(SKILL_FRAME_ACTION_CONDITION_TYPE
     case SKILL_FRAME_ACTION_COND_IsOpponentWithinDistanceThresHold:
       return IsOpponentWithinDistanceThresHold(params);
       break;
+    case SKILL_FRAME_ACTION_COND_IsCommandMiscOn:
+      return IsCommandMiscOn(params);
+      break;
     default:
       break;
   }
@@ -295,6 +305,14 @@ bool SkillComponent::IsOpponentWithinDistanceThresHold(const SkillFrameActionCon
   Vector opponetPosition = pOwnerPlayer_->GetOpponentPlayer()->GetPosition();
 
   return opponentDistanceThreshold > std::fabs(ownerPosition.X - opponetPosition.X);
+}
+
+bool SkillComponent::IsCommandMiscOn(const SkillFrameActionConditionParams& params) const {
+  if (nullptr == pOwnerCommandComponent_) {
+    return false;
+  }
+
+  return pOwnerCommandComponent_->IsMiscOn();
 }
 
 void SkillComponent::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, const SkillFrameActionParams& params) {
@@ -516,7 +534,7 @@ void SkillComponent::ReleaseRestrictionOpponentPlayer(const SkillFrameActionPara
     return;
   }
 
-  //std::vector<PLAYER_RESTRICT_TYPE> restrictions = params.Restriction.restrictions_;
+  // std::vector<PLAYER_RESTRICT_TYPE> restrictions = params.Restriction.restrictions_;
   const std::bitset<PR_Max>& restrictions = params.Restriction.restrictions_;
 
   pRestrictionManager->ReleaseExternalRestrict(opponentPlayer->ActorId(), restrictions);
@@ -659,5 +677,30 @@ void SkillComponent::SetCurStateMiscFlagTrue(const SkillFrameActionParams& param
 }
 
 void SkillComponent::ExecuteNextSkill(const SkillFrameActionParams& params) {
-  ExecuteSkill(params.NextSkill.skillTag_);
+  ExecuteSkill(params.NextSkill.skillTag_, true);
+  
+  //Skill* pInfo;
+  //if (0 == skillTable_.Select((void**)&pInfo, 1, &params.NextSkill.skillTag_, 8)) {
+  //  return;
+  //}
+
+  //SKILL_CASTING_CONDITION_TYPE executeCondition = pInfo->castCondition_;
+  //if (false == CheckCastingCondition(executeCondition)) {
+  //  return;
+  //}
+
+  //SKILL_CASTING_ACTION_TYPE castAction = pInfo->castAction_;
+  //ExcuteCastingAction(castAction);
+
+  //ResetStateMiscFlags(pInfo);
+
+  //ResetEventExcutedFlags(pInfo);
+
+  //executingSkill_ = pInfo;
+
+  //curSkillStateIndex_ = 0;
+
+  //unsigned long long animState = executingSkill_->skillStates_[curSkillStateIndex_].animState_;
+
+  //pOwnerPlayer_->UpdateAnimState(animState, IMGMOD_NONE, true);
 }
