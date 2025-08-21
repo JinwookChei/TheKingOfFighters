@@ -58,5 +58,5 @@ void IoriCommandHandler::Command_6() {
 }
 
 void IoriCommandHandler::Command_7() {
-  pOwnerCommandComponent_->TurnOnMisc();
+  pOwnerCommandComponent_->TurnOnMisc(500);
 }

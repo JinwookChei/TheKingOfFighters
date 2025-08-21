@@ -416,14 +416,6 @@ void KOFPlayer::UpdateAttack() {
   AttackInfo* pAttackInfo;
   unsigned long long animState = pAnimationHandler_->CurrentAnimationState();
 
-  //////////////////
-  if (353 == pRender_->GetImageIndex()) {
-    int a = 10;
-  }
-  if (66 == animState) {
-    int b = 10;
-  }
-  ///////////////////
   if (false == pAttackTable_->SearchAttackInfo(animState, &pAttackInfo)) {
     return;
   }

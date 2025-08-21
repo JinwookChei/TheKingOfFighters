@@ -5,12 +5,14 @@
 CommandComponent::CommandComponent()
     : pRootNode_(new CommandNode()),
       pCurNode_(pRootNode_),
-      inputTimeout_(0),
+      inputTimer_(0),
       inputTimeThreshold_(0),
-      reservedTaskTimeout_(0),
+      reservedTaskTimer_(0),
       reservedTaskTimeThreshold_(0),
       reservedTask_(nullptr),
-      isMiscOn_ (false){
+      isMiscOn_ (false),
+      miscOnTimer_ (0),
+      miscOnDuration_ (0){
   for (int i = 0; i < CommandKey::CK_MAX; ++i) {
     pRootNode_->pSubNodes[i] = new CommandNode();
   }
@@ -25,20 +27,22 @@ CommandComponent::~CommandComponent() {
 void CommandComponent::BeginPlay() {
 }
 
-void CommandComponent::Tick(unsigned long long curTick) {
-  inputTimeout_ += curTick;
-  if (inputTimeout_ > inputTimeThreshold_) {
+void CommandComponent::Tick(unsigned long long deltaTick) {
+  inputTimer_ += deltaTick;
+  if (inputTimer_ >= inputTimeThreshold_) {
     ResetNode();
   }
 
   if (nullptr == reservedTask_) {
-    reservedTaskTimeout_ = 0;
+    reservedTaskTimer_ = 0;
   } else {
-    reservedTaskTimeout_ += curTick;
-    if (reservedTaskTimeout_ > reservedTaskTimeThreshold_) {
+    reservedTaskTimer_ += deltaTick;
+    if (reservedTaskTimer_ >= reservedTaskTimeThreshold_) {
       reservedTask_ = nullptr;
     }
   }
+
+  UpdateMiscOnTimer(deltaTick);
 }
 
 bool CommandComponent::isWaitingTask() const {
@@ -56,10 +60,14 @@ void CommandComponent::ExcuteTask() {
 }
 
 void CommandComponent::JumpNode(CommandKey key) {
-  inputTimeout_ = 0;
+  inputTimer_ = 0;
+
+  if (nullptr == pCurNode_){
+    return;
+  }
 
   if (nullptr == pCurNode_->pSubNodes[key]) {
-    pCurNode_ = pRootNode_->pSubNodes[key];
+    pCurNode_ = nullptr;
     return;
   } else {
     pCurNode_ = pCurNode_->pSubNodes[key];
@@ -91,19 +99,29 @@ void CommandComponent::ResetNode() {
     return;
   }
 
-  TurnOffMisc();
   pCurNode_ = pRootNode_;
-  inputTimeout_ = 0;
+  inputTimer_ = 0;
 }
 
 bool CommandComponent::IsMiscOn() const {
   return isMiscOn_;
 }
 
-void CommandComponent::TurnOnMisc() {
+void CommandComponent::TurnOnMisc(unsigned long long miscOnDuration) {
   isMiscOn_ = true;
+  miscOnTimer_ = 0;
+  miscOnDuration_ = miscOnDuration;
 }
 
 void CommandComponent::TurnOffMisc() {
     isMiscOn_ = false;
+}
+
+void CommandComponent::UpdateMiscOnTimer(unsigned long long deltaTick) {
+  if (true == IsMiscOn()) {
+    miscOnTimer_ += deltaTick;
+    if (miscOnTimer_ >= miscOnDuration_) {
+      TurnOffMisc();
+    }
+  }
 }

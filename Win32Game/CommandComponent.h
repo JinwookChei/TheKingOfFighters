@@ -46,7 +46,7 @@ class CommandComponent
 
   void BeginPlay() override;
 
-  void Tick(unsigned long long curTick) override;
+  void Tick(unsigned long long deltaTick) override;
 
   template<typename T>
   bool RegistCommand(std::initializer_list<CommandKey> command, void (T::* funcPtr)(), T* owner) {
@@ -82,24 +82,30 @@ class CommandComponent
 
   bool IsMiscOn() const; 
 
-  void TurnOnMisc();
+  void TurnOnMisc(unsigned long long miscOnDuration);
 
   void TurnOffMisc();
+
+  void UpdateMiscOnTimer(unsigned long long deltaTick);
 
  private:
   CommandNode* const pRootNode_;
 
   CommandNode* pCurNode_;
 
-  unsigned long long inputTimeout_;
+  unsigned long long inputTimer_;
 
   unsigned long long inputTimeThreshold_;
 
-  unsigned long long reservedTaskTimeout_;
+  unsigned long long reservedTaskTimer_;
 
   unsigned long long reservedTaskTimeThreshold_;
 
   std::function<void()> reservedTask_;
 
   bool isMiscOn_;
+
+  unsigned long long miscOnTimer_;
+
+  unsigned long long miscOnDuration_;
 };

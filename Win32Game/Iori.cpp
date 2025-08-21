@@ -230,8 +230,8 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_5, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_6, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_7, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_8, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_8, {PR_LockInput});
+  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PR_LockInput});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_1, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_2, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_3, {PR_LockInput, PR_LockExecuteCommand});
@@ -267,7 +267,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 100.0f, {3.0f, -4.0f}, 150);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 100.0f, {3.0f, -4.5f}, 150);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_1, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 5.0f, {0.0f, -7.0f}, 100);
   // pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_3, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 10.0f, {1.5f, -10.0f}, 140.0f);
@@ -978,6 +978,8 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK5_ST9_FR2_Action0.actionDatas_.push_back(SK5_ST9_FR2_AC0_Data1);
   SkillFrameActionConditionData SK5_ST9_FR2_AC1_Cond0;
   SK5_ST9_FR2_AC1_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_HasAttackCollition;
+  SkillFrameActionConditionData SK5_ST9_FR2_AC1_Cond1;
+  SK5_ST9_FR2_AC1_Cond1.conditionType_ = SKILL_FRAME_ACTION_COND_IsCommandMiscOn;
   SkillFrameActionData SK5_ST9_FR2_AC1_Data0;
   SK5_ST9_FR2_AC1_Data0.actionType_ = SKILL_FRAME_ACTION_ClearRestrictionOpponentPlayer;
   SkillFrameActionData SK5_ST9_FR2_AC1_Data1;
@@ -985,17 +987,14 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK5_ST9_FR2_AC1_Data1.actionParams_.NextSkill.skillTag_ = SKILL_6;
   SkillFrameAction SK5_ST9_FR2_Action1;
   SK5_ST9_FR2_Action1.conditionDatas_.push_back(SK5_ST9_FR2_AC1_Cond0);
+  SK5_ST9_FR2_Action1.conditionDatas_.push_back(SK5_ST9_FR2_AC1_Cond1);
   SK5_ST9_FR2_Action1.actionDatas_.push_back(SK5_ST9_FR2_AC1_Data0);
   SK5_ST9_FR2_Action1.actionDatas_.push_back(SK5_ST9_FR2_AC1_Data1);
-  
   SkillFrame SK5_ST9_Frame2;
   SK5_ST9_Frame2.startIndex_ = 351;
   SK5_ST9_Frame2.endIndex_ = 351;
   SK5_ST9_Frame2.actions_.push_back(SK5_ST9_FR2_Action0);
   SK5_ST9_Frame2.actions_.push_back(SK5_ST9_FR2_Action1);
-
-
-
   SkillFrameActionConditionData SK5_ST9_FR3_AC0_Cond0;
   SK5_ST9_FR3_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_AnimationEnd;
   SkillFrameActionData SK5_ST9_FR3_AC0_Data0;
@@ -1007,15 +1006,12 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK5_ST9_Frame3.startIndex_ = 352;
   SK5_ST9_Frame3.endIndex_ = 352;
   SK5_ST9_Frame3.actions_.push_back(SK5_ST9_FR3_Action0);
-  
-  
   SkillState SK5_State9;
   SK5_State9.animState_ = IORI_ANIMTYPE_1211ShikiYaOtome_9;
   SK5_State9.frames_.push_back(SK5_ST9_Frame0);
   SK5_State9.frames_.push_back(SK5_ST9_Frame1);
   SK5_State9.frames_.push_back(SK5_ST9_Frame2);
   SK5_State9.frames_.push_back(SK5_ST9_Frame3);
-
   Skill Skill_5;
   Skill_5.skillTag_ = SKILL_5;
   Skill_5.castCondition_ = SKILL_CAST_COND_HasSkillPoint;
@@ -1062,8 +1058,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK6_ST0_Frame0.startIndex_ = 353;
   SK6_ST0_Frame0.endIndex_ = 353;
   SK6_ST0_Frame0.actions_.push_back(SK6_ST0_FR0_Action0);
-
-
   SkillFrameActionConditionData SK6_ST0_FR1_AC0_Cond0;
   SK6_ST0_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
   SkillFrameActionData SK6_ST0_FR1_AC0_Data0;
@@ -1072,18 +1066,112 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   SK6_ST0_FR1_Action0.conditionDatas_.push_back(SK6_ST0_FR1_AC0_Cond0);
   SK6_ST0_FR1_Action0.actionDatas_.push_back(SK6_ST0_FR1_AC0_Data0);
   SkillFrame SK6_ST0_Frame1;
-  SK6_ST0_Frame1.startIndex_ = 355;
-  SK6_ST0_Frame1.endIndex_ = 355;
+  SK6_ST0_Frame1.startIndex_ = 356;
+  SK6_ST0_Frame1.endIndex_ = 356;
   SK6_ST0_Frame1.actions_.push_back(SK6_ST0_FR1_Action0);
+  SkillFrameActionConditionData SK6_ST0_FR2_AC0_Cond0;
+  SK6_ST0_FR2_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST0_FR2_AC0_Data0;
+  SK6_ST0_FR2_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_InflictRestrictionOpponentPlayer;
+  SK6_ST0_FR2_AC0_Data0.actionParams_.Restriction.isInfinite_ = true;
+  SK6_ST0_FR2_AC0_Data0.actionParams_.Restriction.restrictions_.set(PR_StopMove);
+  SK6_ST0_FR2_AC0_Data0.actionParams_.Restriction.restrictions_.set(PR_StopAnim);
+  SK6_ST0_FR2_AC0_Data0.actionParams_.Restriction.restrictions_.set(PR_LockAnimTrans);
+  SkillFrameAction SK6_ST0_FR2_Action0;
+  SK6_ST0_FR2_Action0.conditionDatas_.push_back(SK6_ST0_FR2_AC0_Cond0);
+  SK6_ST0_FR2_Action0.actionDatas_.push_back(SK6_ST0_FR2_AC0_Data0);
+  SkillFrame SK6_ST0_Frame2;
+  SK6_ST0_Frame2.startIndex_ = 357;
+  SK6_ST0_Frame2.endIndex_ = 357;
+  SK6_ST0_Frame2.actions_.push_back(SK6_ST0_FR2_Action0);
+  SkillFrameActionConditionData SK6_ST0_FR3_AC0_Cond0;
+  SK6_ST0_FR3_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST0_FR3_AC0_Data0;
+  SK6_ST0_FR3_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK6_ST0_FR3_AC0_Data0.actionParams_.ChangeSkillState.changeStateIndex_ = 1;
+  SkillFrameAction SK6_ST0_FR3_Action0;
+  SK6_ST0_FR3_Action0.conditionDatas_.push_back(SK6_ST0_FR3_AC0_Cond0);
+  SK6_ST0_FR3_Action0.actionDatas_.push_back(SK6_ST0_FR3_AC0_Data0);
+  SkillFrame SK6_ST0_Frame3;
+  SK6_ST0_Frame3.startIndex_ = 360;
+  SK6_ST0_Frame3.endIndex_ = 360;
+  SK6_ST0_Frame3.actions_.push_back(SK6_ST0_FR3_Action0);
   SkillState SK6_State0;
   SK6_State0.animState_ = IORI_ANIMTYPE_Ura306shikiShika_1;
   SK6_State0.frames_.push_back(SK6_ST0_Frame0);
   SK6_State0.frames_.push_back(SK6_ST0_Frame1);
+  SK6_State0.frames_.push_back(SK6_ST0_Frame2);
+  SK6_State0.frames_.push_back(SK6_ST0_Frame3);
+  SkillFrameActionConditionData SK6_ST1_FR0_AC0_Cond0;
+  SK6_ST1_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST1_FR0_AC0_Data0;
+  SK6_ST1_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ReleaseRestrictionOpponentPlayer;
+  SK6_ST1_FR0_AC0_Data0.actionParams_.Restriction.restrictions_.set(PR_StopMove);
+  SkillFrameAction SK6_ST1_FR0_Action0;
+  SK6_ST1_FR0_Action0.conditionDatas_.push_back(SK6_ST1_FR0_AC0_Cond0);
+  SK6_ST1_FR0_Action0.actionDatas_.push_back(SK6_ST1_FR0_AC0_Data0);
+  SkillFrame SK6_ST1_Frame0;
+  SK6_ST1_Frame0.startIndex_ = 363;
+  SK6_ST1_Frame0.endIndex_ = 363;
+  SK6_ST1_Frame0.actions_.push_back(SK6_ST1_FR0_Action0);
+  SkillFrameActionConditionData SK6_ST1_FR1_AC0_Cond0;
+  SK6_ST1_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST1_FR1_AC0_Data0;
+  SK6_ST1_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK6_ST1_FR1_AC0_Data0.actionParams_.ChangeSkillState.changeStateIndex_ = 2;
+  SkillFrameAction SK6_ST1_FR1_Action0;
+  SK6_ST1_FR1_Action0.conditionDatas_.push_back(SK6_ST1_FR1_AC0_Cond0);
+  SK6_ST1_FR1_Action0.actionDatas_.push_back(SK6_ST1_FR1_AC0_Data0);
+  SkillFrame SK6_ST1_Frame1;
+  SK6_ST1_Frame1.startIndex_ = 370;
+  SK6_ST1_Frame1.endIndex_ = 370;
+  SK6_ST1_Frame1.actions_.push_back(SK6_ST1_FR1_Action0);
+  SkillState SK6_State1;
+  SK6_State1.animState_ = IORI_ANIMTYPE_Ura306shikiShika_2;
+  SK6_State1.frames_.push_back(SK6_ST1_Frame0);
+  SK6_State1.frames_.push_back(SK6_ST1_Frame1);
+  SkillFrameActionConditionData SK6_ST2_FR0_AC0_Cond0;
+  SK6_ST2_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST2_FR0_AC0_Data0;
+  SK6_ST2_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_FireProjectile;
+  SK6_ST2_FR0_AC0_Data0.actionParams_.FireProjectile.projectileType_ = PROJECTILE_TYPE::IORI_PROJECTILE_Ura306Shiki;
+  SkillFrameActionData SK6_ST2_FR0_AC0_Data1;
+  SK6_ST2_FR0_AC0_Data1.actionType_ = SKILL_FRAME_ACTION_ReleaseRestrictionOpponentPlayer;
+  SK6_ST2_FR0_AC0_Data1.actionParams_.Restriction.restrictions_.set(PR_StopAnim);
+  SkillFrameActionData SK6_ST2_FR0_AC0_Data2;
+  SK6_ST2_FR0_AC0_Data2.actionType_ = SKILL_FRAME_ACTION_CameraShake;
+  SK6_ST2_FR0_AC0_Data2.actionParams_.CameraShake.cameraShakeDuration_ = 500;
+  SkillFrameAction SK6_ST2_FR0_Action0;
+  SK6_ST2_FR0_Action0.conditionDatas_.push_back(SK6_ST2_FR0_AC0_Cond0);
+  SK6_ST2_FR0_Action0.actionDatas_.push_back(SK6_ST2_FR0_AC0_Data0);
+  SK6_ST2_FR0_Action0.actionDatas_.push_back(SK6_ST2_FR0_AC0_Data1);
+  SK6_ST2_FR0_Action0.actionDatas_.push_back(SK6_ST2_FR0_AC0_Data2);
+  SkillFrame SK6_ST2_Frame0;
+  SK6_ST2_Frame0.startIndex_ = 381;
+  SK6_ST2_Frame0.endIndex_ = 381;
+  SK6_ST2_Frame0.actions_.push_back(SK6_ST2_FR0_Action0);
+  SkillFrameActionConditionData SK6_ST2_FR1_AC0_Cond0;
+  SK6_ST2_FR1_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK6_ST2_FR1_AC0_Data0;
+  SK6_ST2_FR1_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ClearRestrictionOpponentPlayer;
+  SkillFrameAction SK6_ST2_FR1_Action0;
+  SK6_ST2_FR1_Action0.conditionDatas_.push_back(SK6_ST2_FR1_AC0_Cond0);
+  SK6_ST2_FR1_Action0.actionDatas_.push_back(SK6_ST2_FR1_AC0_Data0);
+  SkillFrame SK6_ST2_Frame1;
+  SK6_ST2_Frame1.startIndex_ = 386;
+  SK6_ST2_Frame1.endIndex_ = 386;
+  SK6_ST2_Frame1.actions_.push_back(SK6_ST2_FR1_Action0);
+  SkillState SK6_State2;
+  SK6_State2.animState_ = IORI_ANIMTYPE_Ura306shikiShika_3;
+  SK6_State2.frames_.push_back(SK6_ST2_Frame0);  
+  SK6_State2.frames_.push_back(SK6_ST2_Frame1);  
   Skill Skill_6;
   Skill_6.skillTag_ = SKILL_6;
   Skill_6.castCondition_ = SKILL_CAST_COND_HasSkillPoint;
   Skill_6.castAction_ = SKILL_CAST_ACTION_ReduceSkillPoint;
   Skill_6.skillStates_.push_back(SK6_State0);
+  Skill_6.skillStates_.push_back(SK6_State1);
+  Skill_6.skillStates_.push_back(SK6_State2);
   pSkillComponent_->RegistSkill(Skill_6);
 
 }

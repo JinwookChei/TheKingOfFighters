@@ -349,7 +349,6 @@ void SkillComponent::ExcuteSkillFrameAction(SKILL_FRAME_ACTION_TYPE actionType, 
     case SKILL_FRAME_ACTION_SetPostionOpponentPlayer:
       SetPositionOpponentPlayer(params);
       break;
-
     case SKILL_FRAME_ACTION_InflictRestrictionOpponentPlayer:
       InflictRestrictionOpponentPlayer(params);
       break;
