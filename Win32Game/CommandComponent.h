@@ -126,6 +126,8 @@ class CommandComponent
  
 
  private:
+  void CleanUpCommands(CommandNode* rootNode);
+
   KOFPlayer* pOwnerPlayer_;
 
   SkillComponent* pOwnerSkillComponent_;

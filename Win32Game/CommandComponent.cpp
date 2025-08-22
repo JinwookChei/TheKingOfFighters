@@ -24,6 +24,8 @@ CommandComponent::CommandComponent()
 }
 
 CommandComponent::~CommandComponent() {
+  CleanUpCommands(pRootNode_);
+
   if (nullptr != pRootNode_) {
     delete pRootNode_;
     pRootNode_ = nullptr;
@@ -225,4 +227,22 @@ void CommandComponent::ExecuteBackStep(const CommandActionParam& params) {
 void CommandComponent::ExecuteTurnOnMisc(const CommandActionParam& params) {
   unsigned long long miscOnDuration = params.TurnOnMisc.miscOnDuration_;
   TurnOnMisc(miscOnDuration);
+}
+
+void CommandComponent::CleanUpCommands(CommandNode* rootNode) {
+  for (int i = 0; i < CommandKey::CK_MAX; ++i) {
+
+    CommandNode* pNode = rootNode->pSubNodes[i];
+
+    if (nullptr == pNode) {
+      continue;
+    }
+
+    CleanUpCommands(pNode);
+  }
+
+  if (nullptr != rootNode->command_) {
+    delete rootNode->command_;
+    rootNode->command_ = nullptr;
+  }
 }
