@@ -153,7 +153,7 @@ class KOFPlayer
 
   CommandComponent* pCommandComponent_;
 
-  CommandHandler* pCommandHandler_;
+  //CommandHandler* pCommandHandler_;
 
   ProjectileComponent* pProjectileComponent_;
 

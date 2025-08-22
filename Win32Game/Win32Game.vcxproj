@@ -163,10 +163,8 @@
     <ClCompile Include="AnimFreezeManager.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
-    <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="InputController.cpp" />
-    <ClCompile Include="IoriCommandHandler.cpp" />
     <ClCompile Include="MovementFreezeManager.cpp" />
     <ClCompile Include="MP.cpp" />
     <ClCompile Include="MPComponent.cpp" />
@@ -230,10 +228,8 @@
     <ClInclude Include="AnimFreezeManager.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
-    <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="InputController.h" />
-    <ClInclude Include="IoriCommandHandler.h" />
     <ClInclude Include="MovementFreezeManager.h" />
     <ClInclude Include="MP.h" />
     <ClInclude Include="MPComponent.h" />

@@ -2,7 +2,6 @@
 #include "AnimationStateMachine.h"
 #include "CommandComponent.h"
 #include "InputController.h"
-#include "CommandHandler.h"
 #include "SkillComponent.h"
 #include "ProjectileComponent.h"
 #include "MovementComponent.h"
@@ -37,7 +36,7 @@ KOFPlayer::KOFPlayer()
       pGrabBox_(nullptr),
       pSkillComponent_(nullptr),
       pCommandComponent_(nullptr),
-      pCommandHandler_(nullptr),
+      //pCommandHandler_(nullptr),
       pProjectileComponent_(nullptr),
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
@@ -75,7 +74,7 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
   pInputController_->UpdateCommand();
 
   if (true == pRestrictionComponent_->CanExecuteCommand()) {
-    pCommandComponent_->ExcuteTask();
+    pCommandComponent_->ExcuteCommand();
   }
 
   pInputController_->ResetInputBitSet();
@@ -191,8 +190,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   }
   pOpponentPlayer_ = opponentPlayer;
 
-  // INPUT BIT SET
-  // ResetInputBitSet();
 
   // DBUG SETTING
   SetDebugParameter({.on_ = true, .linethickness_ = 2.0f});
@@ -223,6 +220,11 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
     return;
   }
   if (false == pAnimationStateMachine_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_, pRestrictionComponent_)) {
+    return;
+  }
+
+  // INIT COMPONENT
+  if (false == pCommandComponent_->Initialize(this, pSkillComponent_, pMovementComponent_)) {
     return;
   }
 }

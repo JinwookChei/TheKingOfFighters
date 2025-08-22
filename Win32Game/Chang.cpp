@@ -18,7 +18,6 @@
 #include "CollisionBox.h"
 #include "Chang.h"
 #include "AnimationStateMachine.h"
-#include "CommandHandler.h"
 #include "InputController.h"
 
 Chang::Chang() {

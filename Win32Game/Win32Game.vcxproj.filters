@@ -70,9 +70,6 @@
     <Filter Include="Contents\KOF\Actor\PLayer\Iori\IoriProjectiles">
       <UniqueIdentifier>{c6b22c19-4954-489b-8e5f-6b8e08fae6bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Contents\KOF\Actor\PLayer\Iori\IoriHandler">
-      <UniqueIdentifier>{c007baea-9089-41b5-ad63-58facadccdac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Contents\KOF\PlayerComponent">
       <UniqueIdentifier>{20b02786-351a-49f6-8569-1ba6ed0fc6c4}</UniqueIdentifier>
     </Filter>
@@ -222,9 +219,6 @@
     <ClCompile Include="SkillPoint.cpp">
       <Filter>Contents\KOF\UI</Filter>
     </ClCompile>
-    <ClCompile Include="CommandHandler.cpp">
-      <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
@@ -239,9 +233,6 @@
     </ClCompile>
     <ClCompile Include="YamiBarai.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
-    </ClCompile>
-    <ClCompile Include="IoriCommandHandler.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
     <ClCompile Include="SkillComponent.cpp">
       <Filter>Contents\KOF\PlayerComponent</Filter>
@@ -413,9 +404,6 @@
     <ClInclude Include="SkillPoint.h">
       <Filter>Contents\KOF\UI</Filter>
     </ClInclude>
-    <ClInclude Include="CommandHandler.h">
-      <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
@@ -430,9 +418,6 @@
     </ClInclude>
     <ClInclude Include="YamiBarai.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="IoriCommandHandler.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClInclude>
     <ClInclude Include="SkillComponent.h">
       <Filter>Contents\KOF\PlayerComponent</Filter>

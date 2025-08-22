@@ -2,6 +2,45 @@
 #include "KOFPlayer.h"
 
 
+enum COMMAND_ACTION_TYPE : unsigned int {
+  COMMAND_ACTION_ExecuteSkill = 0,
+  COMMAND_ACTION_UpdateAnimState,
+  COMMAND_ACTION_MovementBackStep,
+  COMMAND_ACTION_TurnOnMisc
+};
+
+struct CommandActionParam {
+  CommandActionParam()
+      : ExecuteSkill(0) {
+  }
+
+  union {
+    struct {
+      unsigned long long skillTag_;
+    } ExecuteSkill;
+
+    struct {
+      unsigned long long animStateTag_;
+    } UpdateAnimState;
+
+    struct {
+      unsigned long long miscOnDuration_;
+    } TurnOnMisc;
+  };
+};
+
+struct CommandAction {
+  COMMAND_ACTION_TYPE action_;
+
+  CommandActionParam params_;
+};
+
+struct Command {
+  unsigned long long commandTag_;
+
+  std::vector<CommandAction> actions_;
+};
+
 enum CommandKey {
   CK_None = -1,
   CK_Left = 0,
@@ -17,7 +56,7 @@ enum CommandKey {
 
 struct CommandNode {
   CommandNode()
-      : Task_(nullptr) {
+      : command_(nullptr) {
     for (int i = 0; i < CommandKey::CK_MAX; ++i) {
       pSubNodes[i] = nullptr;
     }
@@ -33,8 +72,9 @@ struct CommandNode {
 
   CommandNode* pSubNodes[CommandKey::CK_MAX];
 
-  std::function<void()> Task_;
+  Command* command_;
 };
+
 
 class CommandComponent
     : public ActorComponent {
@@ -48,31 +88,13 @@ class CommandComponent
 
   void Tick(unsigned long long deltaTick) override;
 
-  template<typename T>
-  bool RegistCommand(std::initializer_list<CommandKey> command, void (T::* funcPtr)(), T* owner) {
-      if (nullptr == pRootNode_) {
-        return false;
-      }
-    
-      CommandNode* pCur;
-      pCur = pRootNode_;
-    
-      for (auto iter = command.begin(); iter != command.end(); ++iter) {
-        if (nullptr == pCur->pSubNodes[*iter]) {
-          pCur->pSubNodes[*iter] = new CommandNode();
-        }
-        pCur = pCur->pSubNodes[*iter];
-      }
-    
-      pCur->Task_ = std::bind(funcPtr, owner);
-    
-      return true;
-  }
+  bool Initialize(KOFPlayer* pOwnerPlayer, SkillComponent* pSkillComponent, MovementComponent* pMovementComponent);
 
-  
-  bool isWaitingTask() const;
+  bool RegistCommand(std::initializer_list<CommandKey> commandKeys, Command command);
 
-  void ExcuteTask();
+  bool isWaitingCommand() const;
+
+  void ExcuteCommand();
 
   void JumpNode(CommandKey key);
 
@@ -80,7 +102,7 @@ class CommandComponent
 
   void ResetNode();
 
-  bool IsMiscOn() const; 
+  bool IsMiscOn() const;
 
   void TurnOnMisc(unsigned long long miscOnDuration);
 
@@ -88,8 +110,29 @@ class CommandComponent
 
   void UpdateMiscOnTimer(unsigned long long deltaTick);
 
+  void ExcuteCommandAction(const CommandAction& action);
+
+  // --------------- Execute Action -----------------------------
+
+  void ExecuteSkill(const CommandActionParam& params);
+
+  void ExecuteUpdateAnimState(const CommandActionParam& params);
+
+  void ExecuteBackStep(const CommandActionParam& params);
+
+  void ExecuteTurnOnMisc(const CommandActionParam& params);
+
+  // -----------------------------------------------------------
+ 
+
  private:
-  CommandNode* const pRootNode_;
+  KOFPlayer* pOwnerPlayer_;
+
+  SkillComponent* pOwnerSkillComponent_;
+
+  MovementComponent* pOwnerMovementComponent_;
+
+  CommandNode* pRootNode_;
 
   CommandNode* pCurNode_;
 
@@ -101,11 +144,12 @@ class CommandComponent
 
   unsigned long long reservedTaskTimeThreshold_;
 
-  std::function<void()> reservedTask_;
-
   bool isMiscOn_;
 
   unsigned long long miscOnTimer_;
 
   unsigned long long miscOnDuration_;
+
+  Command* reservedCommand_;
+
 };

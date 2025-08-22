@@ -677,29 +677,4 @@ void SkillComponent::SetCurStateMiscFlagTrue(const SkillFrameActionParams& param
 
 void SkillComponent::ExecuteNextSkill(const SkillFrameActionParams& params) {
   ExecuteSkill(params.NextSkill.skillTag_, true);
-  
-  //Skill* pInfo;
-  //if (0 == skillTable_.Select((void**)&pInfo, 1, &params.NextSkill.skillTag_, 8)) {
-  //  return;
-  //}
-
-  //SKILL_CASTING_CONDITION_TYPE executeCondition = pInfo->castCondition_;
-  //if (false == CheckCastingCondition(executeCondition)) {
-  //  return;
-  //}
-
-  //SKILL_CASTING_ACTION_TYPE castAction = pInfo->castAction_;
-  //ExcuteCastingAction(castAction);
-
-  //ResetStateMiscFlags(pInfo);
-
-  //ResetEventExcutedFlags(pInfo);
-
-  //executingSkill_ = pInfo;
-
-  //curSkillStateIndex_ = 0;
-
-  //unsigned long long animState = executingSkill_->skillStates_[curSkillStateIndex_].animState_;
-
-  //pOwnerPlayer_->UpdateAnimState(animState, IMGMOD_NONE, true);
 }
