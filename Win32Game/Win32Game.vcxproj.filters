@@ -183,9 +183,6 @@
     <ClCompile Include="StateComponent.cpp">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClCompile>
-    <ClCompile Include="SkillDUMMY.cpp">
-      <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClCompile>
     <ClCompile Include="ScreenMask.cpp">
       <Filter>Contents\KOF\Actor</Filter>
     </ClCompile>
@@ -231,9 +228,6 @@
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
-    <ClCompile Include="SkillHandler.cpp">
-      <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationHandler.cpp">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClCompile>
@@ -245,9 +239,6 @@
     </ClCompile>
     <ClCompile Include="YamiBarai.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
-    </ClCompile>
-    <ClCompile Include="IoriSkillHandler.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
     <ClCompile Include="IoriCommandHandler.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
@@ -386,9 +377,6 @@
     <ClInclude Include="StateComponent.h">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClInclude>
-    <ClInclude Include="SkillDUMMY.h">
-      <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenMask.h">
       <Filter>Contents\KOF\Actor</Filter>
     </ClInclude>
@@ -434,9 +422,6 @@
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
-    <ClInclude Include="SkillHandler.h">
-      <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationHandler.h">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClInclude>
@@ -448,9 +433,6 @@
     </ClInclude>
     <ClInclude Include="YamiBarai.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="IoriSkillHandler.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClInclude>
     <ClInclude Include="IoriCommandHandler.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>

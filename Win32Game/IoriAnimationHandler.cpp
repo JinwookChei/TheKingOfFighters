@@ -11,8 +11,6 @@ IoriAnimationHandler::IoriAnimationHandler() {
 IoriAnimationHandler::~IoriAnimationHandler() {
 }
 
-
-
 bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_IoriImage, 0, 15, ANIMINTERVAL, true, 7);
   CallCreateAnimation(PLAYER_ANIMTYPE_Idle, IMGTYPE_IoriImage, 7, 15, ANIMINTERVAL, true, 7);
@@ -81,6 +79,7 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_IoriImage, 353, 360, 70, false, 353);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 30, false, 161);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
+
 
   RegistAnimTransition(PLAYER_ANIMTYPE_JumpUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_JumpDown);
   RegistAnimTransition(PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);

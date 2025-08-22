@@ -168,7 +168,6 @@
     <ClCompile Include="InputController.cpp" />
     <ClCompile Include="IoriAnimationHandler.cpp" />
     <ClCompile Include="IoriCommandHandler.cpp" />
-    <ClCompile Include="IoriSkillHandler.cpp" />
     <ClCompile Include="MovementFreezeManager.cpp" />
     <ClCompile Include="MP.cpp" />
     <ClCompile Include="MPComponent.cpp" />
@@ -209,13 +208,11 @@
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ReadButton.cpp" />
     <ClCompile Include="GhostEffect.cpp" />
-    <ClCompile Include="SkillHandler.cpp" />
     <ClCompile Include="SkillPoint.cpp" />
     <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="SoundTable.cpp" />
     <ClCompile Include="Ura306Shiki.cpp" />
     <ClCompile Include="YamiBarai.cpp" />
-    <ClCompile Include="SkillDUMMY.cpp" />
     <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -239,7 +236,6 @@
     <ClInclude Include="InputController.h" />
     <ClInclude Include="IoriAnimationHandler.h" />
     <ClInclude Include="IoriCommandHandler.h" />
-    <ClInclude Include="IoriSkillHandler.h" />
     <ClInclude Include="MovementFreezeManager.h" />
     <ClInclude Include="MP.h" />
     <ClInclude Include="MPComponent.h" />
@@ -280,13 +276,11 @@
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="ReadButton.h" />
     <ClInclude Include="GhostEffect.h" />
-    <ClInclude Include="SkillHandler.h" />
     <ClInclude Include="SkillPoint.h" />
     <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="SoundTable.h" />
     <ClInclude Include="Ura306Shiki.h" />
     <ClInclude Include="YamiBarai.h" />
-    <ClInclude Include="SkillDUMMY.h" />
     <ClInclude Include="StateComponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestLevel.h" />

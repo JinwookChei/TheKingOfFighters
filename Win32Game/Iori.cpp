@@ -21,8 +21,6 @@
 #include "IoriAnimationHandler.h"
 #include "CommandHandler.h"
 #include "IoriCommandHandler.h"
-#include "SkillHandler.h"
-#include "IoriSkillHandler.h"
 #include "InputController.h"
 
 Iori::Iori() {
@@ -56,8 +54,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   if (false == pAnimationHandler_->RegistAnimations()) {
     return;
   }
-
-  UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
 
   // SOUND
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_JumpUp, SOUNDTYPE_COMMON_Jump01);
@@ -1174,6 +1170,8 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_6.skillStates_.push_back(SK6_State2);
   pSkillComponent_->RegistSkill(Skill_6);
 
+
+  UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
 }
 
 void Iori::CompareInputBitset() {
