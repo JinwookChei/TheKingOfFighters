@@ -159,14 +159,13 @@
   <ItemGroup>
     <ClCompile Include="AIBehaviorStateMachine.cpp" />
     <ClCompile Include="AIiori.cpp" />
-    <ClCompile Include="AnimationHandler.cpp" />
+    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="AnimFreezeManager.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
     <ClCompile Include="GameInstance.cpp" />
     <ClCompile Include="InputController.cpp" />
-    <ClCompile Include="IoriAnimationHandler.cpp" />
     <ClCompile Include="IoriCommandHandler.cpp" />
     <ClCompile Include="MovementFreezeManager.cpp" />
     <ClCompile Include="MP.cpp" />
@@ -227,14 +226,13 @@
     <ClInclude Include="..\CommonCode\Code\IApplication.h" />
     <ClInclude Include="AIBehaviorStateMachine.h" />
     <ClInclude Include="AIiori.h" />
-    <ClInclude Include="AnimationHandler.h" />
+    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="AnimFreezeManager.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="InputController.h" />
-    <ClInclude Include="IoriAnimationHandler.h" />
     <ClInclude Include="IoriCommandHandler.h" />
     <ClInclude Include="MovementFreezeManager.h" />
     <ClInclude Include="MP.h" />

@@ -110,100 +110,13 @@ enum IORI_ANIM_TYPE : unsigned long long {
   IORI_ANIMTYPE_Ura306shikiShika_3
 };
 
-// if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
-//   pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
-//   pMPComponent_->ChargeMP(damageInfo->damage_);
-//   pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
-
-//} else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
-//  pHealthComponent_->TakeDamage(damageInfo->damage_);
-//  pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-//  pMovementComponent_->KnockBack(PlayerOnLeft(), {3.0f, -5.0f});
-//  UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpUp, ANIMMOD_NONE, true);
-//} else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
-//  pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
-//  pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-//  pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
-//  UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat, ANIMMOD_NONE, true);
-//} else {
-//  pHealthComponent_->TakeDamage(damageInfo->damage_);
-//  pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-//  switch (damageInfo->attackType_) {
-//    case ATTYPE_HighAttack: {
-//      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_BLUEFLAME, true);
-//      } else {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_NONE, true);
-//      }
-//      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//    } break;
-
-//    case ATTYPE_LowAttack: {
-//      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_BLUEFLAME, true);
-//      } else {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_NONE, true);
-//      }
-//      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//    } break;
-//    case ATTYPE_StrongAttack: {
-//      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_Strong, ANIMMOD_BLUEFLAME, true);
-//      } else {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_Strong, ANIMMOD_NONE, true);
-//      }
-//      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//    } break;
-//    case ATTYPE_NormalAttack: {
-//      if (pHitBoxTop_->HasHit()) {
-//        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-//          UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_BLUEFLAME, true);
-//          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//        } else {
-//          UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_NONE, true);
-//          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//        }
-//      }
-//      if (pHitBoxBottom_->HasHit()) {
-//        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-//          UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_BLUEFLAME, true);
-//          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//        } else {
-//          UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_NONE, true);
-//          pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//        }
-//      }
-//    } break;
-//    case ATTYPE_Airborne: {
-//      if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneUp, ANIMMOD_BLUEFLAME, true);
-//      } else {
-//        UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneUp, ANIMMOD_NONE, true);
-//      }
-//      pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-//    } break;
-//    default:
-//      break;
-//  }
-//}
-
-// if (0 > pHealthComponent_->Health()) {
-//   Level* pLevel = GetLevel();
-//   if (nullptr == pLevel) {
-//     return;
-//   }
-//   KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-//   if (nullptr == pKOFLevel) {
-//     return;
-//   }
-
-//  pKOFLevel->InitEndGame();
-
-//}
 enum PLAYER_ANIM_MODIFIER : unsigned long long {
   ANIMMOD_NONE = 0,
   ANIMMOD_FLIPPED = 1ULL << 63,
-  ANIMMOD_BLUEFLAME = 1ULL << 62
+  ANIMMOD_BLUEFLAME = 1ULL << 62,
+
+  // Calc Mask
+  ANIMMOD_MASK = ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME
 };
 
 enum IORI_SKILL {

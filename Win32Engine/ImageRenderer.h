@@ -103,10 +103,6 @@ class ImageRenderer
 
   JO_API bool HasIndexChange() const;
 
-  JO_API void AnimFreeze();
-
-  JO_API void UnAnimFreeze();
-
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;
 

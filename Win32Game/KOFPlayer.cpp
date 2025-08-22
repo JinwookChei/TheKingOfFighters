@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include "ActorFreezeManager.h"
-#include "AnimationHandler.h"
+#include "AnimationStateMachine.h"
 #include "CommandComponent.h"
 #include "InputController.h"
 #include "CommandHandler.h"
@@ -22,7 +21,7 @@
 KOFPlayer::KOFPlayer()
     : pInputController_(nullptr),
       pRender_(nullptr),
-      pAnimationHandler_(nullptr),
+      pAnimationStateMachine_(nullptr),
       pUI_(nullptr),
       pMovementComponent_(nullptr),
       pSoundTable_(nullptr),
@@ -217,18 +216,105 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
                    pMPComponent_)) {
     return;
   }
+
+  // ANIMTRANS
+  pAnimationStateMachine_ = CreateComponent<AnimationStateMachine>();
+  if (nullptr == pAnimationStateMachine_) {
+    return;
+  }
+  if (false == pAnimationStateMachine_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_, pRestrictionComponent_)) {
+    return;
+  }
+}
+
+bool KOFPlayer::CallCreateAnimation(
+    unsigned long long animationTag,
+    unsigned long long imageIndex,
+    unsigned int startIndex,
+    unsigned int endIndex,
+    unsigned long long interval,
+    bool loop,
+    unsigned long long loopStartFrame) {
+  if (nullptr == pRender_) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, startIndex, endIndex, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  return true;
+}
+
+bool KOFPlayer::CallCreateAnimation(
+    unsigned long long animationTag,
+    unsigned long long imageIndex,
+    const std::vector<unsigned int>& indices,
+    unsigned long long interval,
+    bool loop,
+    unsigned long long loopStartFrame) {
+  if (nullptr == pRender_) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, indices, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, indices, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, indices, interval, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, interval, loop, loopStartFrame)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool KOFPlayer::CallCreateAnimation(
+    unsigned long long animationTag,
+    unsigned long long imageIndex,
+    const std::vector<unsigned int>& indices,
+    const std::vector<unsigned long long> intervals,
+    bool loop,
+    unsigned long long loopStartFrame) {
+  if (nullptr == pRender_) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_NONE, imageIndex | IMGMOD_NONE, indices, intervals, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED, imageIndex | IMGMOD_FLIPPED, indices, intervals, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_BLUEFLAME, indices, intervals, loop, loopStartFrame)) {
+    return false;
+  }
+  if (false == pRender_->CreateAnimation(animationTag | ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME, imageIndex | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME, indices, intervals, loop, loopStartFrame)) {
+    return false;
+  }
+
+  return true;
 }
 
 void KOFPlayer::UpdateAnimState(unsigned long long animState, unsigned long long modifier /* = ANIMMOD_NONE*/, bool isForce, int startFrame /*= 0*/, unsigned long long time /*= 0.0f*/) {
   if (true == PlayerOnLeft()) {
     isFacingRight_ = true;
-    pAnimationHandler_->SetCurrentAnimationState(animState);
-    pAnimationHandler_->SetCurrentAnimationModifier(modifier);
+    //pAnimationStateMachine_->SetCurrentAnimationState(animState);
+    //pAnimationStateMachine_->SetCurrentAnimationModifier(modifier);
     pRender_->ChangeAnimation((animState | modifier), isForce, startFrame, time);
   } else {
     isFacingRight_ = false;
-    pAnimationHandler_->SetCurrentAnimationState(animState);
-    pAnimationHandler_->SetCurrentAnimationModifier(modifier | ANIMMOD_FLIPPED);
+    //pAnimationStateMachine_->SetCurrentAnimationState(animState);
+    //pAnimationStateMachine_->SetCurrentAnimationModifier(modifier | ANIMMOD_FLIPPED);
     pRender_->ChangeAnimation((animState | modifier | ANIMMOD_FLIPPED), isForce, startFrame, time);
   }
 
@@ -404,7 +490,8 @@ void KOFPlayer::UpdateCollisionBoundScale() {
 
 void KOFPlayer::UpdateAttack() {
   AttackInfo* pAttackInfo;
-  unsigned long long animState = pAnimationHandler_->CurrentAnimationState();
+
+  unsigned long long animState = pStateComponent_->GetCurAnimState();
 
   if (false == pAttackTable_->SearchAttackInfo(animState, &pAttackInfo)) {
     return;

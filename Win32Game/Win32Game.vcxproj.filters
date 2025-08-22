@@ -79,6 +79,9 @@
     <Filter Include="Contents\KOF\LevelManager">
       <UniqueIdentifier>{1e8c7615-aab6-4f4d-9af8-d85837cd84e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\KOF\Actor\PLayer\Chang">
+      <UniqueIdentifier>{11d88dea-297e-4294-abbf-00c3e9480f9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,9 +149,6 @@
     </ClCompile>
     <ClCompile Include="CommandComponent.cpp">
       <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Chang.cpp">
-      <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClCompile>
     <ClCompile Include="KOFPlayer.cpp">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
@@ -228,7 +228,7 @@
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationHandler.cpp">
+    <ClCompile Include="AnimationStateMachine.cpp">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="HyakushikiOniyaki.cpp">
@@ -241,9 +241,6 @@
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClCompile>
     <ClCompile Include="IoriCommandHandler.cpp">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="IoriAnimationHandler.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClCompile>
     <ClCompile Include="SkillComponent.cpp">
@@ -266,6 +263,9 @@
     </ClCompile>
     <ClCompile Include="RestrictionManager.cpp">
       <Filter>Contents\KOF\LevelManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Chang.cpp">
+      <Filter>Contents\KOF\Actor\PLayer\Chang</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,9 +337,6 @@
     </ClInclude>
     <ClInclude Include="CommandComponent.h">
       <Filter>Contents\KOF\PlayerComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="Chang.h">
-      <Filter>Contents\KOF\Actor\PLayer</Filter>
     </ClInclude>
     <ClInclude Include="KOFPlayer.h">
       <Filter>Contents\KOF\Actor\PLayer</Filter>
@@ -422,7 +419,7 @@
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationHandler.h">
+    <ClInclude Include="AnimationStateMachine.h">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="HyakushikiOniyaki.h">
@@ -435,9 +432,6 @@
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriProjectiles</Filter>
     </ClInclude>
     <ClInclude Include="IoriCommandHandler.h">
-      <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
-    </ClInclude>
-    <ClInclude Include="IoriAnimationHandler.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori\IoriHandler</Filter>
     </ClInclude>
     <ClInclude Include="SkillComponent.h">
@@ -460,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="RestrictionManager.h">
       <Filter>Contents\KOF\LevelManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Chang.h">
+      <Filter>Contents\KOF\Actor\PLayer\Chang</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

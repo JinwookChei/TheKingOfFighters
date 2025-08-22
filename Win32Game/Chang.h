@@ -5,13 +5,11 @@ class Chang
  public:
   Chang();
 
-  ~Chang();
+  ~Chang() override;
 
   void BeginPlay() override;
 
-  void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) override;
+  //void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer) override;
 
   void CompareInputBitset() override;
-
- private:
 };

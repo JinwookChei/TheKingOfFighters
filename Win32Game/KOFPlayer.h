@@ -1,7 +1,7 @@
 #pragma once
 
 class InputController;
-class AnimationHandler;
+class AnimationStateMachine;
 class MovementComponent;
 class CommandComponent;
 class CommandHandler;
@@ -31,6 +31,31 @@ class KOFPlayer
   void Tick(unsigned long long deltaTick) override;
 
   virtual void Initialize(bool isPlayer1, const Vector& position, bool useCameraPosition, KOFPlayer* opponentPlayer);
+
+  bool CallCreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex,
+      unsigned int startIndex,
+      unsigned int endIndex,
+      unsigned long long interval,
+      bool loop,
+      unsigned long long loopStartFrame);
+
+  bool CallCreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex,
+      const std::vector<unsigned int>& indices,
+      unsigned long long interval,
+      bool loop,
+      unsigned long long loopStartFrame);
+
+  bool CallCreateAnimation(
+      unsigned long long animationTag,
+      unsigned long long imageIndex,
+      const std::vector<unsigned int>& indices,
+      const std::vector<unsigned long long> intervals,
+      bool loop,
+      unsigned long long loopStartFrame);
 
   void UpdateAnimState(unsigned long long animState, unsigned long long modifier = ANIMMOD_NONE, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
 
@@ -92,7 +117,7 @@ class KOFPlayer
 
   ImageRenderer* pRender_;
 
-  AnimationHandler* pAnimationHandler_;
+  AnimationStateMachine* pAnimationStateMachine_;
 
   InputController* pInputController_;
 

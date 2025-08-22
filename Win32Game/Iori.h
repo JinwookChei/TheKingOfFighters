@@ -6,7 +6,7 @@ class Iori
  public:
   Iori();
 
-  ~Iori();
+  ~Iori() override;
 
   void BeginPlay() override;
 
