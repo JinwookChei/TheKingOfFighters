@@ -14,6 +14,8 @@ class HealthComponent final
 
  void Tick(unsigned long long curTick) override;
 
+ void SetHealth(float health);
+
  float Health() const;
 
  float MaxHealth() const;

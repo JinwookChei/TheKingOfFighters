@@ -58,6 +58,10 @@ bool IoriAnimationHandler::RegistAnimations() {
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpUp, IMGTYPE_IoriImage, {595}, 160, false, 595);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_JumpDown, IMGTYPE_IoriImage, 80, 85, ANIMINTERVAL, false, 82);
   CallCreateAnimation(PLAYER_ANIMTYPE_NeckGrabbed, IMGTYPE_IoriImage, 572, 575, 150, false, 572);
+  CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackUp, IMGTYPE_IoriImage, 594, 597, ANIMINTERVAL, false, 594);
+  CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackDown, IMGTYPE_IoriImage, 608, 610, ANIMINTERVAL, false, 608);
+  CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackLand, IMGTYPE_IoriImage, {611}, ANIMINTERVAL, true, 611);
+
   CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_IoriImage, 223, 230, ANIMINTERVAL, false, 223);
   CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_IoriImage, 99, 107, ANIMINTERVAL, false, 99);
   CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_2, IMGTYPE_IoriImage, 160, 164, ANIMINTERVAL, false, 160);
@@ -124,6 +128,8 @@ bool IoriAnimationHandler::RegistAnimations() {
   RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_AirborneGetUp);
   RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneGetUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
   RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
+  RegistAnimTransition(PLAYER_ANIMTYPE_KOKnockBackUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_KOKnockBackDown);
+  RegistAnimTransition(PLAYER_ANIMTYPE_KOKnockBackDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_KOKnockBackLand);
 
   return true;
 }

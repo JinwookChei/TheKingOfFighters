@@ -25,6 +25,10 @@ bool HealthComponent::Initialize(float maxHealth) {
 void HealthComponent::Tick(unsigned long long curTick) {
 }
 
+void HealthComponent::SetHealth(float health) {
+  health_ = health;
+}
+
 float HealthComponent::Health() const {
   return health_;
 }
@@ -50,5 +54,4 @@ void HealthComponent::TakeDamage(float damage) {
   }
 
   health_ -= damage;
-
 }

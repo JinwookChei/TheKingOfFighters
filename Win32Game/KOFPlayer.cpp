@@ -62,7 +62,6 @@ KOFPlayer::~KOFPlayer() {
 }
 
 void KOFPlayer::BeginPlay() {
-
 }
 
 void KOFPlayer::Tick(unsigned long long deltaTick) {
@@ -70,18 +69,16 @@ void KOFPlayer::Tick(unsigned long long deltaTick) {
 
   CheckPushCollision();
 
-
   if (true == pStateComponent_->ContainPlayerState({PS_Attack})) {
     UpdateAttack();
   }
 
   pInputController_->UpdateCommand();
 
-  
   if (true == pRestrictionComponent_->CanExecuteCommand()) {
     pCommandComponent_->ExcuteTask();
   }
-  
+
   pInputController_->ResetInputBitSet();
 
   pInputController_->UpdateInput();
@@ -161,7 +158,6 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   if (false == pMovementComponent_->Initialize(pRestrictionComponent_, position)) {
     return;
   }
-
 
   // COLLISION
   pHitBoxTop_ = CreateCollision(CollisionGroupEngineType::CollisionGroupEngineType_HitBoxTop);
@@ -256,94 +252,88 @@ const MPComponent* KOFPlayer::GetMPComponent() const {
 }
 
 void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
-  if (true == pStateComponent_->ContainPlayerState({PS_Guard})) {
-    pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
-    pMPComponent_->ChargeMP(damageInfo->damage_);
-    pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
+  float finalDamage = 0.0f;
+  float finalMPGain = 0.0f;
+  Vector finalKnockBack = {0.0f, 0.0f};
+  PLAYER_ANIM_TYPE finalAnim = PLAYER_ANIMTYPE_None;
+  PLAYER_ANIM_MODIFIER finalAnimMod = ANIMMOD_NONE;
+
+  if (pStateComponent_->ContainPlayerState({PS_Guard})) {
+    finalDamage = damageInfo->damage_ * 0.1f;
+    finalDamage = (pHealthComponent_->Health() - finalDamage < 0) ? pHealthComponent_->Health() : finalDamage;
+    finalMPGain = damageInfo->damage_;
+    finalKnockBack = {damageInfo->knockBackForce_.X * 0.9f, 0.0f};
 
   } else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
-    pHealthComponent_->TakeDamage(damageInfo->damage_);
-    pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-    pMovementComponent_->KnockBack(PlayerOnLeft(), {3.0f, -5.0f});
-    UpdateAnimState(PLAYER_ANIMTYPE_Hit_JumpUp, ANIMMOD_NONE, true);
-  } else if (true == pStateComponent_->ContainPlayerState({PS_Seat})) {
-    pHealthComponent_->TakeDamage(damageInfo->damage_ * 0.1f);
-    pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-    pMovementComponent_->KnockBack(FacingRight(), {damageInfo->knockBackForce_.X * 0.9f, 0.0f});
-    UpdateAnimState(PLAYER_ANIMTYPE_Hit_Seat, ANIMMOD_NONE, true);
-  } else {
-    pHealthComponent_->TakeDamage(damageInfo->damage_);
-    pMPComponent_->ChargeMP(damageInfo->damage_ * 2.0f);
-    switch (damageInfo->attackType_) {
-      case ATTYPE_HighAttack: {
-        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_BLUEFLAME, true);
-        } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_NONE, true);
-        }
-        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-      } break;
+    finalDamage = damageInfo->damage_;
+    finalMPGain = damageInfo->damage_ * 2.0f;
+    finalKnockBack = {3.0f, -3.0f};
+    finalAnim = PLAYER_ANIMTYPE_Hit_JumpUp;
 
-      case ATTYPE_LowAttack: {
-        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_BLUEFLAME, true);
-        } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_NONE, true);
-        }
-        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-      } break;
-      case ATTYPE_StrongAttack: {
-        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_Strong, ANIMMOD_BLUEFLAME, true);
-        } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_Strong, ANIMMOD_NONE, true);
-        }
-        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-      } break;
-      case ATTYPE_NormalAttack: {
+  } else if (pStateComponent_->ContainPlayerState({PS_Seat})) {
+    finalDamage = damageInfo->damage_ * 0.1f;
+    finalMPGain = damageInfo->damage_ * 2.0f;
+    finalKnockBack = {damageInfo->knockBackForce_.X * 0.9f, 0.0f};
+    finalAnim = PLAYER_ANIMTYPE_Hit_Seat;
+
+  } else {
+    finalDamage = damageInfo->damage_;
+    finalMPGain = damageInfo->damage_ * 2.0f;
+
+    switch (damageInfo->attackType_) {
+      case ATTYPE_HighAttack:
+        finalAnim = PLAYER_ANIMTYPE_Hit_High;
+        finalAnimMod = (damageInfo->elementType_ == ELMTTYPE_BlueFlame) ? ANIMMOD_BLUEFLAME : ANIMMOD_NONE;
+        finalKnockBack = damageInfo->knockBackForce_;
+        break;
+
+      case ATTYPE_LowAttack:
+        finalAnim = PLAYER_ANIMTYPE_Hit_Low;
+        finalAnimMod = (damageInfo->elementType_ == ELMTTYPE_BlueFlame) ? ANIMMOD_BLUEFLAME : ANIMMOD_NONE;
+        finalKnockBack = damageInfo->knockBackForce_;
+        break;
+
+      case ATTYPE_StrongAttack:
+        finalAnim = PLAYER_ANIMTYPE_Hit_Strong;
+        finalAnimMod = (damageInfo->elementType_ == ELMTTYPE_BlueFlame) ? ANIMMOD_BLUEFLAME : ANIMMOD_NONE;
+        finalKnockBack = damageInfo->knockBackForce_;
+        break;
+
+      case ATTYPE_NormalAttack:
         if (pHitBoxTop_->HasHit()) {
-          if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-            UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_BLUEFLAME, true);
-            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-          } else {
-            UpdateAnimState(PLAYER_ANIMTYPE_Hit_High, ANIMMOD_NONE, true);
-            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-          }
+          finalAnim = PLAYER_ANIMTYPE_Hit_High;
+        } else if (pHitBoxBottom_->HasHit()) {
+          finalAnim = PLAYER_ANIMTYPE_Hit_Low;
         }
-        if (pHitBoxBottom_->HasHit()) {
-          if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-            UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_BLUEFLAME, true);
-            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-          } else {
-            UpdateAnimState(PLAYER_ANIMTYPE_Hit_Low, ANIMMOD_NONE, true);
-            pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-          }
-        }
-      } break;
-      case ATTYPE_Airborne: {
-        if (ELMTTYPE_BlueFlame == damageInfo->elementType_) {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneUp, ANIMMOD_BLUEFLAME, true);
-        } else {
-          UpdateAnimState(PLAYER_ANIMTYPE_Hit_AirborneUp, ANIMMOD_NONE, true);
-        }
-        pMovementComponent_->KnockBack(FacingRight(), damageInfo->knockBackForce_);
-      } break;
+        finalAnimMod = (damageInfo->elementType_ == ELMTTYPE_BlueFlame) ? ANIMMOD_BLUEFLAME : ANIMMOD_NONE;
+        finalKnockBack = damageInfo->knockBackForce_;
+        break;
+
+      case ATTYPE_Airborne:
+        finalAnim = PLAYER_ANIMTYPE_Hit_AirborneUp;
+        finalAnimMod = (damageInfo->elementType_ == ELMTTYPE_BlueFlame) ? ANIMMOD_BLUEFLAME : ANIMMOD_NONE;
+        finalKnockBack = damageInfo->knockBackForce_;
+        break;
+
       default:
         break;
     }
   }
 
-  if (0 > pHealthComponent_->Health()) {
-    Level* pLevel = GetLevel();
-    if (nullptr == pLevel) {
-      return;
-    }
-    KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(pLevel);
-    if (nullptr == pKOFLevel) {
-      return;
-    }
+  pHealthComponent_->TakeDamage(finalDamage);
 
-    pKOFLevel->InitEndGame();
+  if (pHealthComponent_->Health() < 0) {
+    if (KOFLevel* pKOFLevel = dynamic_cast<KOFLevel*>(GetLevel())) {
+      finalKnockBack = {3.0f, -4.5f};
+      finalAnim = PLAYER_ANIMTYPE_KOKnockBackUp;
+      pKOFLevel->InitEndGame();
+    }
+  }
+
+  pMPComponent_->ChargeMP(finalMPGain);
+  pMovementComponent_->KnockBack(FacingRight(), finalKnockBack);
+  if (PLAYER_ANIMTYPE_None != finalAnim) {
+    UpdateAnimState(finalAnim, finalAnimMod, true);
   }
 }
 

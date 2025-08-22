@@ -88,11 +88,11 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Shinigami, SOUNDTYPE_IORI_Kiai_Light02);
   pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_HyakushikiOniyaki, SOUNDTYPE_IORI_HyakushikiOniyaki);
   pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, SOUNDTYPE_IORI_1211ShikiYaOtome02);
-  // pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, SOUNDTYPE_IORI_1211ShikiYaOtome03);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, SOUNDTYPE_IORI_1211ShikiYaOtome03);
   pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_HyakushikiOniyaki, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  // pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_1, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  // pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_2, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  // pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_3, SOUNDTYPE_IORI_HyakushikiOniyaki);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_1, SOUNDTYPE_IORI_HyakushikiOniyaki);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_2, SOUNDTYPE_IORI_HyakushikiOniyaki);
+  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_3, SOUNDTYPE_IORI_HyakushikiOniyaki);
 
   // STATE
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_StartPos, {PS_None});
@@ -141,6 +141,9 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_JumpUp, {PS_Hit});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_Hit_JumpDown, {PS_Hit});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_NeckGrabbed, {PS_Hit});
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_KOKnockBackUp, {PS_Hit});
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_KOKnockBackDown, {PS_Hit});
+  pStateComponent_->RegistState(PLAYER_ANIMTYPE_KOKnockBackLand, {PS_Hit});
   pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, {PS_Attack});
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, {PS_Attack});
   pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_2, {PS_Attack});
@@ -210,6 +213,9 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Hit_JumpUp, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Hit_JumpDown, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_NeckGrabbed, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_KOKnockBackUp, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_KOKnockBackDown, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_KOKnockBackLand, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_108ShikiYamiBarai, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_GaishikiMutan_1, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_GaishikiMutan_2, {PR_LockInput, PR_LockExecuteCommand});
@@ -263,7 +269,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 100.0f, {3.0f, -4.5f}, 150);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 5.0f, {3.0f, -4.5f}, 150);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_1, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 5.0f, {0.0f, -7.0f}, 100);
   // pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_3, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 10.0f, {1.5f, -10.0f}, 140.0f);
@@ -1169,9 +1175,6 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_6.skillStates_.push_back(SK6_State1);
   Skill_6.skillStates_.push_back(SK6_State2);
   pSkillComponent_->RegistSkill(Skill_6);
-
-
-  UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
 }
 
 void Iori::CompareInputBitset() {
@@ -1345,8 +1348,6 @@ void Iori::CompareInputBitset() {
        } else {
          UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_LongRange);
        }
-
-      //((KOFLevel*)GetLevel())->GetRestrictionManager()->ApplyExternalRestrict(ActorId(), {PR_StopAnim, PR_LockInput}, false, 500);
       return;
     }
 
@@ -1358,21 +1359,16 @@ void Iori::CompareInputBitset() {
         UpdateAnimState(PLAYER_ANIMTYPE_LightKick_LongRange);
       }
       
-      //((KOFLevel*)GetLevel())->GetRestrictionManager()->ClearExternalRestrict(ActorId());
-      
-      //((KOFLevel*)GetLevel())->GetRestrictionManager()->ApplyExternalRestrict(ActorId(), {PR_StopAnim});
       return;
     }
 
     // C | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_C})) {
-      /*if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
+      if (GetCloseDistance() > std::fabs(GetPosition().X - pOpponentPlayer_->GetPosition().X)) {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_CloseRange);
       } else {
         UpdateAnimState(PLAYER_ANIMTYPE_HeavyPunch_LongRange);
-      }*/
-
-      ((KOFLevel*)GetLevel())->GetRestrictionManager()->ClearExternalRestrict(ActorId());
+      }
       return;
     }
 

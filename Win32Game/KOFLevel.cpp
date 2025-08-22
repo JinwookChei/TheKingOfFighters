@@ -18,8 +18,7 @@
 #include "KOFLoby.h"
 
 KOFLevel::KOFLevel()
-    : /*pActorFreezeManager_(nullptr),*/
-      pRestrictionManager_(nullptr),
+    : pRestrictionManager_(nullptr),
       pCamera_(nullptr),
       pMouse_(nullptr),
       pBackGround_(nullptr),
@@ -49,10 +48,6 @@ void KOFLevel::BeginPlay() {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
     
   // MANAGER
-  //pActorFreezeManager_ = SpawnActor<ActorFreezeManager>();
-  //if (false == pActorFreezeManager_->Initialize()) {
-  //  return;
-  //}
   pRestrictionManager_ = SpawnActor<RestrictionManager>();
   if (false == pRestrictionManager_->Initialize()) {
     return;
@@ -75,7 +70,7 @@ void KOFLevel::BeginPlay() {
   pBackGroundMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
   pBackGroundMask_->SetPosition({0.0f, 0.0f});
 
-  pScreenMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
+  pScreenMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_Screen);
   pScreenMask_->SetPosition({0.0f, 0.0f});
 
   // BACKGROUND
@@ -119,17 +114,13 @@ void KOFLevel::BeginPlay() {
   Portrait* portraitPlayer1 = HUD_->CreateUIComponent<Portrait>();
   portraitPlayer1->Initialize(IMGTYPE_IoriImage | IMGMOD_FLIPPED, 655, ioriTransparentColor);
   portraitPlayer1->SetPosition({90.0f, 100.0f});
-
   HealthBar* healthBarPlayer1 = HUD_->CreateUIComponent<HealthBar>();
   healthBarPlayer1->Initialize(IMGTYPE_HealthHUD | IMGMOD_NONE, 0, Color8Bit(0, 0, 0, 0));
   healthBarPlayer1->SetPosition({490.0f, 102.0f});
-
   Health* healthPlayer1 = HUD_->CreateUIComponent<Health>();
   healthPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD | IMGMOD_NONE, 1, Color8Bit(0, 0, 0, 0), {490.0f, 89.45f}, false);
-
   MP* mpPlayer1 = HUD_->CreateUIComponent<MP>();
   mpPlayer1->Initialize(pPlayer1_, IMGTYPE_HealthHUD | IMGMOD_NONE, 2, Color8Bit(0, 0, 0, 0), {490.0f, 123.5f}, false);
-
   SkillPoint* skillPoint1Player1 = HUD_->CreateUIComponent<SkillPoint>();
   skillPoint1Player1->Initialize(pPlayer1_,0, IMGTYPE_SkillPoint, 0, Color8Bit(0, 0, 0, 0));
   skillPoint1Player1->SetPosition({190.0f, 170.0f});
@@ -175,7 +166,6 @@ void KOFLevel::BeginPlay() {
   readyNotification_->SetEnableTick(false);
   readyNotification_->SetEnableRender(false);
 
- 
   goNotification_ = systemUI_->CreateUIComponent<Notification>();
   goNotification_->Initialize(IMGTYPE_Go, 0, Color8Bit(0, 0, 0, 0));
   goNotification_->SetPosition({systemUI_->GetScale().HalfX(), systemUI_->GetScale().HalfY()});
@@ -194,6 +184,7 @@ void KOFLevel::BeginPlay() {
   pCamera_->Initialize(backbufferScale.HalfY(), backGroundImageScale.IntergerY() - backbufferScale.HalfY() + 60, backbufferScale.HalfX(), backGroundImageScale.X - backbufferScale.HalfX() + 20);
   pCamera_->SetPosition({backGroundImageScale.X / 2, pCamera_->GetCameraMaxHeight()});
   CameraManager::Instance()->SetTarget(pCamera_);
+
 
   // EFFECT
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1, IMGTYPE_HitEffectImage, SOUNDTYPE_COMMON_Hit02, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
@@ -334,17 +325,11 @@ void KOFLevel::SwapPosition() {
   pPlayer2_->SetPlayerOnLeft(!(player1Postion.X < player2Postion.X));
 }
 
-//ActorFreezeManager* KOFLevel::GetActorFreezeManager() const {
-//  return pActorFreezeManager_;
-//}
-
 RestrictionManager* KOFLevel::GetRestrictionManager() const {
   return pRestrictionManager_;
 }
 
 void KOFLevel::Tick(unsigned long long deltaTick) {
-  //CalculateFreeze(deltaTick);
-
   SwapPosition();
 
   if (true == InputManager::Instance()->IsAnyKeyPress()) {
@@ -404,8 +389,8 @@ void KOFLevel::InitReadyGame() {
   Vector backbufferScale = GEngineCore->GetBackbufferScale();
   screenBoundaryWidth_ = backbufferScale.X - pPlayer1_->CharacterScale().HalfX() - pPlayer2_->CharacterScale().HalfX();
 
-  //pPlayer1_->SetControlLocked(true);
-  //pPlayer2_->SetControlLocked(true);
+  pPlayer1_->UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
+  pPlayer2_->UpdateAnimState(PLAYER_ANIMTYPE_StartPos);
 
   pScreenMask_->InitAlpha(1.0f);
   pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 0.0f);
@@ -435,10 +420,11 @@ void KOFLevel::ReadyGame(unsigned long long deltaTick) {
 
 void KOFLevel::InitInProgressGame() {
   acuumDeltaTick_ = 0;
-  //backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
+  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
+
   HUD_->SetActive(true);
-  //pPlayer1_->SetControlLocked(false);
-  //pPlayer2_->SetControlLocked(false);
+  pPlayer1_->UpdateAnimState(PLAYER_ANIMTYPE_Idle);
+  pPlayer2_->UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 
   gameStatus_ = GAMESTATUS_GameInProgress;
 }
@@ -524,24 +510,28 @@ void KOFLevel::InProgressGame(unsigned long long deltaTick) {
 }
 
 void KOFLevel::InitEndGame() {
-  //acuumDeltaTick_ = 0;
-  //koNotification_->SetEnableRender(true);
-  //backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_KO);
+  acuumDeltaTick_ = 0;
+  koNotification_->SetEnableRender(true);
+  backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_COMMON_KO);
 
-  //pPlayer1_->SetControlLocked(true);
-  //pPlayer2_->SetControlLocked(true);
+  std::vector<PLAYER_RESTRICT_TYPE> restrictList;
+  restrictList.push_back(PR_LockInput);
 
-  //gameStatus_ = GAMESTATUS_GameEnd;
+  pRestrictionManager_->ApplyExternalRestrict(pPlayer1_->ActorId(), restrictList);
+  pRestrictionManager_->ApplyExternalRestrict(pPlayer2_->ActorId(), restrictList);
+
+  gameStatus_ = GAMESTATUS_GameEnd;
 }
 
 void KOFLevel::EndGame(unsigned long long deltaTick) {
-  //acuumDeltaTick_ += deltaTick;
+  acuumDeltaTick_ += deltaTick;
 
-  //if (400 > acuumDeltaTick_) {
-  //  pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 500.0f);
-  //}
+  if (700 < acuumDeltaTick_ && 720 > acuumDeltaTick_) {
+    pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 500.0f);
+    koNotification_->SetEnableRender(false);
+  }
 
-  //if (1000 > acuumDeltaTick_) {
-  //  GEngineCore->ChangeLevel<KOFLobyLevel>();
-  //}
+  if (1700 < acuumDeltaTick_ && 1716 > acuumDeltaTick_) {
+    GEngineCore->ChangeLevel<KOFLobyLevel>();
+  }
 }
