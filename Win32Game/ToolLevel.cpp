@@ -43,7 +43,7 @@ ToolLevel::ToolLevel()
   //const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
 
   //!!!!!!!!!!!! ÁÖÀÇ!!!!!!!!! - CHANG
-   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang Koehan_Box.png", 1);
+   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Box.png", 1);
    changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
    const std::string& readFilePath("..\\ContentsResource\\CSV\\Chang.csv");
    const std::string& writeFilePath("..\\ContentsResource\\CSV\\Chang_new.csv");
