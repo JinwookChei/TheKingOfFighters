@@ -19,7 +19,7 @@ GameInstance* GameInstance::Instance() {
 
 void GameInstance::LoadKOFImages() {
   // IMAGES
-  /*IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
+  IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
   IFileImage* lobyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KOF_logo.png", (IMGTYPE_LogoImage | IMGMOD_NONE));
   IFileImage* pressEnterImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Press_Enter.png", (IMGTYPE_PressEnter | IMGMOD_NONE));
   IFileImage* readyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\READY_alpha.bmp", (IMGTYPE_Ready | IMGMOD_NONE));
@@ -68,6 +68,6 @@ void GameInstance::LoadKOFImages() {
   IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\EffectImage_Box.png", (IMGTYPE_Effect | IMGMOD_NONE));
   effectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Effect.csv");
   IFileImage* effectImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\EffectImage_Box.png", (IMGTYPE_Effect | IMGMOD_FLIPPED));
-  effectImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Effect.csv");*/
+  effectImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Effect.csv");
 
 }

@@ -14,6 +14,7 @@
 
 #define ANIMINTERVAL 35
 
+
 Chang::Chang() {
 }
 
@@ -34,7 +35,7 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
 
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
-  // ANIM
+  // COMMON ANIM
   CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_ChangImage, 0, 7, ANIMINTERVAL, false, 7);
   CallCreateAnimation(PLAYER_ANIMTYPE_Idle, IMGTYPE_ChangImage, 8, 13, ANIMINTERVAL, true, 8);
   CallCreateAnimation(PLAYER_ANIMTYPE_SeatDown, IMGTYPE_ChangImage, 14, 15, ANIMINTERVAL, false, 14);
@@ -66,8 +67,8 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Seat, IMGTYPE_ChangImage, 152, 159, ANIMINTERVAL, false, 152);
   CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Seat, IMGTYPE_ChangImage, 160, 172, ANIMINTERVAL, false, 160);
   CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Seat, IMGTYPE_ChangImage, 146, 151, ANIMINTERVAL, false, 146);
-  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_Jump, IMGTYPE_ChangImage, 197, 201, ANIMINTERVAL, false, 197);
-  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Jump, IMGTYPE_ChangImage, 187, 189, ANIMINTERVAL, false, 187);
+  CallCreateAnimation(PLAYER_ANIMTYPE_HeavyKick_Jump, IMGTYPE_ChangImage, 197, 199, ANIMINTERVAL, false, 197);
+  CallCreateAnimation(PLAYER_ANIMTYPE_LightKick_Jump, IMGTYPE_ChangImage, 187, 188, ANIMINTERVAL, false, 187);
   CallCreateAnimation(PLAYER_ANIMTYPE_HeavyPunch_Jump, IMGTYPE_ChangImage, 190, 196, ANIMINTERVAL, false, 190);
   CallCreateAnimation(PLAYER_ANIMTYPE_LightPunch_Jump, IMGTYPE_ChangImage, 183, 186, ANIMINTERVAL, false, 183);
   CallCreateAnimation(PLAYER_ANIMTYPE_Hit_High, IMGTYPE_ChangImage, 310, 314, ANIMINTERVAL, false, 310);
@@ -84,31 +85,15 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackUp, IMGTYPE_ChangImage, 339, 342, ANIMINTERVAL, false, 339);
   CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackDown, IMGTYPE_ChangImage, 351, 353, ANIMINTERVAL, false, 351);
   CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackLand, IMGTYPE_ChangImage, {354}, ANIMINTERVAL, true, 354);
+  CallCreateAnimation(CHANG_ANIMTYPE_HikiNige, IMGTYPE_ChangImage, 112, 122, ANIMINTERVAL, false, 112);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuGeki, IMGTYPE_ChangImage, 202, 210, ANIMINTERVAL, false, 202);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuDaiKaiten, IMGTYPE_ChangImage, {137, 138 ,139, 140, 141, 142, 143, 140, 141, 142, 143,140, 141, 142, 143, 144}, ANIMINTERVAL, false, 137);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, IMGTYPE_ChangImage, {123, 124, 125, 126, 127, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136}, ANIMINTERVAL, false, 123);
+  
+  
 
 
-  //CallCreateAnimation(PLAYER_ANIMTYPE_UltimateCasting, IMGTYPE_ChangImage, 344, 347, 70, false, 344);
-  CallCreateAnimation(IORI_ANIMTYPE_108ShikiYamiBarai, IMGTYPE_ChangImage, 223, 230, ANIMINTERVAL, false, 223);
-  CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_1, IMGTYPE_ChangImage, 99, 107, ANIMINTERVAL, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_GaishikiMutan_2, IMGTYPE_ChangImage, 160, 164, ANIMINTERVAL, false, 160);
-  CallCreateAnimation(IORI_ANIMTYPE_Shinigami, IMGTYPE_ChangImage, 145, 156, ANIMINTERVAL, false, 145);
-  CallCreateAnimation(IORI_ANIMTYPE_HyakushikiOniyaki, IMGTYPE_ChangImage, 276, 291, ANIMINTERVAL, false, 276);
-  CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_1, IMGTYPE_ChangImage, 255, 261, ANIMINTERVAL, false, 255);
-  CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_2, IMGTYPE_ChangImage, 262, 268, ANIMINTERVAL, false, 262);
-  CallCreateAnimation(IORI_ANIMTYPE_127ShikiAoiHana_3, IMGTYPE_ChangImage, 269, 275, ANIMINTERVAL, false, 269);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_1, IMGTYPE_ChangImage, 70, 77, 32, false, 70);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_2, IMGTYPE_ChangImage, 118, 122, 16, false, 118);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_3, IMGTYPE_ChangImage, 88, 92, 16, false, 88);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_4, IMGTYPE_ChangImage, 128, 135, 16, false, 128);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_5, IMGTYPE_ChangImage, 223, 229, 16, false, 223);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_6, IMGTYPE_ChangImage, 99, 107, 16, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_7, IMGTYPE_ChangImage, 159, 163, 16, false, 159);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_8, IMGTYPE_ChangImage, 99, 107, 16, false, 99);
-  CallCreateAnimation(IORI_ANIMTYPE_1211ShikiYaOtome_9, IMGTYPE_ChangImage, 347, 352, 140, false, 347);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_1, IMGTYPE_ChangImage, 353, 360, 70, false, 353);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_ChangImage, 361, 370, 30, false, 161);
-  CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_ChangImage, 371, 386, 20, false, 371);
-
-  // ANIM
+  // COMMON ANIM STATE MACHING
   pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_JumpDown);
   pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
   pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
@@ -155,10 +140,14 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_KOKnockBackUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_KOKnockBackDown);
   pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_KOKnockBackDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_KOKnockBackLand);
 
+  // CHNAG ANIM STATE MACHING
+  pAnimationStateMachine_->RegistAnimTransition(CHANG_ANIMTYPE_TekkyuuGeki, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  //pAnimationStateMachine_->RegistAnimTransition(CHANG_ANIMTYPE_TekkyuuGeki, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  //CHANG_ANIMTYPE_TekkyuuFunsaiGeki
+
   // SOUND
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_JumpUp, SOUNDTYPE_COMMON_Jump01);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Run, SOUNDTYPE_COMMON_FootStep);
-  //pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_108ShikiYamiBarai, SOUNDTYPE_IORI_108ShikiYamiBarai);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Dash, SOUNDTYPE_IORI_Dash);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_RollingBack, SOUNDTYPE_IORI_Dash);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, SOUNDTYPE_IORI_Kiai_Heavy01);
@@ -182,19 +171,10 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Seat, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_JumpUp, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_NeckGrabbed, SOUNDTYPE_COMMON_Hit01);
-  //pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_UltimateCasting, SOUNDTYPE_IORI_1211ShikiYaOtome01);
-
-
-  /*pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_GaishikiMutan_1, SOUNDTYPE_IORI_Kiai_Light01);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_GaishikiMutan_2, SOUNDTYPE_IORI_Kiai_Light02);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Shinigami, SOUNDTYPE_IORI_Kiai_Light02);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_HyakushikiOniyaki, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, SOUNDTYPE_IORI_1211ShikiYaOtome02);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, SOUNDTYPE_IORI_1211ShikiYaOtome03);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_HyakushikiOniyaki, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_1, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_2, SOUNDTYPE_IORI_HyakushikiOniyaki);
-  pSoundTable_->RegistSoundInfo(IORI_ANIMTYPE_Ura306shikiShika_3, SOUNDTYPE_IORI_HyakushikiOniyaki);*/
+  //CHANG_ANIMTYPE_HikiNige
+  //CHANG_ANIMTYPE_TekkyuuGeki
+  //CHANG_ANIMTYPE_TekkyuuDaiKaiten
+  //CHANG_ANIMTYPE_TekkyuuFunsaiGeki
 
   // STATE
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_StartPos, {PS_None});
@@ -246,29 +226,13 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_KOKnockBackUp, {PS_Hit});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_KOKnockBackDown, {PS_Hit});
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_KOKnockBackLand, {PS_Hit});
-  //pStateComponent_->RegistState(PLAYER_ANIMTYPE_UltimateCasting, {PS_SkillCasting});
-
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_108ShikiYamiBarai, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_1, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_GaishikiMutan_2, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_Shinigami, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_HyakushikiOniyaki, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_1, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_2, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_127ShikiAoiHana_3, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_1, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_2, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_3, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_4, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_5, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_6, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_7, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_8, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_Ura306shikiShika_1, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_Ura306shikiShika_2, {PS_Attack});
-  //pStateComponent_->RegistState(IORI_ANIMTYPE_Ura306shikiShika_3, {PS_Attack});
-
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_HikiNige, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuuGeki, {PS_Jump, PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuuDaiKaiten, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, {PS_Attack});
+  
+  
+  
   // RESTRICTION
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_StartPos, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Idle, {});
@@ -319,221 +283,95 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_KOKnockBackUp, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_KOKnockBackDown, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_KOKnockBackLand, {PR_LockInput, PR_LockExecuteCommand});
-  //pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_UltimateCasting, {PR_LockInput, PR_LockExecuteCommand});
-
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_108ShikiYamiBarai, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_GaishikiMutan_1, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_GaishikiMutan_2, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Shinigami, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_HyakushikiOniyaki, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_127ShikiAoiHana_1, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_127ShikiAoiHana_2, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_127ShikiAoiHana_3, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_1, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_2, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_3, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_4, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_5, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_6, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_7, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_8, {PR_LockInput});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_1211ShikiYaOtome_9, {PR_LockInput});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_1, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_2, {PR_LockInput, PR_LockExecuteCommand});
-  pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_3, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_HikiNige, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuuGeki, {PR_LockInput, PR_LockExecuteCommand});
+  // TODO
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuuDaiKaiten, {PR_LockSkill, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, {PR_LockSkill, PR_LockExecuteCommand});
 
   // ATTACK INFO
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 10.0f, {1.5f, 0.0f}, 100);
-
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, -5.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 15.0f, {2.0f, -8.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.0f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.0f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 5.0f, {3.0f, -4.5f}, 150);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_1, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 5.0f, {0.0f, -7.0f}, 100);
-
-  // COMMAND
-  CommandAction CM0_Action0;
-  CM0_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM0_Action0.params_.ExecuteSkill.skillTag_ = SKILL_1;
-  Command command0;
-  command0.commandTag_ = 0;
-  command0.actions_.push_back(CM0_Action0);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, command0);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, command0);
-
-  CommandAction CM1_Action0;
-  CM1_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
-  CM1_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_BackStep;
-  CommandAction CM1_Action1;
-  CM1_Action1.action_ = COMMAND_ACTION_MovementBackStep;
-  Command command1;
-  command1.commandTag_ = 1;
-  command1.actions_.push_back(CM1_Action0);
-  command1.actions_.push_back(CM1_Action1);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, command1);
-
-  CommandAction CM2_Action0;
-  CM2_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
-  CM2_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_Run;
-  Command command2;
-  command2.commandTag_ = 2;
-  command2.actions_.push_back(CM2_Action0);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, command2);
-
-  CommandAction CM3_Action0;
-  CM3_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM3_Action0.params_.ExecuteSkill.skillTag_ = SKILL_2;
-  Command command3;
-  command3.commandTag_ = 3;
-  command3.actions_.push_back(CM3_Action0);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, command3);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, command3);
-
-  CommandAction CM4_Action0;
-  CM4_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM4_Action0.params_.ExecuteSkill.skillTag_ = SKILL_3;
-  Command command4;
-  command4.commandTag_ = 4;
-  command4.actions_.push_back(CM4_Action0);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, command4);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, command4);
-
-  CommandAction CM5_Action0;
-  CM5_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM5_Action0.params_.ExecuteSkill.skillTag_ = SKILL_5;
-  Command command5;
-  command5.commandTag_ = 5;
-  command5.actions_.push_back(CM5_Action0);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, command5);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, command5);
-
-  CommandAction CM6_Action0;
-  CM6_Action0.action_ = COMMAND_ACTION_TurnOnMisc;
-  CM6_Action0.params_.TurnOnMisc.miscOnDuration_ = 500;
-  Command command6;
-  command6.commandTag_ = 6;
-  command6.actions_.push_back(CM6_Action0);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_A}, command6);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_C}, command6);
-
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_HikiNige, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuuGeki, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuuDaiKaiten, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {2.0f, -3.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {2.0f, -3.0f}, 64);
+  
+  
   // SKILL
   // SKILL 0
-  SkillFrameActionData SK0_ST0_FR0_AC0_Data0;
   SkillFrameActionConditionData SK0_ST0_FR0_AC0_Cond0;
+  SK0_ST0_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK0_ST0_FR0_AC0_Data0;
+  SK0_ST0_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_MovementDash;
+  SK0_ST0_FR0_AC0_Data0.actionParams_.MovementDash.dashDistance_ = 300.0f;
+  SK0_ST0_FR0_AC0_Data0.actionParams_.MovementDash.dashDuration_ = 100.0f;
   SkillFrameAction SK0_ST0_FR0_Action0;
-  SkillFrameActionData SK0_ST0_FR0_AC1_Data;
-  SkillFrameActionConditionData SK0_ST0_FR0_AC1_Cond0;
-  SkillFrameAction SK0_ST0_FR0_Action1;
+  SK0_ST0_FR0_Action0.conditionDatas_.push_back(SK0_ST0_FR0_AC0_Cond0);
+  SK0_ST0_FR0_Action0.actionDatas_.push_back(SK0_ST0_FR0_AC0_Data0);
   SkillFrame SK0_ST0_Frame0;
-  SkillFrameActionData SK0_ST0_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK0_ST0_FR1_AC0_Cond0;
-  SkillFrameActionConditionData SK0_ST0_FR1_AC0_Cond1;
-  SkillFrameAction SK0_ST0_FR1_Action0;
-  SkillFrame SK0_ST0_Frame1;
+  SK0_ST0_Frame0.startIndex_ = 113;
+  SK0_ST0_Frame0.endIndex_ = 113;
+  SK0_ST0_Frame0.actions_.push_back(SK0_ST0_FR0_Action0);
   SkillState SK0_State0;
-  SkillState SK0_State1;
+  SK0_State0.animState_ = CHANG_ANIMTYPE_HikiNige;
+  SK0_State0.frames_.push_back(SK0_ST0_Frame0);
   Skill Skill_0;
+  Skill_0.skillTag_ = SKILL_0;
+  Skill_0.castCondition_ = SKILL_CAST_COND_None;
+  Skill_0.castAction_ = SKILL_CAST_ACTION_None;
+  Skill_0.skillStates_.push_back(SK0_State0);
+  pSkillComponent_->RegistSkill(Skill_0);
 
   // SKILL 1
-  SkillFrameActionData SK1_ST0_FR0_AC0_Data0;
-  SkillFrameActionConditionData SK1_ST0_FR0_AC0_Cond0;
-  SkillFrameAction SK1_ST0_FR0_Action0;
-  SkillFrame SK1_ST0_Frame0;
-  SkillFrameActionData SK1_ST0_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK1_ST0_FR1_AC0_Cond0;
-  SkillFrameAction SK1_ST0_FR1_Action0;
-  SkillFrame SK1_ST0_Frame1;
   SkillState SK1_State0;
-  Skill skill_1;
+  SK1_State0.animState_ = CHANG_ANIMTYPE_TekkyuuGeki;
+  Skill Skill_1;
+  Skill_1.skillTag_ = SKILL_1;
+  Skill_1.castCondition_ = SKILL_CAST_COND_None;
+  Skill_1.castAction_ = SKILL_CAST_ACTION_None;
+  Skill_1.skillStates_.push_back(SK1_State0);
+  pSkillComponent_->RegistSkill(Skill_1);
+
 
   // SKILL 2
-  SkillFrameActionData SK2_ST0_FR0_AC0_Data0;
-  SkillFrameActionConditionData SK2_ST0_FR0_AC0_Cond0;
-  SkillFrameAction SK2_ST0_FR0_Action0;
-  SkillFrame SK2_ST0_Frame0;
-  SkillFrameActionData SK2_ST0_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK2_ST0_FR1_AC0_Cond0;
-  SkillFrameAction SK2_ST0_FR1_Action0;
-  SkillFrameActionData SK2_ST0_FR1_AC1_Data0;
-  SkillFrameActionConditionData SK2_ST0_FR1_AC1_Cond0;
-  SkillFrameAction SK2_ST0_FR1_Action1;
-  SkillFrame SK2_ST0_Frame1;
-  SkillFrameActionData SK2_ST0_FR2_AC0_Data0;
-  SkillFrameActionConditionData SK2_ST0_FR2_AC0_Cond0;
-  SkillFrameAction SK2_ST0_FR2_Action0;
-  SkillFrame SK2_ST0_Frame2;
   SkillState SK2_State0;
+  SK2_State0.animState_ = CHANG_ANIMTYPE_TekkyuuDaiKaiten;
+  SK2_State0.frames_;
   Skill Skill_2;
+  Skill_2.skillTag_ = SKILL_2;
+  Skill_2.castCondition_ = SKILL_CAST_COND_None;
+  Skill_2.castAction_ = SKILL_CAST_ACTION_None;
+  Skill_2.skillStates_.push_back(SK2_State0);
+  pSkillComponent_->RegistSkill(Skill_2);
+
 
   // SKILL 3
-  SkillFrameActionData SK3_ST0_FR0_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST0_FR0_AC0_Cond0;
-  SkillFrameAction SK3_ST0_FR0_Action0;
-  SkillFrame SK3_ST0_Frame0;
-  SkillFrameActionData SK3_ST0_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST0_FR1_AC0_Cond0;
-  SkillFrameAction SK3_ST0_FR1_Action0;
-  SkillFrameActionData SK3_ST0_FR1_AC1_Data0;
-  SkillFrameActionConditionData SK3_ST0_FR1_AC1_Cond0;
-  SkillFrameAction SK3_ST0_FR1_Action1;
-  SkillFrame SK3_ST0_Frame1;
-  SkillFrameActionData SK3_ST0_FR2_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST0_FR2_AC0_Cond0;
-  SkillFrameActionConditionData SK3_ST0_FR2_AC0_Cond1;
-  SkillFrameAction SK3_ST0_FR2_Action0;
-  SkillFrame SK3_ST0_Frame2;
   SkillState SK3_State0;
-  SkillFrameActionData SK3_ST1_FR0_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST1_FR0_AC0_Cond0;
-  SkillFrameAction SK3_ST1_FR0_Action0;
-  SkillFrame SK3_ST1_Frame0;
-  SkillFrameActionData SK3_ST1_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST1_FR1_AC0_Cond0;
-  SkillFrameAction SK3_ST1_FR1_Action0;
-  SkillFrameActionData SK3_ST1_FR1_AC1_Data0;
-  SkillFrameActionConditionData SK3_ST1_FR1_AC1_Cond0;
-  SkillFrameAction SK3_ST1_FR1_Action1;
-  SkillFrame SK3_ST1_Frame1;
-  SkillFrameActionData SK3_ST1_FR2_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST1_FR2_AC0_Cond0;
-  SkillFrameActionConditionData SK3_ST1_FR2_AC0_Cond1;
-  SkillFrameAction SK3_ST1_FR2_Action0;
-  SkillFrame SK3_ST1_Frame2;
-  SkillState SK3_State1;
-  SkillFrameActionData SK3_ST2_FR0_AC0_Data0;
-  SkillFrameActionConditionData SK3_ST2_FR0_AC0_Cond0;
-  SkillFrameAction SK3_ST2_FR0_Action0;
-  SkillFrame SK3_ST2_Frame0;
-  SkillState SK3_State2;
+  SK3_State0.animState_ = CHANG_ANIMTYPE_TekkyuuFunsaiGeki;
+  SK3_State0.frames_;
   Skill Skill_3;
+  Skill_3.skillTag_ = SKILL_3;
+  Skill_3.castCondition_ = SKILL_CAST_COND_None;
+  Skill_3.castAction_ = SKILL_CAST_ACTION_None;
+  Skill_3.skillStates_.push_back(SK3_State0);
+  pSkillComponent_->RegistSkill(Skill_3);
 
+ 
   // SKILL 4
   SkillFrameActionData SK4_ST0_FR0_AC0_Data0;
   SkillFrameActionConditionData SK4_ST0_FR0_AC0_Cond0;
@@ -720,10 +558,49 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   SkillFrame SK6_ST2_Frame1;
   SkillState SK6_State2;
   Skill Skill_6;
+
+
+  // COMMAND
+  CommandAction CM0_Action0;
+  CM0_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
+  CM0_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_BackStep;
+  CommandAction CM0_Action1;
+  CM0_Action1.action_ = COMMAND_ACTION_MovementBackStep;
+  Command command0;
+  command0.commandTag_ = COMMAND_0;
+  command0.actions_.push_back(CM0_Action0);
+  command0.actions_.push_back(CM0_Action1);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, command0);
+
+  CommandAction CM1_Action0;
+  CM1_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
+  CM1_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_Run;
+  Command command1;
+  command1.commandTag_ = COMMAND_1;
+  command1.actions_.push_back(CM1_Action0);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, command1);
+
+
+  CommandAction CM3_Action0;
+  CM3_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
+  CM3_Action0.params_.UpdateAnimState.animStateTag_ = CHANG_ANIMTYPE_TekkyuuDaiKaiten;
+  Command command3;
+  command3.commandTag_ = 3;
+  command3.actions_.push_back(CM3_Action0);
+  pCommandComponent_->RegistCommand({CK_A, CK_A, CK_A, CK_A}, command3);
+  pCommandComponent_->RegistCommand({CK_C, CK_C, CK_C, CK_C}, command3);
+
 }
 
 void Chang::CompareInputBitset() {
   if (pStateComponent_->EqualPlayerState({PS_Jump})) {
+      // RIGHT - Press | C - Down 
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) && 
+        true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C})) {
+        pSkillComponent_->ExecuteSkill(SKILL_1);
+      return;
+    }
+
     // A | DOWN
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_A})) {
       UpdateAnimState(PLAYER_ANIMTYPE_LightPunch_Jump);
@@ -748,6 +625,13 @@ void Chang::CompareInputBitset() {
   }
 
   if (pStateComponent_->ContainPlayerState({PS_Seat})) {
+    // RIGHT DOWN | PRESS - A | DOWN
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right, KEY_Down}) &&
+        (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}))) {
+      pSkillComponent_->ExecuteSkill(SKILL_0);
+      return;
+    }
+
     // LEFT | PRESS
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Down, {KEY_Left})) {
       if (pOpponentPlayer_->GetPlayerStateComponent()->ContainPlayerState({PS_Attack})) {
@@ -803,6 +687,19 @@ void Chang::CompareInputBitset() {
         return;
       }
     }
+
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Left})) {
+        // TODO -> inputController
+        // TODO Charge Press
+      if (InputManager::Instance()->PressTime(KEY_Left) > 160) {
+        if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) && 
+            true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}) || 
+            true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C})) {
+          pSkillComponent_->ExecuteSkill(SKILL_3);
+        }
+      }
+    }
+
     // RIGHT | PRESS
     if (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Press, {KEY_Right})) {
       if (true == pStateComponent_->ContainPlayerState({PS_Run})) {
@@ -868,14 +765,6 @@ void Chang::CompareInputBitset() {
       UpdateAnimState((PLAYER_ANIMTYPE_Dash));
       pMovementComponent_->Dash(FacingRight(), 300.0f, 500.0f);
       pGhostEffect_->On();
-      return;
-    }
-
-    // RIGHT | PRESS - A | DOWN
-    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
-        (true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}) ||
-         true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C}))) {
-      pSkillComponent_->ExecuteSkill(SKILL_0);
       return;
     }
 

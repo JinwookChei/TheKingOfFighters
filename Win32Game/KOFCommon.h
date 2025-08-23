@@ -80,35 +80,10 @@ enum PLAYER_ANIM_TYPE : unsigned long long {
   PLAYER_ANIMTYPE_Hit_JumpUp,
   PLAYER_ANIMTYPE_Hit_JumpDown,
   PLAYER_ANIMTYPE_NeckGrabbed,
-  //PLAYER_ANIMTYPE_UltimateCasting,
   PLAYER_ANIMTYPE_KOKnockBackUp,
   PLAYER_ANIMTYPE_KOKnockBackDown,
   PLAYER_ANIMTYPE_KOKnockBackLand,
   PLAYER_ANIMTYPE_Max
-};
-
-enum IORI_ANIM_TYPE : unsigned long long {
-  IORI_ANIMTYPE_108ShikiYamiBarai = PLAYER_ANIMTYPE_Max + 1ULL,
-  IORI_ANIMTYPE_GaishikiMutan_1,
-  IORI_ANIMTYPE_GaishikiMutan_2,
-  IORI_ANIMTYPE_Shinigami,
-  IORI_ANIMTYPE_HyakushikiOniyaki,
-  IORI_ANIMTYPE_127ShikiAoiHana_1,
-  IORI_ANIMTYPE_127ShikiAoiHana_2,
-  IORI_ANIMTYPE_127ShikiAoiHana_3,
-  IORI_ANIMTYPE_1211ShikiYaOtome_0,
-  IORI_ANIMTYPE_1211ShikiYaOtome_1,
-  IORI_ANIMTYPE_1211ShikiYaOtome_2,
-  IORI_ANIMTYPE_1211ShikiYaOtome_3,
-  IORI_ANIMTYPE_1211ShikiYaOtome_4,
-  IORI_ANIMTYPE_1211ShikiYaOtome_5,
-  IORI_ANIMTYPE_1211ShikiYaOtome_6,
-  IORI_ANIMTYPE_1211ShikiYaOtome_7,
-  IORI_ANIMTYPE_1211ShikiYaOtome_8,
-  IORI_ANIMTYPE_1211ShikiYaOtome_9,
-  IORI_ANIMTYPE_Ura306shikiShika_1,
-  IORI_ANIMTYPE_Ura306shikiShika_2,
-  IORI_ANIMTYPE_Ura306shikiShika_3
 };
 
 enum PLAYER_ANIM_MODIFIER : unsigned long long {
@@ -120,18 +95,6 @@ enum PLAYER_ANIM_MODIFIER : unsigned long long {
   ANIMMOD_MASK = ANIMMOD_FLIPPED | ANIMMOD_BLUEFLAME
 };
 
-enum IORI_SKILL {
-  IORI_SKILL_None = -1,
-  IORI_SKILL_LightPunchCombo = 0,
-  IORI_SKILL_108ShikiYamiBarai,
-  IORI_SKILL_GaishikiMutan,
-  IORI_SKILL_Shinigami,
-  IORI_SKILL_HyakushikiOniyaki,
-  IORI_SKILL_127ShikiAoiHana,
-  IORI_SKILL_1211ShikiYaOtome,
-  IORI_SKILL_Ura306shikiShika,
-  IORI_SKILL_Max
-};
 
 enum PROJECTILE_TYPE : unsigned long long{
   IORI_PROJECTILE_None = 0,
@@ -204,7 +167,3 @@ enum SOUND_TYPE : unsigned long long {
 
 static Color8Bit ioriTransparentColor = Color8Bit{169, 139, 150, 0};
 static Color8Bit changTransparentColor = Color8Bit{17, 91, 124, 0};
-
-unsigned long long MakeKey(unsigned long long type, unsigned long long modify) {
-  return type | modify;
-}

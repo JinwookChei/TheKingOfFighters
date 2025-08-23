@@ -3,6 +3,7 @@
 
 enum PLAYER_RESTRICT_TYPE : unsigned int {
   PR_LockInput = 0,
+  PR_LockSkill,
   PR_LockExecuteCommand,
   PR_LockAnimTrans,
   PR_StopAnim,

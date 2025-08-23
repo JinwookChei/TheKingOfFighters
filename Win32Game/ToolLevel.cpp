@@ -37,10 +37,10 @@ ToolLevel::ToolLevel()
 
   // VIEWPORT
   //!!!!!!!!!!!! 주의!!!!!!!!! - IORI
-  //IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
-  //ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
-  //const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
-  //const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
+  /*IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
+  ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
+  const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
+  const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");*/
 
   //!!!!!!!!!!!! 주의!!!!!!!!! - CHANG
    IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Box.png", 1);

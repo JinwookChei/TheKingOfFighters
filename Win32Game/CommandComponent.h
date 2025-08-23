@@ -1,7 +1,6 @@
 #pragma once
 #include "KOFPlayer.h"
 
-
 enum COMMAND_ACTION_TYPE : unsigned int {
   COMMAND_ACTION_ExecuteSkill = 0,
   COMMAND_ACTION_UpdateAnimState,
@@ -41,7 +40,19 @@ struct Command {
   std::vector<CommandAction> actions_;
 };
 
-enum CommandKey {
+enum COMMAND_TYPE : unsigned long long {
+  COMMAND_0 = 0ULL,
+  COMMAND_1,
+  COMMAND_2,
+  COMMAND_3,
+  COMMAND_4,
+  COMMAND_5,
+  COMMAND_6,
+  COMMAND_7,
+  COMMAND_Max,
+};
+
+enum COMMAND_KEY {
   CK_None = -1,
   CK_Left = 0,
   CK_Up,
@@ -57,24 +68,23 @@ enum CommandKey {
 struct CommandNode {
   CommandNode()
       : command_(nullptr) {
-    for (int i = 0; i < CommandKey::CK_MAX; ++i) {
+    for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
       pSubNodes[i] = nullptr;
     }
   }
 
   ~CommandNode() {
     if (nullptr != pSubNodes) {
-      for (int i = 0; i < CommandKey::CK_MAX; ++i) {
+      for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
         delete pSubNodes[i];
       }
     }
   }
 
-  CommandNode* pSubNodes[CommandKey::CK_MAX];
+  CommandNode* pSubNodes[COMMAND_KEY::CK_MAX];
 
   Command* command_;
 };
-
 
 class CommandComponent
     : public ActorComponent {
@@ -90,13 +100,13 @@ class CommandComponent
 
   bool Initialize(KOFPlayer* pOwnerPlayer, SkillComponent* pSkillComponent, MovementComponent* pMovementComponent);
 
-  bool RegistCommand(std::initializer_list<CommandKey> commandKeys, Command command);
+  bool RegistCommand(std::initializer_list<COMMAND_KEY> commandKeys, Command command);
 
   bool isWaitingCommand() const;
 
   void ExcuteCommand();
 
-  void JumpNode(CommandKey key);
+  void JumpNode(COMMAND_KEY key);
 
   void SetTimeOutThreshold(unsigned long long inputTimeThreshold, unsigned long long reservedTaskTimeThreshold);
 
@@ -123,7 +133,6 @@ class CommandComponent
   void ExecuteTurnOnMisc(const CommandActionParam& params);
 
   // -----------------------------------------------------------
- 
 
  private:
   void CleanUpCommands(CommandNode* rootNode);
@@ -153,5 +162,4 @@ class CommandComponent
   unsigned long long miscOnDuration_;
 
   Command* reservedCommand_;
-
 };

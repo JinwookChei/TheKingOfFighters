@@ -349,6 +349,84 @@ void KOFLevel::Tick(unsigned long long deltaTick) {
     }
   }
 
+    Vector backbufferScale = GEngineCore->GetBackbufferScale();
+  float cameraHeight = pCamera_->GetCameraMaxHeight();
+
+  pPlayer1_->SetIsAtMapEdge(false);
+  pPlayer2_->SetIsAtMapEdge(false);
+  screenBoundaryWidth_ = backbufferScale.X - pPlayer1_->CharacterScale().HalfX() - pPlayer2_->CharacterScale().HalfX();
+
+  Vector player1Position = pPlayer1_->GetPosition();
+  Vector player2Position = pPlayer2_->GetPosition();
+
+  float player1Left = player1Position.X - pPlayer1_->CharacterScale().HalfX();
+  float player2Left = player2Position.X - pPlayer2_->CharacterScale().HalfX();
+
+  float player1Right = player1Position.X + pPlayer1_->CharacterScale().HalfX();
+  float player2Right = player2Position.X + pPlayer2_->CharacterScale().HalfX();
+
+  float viewLeft = pCamera_->GetPosition().X - backbufferScale.X / 2;
+  float viewRight = pCamera_->GetPosition().X + backbufferScale.X / 2;
+
+  // CameraPosition X
+  if (player1Position.X < player2Position.X) {
+    if (player1Left < viewLeft) {
+      if (viewRight > player2Right && viewLeft > levelLeftBoundary_) {
+        pCamera_->SetPosition({player1Left + backbufferScale.X / 2, cameraHeight});
+      }
+    }
+    if (player2Right > viewRight) {
+      if (viewLeft < player1Left && viewRight < levelRightBoundary_) {
+        pCamera_->SetPosition({player2Right - backbufferScale.X / 2, cameraHeight});
+      }
+    }
+  } else {
+    if (player2Left < viewLeft) {
+      if (viewRight > player1Right && viewLeft > levelLeftBoundary_) {
+        pCamera_->SetPosition({player2Left + backbufferScale.X / 2, cameraHeight});
+      }
+    }
+    if (player1Right > viewRight) {
+      if (viewLeft < player2Left && viewRight < levelRightBoundary_) {
+        pCamera_->SetPosition({player1Right - backbufferScale.X / 2, cameraHeight});
+      }
+    }
+  }
+
+  // CameraClamp X
+  if (pCamera_->GetPosition().X < pCamera_->GetCameraMinWidth()) {
+    pCamera_->SetPosition({pCamera_->GetCameraMinWidth(), pCamera_->GetPosition().Y});
+
+  } else if (pCamera_->GetPosition().X > pCamera_->GetCameraMaxWidth()) {
+    pCamera_->SetPosition({pCamera_->GetCameraMaxWidth(), pCamera_->GetPosition().Y});
+  }
+
+  // CameraPosition Y
+  float player1JumpHeight = player1SpawnPostion_.Y - player1Position.Y;
+  float player2JumpHeight = player2SpawnPostion_.Y - player2Position.Y;
+
+  if (player1JumpHeight > 0 || player2JumpHeight > 0) {
+    float addHeight = (player1JumpHeight > player2JumpHeight) ? player1JumpHeight : player2JumpHeight;
+    const Vector& cameraPosition = pCamera_->GetPosition();
+    pCamera_->SetPosition({cameraPosition.X, cameraHeight - addHeight / 5});
+  }
+
+  // CameraClamp Y
+  if (pCamera_->GetPosition().Y < pCamera_->GetCameraMinHeight()) {
+    pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMinHeight()});
+
+  } else if (pCamera_->GetPosition().Y > pCamera_->GetCameraMaxHeight()) {
+    pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMaxHeight()});
+  }
+
+  // CHECK PlAYER POSITION EDGE
+  if (player1Left <= levelLeftBoundary_ || player1Right >= levelRightBoundary_) {
+    pPlayer1_->SetIsAtMapEdge(true);
+  }
+  if (player2Left <= levelLeftBoundary_ || player2Right >= levelRightBoundary_) {
+    pPlayer2_->SetIsAtMapEdge(true);
+  }
+
   switch (gameStatus_) {
     case GAMESTATUS_GameReady:
       ReadyGame(deltaTick);
@@ -433,83 +511,7 @@ void KOFLevel::InitInProgressGame() {
 }
 
 void KOFLevel::InProgressGame(unsigned long long deltaTick) {
-  Vector backbufferScale = GEngineCore->GetBackbufferScale();
-  float cameraHeight = pCamera_->GetCameraMaxHeight();
 
-  pPlayer1_->SetIsAtMapEdge(false);
-  pPlayer2_->SetIsAtMapEdge(false);
-  screenBoundaryWidth_ = backbufferScale.X - pPlayer1_->CharacterScale().HalfX() - pPlayer2_->CharacterScale().HalfX();
-
-  Vector player1Position = pPlayer1_->GetPosition();
-  Vector player2Position = pPlayer2_->GetPosition();
-
-  float player1Left = player1Position.X - pPlayer1_->CharacterScale().HalfX();
-  float player2Left = player2Position.X - pPlayer2_->CharacterScale().HalfX();
-
-  float player1Right = player1Position.X + pPlayer1_->CharacterScale().HalfX();
-  float player2Right = player2Position.X + pPlayer2_->CharacterScale().HalfX();
-
-  float viewLeft = pCamera_->GetPosition().X - backbufferScale.X / 2;
-  float viewRight = pCamera_->GetPosition().X + backbufferScale.X / 2;
-
-  // CameraPosition X
-  if (player1Position.X < player2Position.X) {
-    if (player1Left < viewLeft) {
-      if (viewRight > player2Right && viewLeft > levelLeftBoundary_) {
-        pCamera_->SetPosition({player1Left + backbufferScale.X / 2, cameraHeight});
-      }
-    }
-    if (player2Right > viewRight) {
-      if (viewLeft < player1Left && viewRight < levelRightBoundary_) {
-        pCamera_->SetPosition({player2Right - backbufferScale.X / 2, cameraHeight});
-      }
-    }
-  } else {
-    if (player2Left < viewLeft) {
-      if (viewRight > player1Right && viewLeft > levelLeftBoundary_) {
-        pCamera_->SetPosition({player2Left + backbufferScale.X / 2, cameraHeight});
-      }
-    }
-    if (player1Right > viewRight) {
-      if (viewLeft < player2Left && viewRight < levelRightBoundary_) {
-        pCamera_->SetPosition({player1Right - backbufferScale.X / 2, cameraHeight});
-      }
-    }
-  }
-
-  // CameraClamp X
-  if (pCamera_->GetPosition().X < pCamera_->GetCameraMinWidth()) {
-    pCamera_->SetPosition({pCamera_->GetCameraMinWidth(), pCamera_->GetPosition().Y});
-
-  } else if (pCamera_->GetPosition().X > pCamera_->GetCameraMaxWidth()) {
-    pCamera_->SetPosition({pCamera_->GetCameraMaxWidth(), pCamera_->GetPosition().Y});
-  }
-
-  // CameraPosition Y
-  float player1JumpHeight = player1SpawnPostion_.Y - player1Position.Y;
-  float player2JumpHeight = player2SpawnPostion_.Y - player2Position.Y;
-
-  if (player1JumpHeight > 0 || player2JumpHeight > 0) {
-    float addHeight = (player1JumpHeight > player2JumpHeight) ? player1JumpHeight : player2JumpHeight;
-    const Vector& cameraPosition = pCamera_->GetPosition();
-    pCamera_->SetPosition({cameraPosition.X, cameraHeight - addHeight / 5});
-  }
-
-  // CameraClamp Y
-  if (pCamera_->GetPosition().Y < pCamera_->GetCameraMinHeight()) {
-    pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMinHeight()});
-
-  } else if (pCamera_->GetPosition().Y > pCamera_->GetCameraMaxHeight()) {
-    pCamera_->SetPosition({pCamera_->GetPosition().X, pCamera_->GetCameraMaxHeight()});
-  }
-
-  // CHECK PlAYER POSITION EDGE
-  if (player1Left <= levelLeftBoundary_ || player1Right >= levelRightBoundary_) {
-    pPlayer1_->SetIsAtMapEdge(true);
-  }
-  if (player2Left <= levelLeftBoundary_ || player2Right >= levelRightBoundary_) {
-    pPlayer2_->SetIsAtMapEdge(true);
-  }
 }
 
 void KOFLevel::InitEndGame() {

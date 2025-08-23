@@ -18,7 +18,7 @@ CommandComponent::CommandComponent()
       isMiscOn_(false),
       miscOnTimer_(0),
       miscOnDuration_(0) {
-  for (int i = 0; i < CommandKey::CK_MAX; ++i) {
+  for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
     pRootNode_->pSubNodes[i] = new CommandNode();
   }
 }
@@ -71,7 +71,7 @@ bool CommandComponent::Initialize(KOFPlayer* pOwnerPlayer, SkillComponent* pSkil
   return true;
 }
 
-bool CommandComponent::RegistCommand(std::initializer_list<CommandKey> commandKeys, Command command) {
+bool CommandComponent::RegistCommand(std::initializer_list<COMMAND_KEY> commandKeys, Command command) {
   if (nullptr == pRootNode_) {
     return false;
   }
@@ -113,7 +113,7 @@ void CommandComponent::ExcuteCommand() {
   reservedCommand_ = nullptr;
 }
 
-void CommandComponent::JumpNode(CommandKey key) {
+void CommandComponent::JumpNode(COMMAND_KEY key) {
   inputTimer_ = 0;
 
   if (nullptr == pCurNode_) {
@@ -230,7 +230,7 @@ void CommandComponent::ExecuteTurnOnMisc(const CommandActionParam& params) {
 }
 
 void CommandComponent::CleanUpCommands(CommandNode* rootNode) {
-  for (int i = 0; i < CommandKey::CK_MAX; ++i) {
+  for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
 
     CommandNode* pNode = rootNode->pSubNodes[i];
 

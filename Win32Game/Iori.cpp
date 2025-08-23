@@ -337,105 +337,41 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   pRestrictionComponent_->RegistAnimStateRestrict(IORI_ANIMTYPE_Ura306shikiShika_3, {PR_LockInput, PR_LockExecuteCommand});
 
   // ATTACK INFO
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 10.0f, {1.5f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, -5.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 15.0f, {2.0f, -8.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.0f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.0f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 200);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_LongRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Seat, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightKick_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_LightPunch_Jump, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 10.0f, {1.5f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_GaishikiMutan_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, -3.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Shinigami, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 15.0f, {2.0f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_1, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.0f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_2, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.0f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_127ShikiAoiHana_3, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {1.5f, -2.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_1, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_2, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_3, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_6, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_7, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_8, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
   pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_1211ShikiYaOtome_9, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Iori_Explosion, false, 5.0f, {3.0f, -4.5f}, 150);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_1, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 100);
-  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 5.0f, {0.0f, -7.0f}, 100);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_1, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 5.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, true, 5.0f, {0.0f, -5.0f}, 64);
   // pAttackTable_->RegistAttackInfo(IORI_ANIMTYPE_Ura306shikiShika_3, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 10.0f, {1.5f, -10.0f}, 140.0f);
 
-  // COMMAND
-  CommandAction CM0_Action0;
-  CM0_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM0_Action0.params_.ExecuteSkill.skillTag_ = SKILL_1;
-  Command command0;
-  command0.commandTag_ = 0;
-  command0.actions_.push_back(CM0_Action0);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, command0);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, command0);
-
-  CommandAction CM1_Action0;
-  CM1_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
-  CM1_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_BackStep;
-  CommandAction CM1_Action1;
-  CM1_Action1.action_ = COMMAND_ACTION_MovementBackStep;
-  Command command1;
-  command1.commandTag_ = 1;
-  command1.actions_.push_back(CM1_Action0);
-  command1.actions_.push_back(CM1_Action1);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, command1);
-
-  CommandAction CM2_Action0;
-  CM2_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
-  CM2_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_Run;
-  Command command2;
-  command2.commandTag_ = 2;
-  command2.actions_.push_back(CM2_Action0);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, command2);
-
-  CommandAction CM3_Action0;
-  CM3_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM3_Action0.params_.ExecuteSkill.skillTag_ = SKILL_2;
-  Command command3;
-  command3.commandTag_ = 3;
-  command3.actions_.push_back(CM3_Action0);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, command3);
-  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, command3);
-
-  CommandAction CM4_Action0;
-  CM4_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM4_Action0.params_.ExecuteSkill.skillTag_ = SKILL_3;
-  Command command4;
-  command4.commandTag_ = 4;
-  command4.actions_.push_back(CM4_Action0);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, command4);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, command4);
-
-  CommandAction CM5_Action0;
-  CM5_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
-  CM5_Action0.params_.ExecuteSkill.skillTag_ = SKILL_5;
-  Command command5;
-  command5.commandTag_ = 5;
-  command5.actions_.push_back(CM5_Action0);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, command5);
-  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, command5);
-
-  CommandAction CM6_Action0;
-  CM6_Action0.action_ = COMMAND_ACTION_TurnOnMisc;
-  CM6_Action0.params_.TurnOnMisc.miscOnDuration_ = 500;
-  Command command6;
-  command6.commandTag_ = 6;
-  command6.actions_.push_back(CM6_Action0);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_A}, command6);
-  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_C}, command6);
 
   // SKILL
   // SKILL 0
@@ -1325,6 +1261,72 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   Skill_6.skillStates_.push_back(SK6_State1);
   Skill_6.skillStates_.push_back(SK6_State2);
   pSkillComponent_->RegistSkill(Skill_6);
+
+
+    // COMMAND
+  CommandAction CM0_Action0;
+  CM0_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
+  CM0_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_BackStep;
+  CommandAction CM0_Action1;
+  CM0_Action1.action_ = COMMAND_ACTION_MovementBackStep;
+  Command command0;
+  command0.commandTag_ = COMMAND_0;
+  command0.actions_.push_back(CM0_Action0);
+  command0.actions_.push_back(CM0_Action1);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Left}, command0);
+
+  CommandAction CM1_Action0;
+  CM1_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
+  CM1_Action0.params_.UpdateAnimState.animStateTag_ = PLAYER_ANIMTYPE_Run;
+  Command command1;
+  command1.commandTag_ = COMMAND_1;
+  command1.actions_.push_back(CM1_Action0);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Right}, command1);
+
+  CommandAction CM2_Action0;
+  CM2_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
+  CM2_Action0.params_.ExecuteSkill.skillTag_ = SKILL_1;
+  Command command2;
+  command2.commandTag_ = COMMAND_2;
+  command2.actions_.push_back(CM2_Action0);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_A}, command2);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_B}, command2);
+
+  CommandAction CM3_Action0;
+  CM3_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
+  CM3_Action0.params_.ExecuteSkill.skillTag_ = SKILL_2;
+  Command command3;
+  command3.commandTag_ = 3;
+  command3.actions_.push_back(CM3_Action0);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_A}, command3);
+  pCommandComponent_->RegistCommand({CK_Right, CK_Down, CK_Right, CK_C}, command3);
+
+  CommandAction CM4_Action0;
+  CM4_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
+  CM4_Action0.params_.ExecuteSkill.skillTag_ = SKILL_3;
+  Command command4;
+  command4.commandTag_ = 4;
+  command4.actions_.push_back(CM4_Action0);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_A}, command4);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Left, CK_C}, command4);
+
+  CommandAction CM5_Action0;
+  CM5_Action0.action_ = COMMAND_ACTION_ExecuteSkill;
+  CM5_Action0.params_.ExecuteSkill.skillTag_ = SKILL_5;
+  Command command5;
+  command5.commandTag_ = 5;
+  command5.actions_.push_back(CM5_Action0);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_A}, command5);
+  pCommandComponent_->RegistCommand({CK_Down, CK_Right, CK_Down, CK_Left, CK_C}, command5);
+
+  CommandAction CM6_Action0;
+  CM6_Action0.action_ = COMMAND_ACTION_TurnOnMisc;
+  CM6_Action0.params_.TurnOnMisc.miscOnDuration_ = 500;
+  Command command6;
+  command6.commandTag_ = 6;
+  command6.actions_.push_back(CM6_Action0);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_A}, command6);
+  pCommandComponent_->RegistCommand({CK_Left, CK_Down, CK_Right, CK_Left, CK_Down, CK_Right, CK_C}, command6);
 }
 
 void Iori::CompareInputBitset() {
