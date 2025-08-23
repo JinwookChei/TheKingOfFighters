@@ -69,7 +69,6 @@ void KOFLevel::BeginPlay() {
   // BLACKBOARD
   pBackGroundMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_BackGround);
   pBackGroundMask_->SetPosition({0.0f, 0.0f});
-
   pScreenMask_ = SpawnActor<ScreenMask>(ActorGroupEngineType::ActorGroupEngineType_Screen);
   pScreenMask_->SetPosition({0.0f, 0.0f});
 
@@ -83,11 +82,15 @@ void KOFLevel::BeginPlay() {
   pPlayer1_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
   player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, groundHeight_);
   pPlayer1_->SetPlayerOnLeft(true);
-  /*pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);*/
-  pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+
+  pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
   pPlayer2_->SetPlayerOnLeft(false);
+
+  //pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
+  //pPlayer2_->SetPlayerOnLeft(false);
+  
   //pPlayer2_ = SpawnActor<AIiori>(ActorGroupEngineType::ActorGroupEngineType_None);
   //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
   //pPlayer2_->SetPlayerOnLeft(false);
@@ -112,7 +115,7 @@ void KOFLevel::BeginPlay() {
 
   // PLAYER_1 UI
   Portrait* portraitPlayer1 = HUD_->CreateUIComponent<Portrait>();
-  portraitPlayer1->Initialize(IMGTYPE_IoriImage | IMGMOD_FLIPPED, 655, ioriTransparentColor);
+  portraitPlayer1->Initialize(IMGTYPE_ChangImage | IMGMOD_FLIPPED, 655, ioriTransparentColor);
   portraitPlayer1->SetPosition({90.0f, 100.0f});
   HealthBar* healthBarPlayer1 = HUD_->CreateUIComponent<HealthBar>();
   healthBarPlayer1->Initialize(IMGTYPE_HealthHUD | IMGMOD_NONE, 0, Color8Bit(0, 0, 0, 0));
@@ -197,8 +200,8 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6, IMGTYPE_CastingEffectImage, SOUNDTYPE_COMMON_Casting, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_IoriImage, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_IoriImage, SOUNDTYPE_None, 231, 238, 16, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion, IMGTYPE_ChangImage, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai, IMGTYPE_ChangImage, SOUNDTYPE_None, 231, 238, 16, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
   
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_1 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit02, 7, 10, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Hit_2 | EFMOD_FLIPPED, IMGTYPE_HitEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Hit03, 19, 22, 50, false, {4.2f, 4.2f}, Color8Bit{128, 0, 255, 0});
@@ -210,8 +213,8 @@ void KOFLevel::BeginPlay() {
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_4 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 48, 63, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_5 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 64, 79, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
   EffectManager::Instance()->RegistEffect(EFTYPE_Casting_6 | EFMOD_FLIPPED, IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Casting, 80, 95, 20, false, {4.2f, 4.2f}, Color8Bit{108, 156, 114, 0});
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
-  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_IoriImage | IMGMOD_FLIPPED, SOUNDTYPE_None, 231, 238, 16, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Explosion | EFMOD_FLIPPED, IMGTYPE_ChangImage | IMGMOD_FLIPPED, SOUNDTYPE_COMMON_Explosion, 387, 405, 20, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
+  EffectManager::Instance()->RegistEffect(EFTYPE_Iori_Casting_YamiBarai | EFMOD_FLIPPED, IMGTYPE_ChangImage | IMGMOD_FLIPPED, SOUNDTYPE_None, 231, 238, 16, false, {4.2f, 4.2f}, Color8Bit{0, 0, 0, 0}, true, 1.0f);
   
   // SOUND
   Path soundPath;

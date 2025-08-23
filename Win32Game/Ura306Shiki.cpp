@@ -42,9 +42,9 @@ bool Ura306Shiki::Initialize() {
   isDestroyOnCollision_ = false;
 
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {
-    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 406, 423, 20, false, 406);
+    pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_NONE), 406, 423, 20, false, 406);
   } else {
-    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 406, 423, 20, false, 406);
+    pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 406, 423, 20, false, 406);
   }
 
   pRender_->ChangeAnimation(1);

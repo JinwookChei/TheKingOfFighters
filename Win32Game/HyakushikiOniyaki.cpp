@@ -46,19 +46,19 @@ bool HyakushikiOniyaki::Initialize() {
   if (0 == miscValue_) {
     spawnPosition_ = {50.0f, -30.0f};
     if (true == pKOFPlayerOwner->PlayerOnLeft()) {
-      pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 292, 301, 20, false, 292);
+      pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_NONE), 292, 301, 20, false, 292);
       velocity_ = {0.4f, -1.5f};
     } else {
-      pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 292, 301, 20, false, 292);
+      pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 292, 301, 20, false, 292);
       velocity_ = {-0.4f, -1.5f};
     }
   } else {
     spawnPosition_ = {-80.0f, -200.0f};
     if (true == pKOFPlayerOwner->PlayerOnLeft()) {
-      pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 302, 311, 20, false, 302);
+      pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_NONE), 302, 311, 20, false, 302);
       velocity_ = {0.4f, -1.5f};
     } else {
-      pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 302, 311, 20, false, 302);
+      pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 302, 311, 20, false, 302);
       velocity_ = {-0.4f, -1.5f};
     }
   }

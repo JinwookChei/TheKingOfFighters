@@ -4,7 +4,6 @@ class InputController;
 class AnimationStateMachine;
 class MovementComponent;
 class CommandComponent;
-class CommandHandler;
 class SkillComponent;
 class ProjectileComponent;
 class AttackTable;
@@ -152,8 +151,6 @@ class KOFPlayer
   SkillComponent* pSkillComponent_;
 
   CommandComponent* pCommandComponent_;
-
-  //CommandHandler* pCommandHandler_;
 
   ProjectileComponent* pProjectileComponent_;
 

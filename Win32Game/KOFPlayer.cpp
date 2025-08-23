@@ -36,7 +36,6 @@ KOFPlayer::KOFPlayer()
       pGrabBox_(nullptr),
       pSkillComponent_(nullptr),
       pCommandComponent_(nullptr),
-      //pCommandHandler_(nullptr),
       pProjectileComponent_(nullptr),
       pGhostEffect_(nullptr),
       characterScale_({0.0f, 0.0f}),
@@ -214,7 +213,7 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
     return;
   }
 
-  // ANIMTRANS
+  // ANIM STATE MACHINE
   pAnimationStateMachine_ = CreateComponent<AnimationStateMachine>();
   if (nullptr == pAnimationStateMachine_) {
     return;

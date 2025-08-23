@@ -63,13 +63,13 @@ bool YamiBarai::Initialize() {
   isDestroyOnCollision_ = true;
 
   if (true == pKOFPlayerOwner->PlayerOnLeft()) {
-    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_NONE), 239, 243, 10, true, 239);
-    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_NONE), 245, 254, 10, true, 245);
+    pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_NONE), 239, 243, 10, true, 239);
+    pRender2_->CreateAnimation(2, (IMGTYPE_ChangImage | IMGMOD_NONE), 245, 254, 10, true, 245);
     velocity_ = 2.0f;
     range_ = 1500.0f;
   } else {
-    pRender_->CreateAnimation(1, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 239, 244, 10, true, 239);
-    pRender2_->CreateAnimation(2, (IMGTYPE_IoriImage | IMGMOD_FLIPPED), 245, 254, 10, true, 245);
+    pRender_->CreateAnimation(1, (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 239, 244, 10, true, 239);
+    pRender2_->CreateAnimation(2, (IMGTYPE_ChangImage | IMGMOD_FLIPPED), 245, 254, 10, true, 245);
     velocity_ = -2.0f;
     range_ = -1500.0f;
   }
