@@ -161,6 +161,7 @@
     <ClCompile Include="AIiori.cpp" />
     <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="AnimFreezeManager.cpp" />
+    <ClCompile Include="AnimPivotLevel.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="GameInstance.cpp" />
@@ -199,7 +200,6 @@
     <ClCompile Include="NextImageButton.cpp" />
     <ClCompile Include="ImageMoveButton.cpp" />
     <ClCompile Include="KOFPlayer.cpp" />
-    <ClCompile Include="PlayerDummy.cpp" />
     <ClCompile Include="Portrait.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileComponent.cpp" />
@@ -226,6 +226,7 @@
     <ClInclude Include="AIiori.h" />
     <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="AnimFreezeManager.h" />
+    <ClInclude Include="AnimPivotLevel.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="GameInstance.h" />
@@ -265,7 +266,6 @@
     <ClInclude Include="NextImageButton.h" />
     <ClInclude Include="ImageMoveButton.h" />
     <ClInclude Include="KOFPlayer.h" />
-    <ClInclude Include="PlayerDummy.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="ReadButton.h" />

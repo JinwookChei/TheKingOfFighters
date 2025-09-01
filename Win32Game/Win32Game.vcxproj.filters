@@ -79,6 +79,9 @@
     <Filter Include="Contents\KOF\Actor\PLayer\Chang">
       <UniqueIdentifier>{11d88dea-297e-4294-abbf-00c3e9480f9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents\Demo">
+      <UniqueIdentifier>{8a655bd3-028a-4347-a99a-6e2196d31b7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -88,9 +91,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp">
-      <Filter>Contents\TestLevel</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDummy.cpp">
       <Filter>Contents\TestLevel</Filter>
     </ClCompile>
     <ClCompile Include="BattleComponent.cpp">
@@ -258,6 +258,9 @@
     <ClCompile Include="Chang.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Chang</Filter>
     </ClCompile>
+    <ClCompile Include="AnimPivotLevel.cpp">
+      <Filter>Contents\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -267,9 +270,6 @@
       <Filter>CommonCode</Filter>
     </ClInclude>
     <ClInclude Include="TestLevel.h">
-      <Filter>Contents\TestLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDummy.h">
       <Filter>Contents\TestLevel</Filter>
     </ClInclude>
     <ClInclude Include="BattleComponent.h">
@@ -442,6 +442,9 @@
     </ClInclude>
     <ClInclude Include="Chang.h">
       <Filter>Contents\KOF\Actor\PLayer\Chang</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimPivotLevel.h">
+      <Filter>Contents\Demo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

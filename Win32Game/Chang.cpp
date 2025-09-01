@@ -14,7 +14,6 @@
 
 #define ANIMINTERVAL 35
 
-
 Chang::Chang() {
 }
 
@@ -36,7 +35,7 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   SetCharacterScale(pImage->GetScale(8) * pRender_->GetLocalScale());
 
   // COMMON ANIM
-  CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_ChangImage, 0, 7, ANIMINTERVAL, false, 7);
+  CallCreateAnimation(PLAYER_ANIMTYPE_StartPos, IMGTYPE_ChangImage, 0, 13, ANIMINTERVAL, true, 8);
   CallCreateAnimation(PLAYER_ANIMTYPE_Idle, IMGTYPE_ChangImage, 8, 13, ANIMINTERVAL, true, 8);
   CallCreateAnimation(PLAYER_ANIMTYPE_SeatDown, IMGTYPE_ChangImage, 14, 15, ANIMINTERVAL, false, 14);
   CallCreateAnimation(PLAYER_ANIMTYPE_Seat, IMGTYPE_ChangImage, 16, 20, ANIMINTERVAL, true, 16);
@@ -87,11 +86,20 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   CallCreateAnimation(PLAYER_ANIMTYPE_KOKnockBackLand, IMGTYPE_ChangImage, {354}, ANIMINTERVAL, true, 354);
   CallCreateAnimation(CHANG_ANIMTYPE_HikiNige, IMGTYPE_ChangImage, 112, 122, ANIMINTERVAL, false, 112);
   CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuGeki, IMGTYPE_ChangImage, 202, 210, ANIMINTERVAL, false, 202);
-  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuDaiKaiten, IMGTYPE_ChangImage, {137, 138 ,139, 140, 141, 142, 143, 140, 141, 142, 143,140, 141, 142, 143, 144}, ANIMINTERVAL, false, 137);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuDaiKaiten, IMGTYPE_ChangImage, {137, 138, 139, 140, 141, 142, 143, 140, 141, 142, 143, 140, 141, 142, 143, 144}, ANIMINTERVAL, false, 137);
   CallCreateAnimation(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, IMGTYPE_ChangImage, {123, 124, 125, 126, 127, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136}, ANIMINTERVAL, false, 123);
-  
-  
-
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_0, IMGTYPE_ChangImage, {0, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 6, 7}, 60, false, 0);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_1, IMGTYPE_ChangImage, 23, 32, ANIMINTERVAL, true, 23);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_2, IMGTYPE_ChangImage, 99, 104, ANIMINTERVAL, false, 99);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_3, IMGTYPE_ChangImage, 99, 104, ANIMINTERVAL, false, 99);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_4, IMGTYPE_ChangImage, 106, 111, ANIMINTERVAL, false, 106);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_5, IMGTYPE_ChangImage, 62, 66, ANIMINTERVAL, false, 62);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_6, IMGTYPE_ChangImage, 67, 69, ANIMINTERVAL, false, 67);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_7, IMGTYPE_ChangImage, 67, 69, ANIMINTERVAL, false, 67);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_8, IMGTYPE_ChangImage, 99, 104, ANIMINTERVAL, false, 99);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_9, IMGTYPE_ChangImage, 82, 89, ANIMINTERVAL, false, 82);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_10, IMGTYPE_ChangImage, {139, 140, 141, 142, 143, 140, 141, 142, 143, 144}, ANIMINTERVAL, false, 139);
+  CallCreateAnimation(CHANG_ANIMTYPE_TekkyuDaiBousou_11, IMGTYPE_ChangImage, 264, 279, ANIMINTERVAL, false, 264);
 
   // COMMON ANIM STATE MACHING
   pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_JumpDown);
@@ -142,8 +150,8 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
 
   // CHNAG ANIM STATE MACHING
   pAnimationStateMachine_->RegistAnimTransition(CHANG_ANIMTYPE_TekkyuuGeki, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  //pAnimationStateMachine_->RegistAnimTransition(CHANG_ANIMTYPE_TekkyuuGeki, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  //CHANG_ANIMTYPE_TekkyuuFunsaiGeki
+  // pAnimationStateMachine_->RegistAnimTransition(CHANG_ANIMTYPE_TekkyuuGeki, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
+  // CHANG_ANIMTYPE_TekkyuuFunsaiGeki
 
   // SOUND
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_JumpUp, SOUNDTYPE_COMMON_Jump01);
@@ -171,10 +179,11 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_Seat, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_Hit_JumpUp, SOUNDTYPE_None);
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_NeckGrabbed, SOUNDTYPE_COMMON_Hit01);
-  //CHANG_ANIMTYPE_HikiNige
-  //CHANG_ANIMTYPE_TekkyuuGeki
-  //CHANG_ANIMTYPE_TekkyuuDaiKaiten
-  //CHANG_ANIMTYPE_TekkyuuFunsaiGeki
+  // CHANG_ANIMTYPE_HikiNige
+  // CHANG_ANIMTYPE_TekkyuuGeki
+  // CHANG_ANIMTYPE_TekkyuuDaiKaiten
+  // CHANG_ANIMTYPE_TekkyuuFunsaiGeki
+  // CHANG_ANIMTYPE_TekkyuDaiBousou012345
 
   // STATE
   pStateComponent_->RegistState(PLAYER_ANIMTYPE_StartPos, {PS_None});
@@ -230,9 +239,19 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuuGeki, {PS_Jump, PS_Attack});
   pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuuDaiKaiten, {PS_Attack});
   pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, {PS_Attack});
-  
-  
-  
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_0, {PS_None});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_1, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_2, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_3, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_4, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_5, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_6, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_7, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_8, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_9, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_10, {PS_Attack});
+  pStateComponent_->RegistState(CHANG_ANIMTYPE_TekkyuDaiBousou_11, {PS_Attack});
+
   // RESTRICTION
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_StartPos, {PR_LockInput, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(PLAYER_ANIMTYPE_Idle, {});
@@ -288,6 +307,18 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   // TODO
   pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuuDaiKaiten, {PR_LockSkill, PR_LockExecuteCommand});
   pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, {PR_LockSkill, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_0, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_1, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_2, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_3, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_4, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_5, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_6, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_7, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_8, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_9, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_10, {PR_LockInput, PR_LockExecuteCommand});
+  pRestrictionComponent_->RegistAnimStateRestrict(CHANG_ANIMTYPE_TekkyuDaiBousou_11, {PR_LockInput, PR_LockExecuteCommand});
 
   // ATTACK INFO
   pAttackTable_->RegistAttackInfo(PLAYER_ANIMTYPE_HeavyKick_CloseRange, ATTYPE_NormalAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 100);
@@ -310,8 +341,18 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuuGeki, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {1.5f, 0.0f}, 64);
   pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuuDaiKaiten, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {2.0f, -3.0f}, 64);
   pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuuFunsaiGeki, ATTYPE_StrongAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {2.0f, -3.0f}, 64);
-  
-  
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_1, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_2, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_3, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_4, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_5, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_6, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_7, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_8, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_9, ATTYPE_HighAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_10, ATTYPE_LowAttack, ELMTTYPE_Normal, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+  pAttackTable_->RegistAttackInfo(CHANG_ANIMTYPE_TekkyuDaiBousou_11, ATTYPE_StrongAttack, ELMTTYPE_BlueFlame, EFTYPE_Hit_2, false, 10.0f, {0.0f, 0.0f}, 64);
+
   // SKILL
   // SKILL 0
   SkillFrameActionConditionData SK0_ST0_FR0_AC0_Cond0;
@@ -347,7 +388,6 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   Skill_1.skillStates_.push_back(SK1_State0);
   pSkillComponent_->RegistSkill(Skill_1);
 
-
   // SKILL 2
   SkillState SK2_State0;
   SK2_State0.animState_ = CHANG_ANIMTYPE_TekkyuuDaiKaiten;
@@ -358,7 +398,6 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   Skill_2.castAction_ = SKILL_CAST_ACTION_None;
   Skill_2.skillStates_.push_back(SK2_State0);
   pSkillComponent_->RegistSkill(Skill_2);
-
 
   // SKILL 3
   SkillState SK3_State0;
@@ -371,7 +410,6 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   Skill_3.skillStates_.push_back(SK3_State0);
   pSkillComponent_->RegistSkill(Skill_3);
 
- 
   // SKILL 4
   SkillFrameActionData SK4_ST0_FR0_AC0_Data0;
   SkillFrameActionConditionData SK4_ST0_FR0_AC0_Cond0;
@@ -381,141 +419,215 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   Skill skill_4;
 
   // SKILL 5
-  SkillFrameActionData SK5_ST0_FR0_AC0_Data0;
+
   SkillFrameActionConditionData SK5_ST0_FR0_AC0_Cond0;
+  SK5_ST0_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST0_FR0_AC0_Data0;
+  SK5_ST0_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST0_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST0_FR0_Action0;
-  SkillFrameActionData SK5_ST0_FR0_AC1_Data0;
-  SkillFrameActionConditionData SK5_ST0_FR0_AC1_Cond0;
-  SkillFrameAction SK5_ST0_FR0_Action1;
-  SkillFrameActionData SK5_ST0_FR0_AC2_Data0;
-
-  SkillFrameActionConditionData SK5_ST0_FR0_AC2_Cond0;
-  SkillFrameAction SK5_ST0_FR0_Action2;
-  SkillFrameActionData SK5_ST0_FR0_AC3_Data0;
-  SkillFrameActionConditionData SK5_ST0_FR0_AC3_Cond0;
-  SkillFrameAction SK5_ST0_FR0_Action3;
+  SK5_ST0_FR0_Action0.conditionDatas_.push_back(SK5_ST0_FR0_AC0_Cond0);
+  SK5_ST0_FR0_Action0.actionDatas_.push_back(SK5_ST0_FR0_AC0_Data0);
   SkillFrame SK5_ST0_Frame0;
-  SkillFrameActionData SK5_ST0_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST0_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST0_FR1_Action0;
-  SkillFrame SK5_ST0_Frame1;
+  SK5_ST0_Frame0.actions_;
+  SK5_ST0_Frame0.startIndex_;
+  SK5_ST0_Frame0.startIndex_;
   SkillState SK5_State0;
+  SK5_State0.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_0;
+  SK5_State0.frames_.push_back(SK5_ST0_Frame0);
+
   SkillFrameActionConditionData SK5_ST1_FR0_AC0_Cond0;
+  SK5_ST1_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
   SkillFrameActionData SK5_ST1_FR0_AC0_Data0;
-  SkillFrameActionData SK5_ST1_FR0_AC0_Data1;
+  SK5_ST1_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST1_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST1_FR0_Action0;
+  SK5_ST1_FR0_Action0.conditionDatas_.push_back(SK5_ST1_FR0_AC0_Cond0);
+  SK5_ST1_FR0_Action0.actionDatas_.push_back(SK5_ST1_FR0_AC0_Data0);
   SkillFrame SK5_ST1_Frame0;
-  SkillFrameActionData SK5_ST1_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST1_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST1_FR1_Action0;
-  SkillFrame SK5_ST1_Frame1;
-  SkillFrameActionConditionData SK5_ST1_FR2_AC0_Cond0;
-  SkillFrameActionData SK5_ST1_FR2_AC0_Data0;
-  SkillFrameActionData SK5_ST1_FR2_AC0_Data1;
-  SkillFrameAction SK5_ST1_FR2_Action0;
-  SkillFrameActionConditionData SK5_ST1_FR2_AC1_Cond0;
-  SkillFrameActionConditionData SK5_ST1_FR2_AC1_Cond1;
-  SkillFrameActionData SK5_ST1_FR2_AC1_Data0;
-  SkillFrameActionData SK5_ST1_FR2_AC1_Data1;
-  SkillFrameAction SK5_ST1_FR2_Action1;
-  SkillFrame SK5_ST1_Frame2;
+  SK5_ST1_Frame0.actions_;
+  SK5_ST1_Frame0.startIndex_;
+  SK5_ST1_Frame0.startIndex_;
   SkillState SK5_State1;
+  SK5_State1.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State1.frames_.push_back(SK5_ST1_Frame0);
 
-  SkillFrameActionData SK5_ST2_FR0_AC0_Data0;
   SkillFrameActionConditionData SK5_ST2_FR0_AC0_Cond0;
+  SK5_ST2_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST2_FR0_AC0_Data0;
+  SK5_ST2_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST2_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST2_FR0_Action0;
+  SK5_ST2_FR0_Action0.conditionDatas_.push_back(SK5_ST2_FR0_AC0_Cond0);
+  SK5_ST2_FR0_Action0.actionDatas_.push_back(SK5_ST2_FR0_AC0_Data0);
   SkillFrame SK5_ST2_Frame0;
-  SkillFrameActionData SK5_ST2_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST2_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST2_FR1_Action0;
-  SkillFrame SK5_ST2_Frame1;
+  SK5_ST2_Frame0.actions_;
+  SK5_ST2_Frame0.startIndex_;
+  SK5_ST2_Frame0.startIndex_;
   SkillState SK5_State2;
-  SkillFrameActionData SK5_ST3_FR0_AC0_Data0;
+  SK5_State2.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State2.frames_.push_back(SK5_ST2_Frame0);
+
   SkillFrameActionConditionData SK5_ST3_FR0_AC0_Cond0;
+  SK5_ST3_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST3_FR0_AC0_Data0;
+  SK5_ST3_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST3_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST3_FR0_Action0;
+  SK5_ST3_FR0_Action0.conditionDatas_.push_back(SK5_ST3_FR0_AC0_Cond0);
+  SK5_ST3_FR0_Action0.actionDatas_.push_back(SK5_ST3_FR0_AC0_Data0);
   SkillFrame SK5_ST3_Frame0;
-  SkillFrameActionData SK5_ST3_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST3_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST3_FR1_Action0;
-  SkillFrame SK5_ST3_Frame1;
+  SK5_ST3_Frame0.actions_;
+  SK5_ST3_Frame0.startIndex_;
+  SK5_ST3_Frame0.startIndex_;
   SkillState SK5_State3;
+  SK5_State3.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State3.frames_.push_back(SK5_ST3_Frame0);
 
-  SkillFrameActionData SK5_ST4_FR0_AC0_Data0;
   SkillFrameActionConditionData SK5_ST4_FR0_AC0_Cond0;
+  SK5_ST4_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST4_FR0_AC0_Data0;
+  SK5_ST4_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST4_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST4_FR0_Action0;
+  SK5_ST4_FR0_Action0.conditionDatas_.push_back(SK5_ST4_FR0_AC0_Cond0);
+  SK5_ST4_FR0_Action0.actionDatas_.push_back(SK5_ST4_FR0_AC0_Data0);
   SkillFrame SK5_ST4_Frame0;
-  SkillFrameActionData SK5_ST4_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST4_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST4_FR1_Action0;
-  SkillFrame SK5_ST4_Frame1;
+  SK5_ST4_Frame0.actions_;
+  SK5_ST4_Frame0.startIndex_;
+  SK5_ST4_Frame0.startIndex_;
   SkillState SK5_State4;
+  SK5_State4.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State4.frames_.push_back(SK5_ST4_Frame0);
 
-  SkillFrameActionData SK5_ST5_FR0_AC0_Data0;
   SkillFrameActionConditionData SK5_ST5_FR0_AC0_Cond0;
+  SK5_ST5_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST5_FR0_AC0_Data0;
+  SK5_ST5_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST5_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST5_FR0_Action0;
+  SK5_ST5_FR0_Action0.conditionDatas_.push_back(SK5_ST5_FR0_AC0_Cond0);
+  SK5_ST5_FR0_Action0.actionDatas_.push_back(SK5_ST5_FR0_AC0_Data0);
   SkillFrame SK5_ST5_Frame0;
-  SkillFrameActionData SK5_ST5_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST5_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST5_FR1_Action0;
-  SkillFrame SK5_ST5_Frame1;
+  SK5_ST5_Frame0.actions_;
+  SK5_ST5_Frame0.startIndex_;
+  SK5_ST5_Frame0.startIndex_;
   SkillState SK5_State5;
+  SK5_State5.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State5.frames_.push_back(SK5_ST5_Frame0);
 
-  SkillFrameActionData SK5_ST6_FR0_AC0_Data0;
   SkillFrameActionConditionData SK5_ST6_FR0_AC0_Cond0;
+  SK5_ST6_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST6_FR0_AC0_Data0;
+  SK5_ST6_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST6_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST6_FR0_Action0;
+  SK5_ST6_FR0_Action0.conditionDatas_.push_back(SK5_ST6_FR0_AC0_Cond0);
+  SK5_ST6_FR0_Action0.actionDatas_.push_back(SK5_ST6_FR0_AC0_Data0);
   SkillFrame SK5_ST6_Frame0;
-  SkillFrameActionData SK5_ST6_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST6_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST6_FR1_Action0;
-  SkillFrame SK5_ST6_Frame1;
+  SK5_ST6_Frame0.actions_;
+  SK5_ST6_Frame0.startIndex_;
+  SK5_ST6_Frame0.startIndex_;
   SkillState SK5_State6;
+  SK5_State6.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State6.frames_.push_back(SK5_ST6_Frame0);
 
-  SkillFrameActionData SK5_ST7_FR0_AC0_Data0;
   SkillFrameActionConditionData SK5_ST7_FR0_AC0_Cond0;
+  SK5_ST7_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST7_FR0_AC0_Data0;
+  SK5_ST7_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST7_FR0_AC0_Data0.actionParams_.ChangeSkillState;
   SkillFrameAction SK5_ST7_FR0_Action0;
+  SK5_ST7_FR0_Action0.conditionDatas_.push_back(SK5_ST7_FR0_AC0_Cond0);
+  SK5_ST7_FR0_Action0.actionDatas_.push_back(SK5_ST7_FR0_AC0_Data0);
   SkillFrame SK5_ST7_Frame0;
-  SkillFrameActionData SK5_ST7_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST7_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST7_FR1_Action0;
-  SkillFrame SK5_ST7_Frame1;
+  SK5_ST7_Frame0.actions_;
+  SK5_ST7_Frame0.startIndex_;
+  SK5_ST7_Frame0.startIndex_;
   SkillState SK5_State7;
-  SkillFrameActionConditionData SK5_ST8_FR0_AC0_Cond0;
-  SkillFrameActionData SK5_ST8_FR0_AC0_Data0;
-  SkillFrameActionData SK5_ST8_FR0_AC0_Data1;
-  SkillFrameAction SK5_ST8_FR0_Action0;
-  SkillFrame SK5_ST8_Frame0;
-  SkillFrameActionData SK5_ST8_FR1_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST8_FR1_AC0_Cond0;
-  SkillFrameAction SK5_ST8_FR1_Action0;
-  SkillFrame SK5_ST8_Frame1;
-  SkillState SK5_State8;
-  SkillFrameActionData SK5_ST9_FR0_AC0_Data0;
-  SkillFrameActionConditionData SK5_ST9_FR0_AC0_Cond0;
-  SkillFrameAction SK5_ST9_FR0_Action0;
-  SkillFrame SK5_ST9_Frame0;
-  SkillFrameActionConditionData SK5_ST9_FR1_AC0_Cond0;
-  SkillFrameActionData SK5_ST9_FR1_AC0_Data0;
-  SkillFrameActionData SK5_ST9_FR1_AC0_Data1;
-  SkillFrameActionData SK5_ST9_FR1_AC0_Data2;
-  SkillFrameAction SK5_ST9_FR1_Action0;
-  SkillFrame SK5_ST9_Frame1;
+  SK5_State7.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State7.frames_.push_back(SK5_ST7_Frame0);
 
-  SkillFrameActionConditionData SK5_ST9_FR2_AC0_Cond0;
-  SkillFrameActionData SK5_ST9_FR2_AC0_Data0;
-  SkillFrameActionData SK5_ST9_FR2_AC0_Data1;
-  SkillFrameAction SK5_ST9_FR2_Action0;
-  SkillFrameActionConditionData SK5_ST9_FR2_AC1_Cond0;
-  SkillFrameActionConditionData SK5_ST9_FR2_AC1_Cond1;
-  SkillFrameActionData SK5_ST9_FR2_AC1_Data0;
-  SkillFrameActionData SK5_ST9_FR2_AC1_Data1;
-  SkillFrameAction SK5_ST9_FR2_Action1;
-  SkillFrame SK5_ST9_Frame2;
-  SkillFrameActionConditionData SK5_ST9_FR3_AC0_Cond0;
-  SkillFrameActionData SK5_ST9_FR3_AC0_Data0;
-  SkillFrameAction SK5_ST9_FR3_Action0;
-  SkillFrame SK5_ST9_Frame3;
+  SkillFrameActionConditionData SK5_ST8_FR0_AC0_Cond0;
+  SK5_ST8_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST8_FR0_AC0_Data0;
+  SK5_ST8_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST8_FR0_AC0_Data0.actionParams_.ChangeSkillState;
+  SkillFrameAction SK5_ST8_FR0_Action0;
+  SK5_ST8_FR0_Action0.conditionDatas_.push_back(SK5_ST8_FR0_AC0_Cond0);
+  SK5_ST8_FR0_Action0.actionDatas_.push_back(SK5_ST8_FR0_AC0_Data0);
+  SkillFrame SK5_ST8_Frame0;
+  SK5_ST8_Frame0.actions_;
+  SK5_ST8_Frame0.startIndex_;
+  SK5_ST8_Frame0.startIndex_;
+  SkillState SK5_State8;
+  SK5_State8.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State8.frames_.push_back(SK5_ST8_Frame0);
+
+  SkillFrameActionConditionData SK5_ST9_FR0_AC0_Cond0;
+  SK5_ST9_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST9_FR0_AC0_Data0;
+  SK5_ST9_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST9_FR0_AC0_Data0.actionParams_.ChangeSkillState;
+  SkillFrameAction SK5_ST9_FR0_Action0;
+  SK5_ST9_FR0_Action0.conditionDatas_.push_back(SK5_ST9_FR0_AC0_Cond0);
+  SK5_ST9_FR0_Action0.actionDatas_.push_back(SK5_ST9_FR0_AC0_Data0);
+  SkillFrame SK5_ST9_Frame0;
+  SK5_ST9_Frame0.actions_;
+  SK5_ST9_Frame0.startIndex_;
+  SK5_ST9_Frame0.startIndex_;
   SkillState SK5_State9;
+  SK5_State9.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State9.frames_.push_back(SK5_ST9_Frame0);
+
+  SkillFrameActionConditionData SK5_ST10_FR0_AC0_Cond0;
+  SK5_ST10_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST10_FR0_AC0_Data0;
+  SK5_ST10_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST10_FR0_AC0_Data0.actionParams_.ChangeSkillState;
+  SkillFrameAction SK5_ST10_FR0_Action0;
+  SK5_ST10_FR0_Action0.conditionDatas_.push_back(SK5_ST10_FR0_AC0_Cond0);
+  SK5_ST10_FR0_Action0.actionDatas_.push_back(SK5_ST10_FR0_AC0_Data0);
+  SkillFrame SK5_ST10_Frame0;
+  SK5_ST10_Frame0.actions_;
+  SK5_ST10_Frame0.startIndex_;
+  SK5_ST10_Frame0.startIndex_;
+  SkillState SK5_State10;
+  SK5_State10.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State10.frames_.push_back(SK5_ST10_Frame0);
+
+  SkillFrameActionConditionData SK5_ST11_FR0_AC0_Cond0;
+  SK5_ST11_FR0_AC0_Cond0.conditionType_ = SKILL_FRAME_ACTION_COND_None;
+  SkillFrameActionData SK5_ST11_FR0_AC0_Data0;
+  SK5_ST11_FR0_AC0_Data0.actionType_ = SKILL_FRAME_ACTION_ChangeSkillState;
+  SK5_ST11_FR0_AC0_Data0.actionParams_.ChangeSkillState;
+  SkillFrameAction SK5_ST11_FR0_Action0;
+  SK5_ST11_FR0_Action0.conditionDatas_.push_back(SK5_ST11_FR0_AC0_Cond0);
+  SK5_ST11_FR0_Action0.actionDatas_.push_back(SK5_ST11_FR0_AC0_Data0);
+  SkillFrame SK5_ST11_Frame0;
+  SK5_ST11_Frame0.actions_;
+  SK5_ST11_Frame0.startIndex_;
+  SK5_ST11_Frame0.startIndex_;
+  SkillState SK5_State11;
+  SK5_State11.animState_ = CHANG_ANIMTYPE_TekkyuDaiBousou_11;
+  SK5_State11.frames_.push_back(SK5_ST11_Frame0);
+
   Skill Skill_5;
+  Skill_5.skillTag_ = SKILL_5;
+  Skill_5.castCondition_ = SKILL_CAST_COND_HasSkillPoint;
+  Skill_5.castAction_ = SKILL_CAST_ACTION_ReduceSkillPoint;
+  Skill_5.skillStates_.push_back(SK5_State0);
+  Skill_5.skillStates_.push_back(SK5_State1);
+  Skill_5.skillStates_.push_back(SK5_State2);
+  Skill_5.skillStates_.push_back(SK5_State3);
+  Skill_5.skillStates_.push_back(SK5_State4);
+  Skill_5.skillStates_.push_back(SK5_State5);
+  Skill_5.skillStates_.push_back(SK5_State6);
+  Skill_5.skillStates_.push_back(SK5_State7);
+  Skill_5.skillStates_.push_back(SK5_State8);
+  Skill_5.skillStates_.push_back(SK5_State9);
+  Skill_5.skillStates_.push_back(SK5_State10);
+  Skill_5.skillStates_.push_back(SK5_State11);
 
   SkillFrameActionConditionData SK6_ST0_FR0_AC0_Cond0;
   SkillFrameActionData SK6_ST0_FR0_AC0_Data0;
@@ -559,7 +671,6 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   SkillState SK6_State2;
   Skill Skill_6;
 
-
   // COMMAND
   CommandAction CM0_Action0;
   CM0_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
@@ -580,7 +691,6 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   command1.actions_.push_back(CM1_Action0);
   pCommandComponent_->RegistCommand({CK_Right, CK_Right}, command1);
 
-
   CommandAction CM3_Action0;
   CM3_Action0.action_ = COMMAND_ACTION_UpdateAnimState;
   CM3_Action0.params_.UpdateAnimState.animStateTag_ = CHANG_ANIMTYPE_TekkyuuDaiKaiten;
@@ -589,15 +699,14 @@ void Chang::Initialize(bool isPlayer1, const Vector& position, bool useCameraPos
   command3.actions_.push_back(CM3_Action0);
   pCommandComponent_->RegistCommand({CK_A, CK_A, CK_A, CK_A}, command3);
   pCommandComponent_->RegistCommand({CK_C, CK_C, CK_C, CK_C}, command3);
-
 }
 
 void Chang::CompareInputBitset() {
   if (pStateComponent_->EqualPlayerState({PS_Jump})) {
-      // RIGHT - Press | C - Down 
-    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) && 
+    // RIGHT - Press | C - Down
+    if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
         true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C})) {
-        pSkillComponent_->ExecuteSkill(SKILL_1);
+      pSkillComponent_->ExecuteSkill(SKILL_1);
       return;
     }
 
@@ -689,11 +798,11 @@ void Chang::CompareInputBitset() {
     }
 
     if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Left})) {
-        // TODO -> inputController
-        // TODO Charge Press
+      // TODO -> inputController
+      // TODO Charge Press
       if (InputManager::Instance()->PressTime(KEY_Left) > 160) {
-        if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) && 
-            true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}) || 
+        if (true == pInputController_->IsContainInputBitSet(KEY_STATE_Press, {KEY_Right}) &&
+                true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_A}) ||
             true == pInputController_->IsEqualInputBitSet(KEY_STATE_Down, {KEY_C})) {
           pSkillComponent_->ExecuteSkill(SKILL_3);
         }

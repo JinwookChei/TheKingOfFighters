@@ -37,16 +37,16 @@ ToolLevel::ToolLevel()
 
   // VIEWPORT
   //!!!!!!!!!!!! 주의!!!!!!!!! - IORI
-  /*IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
+  IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Box.png", 1);
   ioriImage->CalculateTransformFromDrawBoxImage(Color8Bit{169, 139, 150, 0}, Color8Bit::Magenta);
   const std::string& readFilePath("..\\ContentsResource\\CSV\\Iori.csv");
-  const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");*/
+  const std::string& writeFilePath("..\\ContentsResource\\CSV\\Iori_new.csv");
 
   //!!!!!!!!!!!! 주의!!!!!!!!! - CHANG
-   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Box.png", 1);
-   changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
-   const std::string& readFilePath("..\\ContentsResource\\CSV\\Chang.csv");
-   const std::string& writeFilePath("..\\ContentsResource\\CSV\\Chang_new.csv");
+   //IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Box.png", 1);
+   //changImage->CalculateTransformFromDrawBoxImage(Color8Bit{17, 91, 124, 0}, Color8Bit::Magenta);
+   //const std::string& readFilePath("..\\ContentsResource\\CSV\\Chang.csv");
+   //const std::string& writeFilePath("..\\ContentsResource\\CSV\\Chang_new.csv");
 
   //!!!!!!!!!!!! 주의!!!!!!!!! - IMAGES
   // IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\PlayerLabel_Box.png", 1);
