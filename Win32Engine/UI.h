@@ -7,33 +7,33 @@ class UI final
   friend class Mouse;
 
  public:
-  JO_API UI();
+  ENGINE_API UI();
 
-  JO_API ~UI();
+  ENGINE_API ~UI();
 
-  JO_API void BeginPlay() override;
+  ENGINE_API void BeginPlay() override;
 
-  JO_API void Tick(unsigned long long curTick) override;
+  ENGINE_API void Tick(unsigned long long curTick) override;
 
-  JO_API void SetScale(const Vector& scale);
+  ENGINE_API void SetScale(const Vector& scale);
 
-  JO_API const Vector& GetScale() const;
+  ENGINE_API const Vector& GetScale() const;
 
-  JO_API void SetOriginColor(const Color8Bit& color);
+  ENGINE_API void SetOriginColor(const Color8Bit& color);
 
-  JO_API void ClearColor(const Color8Bit& color) const;
+  ENGINE_API void ClearColor(const Color8Bit& color) const;
 
-  JO_API void MakeCollision();
+  ENGINE_API void MakeCollision();
 
-  JO_API void SetUseMousePosition(bool isOn);
+  ENGINE_API void SetUseMousePosition(bool isOn);
 
-  JO_API void ChangeClearColor_(bool isOn);
+  ENGINE_API void ChangeClearColor_(bool isOn);
 
-  JO_API const Color8Bit& GetCurrentColor() const;
+  ENGINE_API const Color8Bit& GetCurrentColor() const;
 
-  JO_API ImageRenderer* GetImageRenderer() const;
+  ENGINE_API ImageRenderer* GetImageRenderer() const;
 
-  JO_API CollisionComponent* GetCollisionComponent() const;
+  ENGINE_API CollisionComponent* GetCollisionComponent() const;
 
   template <typename ComponentType>
   ComponentType* CreateUIComponent() {
@@ -42,15 +42,15 @@ class UI final
     return newComponent;
   }
 
-  JO_API bool Save(std::string_view filePath);
+  ENGINE_API bool Save(std::string_view filePath);
 
-  JO_API bool IsClick() const;
+  ENGINE_API bool IsClick() const;
 
  protected:
-  JO_API void Render(IRenderTexture* renderTexture) const override;
+  ENGINE_API void Render(IRenderTexture* renderTexture) const override;
 
  private:
-  JO_API void CreateUIComponentInternal(class UIComponent* newComponent);
+  ENGINE_API void CreateUIComponentInternal(class UIComponent* newComponent);
 
   void OnClickUpEvent();
 

@@ -2,17 +2,17 @@
 
 class ImgManager final {
  public:
-  JO_API ImgManager();
+  ENGINE_API ImgManager();
 
-  JO_API  ~ImgManager();
+  ENGINE_API  ~ImgManager();
 
-  JO_API static ImgManager* GetIntance();
+  ENGINE_API static ImgManager* GetIntance();
 
-  JO_API bool Initialize();
+  ENGINE_API bool Initialize();
 
-  JO_API IFileImage* LoadImg(std::string_view path, unsigned long long key);
+  ENGINE_API IFileImage* LoadImg(std::string_view path, unsigned long long key);
 
-  JO_API IFileImage* GetImg(unsigned long long key);
+  ENGINE_API IFileImage* GetImg(unsigned long long key);
 
   //JO_API IFileImage* GetCopyImg(unsigned long long key);
 

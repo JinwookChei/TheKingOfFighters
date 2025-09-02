@@ -32,23 +32,23 @@ class InputManager final {
 
   ~InputManager();
 
-  JO_API static InputManager* Instance();
+  ENGINE_API static InputManager* Instance();
 
-  JO_API bool IsAnyKeyDown() const;
+  ENGINE_API bool IsAnyKeyDown() const;
 
-  JO_API bool IsAnyKeyPress() const;
+  ENGINE_API bool IsAnyKeyPress() const;
 
-  JO_API bool IsDown(int key);
+  ENGINE_API bool IsDown(int key);
 
-  JO_API bool IsPress(int key);
+  ENGINE_API bool IsPress(int key);
 
-  JO_API unsigned long long PressTime(int key);
+  ENGINE_API unsigned long long PressTime(int key);
 
-  JO_API bool IsUp(int key);
+  ENGINE_API bool IsUp(int key);
 
-  JO_API bool IsFree(int key);
+  ENGINE_API bool IsFree(int key);
 
-  JO_API unsigned long long UpTime(int key);
+  ENGINE_API unsigned long long UpTime(int key);
 
  private:
   bool Initialize();

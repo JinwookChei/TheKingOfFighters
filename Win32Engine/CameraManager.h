@@ -9,15 +9,15 @@ class CameraManager final {
 
   ~CameraManager();
 
-  JO_API static CameraManager* Instance();
+  ENGINE_API static CameraManager* Instance();
 
-  JO_API void SetLookAt(const Vector& newLookAt);
+  ENGINE_API void SetLookAt(const Vector& newLookAt);
 
   const Vector& GetLookAt() const;
 
-  JO_API const Vector& GetCenter() const;
+  ENGINE_API const Vector& GetCenter() const;
 
-  JO_API void SetTarget(Actor* target);
+  ENGINE_API void SetTarget(Actor* target);
 
   Vector GetRenderPosition(const Vector& position) const;
 

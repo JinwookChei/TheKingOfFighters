@@ -19,7 +19,7 @@ GameInstance* GameInstance::Instance() {
 
 void GameInstance::LoadKOFImages() {
   // IMAGES
- /* IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
+  IImage* mouseImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\mousePointer.png", (IMGTYPE_MouseImage | IMGMOD_NONE));
   IFileImage* lobyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\KOF_logo.png", (IMGTYPE_LogoImage | IMGMOD_NONE));
   IFileImage* pressEnterImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Press_Enter.png", (IMGTYPE_PressEnter | IMGMOD_NONE));
   IFileImage* readyImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\READY_alpha.bmp", (IMGTYPE_Ready | IMGMOD_NONE));
@@ -30,44 +30,43 @@ void GameInstance::LoadKOFImages() {
   IFileImage* blackBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\BlackBoard.png", (IMGTYPE_BlackBoardImage | IMGMOD_NONE));
   IFileImage* whiteBoardImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\WhiteBoard.png", (IMGTYPE_WhiteBoardImage | IMGMOD_NONE));
   IFileImage* ioriImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_NONE));
-  ioriImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Iori.csv");
+  ioriImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\Iori.csv");
   IFileImage* ioriImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Alpha.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED));
-  ioriImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Iori.csv");
+  ioriImageFlipped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Iori.csv");
   IFileImage* ioriImage_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Alpha_BlueFlame.bmp", (IMGTYPE_IoriImage | IMGMOD_BLUEFLAME));
-  ioriImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Iori.csv");
+  ioriImage_BlueFlame->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\Iori.csv");
   IFileImage* ioriImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\IoriYagami_Alpha_BlueFlame.bmp", (IMGTYPE_IoriImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
-  ioriImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Iori.csv");
+  ioriImageFlipped_BlueFlame->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Iori.csv");
   IFileImage* changImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_NONE));
-  changImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Chang.csv");
+  changImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\Chang.csv");
   IFileImage* changImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Alpha.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED));
-  changImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Chang.csv");
+  changImageFlipped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Chang.csv");
   IFileImage* changImage_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Alpha_BlueFlame.bmp", (IMGTYPE_ChangImage | IMGMOD_BLUEFLAME));
-  changImage_BlueFlame->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Chang.csv");
+  changImage_BlueFlame->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\Chang.csv");
   IFileImage* changImageFlipped_BlueFlame = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\Chang_Koehan_Alpha_BlueFlame.bmp", (IMGTYPE_ChangImage | IMGMOD_FLIPPED | IMGMOD_BLUEFLAME));
-  changImageFlipped_BlueFlame->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Chang.csv");
+  changImageFlipped_BlueFlame->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Chang.csv");
   IFileImage* healthHUDImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HUD_Health.png", (IMGTYPE_HealthHUD | IMGMOD_NONE));
-  healthHUDImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\HUD_Health.csv");
+  healthHUDImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\HUD_Health.csv");
   IFileImage* healthHUDImageFlippped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HUD_Health.png", (IMGTYPE_HealthHUD | IMGMOD_FLIPPED));
-  healthHUDImageFlippped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\HUD_Health.csv");
+  healthHUDImageFlippped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\HUD_Health.csv");
   IFileImage* skillPointImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\SkillPoint.png", (IMGTYPE_SkillPoint | IMGMOD_NONE));
-  skillPointImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\SkillPoint.csv");
+  skillPointImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\SkillPoint.csv");
   IFileImage* hitEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HitEffect01.png", (IMGTYPE_HitEffectImage | IMGMOD_NONE));
-  hitEffectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\HitEffect01.csv");
+  hitEffectImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\HitEffect01.csv");
   IFileImage* hitEffectImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\HitEffect01.png", (IMGTYPE_HitEffectImage | IMGMOD_FLIPPED));
-  hitEffectImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\HitEffect01.csv");
+  hitEffectImageFlipped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\HitEffect01.csv");
   IFileImage* guardEffectImage01 = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GuardEffect01.png", (IMGTYPE_GuardEffectImage01 | IMGMOD_NONE));
-  guardEffectImage01->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\GuardEffect01.csv");
+  guardEffectImage01->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\GuardEffect01.csv");
   IFileImage* guardEffectImage01Flipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\GuardEffect01.png", (IMGTYPE_GuardEffectImage01 | IMGMOD_FLIPPED));
-  guardEffectImage01Flipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\GuardEffect01.csv");
+  guardEffectImage01Flipped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\GuardEffect01.csv");
   IFileImage* castingEffectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\CastingEffectImage_Box.png", (IMGTYPE_CastingEffectImage | IMGMOD_NONE));
-  castingEffectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\CastingEffect.csv");
+  castingEffectImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\CastingEffect.csv");
   IFileImage* castingEffectImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\CastingEffectImage_Box.png", (IMGTYPE_CastingEffectImage | IMGMOD_FLIPPED));
-  castingEffectImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\CastingEffect.csv");
+  castingEffectImageFlipped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\CastingEffect.csv");
   IFileImage* playerLayerImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\PlayerLabel_Box.png", (IMGTYPE_PlayerLabel | IMGMOD_NONE));
-  playerLayerImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\PlayerLabel.csv");
+  playerLayerImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\PlayerLabel.csv");
   IFileImage* effectImage = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\EffectImage_Box.png", (IMGTYPE_Effect | IMGMOD_NONE));
-  effectImage->CalculateTransformFromCSV("..\\ContentsResource\\CSV\\Effect.csv");
+  effectImage->ApplyImageInfoFromCSV("..\\ContentsResource\\CSV\\Effect.csv");
   IFileImage* effectImageFlipped = ImgManager::GetIntance()->LoadImg("..\\ContentsResource\\KOFImages\\EffectImage_Box.png", (IMGTYPE_Effect | IMGMOD_FLIPPED));
-  effectImageFlipped->CalculateTransformFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Effect.csv");*/
-
+  effectImageFlipped->ApplyImageInfoFromCSV_Flip_Async("..\\ContentsResource\\CSV\\Effect.csv");
 }

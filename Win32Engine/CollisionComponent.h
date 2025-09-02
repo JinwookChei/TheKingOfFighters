@@ -34,25 +34,25 @@ class CollisionComponent final
   friend class Level;
 
  public:
-  JO_API CollisionComponent();
+  ENGINE_API CollisionComponent();
 
-  JO_API ~CollisionComponent();
+  ENGINE_API ~CollisionComponent();
 
-  JO_API bool Collision(const CollisionCheckParameter& parameter, CollisionComponent** targetCollision = nullptr);
+  ENGINE_API bool Collision(const CollisionCheckParameter& parameter, CollisionComponent** targetCollision = nullptr);
 
-  JO_API void ChangeCollisionGroup(unsigned int group);
+  ENGINE_API void ChangeCollisionGroup(unsigned int group);
 
-  JO_API int GetCollisionGroup() const;
+  ENGINE_API int GetCollisionGroup() const;
 
-  JO_API CollisionInfo GetCollisionInfo() const;
+  ENGINE_API CollisionInfo GetCollisionInfo() const;
 
   static bool CollisionPointToRect(const CollisionInfo& left, const CollisionInfo& right);
 
-  JO_API bool HasHit();
+  ENGINE_API bool HasHit();
 
-  JO_API void MarkAsHit();
+  ENGINE_API void MarkAsHit();
 
-  JO_API void ResetHit();
+  ENGINE_API void ResetHit();
 
  protected:
 

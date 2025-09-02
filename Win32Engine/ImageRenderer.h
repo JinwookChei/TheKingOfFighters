@@ -34,37 +34,37 @@ class ImageRenderer
   friend class Actor;
 
  public:
-  JO_API ImageRenderer();
+  ENGINE_API ImageRenderer();
 
-  JO_API virtual ~ImageRenderer();
+  ENGINE_API virtual ~ImageRenderer();
 
-  JO_API void BeginPlay() override;
+  ENGINE_API void BeginPlay() override;
 
-  JO_API void Tick(unsigned long long curTick) override;
+  ENGINE_API void Tick(unsigned long long curTick) override;
 
-  JO_API void SetImage(IImage* image, unsigned int index = 0);
+  ENGINE_API void SetImage(IImage* image, unsigned int index = 0);
 
-  JO_API IImage* GetImage() const;
+  ENGINE_API IImage* GetImage() const;
 
-  JO_API unsigned int GetImageIndex() const;
+  ENGINE_API unsigned int GetImageIndex() const;
 
-  JO_API AnimationInfo* GetCurAnimationInfo() const;
+  ENGINE_API AnimationInfo* GetCurAnimationInfo() const;
 
-  JO_API void SetImageIndex(unsigned int imageIndex);
+  ENGINE_API void SetImageIndex(unsigned int imageIndex);
 
-  JO_API void SetAngle(float angle);
+  ENGINE_API void SetAngle(float angle);
 
-  JO_API float GetAngle() const;
+  ENGINE_API float GetAngle() const;
 
-  JO_API void SetAlpha(float alpha);
+  ENGINE_API void SetAlpha(float alpha);
 
-  JO_API Color8Bit GetTransparentColor() const;
+  ENGINE_API Color8Bit GetTransparentColor() const;
 
-  JO_API void SetTransparentColor(const Color8Bit& color);
+  ENGINE_API void SetTransparentColor(const Color8Bit& color);
 
-  JO_API ImageRenderType GetImageRenderType() const;
+  ENGINE_API ImageRenderType GetImageRenderType() const;
 
-  JO_API void SetImageRenderType(ImageRenderType newType);
+  ENGINE_API void SetImageRenderType(ImageRenderType newType);
 
   void Render(IRenderTexture* renderTexture);
 
@@ -72,7 +72,7 @@ class ImageRenderer
 
   LINK_ITEM* GetRenderActorLink();
 
-  JO_API bool CreateAnimation(
+  ENGINE_API bool CreateAnimation(
       unsigned long long animationTag,
       unsigned long long imageIndex,
       unsigned int startIndex,
@@ -81,7 +81,7 @@ class ImageRenderer
       bool loop,
       unsigned long long loopStartFrame);
 
-  JO_API bool CreateAnimation(
+  ENGINE_API bool CreateAnimation(
       unsigned long long animationTag,
       unsigned long long imageIndex,
       const std::vector<unsigned int>& indices,
@@ -89,7 +89,7 @@ class ImageRenderer
       bool loop,
       unsigned long long loopStartFrame);
 
-  JO_API bool CreateAnimation(
+  ENGINE_API bool CreateAnimation(
       unsigned long long animationTag,
       unsigned long long imageIndex,
       const std::vector<unsigned int>& indices,
@@ -97,11 +97,11 @@ class ImageRenderer
       bool loop,
       unsigned long long loopStartFrame);
 
-  JO_API bool ChangeAnimation(unsigned long long animationTag, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
+  ENGINE_API bool ChangeAnimation(unsigned long long animationTag, bool isForce = false, int startFrame = 0, unsigned long long time = 0.0f);
 
-  JO_API bool IsAnimationEnd() const;
+  ENGINE_API bool IsAnimationEnd() const;
 
-  JO_API bool HasIndexChange() const;
+  ENGINE_API bool HasIndexChange() const;
 
  protected:
   void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture) override;

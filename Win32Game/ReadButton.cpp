@@ -45,7 +45,7 @@ void ReadButton::ReadData() {
   int result = MessageBox(NULL, wss.str().c_str(), L"READ", MB_YESNO | MB_ICONQUESTION);
   if (result == IDYES) {
     IFileImage* pFileImage = (IFileImage*)pImage;
-    pFileImage->CalculateTransformFromCSV(filePath_);  
+    pFileImage->ApplyImageInfoFromCSV(filePath_);  
   } else if (result == IDNO) {
     return;
   }

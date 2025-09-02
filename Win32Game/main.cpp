@@ -67,7 +67,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     return -1;
   }
 
-  GEngineCore->ChangeLevel<ImageLoadTimeCheck>();
+  GEngineCore->ChangeLevel<KOFLevel>();
 
   GEngineCore->EngineLoop();
 

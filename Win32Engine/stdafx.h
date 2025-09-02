@@ -6,7 +6,7 @@
 #define new new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif  // _DEBUG
 
-#define JO_API __declspec(dllexport)
+#define ENGINE_API __declspec(dllexport)
 #define MATH_API __declspec(dllimport)
 
 #include <Windows.h>

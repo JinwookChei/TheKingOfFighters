@@ -69,6 +69,7 @@ static bool CollisionRectToPoint(const CollisionInfo& left, const CollisionInfo&
 static bool CollisionRectToCircle(const CollisionInfo& left, const CollisionInfo& right) {
   return CollisionCircleToRect(right, left);
 }
+
 static bool CollisionRectToRect(const CollisionInfo& left, const CollisionInfo& right) {
   if (left.Bottom() < right.Top()) {
     return false;

@@ -509,7 +509,7 @@ void __stdcall Win32Image::CalculateTransformFromDrawBoxImage_Flip(Color8Bit emp
   pInfo->isOwner_ = true;
 }
 
-void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath) {
+void __stdcall Win32Image::ApplyImageInfoFromCSV(const std::string& filePath) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
@@ -591,7 +591,7 @@ void __stdcall Win32Image::CalculateTransformFromCSV(const std::string& filePath
   pInfo->isOwner_ = true;
 }
 
-void __stdcall Win32Image::CalculateTransformFromCSV_Flip(const std::string& filePath) {
+void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip(const std::string& filePath) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
@@ -760,10 +760,10 @@ unsigned int GetPhysicalCoreCount() {
 }
 
 
-void __stdcall Win32Image::CalculateTransformFromCSV_Flip_Async(const std::string& filePath) {
-  if (imageLoadType_ != ImageLoadType::One) {
-    return;
-  }
+void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& filePath) {
+  //if (imageLoadType_ != ImageLoadType::One) {
+  //  return;
+  //}
 
   std::vector<std::vector<float>> csvInfo;
 

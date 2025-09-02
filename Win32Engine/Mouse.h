@@ -13,17 +13,17 @@ class Mouse
 
   void Tick(unsigned long long curTick) override;
 
-  JO_API void SetImage(IImage* image);
+  ENGINE_API void SetImage(IImage* image);
 
-  JO_API void SetAlpha(float alpha);
+  ENGINE_API void SetAlpha(float alpha);
 
-  JO_API void SetTransparentColor(const Color8Bit& color);
+  ENGINE_API void SetTransparentColor(const Color8Bit& color);
 
-  JO_API void SetRenderLocalScale(const Vector& scale);
+  ENGINE_API void SetRenderLocalScale(const Vector& scale);
 
-  JO_API void SetRenderPosition(const Vector& position);
+  ENGINE_API void SetRenderPosition(const Vector& position);
 
-  JO_API void ShowCursor(bool show);
+  ENGINE_API void ShowCursor(bool show);
 
  private:
   ImageRenderer* imageRener_;

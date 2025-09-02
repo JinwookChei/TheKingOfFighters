@@ -31,49 +31,49 @@ class Actor {
   friend class UI;
 
  public:
-  JO_API Actor();
+  ENGINE_API Actor();
 
-  JO_API virtual ~Actor() = 0;
+  ENGINE_API virtual ~Actor() = 0;
 
-  JO_API virtual void BeginPlay();
+  ENGINE_API virtual void BeginPlay();
 
-  JO_API virtual void Tick(unsigned long long curTick);  
+  ENGINE_API virtual void Tick(unsigned long long curTick);  
 
-  JO_API void SetPosition(const Vector& newPosition);
+  ENGINE_API void SetPosition(const Vector& newPosition);
 
-  JO_API const Vector& GetPosition() const;
+  ENGINE_API const Vector& GetPosition() const;
 
-  JO_API void SetDebugParameter(const ActorSetDebugParameter& parameter);
+  ENGINE_API void SetDebugParameter(const ActorSetDebugParameter& parameter);
 
-  JO_API void SetUseCameraposition(bool use);
+  ENGINE_API void SetUseCameraposition(bool use);
 
-  JO_API bool UseCameraposition() const;
+  ENGINE_API bool UseCameraposition() const;
 
-  JO_API void SetActive(bool isActive);
+  ENGINE_API void SetActive(bool isActive);
 
-  JO_API bool IsActive() const;
+  ENGINE_API bool IsActive() const;
 
-  JO_API void SetEnableTick(bool enable);
+  ENGINE_API void SetEnableTick(bool enable);
 
-  JO_API bool EnableTick() const;
+  ENGINE_API bool EnableTick() const;
 
-  JO_API void SetDestroy();
+  ENGINE_API void SetDestroy();
 
-  JO_API bool IsDestroy() const;
+  ENGINE_API bool IsDestroy() const;
 
-  JO_API int GetCollisionTag() const;
+  ENGINE_API int GetCollisionTag() const;
 
-  JO_API unsigned int GetActorGroup() const;
+  ENGINE_API unsigned int GetActorGroup() const;
 
-  JO_API ImageRenderer* CreateImageRenderFIFO();
+  ENGINE_API ImageRenderer* CreateImageRenderFIFO();
 
-  JO_API ImageRenderer* CreateImageRenderLIFO();
+  ENGINE_API ImageRenderer* CreateImageRenderLIFO();
 
-  JO_API CollisionComponent* CreateCollision(unsigned int collisionGroup);
+  ENGINE_API CollisionComponent* CreateCollision(unsigned int collisionGroup);
 
-  JO_API bool IsUI() const;
+  ENGINE_API bool IsUI() const;
 
-  JO_API bool IsPlayer() const;
+  ENGINE_API bool IsPlayer() const;
 
   template <typename ComponentType>
   ComponentType* CreateComponent() {
@@ -88,20 +88,20 @@ class Actor {
     return newComponent;
   }
 
-  JO_API Level* GetLevel();
+  ENGINE_API Level* GetLevel();
 
-  JO_API unsigned long long ActorId();
+  ENGINE_API unsigned long long ActorId();
 
  protected:
   void OnBeginPlay();
 
   void OnTick(unsigned long long curTick);
 
-  JO_API void SetCollisionTag(int newCollisionTag);
+  ENGINE_API void SetCollisionTag(int newCollisionTag);
 
-  JO_API void SetActorGroup(unsigned int actorGroup);
+  ENGINE_API void SetActorGroup(unsigned int actorGroup);
 
-  JO_API virtual void Render(IRenderTexture* renderTexture) const;
+  ENGINE_API virtual void Render(IRenderTexture* renderTexture) const;
 
  private:
   void OnRender(IRenderTexture* renderTexture) const;

@@ -22,23 +22,23 @@ class Level {
   friend class CollisionComponent;
 
  public:
-  JO_API Level();
+  ENGINE_API Level();
 
-  JO_API virtual ~Level() = 0;
+  ENGINE_API virtual ~Level() = 0;
 
-  JO_API virtual void BeginPlay() = 0;
+  ENGINE_API virtual void BeginPlay() = 0;
 
-  JO_API virtual void Tick(unsigned long long deltaTime) = 0;
+  ENGINE_API virtual void Tick(unsigned long long deltaTime) = 0;
 
-  JO_API void SetDebugRender(bool isOn);
+  ENGINE_API void SetDebugRender(bool isOn);
 
-  JO_API bool GetDebugRender() const;
+  ENGINE_API bool GetDebugRender() const;
 
-  JO_API void SetCollisionRender(bool isOn);
+  ENGINE_API void SetCollisionRender(bool isOn);
 
-  JO_API bool GetCollisionRender() const;
+  ENGINE_API bool GetCollisionRender() const;
 
-  JO_API Mouse* SpawnMouse();
+  ENGINE_API Mouse* SpawnMouse();
 
   template <typename ActorType>
   ActorType* SpawnActor(unsigned int actorGroup = 0xffffffff) {
@@ -47,26 +47,26 @@ class Level {
     return newActor;
   }
 
-  JO_API void SetCameraPosition(const Vector& position);
+  ENGINE_API void SetCameraPosition(const Vector& position);
 
-  JO_API void AddCameraPosition(const Vector& addPosition);
+  ENGINE_API void AddCameraPosition(const Vector& addPosition);
 
-  JO_API const Vector& GetCameraPosition() const;
+  ENGINE_API const Vector& GetCameraPosition() const;
 
-  JO_API bool UseCameraPostion() const;
+  ENGINE_API bool UseCameraPostion() const;
 
-  JO_API void RegisterCollision(class CollisionComponent* newCollision, bool bFocus = false);
+  ENGINE_API void RegisterCollision(class CollisionComponent* newCollision, bool bFocus = false);
 
-  JO_API void UnRegisterCollision(class CollisionComponent* delCollision);
+  ENGINE_API void UnRegisterCollision(class CollisionComponent* delCollision);
 
-  JO_API void RegisterActor(Actor* actor, bool bFocus = false);
+  ENGINE_API void RegisterActor(Actor* actor, bool bFocus = false);
 
-  JO_API void UnRegisterActor(Actor* actor);
+  ENGINE_API void UnRegisterActor(Actor* actor);
 
-  JO_API bool GetCollisionGroup(unsigned int collisionGroup, LINK_ITEM** head, LINK_ITEM** tail);
+  ENGINE_API bool GetCollisionGroup(unsigned int collisionGroup, LINK_ITEM** head, LINK_ITEM** tail);
 
  protected:
-  JO_API void SetUseCameraPosition(bool use);
+  ENGINE_API void SetUseCameraPosition(bool use);
 
  private:
   void OnBeginPlay();
@@ -75,7 +75,7 @@ class Level {
 
   void OnRender();
 
-  JO_API void SpawnActorInternal(Actor* actor, unsigned int actorGroup = 0xffffffff);
+  ENGINE_API void SpawnActorInternal(Actor* actor, unsigned int actorGroup = 0xffffffff);
 
   ActorContainer* GetActorContainer(unsigned int group);
 

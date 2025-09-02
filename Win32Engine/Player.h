@@ -4,6 +4,6 @@
 class Player
     : public Actor {
  public:
-  JO_API Player();
-  JO_API ~Player();
+  ENGINE_API Player();
+  ENGINE_API ~Player();
 };

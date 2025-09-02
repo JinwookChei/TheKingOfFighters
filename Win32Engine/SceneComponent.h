@@ -7,25 +7,25 @@ class SceneComponent
   friend class Actor;
 
  public:
-  JO_API SceneComponent();
+  ENGINE_API SceneComponent();
 
-  JO_API virtual ~SceneComponent();
+  ENGINE_API virtual ~SceneComponent();
 
-  JO_API void SetPosition(const Vector& newPosition);
+  ENGINE_API void SetPosition(const Vector& newPosition);
 
-  JO_API const Vector& GetPosition() const;
+  ENGINE_API const Vector& GetPosition() const;
 
-  JO_API const Vector& GetScale() const;
+  ENGINE_API const Vector& GetScale() const;
 
-  JO_API Transform GetViewTransform() const;
+  ENGINE_API Transform GetViewTransform() const;
 
-  JO_API Transform GetWorldTransform() const;
+  ENGINE_API Transform GetWorldTransform() const;
 
-  JO_API void SetScale(const Vector& scale);
+  ENGINE_API void SetScale(const Vector& scale);
 
-  JO_API void SetLocalScale(const Vector& localScale);
+  ENGINE_API void SetLocalScale(const Vector& localScale);
 
-  JO_API const Vector& GetLocalScale() const;
+  ENGINE_API const Vector& GetLocalScale() const;
 
  private:
   Vector localScale_;

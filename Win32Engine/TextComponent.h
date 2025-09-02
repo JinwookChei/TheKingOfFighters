@@ -5,9 +5,9 @@
 class TextComponent final
     : public UIComponent {
  public:
-  JO_API TextComponent();
+  ENGINE_API TextComponent();
 
-  JO_API  ~TextComponent();
+  ENGINE_API  ~TextComponent();
 
   void BeginPlay() override;
 
@@ -15,9 +15,9 @@ class TextComponent final
 
   //JO_API void SetLocalPosition(const Vector& localPosition);
 
-  JO_API void SetText(const wchar_t* text, unsigned __int64 size, const Color8Bit& color);
+  ENGINE_API void SetText(const wchar_t* text, unsigned __int64 size, const Color8Bit& color);
 
-  JO_API void SetFont(const wchar_t* font);
+  ENGINE_API void SetFont(const wchar_t* font);
 
  private:
   //Vector localPosition_;

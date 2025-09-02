@@ -7,31 +7,31 @@ class Channel;
 
 class SoundChannel final {
  public:
-  JO_API SoundChannel();
+  ENGINE_API SoundChannel();
 
-  JO_API SoundChannel(SoundChannel&& other) noexcept;
+  ENGINE_API SoundChannel(SoundChannel&& other) noexcept;
 
   explicit SoundChannel(FMOD::Channel* channel);
 
-  JO_API ~SoundChannel();
+  ENGINE_API ~SoundChannel();
 
-  JO_API SoundChannel& operator=(SoundChannel&& other) noexcept;
+  ENGINE_API SoundChannel& operator=(SoundChannel&& other) noexcept;
 
-  JO_API bool IsEmpty();
+  ENGINE_API bool IsEmpty();
 
-  JO_API bool LoopCount(int count);
+  ENGINE_API bool LoopCount(int count);
 
-  JO_API void Volume(float volume);
+  ENGINE_API void Volume(float volume);
 
-  JO_API void Play(bool play = true);
+  ENGINE_API void Play(bool play = true);
 
   void Destroy();
 
-  JO_API void Pause(bool pause = true);
+  ENGINE_API void Pause(bool pause = true);
 
-  JO_API bool IsPause();
+  ENGINE_API bool IsPause();
 
-  JO_API bool IsPlaying();
+  ENGINE_API bool IsPlaying();
 
  private:
   FMOD::Channel* channel_;

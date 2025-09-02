@@ -5,52 +5,52 @@ class UIComponent {
   friend class UI;
 
  public:
-  JO_API UIComponent();
+  ENGINE_API UIComponent();
 
-  JO_API virtual ~UIComponent() = 0;
+  ENGINE_API virtual ~UIComponent() = 0;
 
-  JO_API virtual UI* GetOwner() const;
+  ENGINE_API virtual UI* GetOwner() const;
 
-  JO_API virtual void BeginPlay();
+  ENGINE_API virtual void BeginPlay();
 
-  JO_API virtual void Tick(unsigned long long curTick);
+  ENGINE_API virtual void Tick(unsigned long long curTick);
   
-  JO_API bool EnableTick() const;
+  ENGINE_API bool EnableTick() const;
 
-  JO_API void SetEnableTick(bool enableTick);
+  ENGINE_API void SetEnableTick(bool enableTick);
 
-  JO_API bool EnableRender() const;
+  ENGINE_API bool EnableRender() const;
 
-  JO_API void SetEnableRender(bool enableRender);
+  ENGINE_API void SetEnableRender(bool enableRender);
 
 
-  JO_API virtual void ClickDownEvent();
+  ENGINE_API virtual void ClickDownEvent();
 
-  JO_API virtual void ClickExit();
+  ENGINE_API virtual void ClickExit();
   
-  JO_API bool IsMouseClick();
+  ENGINE_API bool IsMouseClick();
 
-  JO_API void SetPosition(const Vector& position);
+  ENGINE_API void SetPosition(const Vector& position);
 
-  JO_API void AddPosition(const Vector& addMove);
+  ENGINE_API void AddPosition(const Vector& addMove);
 
-  JO_API Vector GetPosition() const;
+  ENGINE_API Vector GetPosition() const;
 
-  JO_API void SetScale(const Vector& scale);
+  ENGINE_API void SetScale(const Vector& scale);
 
-  JO_API Vector GetScale() const;
+  ENGINE_API Vector GetScale() const;
 
-  JO_API const Transform& GetTransform() const;
+  ENGINE_API const Transform& GetTransform() const;
 
-  JO_API bool GetEnableCollision();
+  ENGINE_API bool GetEnableCollision();
 
-  JO_API void EnableCollision(bool isOn);
+  ENGINE_API void EnableCollision(bool isOn);
 
 
  protected:
-  JO_API virtual void Render(struct IRenderTexture* renderTexture) = 0;
+  ENGINE_API virtual void Render(struct IRenderTexture* renderTexture) = 0;
 
-  JO_API virtual void PostRender();
+  ENGINE_API virtual void PostRender();
 
  private:
   void OnRender(struct IRenderTexture* renderTexture);

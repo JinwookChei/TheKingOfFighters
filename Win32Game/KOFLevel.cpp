@@ -184,7 +184,7 @@ void KOFLevel::BeginPlay() {
 
   // CAMERA
   pCamera_ = SpawnActor<CameraTarget>();
-  pCamera_->Initialize(backbufferScale.HalfY(), backGroundImageScale.IntergerY() - backbufferScale.HalfY() + 60, backbufferScale.HalfX(), backGroundImageScale.X - backbufferScale.HalfX() + 20);
+  pCamera_->Initialize(backbufferScale.HalfY(), backGroundImageScale.IntergerY() - backbufferScale.HalfY() + 40, backbufferScale.HalfX(), backGroundImageScale.X - backbufferScale.HalfX() + 20);
   pCamera_->SetPosition({backGroundImageScale.X / 2, pCamera_->GetCameraMaxHeight()});
   CameraManager::Instance()->SetTarget(pCamera_);
 

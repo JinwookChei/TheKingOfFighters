@@ -3,19 +3,19 @@
 class Level;
 class EngineCore final {
  public:
-  JO_API EngineCore();
+  ENGINE_API EngineCore();
 
-  JO_API ~EngineCore();
+  ENGINE_API ~EngineCore();
 
-  JO_API bool Initialize(IApplication* application);
+  ENGINE_API bool Initialize(IApplication* application);
 
-  JO_API void EngineLoop();
+  ENGINE_API void EngineLoop();
 
-  JO_API Vector GetBackbufferScale();
+  ENGINE_API Vector GetBackbufferScale();
 
-  JO_API void SetShowCursor(bool show);
+  ENGINE_API void SetShowCursor(bool show);
 
-  JO_API const Vector& GetMousePosition() const;
+  ENGINE_API const Vector& GetMousePosition() const;
 
   template <typename LevelType>
   LevelType* ChangeLevel() {
@@ -29,7 +29,7 @@ class EngineCore final {
 
   void Render();
 
-  JO_API void ChangeLevelInternal(Level* level);
+  ENGINE_API void ChangeLevelInternal(Level* level);
 
   void Cleanup();
 

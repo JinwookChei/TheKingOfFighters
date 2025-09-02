@@ -84,11 +84,11 @@ class Win32Image final
 
   void __stdcall CalculateTransformFromDrawBoxImage_Flip(Color8Bit emptyColor, Color8Bit lineColor) override;
 
-  void __stdcall CalculateTransformFromCSV(const std::string& filePath) override;
+  void __stdcall ApplyImageInfoFromCSV(const std::string& filePath) override;
 
-  void __stdcall CalculateTransformFromCSV_Flip(const std::string& filePath) override;
+  void __stdcall ApplyImageInfoFromCSV_Flip(const std::string& filePath) override;
 
-  void __stdcall CalculateTransformFromCSV_Flip_Async(const std::string& filePath) override;
+  void __stdcall ApplyImageInfoFromCSV_Flip_Async(const std::string& filePath) override;
 
   void __stdcall CalculateTransform(unsigned int x, unsigned int y) override;
 

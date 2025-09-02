@@ -6,7 +6,7 @@
 #endif  // _DEBUG
 
 #define MATH_API __declspec(dllimport)
-#define JO_API __declspec(dllimport)
+#define ENGINE_API __declspec(dllimport)
 
 #include <Windows.h>
 #include <string>

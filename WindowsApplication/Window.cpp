@@ -14,24 +14,28 @@ HWND Window::GetHwnd() const {
 }
 
 bool Window::Initialize() {
+  RECT rect = {0, 0, 1280, 720};
+  AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+
   hWnd_ = CreateWindowEx(
-      0,                              // Optional window styles.
-      GApplication->GetClassNameW(),  // Window class
-      L"The King Of Fighters 2003",                          // Window text
-      WS_OVERLAPPEDWINDOW,            // Window style
-
-      // Size and position
-      CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-
-      NULL,                            // Parent window
-      NULL,                            // Menu
-      GApplication->HandleInstance(),  // Instance handle
-      NULL                             // Additional application data
+      0,                              
+      GApplication->GetClassNameW(),  
+      L"The King Of Fighters 2003",
+      WS_OVERLAPPEDWINDOW,          
+      CW_USEDEFAULT, CW_USEDEFAULT, /*CW_USEDEFAULT, CW_USEDEFAULT,*/
+      rect.right - rect.left,       // 윈도우 전체 크기
+      rect.bottom - rect.top,
+      NULL,                            
+      NULL,                            
+      GApplication->HandleInstance(),  
+      NULL                             
   );
 
   if (hWnd_ == NULL) {
     return false;
   }
+
+
   return true;
 }
 

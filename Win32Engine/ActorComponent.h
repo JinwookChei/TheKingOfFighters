@@ -14,43 +14,43 @@ class ActorComponent {
   friend class Actor;
 
  public:
-  JO_API ActorComponent();
+  ENGINE_API ActorComponent();
 
-  JO_API virtual ~ActorComponent();
+  ENGINE_API virtual ~ActorComponent();
 
-  JO_API Actor* GetOwner() const;
+  ENGINE_API Actor* GetOwner() const;
 
-  JO_API virtual void BeginPlay();
+  ENGINE_API virtual void BeginPlay();
 
-  JO_API virtual void Tick(unsigned long long deltaTick);
+  ENGINE_API virtual void Tick(unsigned long long deltaTick);
 
-  JO_API bool IsActive() const;
+  ENGINE_API bool IsActive() const;
 
-  JO_API void SetActive(bool active);
+  ENGINE_API void SetActive(bool active);
 
-  JO_API void SetEnableTick(bool enable);
+  ENGINE_API void SetEnableTick(bool enable);
 
-  JO_API bool EnableTick() const;
+  ENGINE_API bool EnableTick() const;
 
-  JO_API void SetDebugParameter(const ActorComponentSetDebugParameter& parameter);
+  ENGINE_API void SetDebugParameter(const ActorComponentSetDebugParameter& parameter);
 
-  JO_API const ActorComponentSetDebugParameter& GetDebugParameter() const;
+  ENGINE_API const ActorComponentSetDebugParameter& GetDebugParameter() const;
 
  protected:
   ActorComponentSetDebugParameter parameter_ = {.on_ = false};
 
-  JO_API virtual void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture);
+  ENGINE_API virtual void DebugRender([[maybe_unused]] struct IRenderTexture* renderTexture);
 
-  JO_API virtual void CollisionRender(IRenderTexture* renderTexture);
+  ENGINE_API virtual void CollisionRender(IRenderTexture* renderTexture);
 
  private:
-  JO_API void OnBeginPlay();
+  ENGINE_API void OnBeginPlay();
 
   void OnTick(unsigned long long curTick);
 
-  JO_API void SetOwner(Actor* owner);
+  ENGINE_API void SetOwner(Actor* owner);
 
-  JO_API LINK_ITEM* GetActorLink();
+  ENGINE_API LINK_ITEM* GetActorLink();
 
   bool isActive_;
 
