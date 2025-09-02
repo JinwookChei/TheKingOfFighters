@@ -165,6 +165,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BattleComponent.cpp" />
     <ClCompile Include="GameInstance.cpp" />
+    <ClCompile Include="ImageLoadTimeCheck.cpp" />
     <ClCompile Include="InputController.cpp" />
     <ClCompile Include="MovementFreezeManager.cpp" />
     <ClCompile Include="MP.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BattleComponent.h" />
     <ClInclude Include="GameInstance.h" />
+    <ClInclude Include="ImageLoadTimeCheck.h" />
     <ClInclude Include="InputController.h" />
     <ClInclude Include="MovementFreezeManager.h" />
     <ClInclude Include="MP.h" />

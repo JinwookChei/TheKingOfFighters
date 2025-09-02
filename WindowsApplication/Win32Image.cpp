@@ -731,6 +731,35 @@ struct Key {
   };
 };
 
+unsigned int GetPhysicalCoreCount() {
+  DWORD length = 0;
+  GetLogicalProcessorInformationEx(RelationProcessorCore, nullptr, &length);
+
+  std::vector<char> buffer(length);
+  SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* info =
+      reinterpret_cast<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*>(buffer.data());
+
+  if (!GetLogicalProcessorInformationEx(RelationProcessorCore, info, &length)) {
+    return 0;  // ½ÇÆÐ
+  }
+
+  unsigned int coreCount = 0;
+  char* ptr = buffer.data();
+  char* end = ptr + length;
+
+  while (ptr < end) {
+    SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* record =
+        reinterpret_cast<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*>(ptr);
+    if (record->Relationship == RelationProcessorCore) {
+      coreCount++;
+    }
+    ptr += record->Size;
+  }
+
+  return coreCount;
+}
+
+
 void __stdcall Win32Image::CalculateTransformFromCSV_Flip_Async(const std::string& filePath) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
@@ -749,7 +778,7 @@ void __stdcall Win32Image::CalculateTransformFromCSV_Flip_Async(const std::strin
     if ('P' == line[0]) {
       continue;
     }
-    // Çà
+
     std::vector<float> row;
     std::stringstream ss(line);
     std::string cell;
@@ -771,9 +800,9 @@ void __stdcall Win32Image::CalculateTransformFromCSV_Flip_Async(const std::strin
   int pixelFormat = bmPixel / 8;
   size_t bmSize = bmWidth * bmHeight;
 
-  // REVERSE IMAGE
   unsigned int num_threads = std::thread::hardware_concurrency();
 
+  // REVERSE IMAGE
   std::vector<std::thread> threads;
   threads.reserve(num_threads);
 

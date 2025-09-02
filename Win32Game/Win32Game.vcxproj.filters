@@ -261,6 +261,9 @@
     <ClCompile Include="AnimPivotLevel.cpp">
       <Filter>Contents\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="ImageLoadTimeCheck.cpp">
+      <Filter>Contents\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -444,6 +447,9 @@
       <Filter>Contents\KOF\Actor\PLayer\Chang</Filter>
     </ClInclude>
     <ClInclude Include="AnimPivotLevel.h">
+      <Filter>Contents\Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoadTimeCheck.h">
       <Filter>Contents\Demo</Filter>
     </ClInclude>
   </ItemGroup>
