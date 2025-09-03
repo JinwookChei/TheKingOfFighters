@@ -18,6 +18,14 @@ void Transform::SetScale(const Vector& newScale) {
   scale_ = newScale;
 }
 
+void Transform::SetScaleX(float scaleX) {
+  scale_.X = scaleX;
+}
+
+void Transform::SetScaleY(float scaleY) {
+  scale_.Y = scaleY;
+}
+
 void Transform::AddScale(const Vector& addScale) {
   scale_ += addScale;
 }
@@ -28,6 +36,14 @@ MATH_API const Vector& Transform::GetScale() const {
 
 void Transform::SetPosition(const Vector& newPosition) {
   position_ = newPosition;
+}
+
+void Transform::SetPositionX(float posX) {
+  position_.X = posX;
+}
+
+void Transform::SetPositionY(float posY) {
+  position_.Y = posY;
 }
 
 void Transform::AddPostion(const Vector& addPosition) {

@@ -10,11 +10,19 @@ class Transform {
 
   MATH_API void SetScale(const Vector& newScale);
 
+  MATH_API void SetScaleX(float scaleX);
+
+  MATH_API void SetScaleY(float scaleY);
+
   MATH_API void AddScale(const Vector& addScale);
 
   MATH_API const Vector& GetScale() const;
 
   MATH_API void SetPosition(const Vector& newPosition);
+
+  MATH_API void SetPositionX(float posX);
+
+  MATH_API void SetPositionY(float posY);
 
   MATH_API void AddPostion(const Vector& addPosition);
 

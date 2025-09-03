@@ -175,6 +175,49 @@ bool Win32Image::IsRenderTexture() {
   return false;
 }
 
+void __stdcall Win32Image::CalculateTransform(unsigned int x, unsigned int y) {
+  if (imageLoadType_ != ImageLoadType::One) {
+    return;
+  }
+
+  ImageInfo* pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = false;
+  UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
+  --imageCount_;
+
+  Cleanup();
+
+  Vector imgScale = pInfo->GetScale();
+  Vector calcScale = {imgScale.X / x, imgScale.Y / y};
+  Vector calcPosition = {0.0f, 0.0f};
+
+  for (unsigned int height = 0; height < y; ++height) {
+    for (unsigned int width = 0; width < x; ++width) {
+      ImageInfo* pNew = new ImageInfo;
+      pNew->imageType_ = pInfo->imageType_;
+      pNew->hBitMap_ = pInfo->hBitMap_;
+      pNew->imageDC_ = pInfo->imageDC_;
+      pNew->bitMapInfo_ = pInfo->bitMapInfo_;
+
+      pNew->transform_.SetPosition(calcPosition);
+      pNew->transform_.SetScale(calcScale);
+
+      LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
+      pNew->index_ = (unsigned int)imageCount_++;
+
+      calcPosition.X += calcScale.X;
+    }
+
+    calcPosition.X = 0;
+    calcPosition.Y += calcScale.Y;
+  }
+
+  delete pInfo;  // hBitMap 제거.
+
+  pInfo = GetImageInfo(0);
+  pInfo->isOwner_ = true;
+}
+
 void __stdcall Win32Image::CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) {
   if (imageLoadType_ != ImageLoadType::One) {
     return;
@@ -514,36 +557,8 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV(const std::string& filePath) {
     return;
   }
 
-  std::vector<std::vector<float>> csvInfo;
-
-  std::ifstream file(filePath);
-  if (false == file.is_open()) {
-    __debugbreak();
-    return;
-  }
-
-  std::string line;
-  // 3번째 인자 없으면 공백기준으로 나눔.
-  // file을 공백단위로 읽어서 line에 저장,
-  while (std::getline(file, line)) {
-    if ('P' == line[0]) {
-      continue;
-    }
-    // 행
-    std::vector<float> row;
-    // 문자열스트림에 line을 대입.
-    std::stringstream ss(line);
-    // Cell
-    std::string cell;
-
-    // 문자열 스트림에서 cell에 , 단위로 행에 저장.
-    while (std::getline(ss, cell, ',')) {
-      float intCell = std::stof(cell);
-      row.push_back(intCell);
-    }
-    csvInfo.push_back(row);
-  }
-  file.close();
+  std::vector<ImageInfo> csvInfo;
+  ImportImageInfoFromCSV(filePath, &csvInfo);
 
   // imageList를 돌면서 인덱스가 0인 ImageInfo 가져옴.
   ImageInfo* pInfo = GetImageInfo(0);
@@ -560,27 +575,14 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV(const std::string& filePath) {
     pNew->imageDC_ = pInfo->imageDC_;
     pNew->bitMapInfo_ = pInfo->bitMapInfo_;
 
-    Vector calcPosition = {csvInfo[height][0], csvInfo[height][1]};
-    Vector calcScale = {csvInfo[height][2], csvInfo[height][3]};
+    Vector calcPosition = csvInfo[height].transform_.GetPosition();
+    Vector calcScale = csvInfo[height].transform_.GetScale();
+    Vector calcOffset = csvInfo[height].positionOffSet_;
+
     pNew->transform_.SetPosition(calcPosition);
     pNew->transform_.SetScale(calcScale);
-    pNew->positionOffSet_ = {csvInfo[height][4], csvInfo[height][5]};
-
-    CollisionInfo tempCollisionInfo;
-
-    for (int i = 6; i < csvInfo[height].size(); i += 5) {
-      if (1 == csvInfo[height][i]) {
-        tempCollisionInfo.hasCollision_ = true;
-        tempCollisionInfo.position_ = {csvInfo[height][i + 1], csvInfo[height][i + 2]};
-        tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
-      } else {
-        tempCollisionInfo.hasCollision_ = false;
-        tempCollisionInfo.position_ = {0.0f, 0.0f};
-        tempCollisionInfo.scale_ = {0.0f, 0.0f};
-      }
-
-      pNew->collisionBoxInfo_[(i - 6) / 5] = tempCollisionInfo;
-    }
+    pNew->positionOffSet_ = calcOffset;
+    pNew->collisionBoxInfo_ = csvInfo[height].collisionBoxInfo_;
 
     LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
     pNew->index_ = (unsigned int)imageCount_++;
@@ -595,91 +597,47 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip(const std::string& filePat
   if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
+  std::vector<ImageInfo> csvInfo;
+  ImportImageInfoFromCSV(filePath, &csvInfo, true);
 
-  std::vector<std::vector<float>> csvInfo;
-
-  std::ifstream file(filePath);
-  if (false == file.is_open()) {
-    __debugbreak();
-    return;
-  }
-
-  std::string line;
-  // 3번째 인자 없으면 공백기준으로 나눔.
-  // file을 공백단위로 읽어서 line에 저장,
-  while (std::getline(file, line)) {
-    if ('P' == line[0]) {
-      continue;
-    }
-    // 행
-    std::vector<float> row;
-    // 문자열스트림에 line을 대입.
-    std::stringstream ss(line);
-    // Cell
-    std::string cell;
-
-    // 문자열 스트림에서 cell에 , 단위로 행에 저장.
-    while (std::getline(ss, cell, ',')) {
-      float intCell = std::stof(cell);
-      row.push_back(intCell);
-    }
-    csvInfo.push_back(row);
-  }
-  file.close();
-
-  // imageList를 돌면서 인덱스가 0인 ImageInfo 가져옴.
+  // 현재 이미지의 헤더 정보 복사.
   ImageInfo* pInfo = GetImageInfo(0);
+  LONG bmWidth = pInfo->bitMapInfo_.bmWidth;
+  LONG bmHeight = pInfo->bitMapInfo_.bmHeight;
+  BYTE* pBits = (BYTE*)pInfo->bitMapInfo_.bmBits;
+  WORD bmPixel = pInfo->bitMapInfo_.bmBitsPixel;
+  int pixelFormat = bmPixel / 8;
+  size_t bmSize = bmWidth * bmHeight;
 
-  // REVERSE IMAGE
-  HDC imageDC = pInfo->imageDC_;
+  // 이미지를 반전시키기위한 CopyBitmap 메모리 할당. ( bitmap 복사 )
+  BYTE* pCopyBits = (BYTE*)malloc(bmSize * pixelFormat);
+  std::memcpy(pCopyBits, pBits, bmSize * pixelFormat);
 
-  for (int i = 0; i < csvInfo.size(); ++i) {
-    int positionX = (int)csvInfo[i][0];
-    int positionY = (int)csvInfo[i][1];
-    int scaleX = (int)csvInfo[i][2];
-    int scaleY = (int)csvInfo[i][3];
-
-    size_t pixelScale = scaleX * scaleY;
-    Color8Bit* horizontalFlipPixels = (Color8Bit*)malloc(sizeof(Color8Bit) * pixelScale);
-
-    for (int col = positionY; col < positionY + scaleY; ++col) {
-      for (int row = positionX + scaleX - 1; row >= positionX; --row) {
-        Color8Bit tempPixel;
-        Vector pixelPosition{(float)row, (float)col};
-
-        if (!GetPixel(pixelPosition, &tempPixel)) {
-          __debugbreak();
-          free(horizontalFlipPixels);
-          return;
-        }
-
-        int flipPixelIndex = (col - positionY) * scaleX + (positionX + scaleX - 1 - row);
-        horizontalFlipPixels[flipPixelIndex] = tempPixel;
-      }
-    }
+  for (int j = 0; j < csvInfo.size(); ++j) {
+    int positionX = csvInfo[j].transform_.GetPosition().X;
+    int positionY = csvInfo[j].transform_.GetPosition().Y;
+    int scaleX = csvInfo[j].transform_.GetScale().X;
+    int scaleY = csvInfo[j].transform_.GetScale().Y;
 
     for (int col = positionY; col < positionY + scaleY; ++col) {
       for (int row = positionX; row < positionX + scaleX; ++row) {
-        int flipPixelIndex = (col - positionY) * scaleX + (row - positionX);
-        Vector pixelPosition{(float)row, (float)col};
+        BYTE* pixel = pBits + (bmHeight - 1 - col) * (bmWidth * pixelFormat) + (row * pixelFormat);
+        BYTE* copyPixel = pCopyBits + (bmHeight - 1 - col) * (bmWidth * pixelFormat) + ((positionX + scaleX - (row - positionX)) * pixelFormat);
 
-        if (!SetPixel(pixelPosition, horizontalFlipPixels[flipPixelIndex])) {
-          __debugbreak();
-          free(horizontalFlipPixels);
-          return;
-        }
+        pixel[0] = copyPixel[0];
+        pixel[1] = copyPixel[1];
+        pixel[2] = copyPixel[2];
+        pixel[3] = copyPixel[3];
       }
     }
-
-    free(horizontalFlipPixels);
   }
-  // REVERSE IMAGE END
 
-  // CALCULATE IMAGE INFO
+  // CopyBitmap 메모리 정리.
+  free(pCopyBits);
+
+  // 이미지 InfoList 초기화.
   pInfo->isOwner_ = false;
-
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
-
   Cleanup();
 
   for (unsigned int height = 0; height < csvInfo.size(); ++height) {
@@ -689,109 +647,32 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip(const std::string& filePat
     pNew->imageDC_ = pInfo->imageDC_;
     pNew->bitMapInfo_ = pInfo->bitMapInfo_;
 
-    Vector calcPosition = {csvInfo[height][0], csvInfo[height][1]};
-    Vector calcScale = {csvInfo[height][2], csvInfo[height][3]};
+    Vector calcPosition = csvInfo[height].transform_.GetPosition();
+    Vector calcScale = csvInfo[height].transform_.GetScale();
+    Vector calcOffset = csvInfo[height].positionOffSet_;
+
     pNew->transform_.SetPosition(calcPosition);
     pNew->transform_.SetScale(calcScale);
-    pNew->positionOffSet_ = {-csvInfo[height][4], csvInfo[height][5]};
-
-    CollisionInfo tempCollisionInfo;
-
-    for (int i = 6; i < csvInfo[height].size(); i += 5) {
-      if (1 == csvInfo[height][i]) {
-        tempCollisionInfo.hasCollision_ = true;
-        tempCollisionInfo.position_ = {-csvInfo[height][i + 1], csvInfo[height][i + 2]};
-        tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
-      } else {
-        tempCollisionInfo.hasCollision_ = false;
-        tempCollisionInfo.position_ = {0.0f, 0.0f};
-        tempCollisionInfo.scale_ = {0.0f, 0.0f};
-      }
-
-      pNew->collisionBoxInfo_[(i - 6) / 5] = tempCollisionInfo;
-    }
+    pNew->positionOffSet_ = calcOffset;
+    pNew->collisionBoxInfo_ = csvInfo[height].collisionBoxInfo_;
 
     LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
     pNew->index_ = (unsigned int)imageCount_++;
   }
-  // CALCULATE IMAGE INFO END
 
   delete pInfo;
   pInfo = GetImageInfo(0);
   pInfo->isOwner_ = true;
 }
 
-struct Key {
-  union {
-    struct {
-      int X;
-      int Y;
-    };
-    unsigned __int64 key;
-  };
-};
-
-unsigned int GetPhysicalCoreCount() {
-  DWORD length = 0;
-  GetLogicalProcessorInformationEx(RelationProcessorCore, nullptr, &length);
-
-  std::vector<char> buffer(length);
-  SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* info =
-      reinterpret_cast<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*>(buffer.data());
-
-  if (!GetLogicalProcessorInformationEx(RelationProcessorCore, info, &length)) {
-    return 0;  // 실패
-  }
-
-  unsigned int coreCount = 0;
-  char* ptr = buffer.data();
-  char* end = ptr + length;
-
-  while (ptr < end) {
-    SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* record =
-        reinterpret_cast<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*>(ptr);
-    if (record->Relationship == RelationProcessorCore) {
-      coreCount++;
-    }
-    ptr += record->Size;
-  }
-
-  return coreCount;
-}
-
-
 void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& filePath) {
-  //if (imageLoadType_ != ImageLoadType::One) {
-  //  return;
-  //}
-
-  std::vector<std::vector<float>> csvInfo;
-
-  std::ifstream file(filePath);
-  if (false == file.is_open()) {
-    __debugbreak();
+  if (imageLoadType_ != ImageLoadType::One) {
     return;
   }
+  std::vector<ImageInfo> csvInfo;
+  ImportImageInfoFromCSV(filePath, &csvInfo, true);
 
-  std::string line;
-  while (std::getline(file, line)) {
-    if ('P' == line[0]) {
-      continue;
-    }
-
-    std::vector<float> row;
-    std::stringstream ss(line);
-    std::string cell;
-
-    while (std::getline(ss, cell, ',')) {
-      float intCell = std::stof(cell);
-      row.push_back(intCell);
-    }
-    csvInfo.push_back(row);
-  }
-  file.close();
-
-  
+  // 현재 이미지의 헤더 정보 복사.
   ImageInfo* pInfo = GetImageInfo(0);
   LONG bmWidth = pInfo->bitMapInfo_.bmWidth;
   LONG bmHeight = pInfo->bitMapInfo_.bmHeight;
@@ -800,21 +681,21 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& f
   int pixelFormat = bmPixel / 8;
   size_t bmSize = bmWidth * bmHeight;
 
-  unsigned int num_threads = std::thread::hardware_concurrency();
-
-  // REVERSE IMAGE
-  std::vector<std::thread> threads;
-  threads.reserve(num_threads);
-
+  // 이미지를 반전시키기위한 CopyBitmap 메모리 할당. ( bitmap 복사 )
   BYTE* pCopyBits = (BYTE*)malloc(bmSize * pixelFormat);
   std::memcpy(pCopyBits, pBits, bmSize * pixelFormat);
 
+  // 내 PC의 쓰레드 갯수.
+  unsigned int num_threads = std::thread::hardware_concurrency();
+  std::vector<std::thread> threads;
+  threads.reserve(num_threads);
+
+  // 쓰레드별 작업 영역 분리.
   int div = csvInfo.size() / num_threads;
   int mod = csvInfo.size() % num_threads;
 
   int start = 0;
   int end = 0;
-
 
   for (int i = 0; i < num_threads; ++i) {
     start = end;
@@ -824,13 +705,14 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& f
       --mod;
     }
 
+    // 쓰레드생성 및 작업.
     threads.emplace_back(
         [&csvInfo, &pBits, &pCopyBits](int start, int end, const int& bmHeight, const int& bmWidth, const int& pixelFormat) {
           for (int j = start; j < end; ++j) {
-            int positionX = (int)csvInfo[j][0];
-            int positionY = (int)csvInfo[j][1];
-            int scaleX = (int)csvInfo[j][2];
-            int scaleY = (int)csvInfo[j][3];
+            int positionX = csvInfo[j].transform_.GetPosition().X;
+            int positionY = csvInfo[j].transform_.GetPosition().Y;
+            int scaleX = csvInfo[j].transform_.GetScale().X;
+            int scaleY = csvInfo[j].transform_.GetScale().Y;
 
             for (int col = positionY; col < positionY + scaleY; ++col) {
               for (int row = positionX; row < positionX + scaleX; ++row) {
@@ -848,18 +730,17 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& f
         start, end, bmHeight, bmWidth, pixelFormat);
   }
 
+  // 쓰레드 Join
   for (int i = 0; i < threads.size(); ++i) {
     threads[i].join();
   }
 
+  // CopyBitmap 메모리 정리.
   free(pCopyBits);
-  // REVERSE IMAGE END
 
-  // CALCULATE IMAGE INFO
+  // 이미지 InfoList 초기화.
   pInfo->isOwner_ = false;
-
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
-
   Cleanup();
 
   for (unsigned int height = 0; height < csvInfo.size(); ++height) {
@@ -869,79 +750,93 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& f
     pNew->imageDC_ = pInfo->imageDC_;
     pNew->bitMapInfo_ = pInfo->bitMapInfo_;
 
-    Vector calcPosition = {csvInfo[height][0], csvInfo[height][1]};
-    Vector calcScale = {csvInfo[height][2], csvInfo[height][3]};
+    Vector calcPosition = csvInfo[height].transform_.GetPosition();
+    Vector calcScale = csvInfo[height].transform_.GetScale();
+    Vector calcOffset = csvInfo[height].positionOffSet_;
+
     pNew->transform_.SetPosition(calcPosition);
     pNew->transform_.SetScale(calcScale);
-    pNew->positionOffSet_ = {-csvInfo[height][4], csvInfo[height][5]};
-
-    CollisionInfo tempCollisionInfo;
-
-    for (int i = 6; i < csvInfo[height].size(); i += 5) {
-      if (1 == csvInfo[height][i]) {
-        tempCollisionInfo.hasCollision_ = true;
-        tempCollisionInfo.position_ = {-csvInfo[height][i + 1], csvInfo[height][i + 2]};
-        tempCollisionInfo.scale_ = {csvInfo[height][i + 3], csvInfo[height][i + 4]};
-      } else {
-        tempCollisionInfo.hasCollision_ = false;
-        tempCollisionInfo.position_ = {0.0f, 0.0f};
-        tempCollisionInfo.scale_ = {0.0f, 0.0f};
-      }
-
-      pNew->collisionBoxInfo_[(i - 6) / 5] = tempCollisionInfo;
-    }
+    pNew->positionOffSet_ = calcOffset;
+    pNew->collisionBoxInfo_ = csvInfo[height].collisionBoxInfo_;
 
     LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
     pNew->index_ = (unsigned int)imageCount_++;
   }
-  // CALCULATE IMAGE INFO END
 
   delete pInfo;
   pInfo = GetImageInfo(0);
   pInfo->isOwner_ = true;
 }
 
-void __stdcall Win32Image::CalculateTransform(unsigned int x, unsigned int y) {
-  if (imageLoadType_ != ImageLoadType::One) {
+void Win32Image::ImportImageInfoFromCSV(const std::string& filePath, std::vector<ImageInfo>* outCSVInfo, bool isFlip /*= false*/) {
+  // Input File Stream From ImageInfo_csv.
+  std::ifstream file(filePath);
+  if (false == file.is_open()) {
+    __debugbreak();
     return;
   }
 
-  ImageInfo* pInfo = GetImageInfo(0);
-  pInfo->isOwner_ = false;
-  UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
-  --imageCount_;
+  std::vector<void (*)(ImageInfo& info, float cell, bool isFlip)> scvSetter = {
+      [](ImageInfo& info, float cell, bool isFlip) { info.transform_.SetPositionX(cell); },  // 0 Position_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.transform_.SetPositionY(cell); },  // 1 Position_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.transform_.SetScaleX(cell); },     // 2 Scale_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.transform_.SetScaleY(cell); },     // 3 Scale_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.positionOffSet_.X = isFlip ? -cell : cell; },  // 4 Offset_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.positionOffSet_.Y = cell; },       // 5 Offset_, bool isFlipY
 
-  Cleanup();
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[0].hasCollision_ = cell != 0 ? true : false; },  // 6 HasHitBoxTop
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[0].position_.X = isFlip ? -cell : cell; },       // 7 HitBoxTopPosition_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[0].position_.Y = cell; },                        // 8 HitBoxTopPosition_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[0].scale_.X = cell; },                           // 9 HitBoxTopScale_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[0].scale_.Y = cell; },                           // 10 HitBoxTopScale_Y
 
-  Vector imgScale = pInfo->GetScale();
-  Vector calcScale = {imgScale.X / x, imgScale.Y / y};
-  Vector calcPosition = {0.0f, 0.0f};
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[1].hasCollision_ = cell != 0 ? true : false; },  // 11 HasHitBoxBottom
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[1].position_.X = isFlip ? -cell : cell; },       // 12 HitBoxBottomPosition_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[1].position_.Y = cell; },                        // 13 HitBoxBottomPosition_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[1].scale_.X = cell; },                           // 14 HitBoxBottomScale_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[1].scale_.Y = cell; },                           // 15 HitBoxBottomScale_Y
 
-  for (unsigned int height = 0; height < y; ++height) {
-    for (unsigned int width = 0; width < x; ++width) {
-      ImageInfo* pNew = new ImageInfo;
-      pNew->imageType_ = pInfo->imageType_;
-      pNew->hBitMap_ = pInfo->hBitMap_;
-      pNew->imageDC_ = pInfo->imageDC_;
-      pNew->bitMapInfo_ = pInfo->bitMapInfo_;
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[2].hasCollision_ = cell != 0 ? true : false; },  // 16 HasAttackBox
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[2].position_.X = isFlip ? -cell : cell; },       // 17 AttackBoxPosition_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[2].position_.Y = cell; },                        // 18 AttackBoxPosition_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[2].scale_.X = cell; },                           // 19 AttackBoxScale_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[2].scale_.Y = cell; },                           // 20 AttackBoxScale_Y
 
-      pNew->transform_.SetPosition(calcPosition);
-      pNew->transform_.SetScale(calcScale);
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[3].hasCollision_ = cell != 0 ? true : false; },  // 21 HasPushBox
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[3].position_.X = isFlip ? -cell : cell; },       // 22 PushBoxPosition_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[3].position_.Y = cell; },                        // 23 PushBoxPosition_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[3].scale_.X = cell; },                           // 24 PushBoxScale_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[3].scale_.Y = cell; },                           // 25 PushBoxScale_Y
 
-      LinkToLinkedListFIFO(&imageHead_, &imageTail_, &pNew->link_);
-      pNew->index_ = (unsigned int)imageCount_++;
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[4].hasCollision_ = cell != 0 ? true : false; },  // 26 HasGrabBox
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[4].position_.X = isFlip ? -cell : cell; },       // 27 GrabBoxPosition_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[4].position_.Y = cell; },                        // 28 GrabBoxPosition_Y
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[4].scale_.X = cell; },                           // 29 GrabBoxScale_X
+      [](ImageInfo& info, float cell, bool isFlip) { info.collisionBoxInfo_[4].scale_.Y = cell; }                            // 30 GrabBoxScale_Y
+  };
 
-      calcPosition.X += calcScale.X;
+  // File Stream에서 '공백' 기준으로 한 줄씩 읽어옴.
+  std::string fileLine;
+  for (int i = 0; std::getline(file, fileLine, '\n'); ++i) {
+    // String Stream에서 ',' 기준으로 셀 정보를 읽어옴
+    std::stringstream ssFileLine(fileLine);
+    std::string cell;
+
+    if (0 == i) {
+      continue;
     }
 
-    calcPosition.X = 0;
-    calcPosition.Y += calcScale.Y;
+    ImageInfo imageInfo;
+    for (int j = 0; std::getline(ssFileLine, cell, ','); ++j) {
+      if (j < scvSetter.size()) {
+        scvSetter[j](imageInfo, std::stof(cell), isFlip);
+      }
+    }
+
+    outCSVInfo->push_back(imageInfo);
   }
 
-  delete pInfo;  // hBitMap 제거.
-
-  pInfo = GetImageInfo(0);
-  pInfo->isOwner_ = true;
+  file.close();
 }
 
 void __stdcall Win32Image::RefreshImage(unsigned int count) {
@@ -1170,7 +1065,6 @@ void __stdcall Win32Image::MakeColorTransparent(const Color8Bit& transColor) {
     }
   }
 }
-
 
 void __stdcall Win32Image::ScalePixelRGB(float rScale, float gScale, float bScale, const Color8Bit& transColor) {
   const Vector scale = GetScale();

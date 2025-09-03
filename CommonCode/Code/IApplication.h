@@ -48,6 +48,8 @@ struct IImage : public IUnknown {
 };
 
 struct IFileImage : public IImage {
+  virtual void __stdcall CalculateTransform(unsigned int x, unsigned int y) = 0;
+
   virtual void __stdcall CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) = 0;
 
   virtual void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) = 0;
@@ -59,8 +61,6 @@ struct IFileImage : public IImage {
   virtual void __stdcall ApplyImageInfoFromCSV_Flip(const std::string& filePath) = 0;
 
   virtual void __stdcall ApplyImageInfoFromCSV_Flip_Async(const std::string& filePath) = 0;
-
-  virtual void __stdcall CalculateTransform(unsigned int x, unsigned int y) = 0;
 
   virtual void __stdcall RefreshImage(unsigned int count) = 0;
 

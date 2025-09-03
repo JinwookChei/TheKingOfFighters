@@ -143,10 +143,6 @@ bool CollisionComponent::Collision(const CollisionCheckParameter& parameter, Col
 
   CollisionInfo myCollisionInfo = GetCollisionInfo();
 
-  //CollisionComponent* collision[10] = {
-  //    nullptr,
-  //};
-
   unsigned int startIndex = 0;
   unsigned int selectCount = 0;
 

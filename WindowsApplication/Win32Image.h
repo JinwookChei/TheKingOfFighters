@@ -78,6 +78,8 @@ class Win32Image final
 
   bool IsRenderTexture() override;
 
+  void __stdcall CalculateTransform(unsigned int x, unsigned int y) override;
+
   void __stdcall CalculateTransformByAuto(const CalculateTransformByAutoParameter& parameter) override;
 
   void __stdcall CalculateTransformFromDrawBoxImage(Color8Bit emptyColor, Color8Bit lineColor) override;
@@ -90,7 +92,7 @@ class Win32Image final
 
   void __stdcall ApplyImageInfoFromCSV_Flip_Async(const std::string& filePath) override;
 
-  void __stdcall CalculateTransform(unsigned int x, unsigned int y) override;
+  void ImportImageInfoFromCSV(const std::string& filePath, std::vector<ImageInfo>* outCSVInfo, bool isFlip = false);
 
   void __stdcall RefreshImage(unsigned int count) override;
 
