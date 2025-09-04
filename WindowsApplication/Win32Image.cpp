@@ -738,6 +738,8 @@ void __stdcall Win32Image::ApplyImageInfoFromCSV_Flip_Async(const std::string& f
   // CopyBitmap 메모리 정리.
   free(pCopyBits);
 
+  int a =10;
+
   // 이미지 InfoList 초기화.
   pInfo->isOwner_ = false;
   UnLinkFromLinkedList(&imageHead_, &imageTail_, &pInfo->link_);
