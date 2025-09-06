@@ -71,21 +71,27 @@ bool CommandComponent::Initialize(KOFPlayer* pOwnerPlayer, SkillComponent* pSkil
   return true;
 }
 
-bool CommandComponent::RegistCommand(std::initializer_list<COMMAND_KEY> commandKeys, Command command) {
+// Command 등록.
+bool CommandComponent::RegistCommand(std::initializer_list<COMMAND_KEY> commandKeys, const Command& command) {
   if (nullptr == pRootNode_) {
+    __debugbreak();
     return false;
   }
 
   CommandNode* pCur;
   pCur = pRootNode_;
 
+  // commandKeys 순서대로 트리 탐색
+  // 각 키에 해당하는 자식 노드가 없으면 새 노드를 생성
   for (auto iter = commandKeys.begin(); iter != commandKeys.end(); ++iter) {
     if (nullptr == pCur->pSubNodes[*iter]) {
       pCur->pSubNodes[*iter] = new CommandNode();
     }
+    // pCur를 다음 키의 자식 노드로 이동
     pCur = pCur->pSubNodes[*iter];
   }
 
+  // Command 생성하여 최종 말단 노드의 command_에서 참조.
   Command* newCommand = new Command;
   newCommand->commandTag_ = command.commandTag_;
   newCommand->actions_ = command.actions_;
@@ -114,23 +120,19 @@ void CommandComponent::ExcuteCommand() {
 }
 
 void CommandComponent::JumpNode(COMMAND_KEY key) {
+  // JumpNode시 InputTimer 초기화. -> InputTimer가 임계를 넘을 시 ResetNode() 실행 (다른 로직에서 처리)
   inputTimer_ = 0;
 
-  if (nullptr == pCurNode_) {
-    return;
-  }
-
+  // Key에 해당하는 자식 노드가 존재하지 않으면 ResetNode()
   if (nullptr == pCurNode_->pSubNodes[key]) {
-    pCurNode_ = nullptr;
+    ResetNode();        // ResetNode : pCurNode가 다시 pRootNode를 참조하게 됨.
     return;
   } else {
+    // Key에 해당하는 자식 노드가 존재하면 pCurNode를 자식 노드로 이동.
     pCurNode_ = pCurNode_->pSubNodes[key];
   }
 
-  if (nullptr == pCurNode_) {
-    return;
-  }
-
+  // pCurNode_가 가르키고있는 노드에서 Command가 존재하면 Command를 예약하고, ResetNode() 실행.
   if (nullptr != pCurNode_->command_) {
     reservedCommand_ = pCurNode_->command_;
     ResetNode();

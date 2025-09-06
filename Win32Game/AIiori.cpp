@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "AnimationStateMachine.h"
+#include "AnimStateTransMachine.h"
 #include "CommandComponent.h"
 #include "SkillComponent.h"
 #include "ProjectileComponent.h"

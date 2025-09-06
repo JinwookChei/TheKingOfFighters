@@ -1,7 +1,7 @@
 #pragma once
 
 class InputController;
-class AnimationStateMachine;
+class AnimaStateTransMachine;
 class MovementComponent;
 class CommandComponent;
 class SkillComponent;
@@ -116,7 +116,7 @@ class KOFPlayer
 
   ImageRenderer* pRender_;
 
-  AnimationStateMachine* pAnimationStateMachine_;
+  AnimaStateTransMachine* pAnimaStateTransMachine_;
 
   InputController* pInputController_;
 

@@ -8,7 +8,7 @@
 #include "StateComponent.h"
 #include "RestrictionComponent.h"
 #include "GhostEffect.h"
-#include "AnimationStateMachine.h"
+#include "AnimStateTransMachine.h"
 #include "InputController.h"
 #include "Iori.h"
 
@@ -107,51 +107,353 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
 
   // ANIM
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_JumpDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_JumpLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Jump, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementFalling), true, PLAYER_ANIMTYPE_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_JumpLand);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_SeatDown, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_SeatUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_BackStep, (TRANSITION_CONDITION::AnimationEnd | TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_RunEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Dash, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_RollingBack, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Guard, (TRANSITION_CONDITION::OpponentPlayerAttackFinished), false, PLAYER_ANIMTYPE_GuardEnd);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Guard_Seat, (TRANSITION_CONDITION::OpponentPlayerAttackFinished), false, PLAYER_ANIMTYPE_GuardEnd_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_GuardEnd_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_CloseRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_LongRange, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightKick_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_HeavyPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_LightPunch_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_SeatDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_High, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Low, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Strong, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_JumpDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_Hit_AirborneDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_Hit_AirborneLand);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneLand, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Hit_AirborneGetUp);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_AirborneGetUp, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Idle);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_Hit_Seat, (TRANSITION_CONDITION::AnimationEnd), false, PLAYER_ANIMTYPE_Seat);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_KOKnockBackUp, (TRANSITION_CONDITION::MovementFalling), false, PLAYER_ANIMTYPE_KOKnockBackDown);
-  pAnimationStateMachine_->RegistAnimTransition(PLAYER_ANIMTYPE_KOKnockBackDown, (TRANSITION_CONDITION::MovementOnGround), false, PLAYER_ANIMTYPE_KOKnockBackLand);
+  AnimTransRule animTransRule_JumpUp;
+  animTransRule_JumpUp.transCondition_ = ANIM_TRANS_COND::MovementFalling;
+  animTransRule_JumpUp.toAnimState_ = PLAYER_ANIMTYPE_JumpDown;
+  AnimTransState animState_JumpUp;
+  animState_JumpUp.fromAnimState_ = PLAYER_ANIMTYPE_JumpUp;
+  animState_JumpUp.animTransRules_.push_back(animTransRule_JumpUp);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_JumpUp);
+
+  AnimTransRule animTransRule_JumpDown;
+  animTransRule_JumpDown.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_JumpDown.toAnimState_ = PLAYER_ANIMTYPE_JumpLand;
+  AnimTransState animState_JumpDown;
+  animState_JumpDown.fromAnimState_ = PLAYER_ANIMTYPE_JumpDown;
+  animState_JumpDown.animTransRules_.push_back(animTransRule_JumpDown);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_JumpDown);
+
+  AnimTransRule animTransRule_JumpLand;
+  animTransRule_JumpLand.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_JumpLand.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_JumpLand;
+  animState_JumpLand.fromAnimState_ = PLAYER_ANIMTYPE_JumpLand;
+  animState_JumpLand.animTransRules_.push_back(animTransRule_JumpLand);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_JumpLand);
+
+  AnimTransRule animTransRule_HeavyKick_Jump0;
+  animTransRule_HeavyKick_Jump0.transCondition_ = ANIM_TRANS_COND::AnimationEnd | ANIM_TRANS_COND::MovementFalling;
+  animTransRule_HeavyKick_Jump0.toAnimState_ = PLAYER_ANIMTYPE_JumpDown;
+  AnimTransRule animTransRule_HeavyKick_Jump1;
+  animTransRule_HeavyKick_Jump1.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_HeavyKick_Jump1.toAnimState_ = PLAYER_ANIMTYPE_JumpLand;
+  AnimTransState animState_HeavyKick_Jump;
+  animState_HeavyKick_Jump.fromAnimState_ = PLAYER_ANIMTYPE_HeavyKick_Jump;
+  animState_HeavyKick_Jump.animTransRules_.push_back(animTransRule_HeavyKick_Jump0);
+  animState_HeavyKick_Jump.animTransRules_.push_back(animTransRule_HeavyKick_Jump1);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyKick_Jump);
+
+  AnimTransRule animTransRule_HeavyPunch_Jump0;
+  animTransRule_HeavyPunch_Jump0.transCondition_ = ANIM_TRANS_COND::AnimationEnd | MovementFalling;
+  animTransRule_HeavyPunch_Jump0.toAnimState_ = PLAYER_ANIMTYPE_JumpDown;
+  AnimTransRule animTransRule_HeavyPunch_Jump1;
+  animTransRule_HeavyPunch_Jump1.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_HeavyPunch_Jump1.toAnimState_ = PLAYER_ANIMTYPE_JumpLand;
+  AnimTransState animState_HeavyPunch_Jump;
+  animState_HeavyPunch_Jump.fromAnimState_ = PLAYER_ANIMTYPE_HeavyPunch_Jump;
+  animState_HeavyPunch_Jump.animTransRules_.push_back(animTransRule_HeavyPunch_Jump0);
+  animState_HeavyPunch_Jump.animTransRules_.push_back(animTransRule_HeavyPunch_Jump1);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyPunch_Jump);
+
+  AnimTransRule animTransRule_LightKick_Jump0;
+  animTransRule_LightKick_Jump0.transCondition_ = ANIM_TRANS_COND::AnimationEnd | ANIM_TRANS_COND::MovementFalling;
+  animTransRule_LightKick_Jump0.toAnimState_ = PLAYER_ANIMTYPE_JumpDown;
+  AnimTransRule animTransRule_LightKick_Jump1;
+  animTransRule_LightKick_Jump1.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_LightKick_Jump1.toAnimState_ = PLAYER_ANIMTYPE_JumpLand;
+  AnimTransState animState_LightKick_Jump;
+  animState_LightKick_Jump.fromAnimState_ = PLAYER_ANIMTYPE_LightKick_Jump;
+  animState_LightKick_Jump.animTransRules_.push_back(animTransRule_LightKick_Jump0);
+  animState_LightKick_Jump.animTransRules_.push_back(animTransRule_LightKick_Jump1);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightKick_Jump);
+
+  AnimTransRule animTransRule_LightPunch_Jump0;
+  animTransRule_LightPunch_Jump0.transCondition_ = ANIM_TRANS_COND::AnimationEnd | ANIM_TRANS_COND::MovementFalling;
+  animTransRule_LightPunch_Jump0.toAnimState_ = PLAYER_ANIMTYPE_JumpDown;
+  AnimTransRule animTransRule_LightPunch_Jump1;
+  animTransRule_LightPunch_Jump1.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_LightPunch_Jump1.toAnimState_ = PLAYER_ANIMTYPE_JumpLand;
+  AnimTransState animState_LightPunch_Jump;
+  animState_LightPunch_Jump.fromAnimState_ = PLAYER_ANIMTYPE_LightPunch_Jump;
+  animState_LightPunch_Jump.animTransRules_.push_back(animTransRule_LightPunch_Jump0);
+  animState_LightPunch_Jump.animTransRules_.push_back(animTransRule_LightPunch_Jump1);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightPunch_Jump);
+
+  AnimTransRule animTransRule_SeatDown;
+  animTransRule_SeatDown.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_SeatDown.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_SeatDown;
+  animState_SeatDown.fromAnimState_ = PLAYER_ANIMTYPE_SeatDown;
+  animState_SeatDown.animTransRules_.push_back(animTransRule_SeatDown);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_SeatDown);
+
+  AnimTransRule animTransRule_HeavyKick_Seat;
+  animTransRule_HeavyKick_Seat.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_HeavyKick_Seat.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_HeavyKick_Seat;
+  animState_HeavyKick_Seat.fromAnimState_ = PLAYER_ANIMTYPE_HeavyKick_Seat;
+  animState_HeavyKick_Seat.animTransRules_.push_back(animTransRule_HeavyKick_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyKick_Seat);
+
+  AnimTransRule animTransRule_LightKick_Seat;
+  animTransRule_LightKick_Seat.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_LightKick_Seat.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_LightKick_Seat;
+  animState_LightKick_Seat.fromAnimState_ = PLAYER_ANIMTYPE_LightKick_Seat;
+  animState_LightKick_Seat.animTransRules_.push_back(animTransRule_LightKick_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightKick_Seat);
+
+  AnimTransRule animTransRule_HeavyPunch_Seat;
+  animTransRule_HeavyPunch_Seat.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_HeavyPunch_Seat.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_HeavyPunch_Seat;
+  animState_HeavyPunch_Seat.fromAnimState_ = PLAYER_ANIMTYPE_HeavyPunch_Seat;
+  animState_HeavyPunch_Seat.animTransRules_.push_back(animTransRule_HeavyPunch_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyPunch_Seat);
+
+  AnimTransRule animTransRule_LightPunch_Seat;
+  animTransRule_LightPunch_Seat.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_LightPunch_Seat.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_LightPunch_Seat;
+  animState_LightPunch_Seat.fromAnimState_ = PLAYER_ANIMTYPE_LightPunch_Seat;
+  animState_LightPunch_Seat.animTransRules_.push_back(animTransRule_LightPunch_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightPunch_Seat);
+
+  AnimTransRule animTransRule_SeatUp;
+  animTransRule_SeatUp.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_SeatUp.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_SeatUp;
+  animState_SeatUp.fromAnimState_ = PLAYER_ANIMTYPE_SeatUp;
+  animState_SeatUp.animTransRules_.push_back(animTransRule_SeatUp);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_SeatUp);
+
+  AnimTransRule animTransRule_BackStep;
+  animTransRule_BackStep.transCondition_ = ANIM_TRANS_COND::AnimationEnd | ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_BackStep.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_BackStep;
+  animState_BackStep.fromAnimState_ = PLAYER_ANIMTYPE_BackStep;
+  animState_BackStep.animTransRules_.push_back(animTransRule_BackStep);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_BackStep);
+  
+  AnimTransRule animTransRule_RunEnd;
+  animTransRule_RunEnd.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_RunEnd.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_RunEnd;
+  animState_RunEnd.fromAnimState_ = PLAYER_ANIMTYPE_RunEnd;
+  animState_RunEnd.animTransRules_.push_back(animTransRule_RunEnd);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_RunEnd);
+  
+  AnimTransRule animTransRule_Dash;
+  animTransRule_Dash.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Dash.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Dash;
+  animState_Dash.fromAnimState_ = PLAYER_ANIMTYPE_Dash;
+  animState_Dash.animTransRules_.push_back(animTransRule_Dash);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Dash);
+  
+  AnimTransRule animTransRule_RollingBack;
+  animTransRule_RollingBack.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_RollingBack.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_RollingBack;
+  animState_RollingBack.fromAnimState_ = PLAYER_ANIMTYPE_RollingBack;
+  animState_RollingBack.animTransRules_.push_back(animTransRule_RollingBack);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_RollingBack);
+  
+  AnimTransRule animTransRule_Guard;
+  animTransRule_Guard.transCondition_ = ANIM_TRANS_COND::OpponentPlayerAttackFinished;
+  animTransRule_Guard.toAnimState_ = PLAYER_ANIMTYPE_GuardEnd;
+  AnimTransState animState_Guard;
+  animState_Guard.fromAnimState_ = PLAYER_ANIMTYPE_Guard;
+  animState_Guard.animTransRules_.push_back(animTransRule_Guard);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Guard);
+  
+  AnimTransRule animTransRule_GuardEnd;
+  animTransRule_GuardEnd.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_GuardEnd.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_GuardEnd;
+  animState_GuardEnd.fromAnimState_ = PLAYER_ANIMTYPE_GuardEnd;
+  animState_GuardEnd.animTransRules_.push_back(animTransRule_GuardEnd);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_GuardEnd);
+
+  AnimTransRule animTransRule_Guard_Seat;
+  animTransRule_Guard_Seat.transCondition_ = ANIM_TRANS_COND::OpponentPlayerAttackFinished;
+  animTransRule_Guard_Seat.toAnimState_ = PLAYER_ANIMTYPE_GuardEnd_Seat;
+  AnimTransState animState_Guard_Seat;
+  animState_Guard_Seat.fromAnimState_ = PLAYER_ANIMTYPE_Guard_Seat;
+  animState_Guard_Seat.animTransRules_.push_back(animTransRule_Guard_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Guard_Seat);
+
+  AnimTransRule animTransRule_GuardEnd_Seat;
+  animTransRule_GuardEnd_Seat.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_GuardEnd_Seat.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_GuardEnd_Seat;
+  animState_GuardEnd_Seat.fromAnimState_ = PLAYER_ANIMTYPE_GuardEnd_Seat;
+  animState_GuardEnd_Seat.animTransRules_.push_back(animTransRule_GuardEnd_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_GuardEnd_Seat);
+
+  AnimTransRule animTransRule_HeavyKick_CloseRange;
+  animTransRule_HeavyKick_CloseRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_HeavyKick_CloseRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_HeavyKick_CloseRange;
+  animState_HeavyKick_CloseRange.fromAnimState_ = PLAYER_ANIMTYPE_HeavyKick_CloseRange;
+  animState_HeavyKick_CloseRange.animTransRules_.push_back(animTransRule_HeavyKick_CloseRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyKick_CloseRange);
+  
+  AnimTransRule animTransRule_LightKick_CloseRange;
+  animTransRule_LightKick_CloseRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_LightKick_CloseRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_LightKick_CloseRange;
+  animState_LightKick_CloseRange.fromAnimState_ = PLAYER_ANIMTYPE_LightKick_CloseRange;
+  animState_LightKick_CloseRange.animTransRules_.push_back(animTransRule_LightKick_CloseRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightKick_CloseRange);
+
+  AnimTransRule animTransRule_HeavyPunch_CloseRange;
+  animTransRule_HeavyPunch_CloseRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_HeavyPunch_CloseRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_HeavyPunch_CloseRange;
+  animState_HeavyPunch_CloseRange.fromAnimState_ = PLAYER_ANIMTYPE_HeavyPunch_CloseRange;
+  animState_HeavyPunch_CloseRange.animTransRules_.push_back(animTransRule_HeavyPunch_CloseRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyPunch_CloseRange);
+  
+  AnimTransRule animTransRule_LightPunch_CloseRange;
+  animTransRule_LightPunch_CloseRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_LightPunch_CloseRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_LightPunch_CloseRange;
+  animState_LightPunch_CloseRange.fromAnimState_ = PLAYER_ANIMTYPE_LightPunch_CloseRange;
+  animState_LightPunch_CloseRange.animTransRules_.push_back(animTransRule_LightPunch_CloseRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightPunch_CloseRange);
+
+  AnimTransRule animTransRule_HeavyKick_LongRange;
+  animTransRule_HeavyKick_LongRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_HeavyKick_LongRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_HeavyKick_LongRange;
+  animState_HeavyKick_LongRange.fromAnimState_ = PLAYER_ANIMTYPE_HeavyKick_LongRange;
+  animState_HeavyKick_LongRange.animTransRules_.push_back(animTransRule_HeavyKick_LongRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyKick_LongRange);
+  
+  AnimTransRule animTransRule_LightKick_LongRange;
+  animTransRule_LightKick_LongRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_LightKick_LongRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_LightKick_LongRange;
+  animState_LightKick_LongRange.fromAnimState_ = PLAYER_ANIMTYPE_LightKick_LongRange;
+  animState_LightKick_LongRange.animTransRules_.push_back(animTransRule_LightKick_LongRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightKick_LongRange);
+
+  AnimTransRule animTransRule_HeavyPunch_LongRange;
+  animTransRule_HeavyPunch_LongRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_HeavyPunch_LongRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_HeavyPunch_LongRange;
+  animState_HeavyPunch_LongRange.fromAnimState_ = PLAYER_ANIMTYPE_HeavyPunch_LongRange;
+  animState_HeavyPunch_LongRange.animTransRules_.push_back(animTransRule_HeavyPunch_LongRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_HeavyPunch_LongRange);
+  
+  AnimTransRule animTransRule_LightPunch_LongRange;
+  animTransRule_LightPunch_LongRange.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_LightPunch_LongRange.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_LightPunch_LongRange;
+  animState_LightPunch_LongRange.fromAnimState_ = PLAYER_ANIMTYPE_LightPunch_LongRange;
+  animState_LightPunch_LongRange.animTransRules_.push_back(animTransRule_LightPunch_LongRange);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_LightPunch_LongRange);
+  
+  AnimTransRule animTransRule_Hit_High;
+  animTransRule_Hit_High.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_High.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Hit_High;
+  animState_Hit_High.fromAnimState_ = PLAYER_ANIMTYPE_Hit_High;
+  animState_Hit_High.animTransRules_.push_back(animTransRule_Hit_High);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_High);
+  
+  AnimTransRule animTransRule_Hit_Low;
+  animTransRule_Hit_Low.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_Low.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Hit_Low;
+  animState_Hit_Low.fromAnimState_ = PLAYER_ANIMTYPE_Hit_Low;
+  animState_Hit_Low.animTransRules_.push_back(animTransRule_Hit_Low);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_Low);
+  
+  AnimTransRule animTransRule_Hit_Strong;
+  animTransRule_Hit_Strong.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_Strong.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Hit_Strong;
+  animState_Hit_Strong.fromAnimState_ = PLAYER_ANIMTYPE_Hit_Strong;
+  animState_Hit_Strong.animTransRules_.push_back(animTransRule_Hit_Strong);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_Strong);
+  
+  AnimTransRule animTransRule_Hit_JumpUp0;
+  animTransRule_Hit_JumpUp0.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_JumpUp0.toAnimState_ = PLAYER_ANIMTYPE_Hit_JumpDown;
+  AnimTransRule animTransRule_Hit_JumpUp1;
+  animTransRule_Hit_JumpUp1.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_Hit_JumpUp1.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Hit_JumpUp;
+  animState_Hit_JumpUp.fromAnimState_ = PLAYER_ANIMTYPE_Hit_JumpUp;
+  animState_Hit_JumpUp.animTransRules_.push_back(animTransRule_Hit_JumpUp0);
+  animState_Hit_JumpUp.animTransRules_.push_back(animTransRule_Hit_JumpUp1);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_JumpUp);
+  
+  AnimTransRule animTransRule_Hit_JumpDown;
+  animTransRule_Hit_JumpDown.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_Hit_JumpDown.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Hit_JumpDown;
+  animState_Hit_JumpDown.fromAnimState_ = PLAYER_ANIMTYPE_Hit_JumpDown;
+  animState_Hit_JumpDown.animTransRules_.push_back(animTransRule_Hit_JumpDown);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_JumpDown);
+
+  AnimTransRule animTransRule_Hit_AirborneUp;
+  animTransRule_Hit_AirborneUp.transCondition_ = ANIM_TRANS_COND::MovementFalling;
+  animTransRule_Hit_AirborneUp.toAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneDown;
+  AnimTransState animState_Hit_AirborneUp;
+  animState_Hit_AirborneUp.fromAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneUp;
+  animState_Hit_AirborneUp.animTransRules_.push_back(animTransRule_Hit_AirborneUp);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_AirborneUp);
+  
+  AnimTransRule animTransRule_Hit_AirborneDown;
+  animTransRule_Hit_AirborneDown.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_Hit_AirborneDown.toAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneLand;
+  AnimTransState animState_Hit_AirborneDown;
+  animState_Hit_AirborneDown.fromAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneDown;
+  animState_Hit_AirborneDown.animTransRules_.push_back(animTransRule_Hit_AirborneDown);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_AirborneDown);
+
+  AnimTransRule animTransRule_Hit_AirborneLand;
+  animTransRule_Hit_AirborneLand.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_AirborneLand.toAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneGetUp;
+  AnimTransState animState_Hit_AirborneLand;
+  animState_Hit_AirborneLand.fromAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneLand;
+  animState_Hit_AirborneLand.animTransRules_.push_back(animTransRule_Hit_AirborneLand);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_AirborneLand);
+  
+  AnimTransRule animTransRule_Hit_AirborneGetUp;
+  animTransRule_Hit_AirborneGetUp.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_AirborneGetUp.toAnimState_ = PLAYER_ANIMTYPE_Idle;
+  AnimTransState animState_Hit_AirborneGetUp;
+  animState_Hit_AirborneGetUp.fromAnimState_ = PLAYER_ANIMTYPE_Hit_AirborneGetUp;
+  animState_Hit_AirborneGetUp.animTransRules_.push_back(animTransRule_Hit_AirborneGetUp);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_AirborneGetUp);
+
+  AnimTransRule animTransRule_Hit_Seat;
+  animTransRule_Hit_Seat.transCondition_ = ANIM_TRANS_COND::AnimationEnd;
+  animTransRule_Hit_Seat.toAnimState_ = PLAYER_ANIMTYPE_Seat;
+  AnimTransState animState_Hit_Seat;
+  animState_Hit_Seat.fromAnimState_ = PLAYER_ANIMTYPE_Hit_Seat;
+  animState_Hit_Seat.animTransRules_.push_back(animTransRule_Hit_Seat);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_Hit_Seat);
+
+  AnimTransRule animTransRule_KOKnockBackUp;
+  animTransRule_KOKnockBackUp.transCondition_ = ANIM_TRANS_COND::MovementFalling;
+  animTransRule_KOKnockBackUp.toAnimState_ = PLAYER_ANIMTYPE_KOKnockBackDown;
+  AnimTransState animState_KOKnockBackUp;
+  animState_KOKnockBackUp.fromAnimState_ = PLAYER_ANIMTYPE_KOKnockBackUp;
+  animState_KOKnockBackUp.animTransRules_.push_back(animTransRule_KOKnockBackUp);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_KOKnockBackUp);
+
+  AnimTransRule animTransRule_KOKnockBackDown;
+  animTransRule_KOKnockBackDown.transCondition_ = ANIM_TRANS_COND::MovementOnGround;
+  animTransRule_KOKnockBackDown.toAnimState_ = PLAYER_ANIMTYPE_KOKnockBackLand;
+  AnimTransState animState_KOKnockBackDown;
+  animState_KOKnockBackDown.fromAnimState_ = PLAYER_ANIMTYPE_KOKnockBackDown;
+  animState_KOKnockBackDown.animTransRules_.push_back(animTransRule_KOKnockBackDown);
+  pAnimaStateTransMachine_->RegistAnimTransition(animState_KOKnockBackDown);
 
   // SOUND
   pSoundTable_->RegistSoundInfo(PLAYER_ANIMTYPE_JumpUp, SOUNDTYPE_COMMON_Jump01);

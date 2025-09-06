@@ -159,7 +159,7 @@
   <ItemGroup>
     <ClCompile Include="AIBehaviorStateMachine.cpp" />
     <ClCompile Include="AIiori.cpp" />
-    <ClCompile Include="AnimationStateMachine.cpp" />
+    <ClCompile Include="AnimStateTransMachine.cpp" />
     <ClCompile Include="AnimFreezeManager.cpp" />
     <ClCompile Include="AnimPivotLevel.cpp" />
     <ClCompile Include="BackGround.cpp" />
@@ -225,7 +225,7 @@
     <ClInclude Include="..\CommonCode\Code\IApplication.h" />
     <ClInclude Include="AIBehaviorStateMachine.h" />
     <ClInclude Include="AIiori.h" />
-    <ClInclude Include="AnimationStateMachine.h" />
+    <ClInclude Include="AnimStateTransMachine.h" />
     <ClInclude Include="AnimFreezeManager.h" />
     <ClInclude Include="AnimPivotLevel.h" />
     <ClInclude Include="BackGround.h" />

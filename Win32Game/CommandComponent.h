@@ -5,7 +5,8 @@ enum COMMAND_ACTION_TYPE : unsigned int {
   COMMAND_ACTION_ExecuteSkill = 0,
   COMMAND_ACTION_UpdateAnimState,
   COMMAND_ACTION_MovementBackStep,
-  COMMAND_ACTION_TurnOnMisc
+  COMMAND_ACTION_TurnOnMisc,
+  COMMAND_ACTION_Max
 };
 
 struct CommandActionParam {
@@ -77,6 +78,7 @@ struct CommandNode {
     if (nullptr != pSubNodes) {
       for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
         delete pSubNodes[i];
+        pSubNodes[i] = nullptr;
       }
     }
   }
@@ -100,7 +102,7 @@ class CommandComponent
 
   bool Initialize(KOFPlayer* pOwnerPlayer, SkillComponent* pSkillComponent, MovementComponent* pMovementComponent);
 
-  bool RegistCommand(std::initializer_list<COMMAND_KEY> commandKeys, Command command);
+  bool RegistCommand(std::initializer_list<COMMAND_KEY> commandKeys, const Command& command);
 
   bool isWaitingCommand() const;
 

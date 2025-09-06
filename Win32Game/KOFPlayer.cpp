@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "AnimationStateMachine.h"
+#include "AnimStateTransMachine.h"
 #include "CommandComponent.h"
 #include "InputController.h"
 #include "SkillComponent.h"
@@ -20,7 +20,7 @@
 KOFPlayer::KOFPlayer()
     : pInputController_(nullptr),
       pRender_(nullptr),
-      pAnimationStateMachine_(nullptr),
+      pAnimaStateTransMachine_(nullptr),
       pUI_(nullptr),
       pMovementComponent_(nullptr),
       pSoundTable_(nullptr),
@@ -214,11 +214,11 @@ void KOFPlayer::Initialize(bool isPlayer1, const Vector& position, bool useCamer
   }
 
   // ANIM STATE MACHINE
-  pAnimationStateMachine_ = CreateComponent<AnimationStateMachine>();
-  if (nullptr == pAnimationStateMachine_) {
+  pAnimaStateTransMachine_ = CreateComponent<AnimaStateTransMachine>();
+  if (nullptr == pAnimaStateTransMachine_) {
     return;
   }
-  if (false == pAnimationStateMachine_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_, pRestrictionComponent_)) {
+  if (false == pAnimaStateTransMachine_->Initialize(this, pRender_, pStateComponent_, pMovementComponent_, pRestrictionComponent_)) {
     return;
   }
 
@@ -354,7 +354,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   } else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
     finalDamage = damageInfo->damage_;
     finalMPGain = damageInfo->damage_ * 2.0f;
-    finalKnockBack = {3.0f, -3.0f};
+    finalKnockBack = {3.0f, -4.0f};
     finalAnim = PLAYER_ANIMTYPE_Hit_JumpUp;
 
   } else if (pStateComponent_->ContainPlayerState({PS_Seat})) {

@@ -222,7 +222,7 @@
     <ClCompile Include="Iori.cpp">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationStateMachine.cpp">
+    <ClCompile Include="AnimStateTransMachine.cpp">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClCompile>
     <ClCompile Include="HyakushikiOniyaki.cpp">
@@ -410,7 +410,7 @@
     <ClInclude Include="Iori.h">
       <Filter>Contents\KOF\Actor\PLayer\Iori</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationStateMachine.h">
+    <ClInclude Include="AnimStateTransMachine.h">
       <Filter>Contents\KOF\PlayerComponent</Filter>
     </ClInclude>
     <ClInclude Include="HyakushikiOniyaki.h">
