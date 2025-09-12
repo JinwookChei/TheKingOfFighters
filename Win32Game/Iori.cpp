@@ -106,7 +106,7 @@ void Iori::Initialize(bool isPlayer1, const Vector& position, bool useCameraPosi
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_2, IMGTYPE_IoriImage, 361, 370, 30, false, 161);
   CallCreateAnimation(IORI_ANIMTYPE_Ura306shikiShika_3, IMGTYPE_IoriImage, 371, 386, 20, false, 371);
 
-  // ANIM
+  // ANIM TRANS 
   AnimTransRule animTransRule_JumpUp;
   animTransRule_JumpUp.transCondition_ = ANIM_TRANS_COND::MovementFalling;
   animTransRule_JumpUp.toAnimState_ = PLAYER_ANIMTYPE_JumpDown;

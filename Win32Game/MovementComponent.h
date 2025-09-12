@@ -120,9 +120,9 @@ class MovementComponent final
   const float gravity_ = 0.35f;
   const float airResistance_ = 0.09f;
 
-  const Vector normalJumpForce_ = {0.0f, -6.0f};
-  const Vector fowardJumpForceInWalking_ = {0.8f, -5.5f};
-  const Vector fowardJumpForceInRunning_ = {1.3f, -5.5f};
+  const Vector normalJumpForce_ = {0.0f, -5.0f};
+  const Vector fowardJumpForceInWalking_ = {0.8f, -5.0f};
+  const Vector fowardJumpForceInRunning_ = {1.3f, -5.0f};
 
   // KNOCK BACK
   Vector curKnockBackVelocity_;

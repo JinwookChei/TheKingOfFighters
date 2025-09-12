@@ -10,11 +10,11 @@ CommandComponent::CommandComponent()
       pOwnerMovementComponent_(nullptr),
       pRootNode_(new CommandNode()),
       pCurNode_(pRootNode_),
+      pReservedCommand_(nullptr),
       inputTimer_(0),
       inputTimeThreshold_(0),
       reservedTaskTimer_(0),
       reservedTaskTimeThreshold_(0),
-      reservedCommand_(nullptr),
       isMiscOn_(false),
       miscOnTimer_(0),
       miscOnDuration_(0) {
@@ -41,12 +41,12 @@ void CommandComponent::Tick(unsigned long long deltaTick) {
     ResetNode();
   }
 
-  if (nullptr == reservedCommand_) {
+  if (nullptr == pReservedCommand_) {
     reservedTaskTimer_ = 0;
   } else {
     reservedTaskTimer_ += deltaTick;
     if (reservedTaskTimer_ >= reservedTaskTimeThreshold_) {
-      reservedCommand_ = nullptr;
+      pReservedCommand_ = nullptr;
     }
   }
 
@@ -96,12 +96,12 @@ bool CommandComponent::RegistCommand(std::initializer_list<COMMAND_KEY> commandK
   newCommand->commandTag_ = command.commandTag_;
   newCommand->actions_ = command.actions_;
 
-  pCur->command_ = newCommand;
+  pCur->pCommand_ = newCommand;
   return true;
 }
 
 bool CommandComponent::isWaitingCommand() const {
-  if (nullptr == reservedCommand_) {
+  if (nullptr == pReservedCommand_) {
     return false;
   }
   return true;
@@ -112,11 +112,11 @@ void CommandComponent::ExcuteCommand() {
     return;
   }
 
-  for (int i = 0; i < reservedCommand_->actions_.size(); ++i) {
-    ExcuteCommandAction(reservedCommand_->actions_[i]);
+  for (int i = 0; i < pReservedCommand_->actions_.size(); ++i) {
+    ExcuteCommandAction(pReservedCommand_->actions_[i]);
   }
 
-  reservedCommand_ = nullptr;
+  pReservedCommand_ = nullptr;
 }
 
 void CommandComponent::JumpNode(COMMAND_KEY key) {
@@ -133,8 +133,8 @@ void CommandComponent::JumpNode(COMMAND_KEY key) {
   }
 
   // pCurNode_가 가르키고있는 노드에서 Command가 존재하면 Command를 예약하고, ResetNode() 실행.
-  if (nullptr != pCurNode_->command_) {
-    reservedCommand_ = pCurNode_->command_;
+  if (nullptr != pCurNode_->pCommand_) {
+    pReservedCommand_ = pCurNode_->pCommand_;
     ResetNode();
   }
 }
@@ -231,10 +231,10 @@ void CommandComponent::ExecuteTurnOnMisc(const CommandActionParam& params) {
   TurnOnMisc(miscOnDuration);
 }
 
-void CommandComponent::CleanUpCommands(CommandNode* rootNode) {
+void CommandComponent::CleanUpCommands(CommandNode* pRootNode) {
   for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
 
-    CommandNode* pNode = rootNode->pSubNodes[i];
+    CommandNode* pNode = pRootNode->pSubNodes[i];
 
     if (nullptr == pNode) {
       continue;
@@ -243,8 +243,8 @@ void CommandComponent::CleanUpCommands(CommandNode* rootNode) {
     CleanUpCommands(pNode);
   }
 
-  if (nullptr != rootNode->command_) {
-    delete rootNode->command_;
-    rootNode->command_ = nullptr;
+  if (nullptr != pRootNode->pCommand_) {
+    delete pRootNode->pCommand_;
+    pRootNode->pCommand_ = nullptr;
   }
 }

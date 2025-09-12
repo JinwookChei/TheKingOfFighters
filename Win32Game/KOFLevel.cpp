@@ -83,13 +83,13 @@ void KOFLevel::BeginPlay() {
   player1SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f - 300, groundHeight_);
   pPlayer1_->SetPlayerOnLeft(true);
 
-  //pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
-  //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
-  //pPlayer2_->SetPlayerOnLeft(false);
-
-  pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  pPlayer2_ = SpawnActor<Chang>(ActorGroupEngineType::ActorGroupEngineType_None);
   player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
   pPlayer2_->SetPlayerOnLeft(false);
+
+  //pPlayer2_ = SpawnActor<Iori>(ActorGroupEngineType::ActorGroupEngineType_None);
+  //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
+  //pPlayer2_->SetPlayerOnLeft(false);
   
   //pPlayer2_ = SpawnActor<AIiori>(ActorGroupEngineType::ActorGroupEngineType_None);
   //player2SpawnPostion_ = Vector(backGroundImageScale.X * 0.5f + 300, groundHeight_);
@@ -477,7 +477,7 @@ void KOFLevel::InitReadyGame() {
   pScreenMask_->FadeOut(IMGTYPE_BlackBoardImage, 0.0f);
   pScreenMask_->FadeIn(300.0f);
 
-  pBackGroundMask_->FadeOut(IMGTYPE_BlackBoardImage, 10.0f);
+  //pBackGroundMask_->FadeOut(IMGTYPE_BlackBoardImage, 10.0f);
 
   gameStatus_ = GAMESTATUS_GameReady;
 }
@@ -505,7 +505,7 @@ void KOFLevel::InitInProgressGame() {
   acuumDeltaTick_ = 0;
   backGroundSoundChannel_ = SoundManager::Instance()->SoundPlay(SOUNDTYPE_BackGround);
 
-  //HUD_->SetActive(true);
+  HUD_->SetActive(true);
   pPlayer1_->UpdateAnimState(PLAYER_ANIMTYPE_Idle);
   pPlayer2_->UpdateAnimState(PLAYER_ANIMTYPE_Idle);
 

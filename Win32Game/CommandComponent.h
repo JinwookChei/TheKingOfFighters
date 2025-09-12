@@ -68,7 +68,7 @@ enum COMMAND_KEY {
 
 struct CommandNode {
   CommandNode()
-      : command_(nullptr) {
+      : pCommand_(nullptr) {
     for (int i = 0; i < COMMAND_KEY::CK_MAX; ++i) {
       pSubNodes[i] = nullptr;
     }
@@ -85,7 +85,7 @@ struct CommandNode {
 
   CommandNode* pSubNodes[COMMAND_KEY::CK_MAX];
 
-  Command* command_;
+  Command* pCommand_;
 };
 
 class CommandComponent
@@ -137,7 +137,7 @@ class CommandComponent
   // -----------------------------------------------------------
 
  private:
-  void CleanUpCommands(CommandNode* rootNode);
+  void CleanUpCommands(CommandNode* pRootNode);
 
   KOFPlayer* pOwnerPlayer_;
 
@@ -148,6 +148,8 @@ class CommandComponent
   CommandNode* pRootNode_;
 
   CommandNode* pCurNode_;
+
+  Command* pReservedCommand_;
 
   unsigned long long inputTimer_;
 
@@ -162,6 +164,4 @@ class CommandComponent
   unsigned long long miscOnTimer_;
 
   unsigned long long miscOnDuration_;
-
-  Command* reservedCommand_;
 };

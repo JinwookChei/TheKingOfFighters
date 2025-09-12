@@ -36,7 +36,7 @@ void AnimaStateTransMachine::Tick(unsigned long long deltaTick) {
     pOwnerRenderer_->SetEnableTick(true);
   }
 
-  ClearCurrentTransCondition();
+  UpdateCurrentTransCondition();
 
   UpdateTransition();
 }
@@ -73,22 +73,24 @@ bool AnimaStateTransMachine::Initialize(
   return ret;
 }
 
+// AnimTransState HashTable 등록.
 bool AnimaStateTransMachine::RegistAnimTransition(const AnimTransState& animTransState) {
+  // 만약 등록할 AnimTransState이 HashTable에 이미 존재하면 실패.
   AnimTransState* pFind;
   if (0 != animTransStateTable_.Select((void**)&pFind, 1, &animTransState.fromAnimState_, 8)) {
     return false;
   }
 
+  // 새 AnimTransState의 메모리를 할당하고, HashTable에 등록.
   AnimTransState* pNewState = new AnimTransState;
   pNewState->fromAnimState_ = animTransState.fromAnimState_;
   pNewState->animTransRules_ = animTransState.animTransRules_;
-
   pNewState->searchHandle_ = animTransStateTable_.Insert(pNewState, &pNewState->fromAnimState_, 8);
 
   return nullptr != pNewState->searchHandle_;
 }
 
-void AnimaStateTransMachine::ClearCurrentTransCondition() {
+void AnimaStateTransMachine::UpdateCurrentTransCondition() {
   curTickTransCond = ANIM_TRANS_COND::None;
 
   if (pOwnerRenderer_->IsAnimationEnd()) {
@@ -108,24 +110,30 @@ void AnimaStateTransMachine::ClearCurrentTransCondition() {
   }
 }
 
+// Animation Transition. 매 Tick마다 실행.
 void AnimaStateTransMachine::UpdateTransition() {
+  // 상태제약중 LockAnimTrans 상태면 Animation Transition 실행하지 않음.
   if (true == pOwnerRestrictionComponent_->ContainFinalRestrict({PR_LockAnimTrans})) {
     return;
   }
 
+  // 현재 Animation State
   unsigned long long curAnim = pOwnerStateComponent_->GetCurAnimState();
+  // 현재 Animation Modifier ( Modifier - 좌우반전된 애니메이션, 속성이펙트가 적용된 애니메이션인지.. )
   unsigned long long animMod = ExtractAnimationModifier();
 
+  // 현재 Animation State를 Key값으로 AnimTransState를 검색.
   AnimTransState* pState;
   if (0 == animTransStateTable_.Select((void**)&pState, 1, &curAnim, 8)) {
     return;
   }
 
+  // 검색해서 가져온 AnimTransState에서 TransCondition을 만족하면 Animation 업데이트.
   for (int i = 0; i < pState->animTransRules_.size(); ++i) {
     unsigned int transCond = pState->animTransRules_[i].transCondition_;
     unsigned long long toAnimState = pState->animTransRules_[i].toAnimState_;
 
-      if (transCond == (transCond & curTickTransCond)) {
+      if (transCond == (transCond & curTickTransCond)) {            // curTickTransCond ? 현재 Tick에서의 캐릭터 상태조건.
       pOwnerPlayer_->UpdateAnimState(toAnimState, animMod, true);
       return;
     }

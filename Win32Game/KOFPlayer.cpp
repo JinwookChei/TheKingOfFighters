@@ -354,7 +354,7 @@ void KOFPlayer::HitEvent(const AttackInfo* damageInfo) {
   } else if (pMovementComponent_->GetMovementState() == MOVSTATE_Jump) {
     finalDamage = damageInfo->damage_;
     finalMPGain = damageInfo->damage_ * 2.0f;
-    finalKnockBack = {3.0f, -4.0f};
+    finalKnockBack = {2.7f, -4.0f};
     finalAnim = PLAYER_ANIMTYPE_Hit_JumpUp;
 
   } else if (pStateComponent_->ContainPlayerState({PS_Seat})) {

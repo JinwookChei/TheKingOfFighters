@@ -19,8 +19,6 @@ struct AnimTransRule {
   unsigned int transCondition_ = ANIM_TRANS_COND::None;
 
   unsigned long long toAnimState_ = 0;
-
-  void* searchHandle_ = nullptr;
 };
 
 
@@ -52,7 +50,7 @@ class AnimaStateTransMachine
 
   bool RegistAnimTransition(const AnimTransState& animTransState);
 
-  void ClearCurrentTransCondition();
+  void UpdateCurrentTransCondition();
 
   void UpdateTransition();
 
