@@ -49,46 +49,33 @@
 <div align="center">
 
 
-<table width="700">
-<tr>
-<td align="left">
+<div align="left">
 
-**🚨 문제 상황 - 단일 텍스처에서 효율적으로 UV 구하기**<br>
-리소스 사이트로부터 받은 Atlas Image의 상하좌우 Padding 값이 일정하게 정렬되어 있지 않았습니다.<br>
-따라서 Atlas Image의 UV 값을 각각 계산해야 했습니다.
-
-</td>
-</tr>
-<tr>
-<td align="center">
-<img src="./Preview/UV_Problem.png" alt="UV Problem" width="500" />
-</td>
-</tr>
-</table>
-
-<br>
-
-
-<table width="700">
-<tr>
-<td align="left">
-
-**💡 해결 방안**<br>
-모든 픽셀을 탐색하는 계산을 줄이기 위해, 보조선을 그어 그 내부 범위에서 BoundBox UV 좌표를 얻었습니다.
-
-</td>
-</tr>
-<tr>
-<td align="center">
-<img src="./Preview/UV_Solution.png" alt="UV Solution" width="500" />
-<br><br>
-<img src="./Preview/UV_BoundBox.png" alt="BoundBox UV" width="150" />
-</td>
-</tr>
-</table>
+#### 🚨 문제 상황
+* 리소스 사이트로부터 받은 Atlas Image의 상하좌우 Padding 값이 일정하게 정렬되어 있지 않았습니다.
+* 따라서 Atlas Image의 UV 값을 각각 계산해야 했습니다.
 
 </div>
 
+<div align="center">
+  <img src="./Preview/UV_Problem.png" alt="UV Problem" width="500" />
+</div>
+<br>
+
+<div align="left">
+
+#### 💡 해결 방안
+* 모든 픽셀을 탐색하는 계산을 줄이기 위해, <b>보조선을 그어 그 내부 범위에서 BoundBox UV 좌표</b>를 얻었습니다.
+
+</div>
+
+<div align="center">
+  <img src="./Preview/UV_Solution.png" alt="UV Solution" width="500" />
+  <br><br>
+  <img src="./Preview/UV_BoundBox.png" alt="BoundBox UV" width="150" />
+  <p><i>보조선 내부에서 얻은 BoundBox UV</i></p>
+</div>
+<br><br>
 
 ---
 
