@@ -211,7 +211,7 @@
   <img src="./Preview/Tree_1.png" alt="Command Tree" width="700" />
 </div>
 <div align="center">
-  <img src="./Preview/Tree_1.png" alt="Command Tree" width="700" />
+  <img src="./Preview/Tree_2.png" alt="Command Tree" width="700" />
 </div>
 <br>
 
